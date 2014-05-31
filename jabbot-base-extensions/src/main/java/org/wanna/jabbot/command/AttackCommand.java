@@ -17,6 +17,7 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Random;
 
 public class AttackCommand extends AbstractCommand{
@@ -44,7 +45,7 @@ public class AttackCommand extends AbstractCommand{
 		String target = getParsedCommand().getArgs()[0];
 		String attacker = "me";
 		attack = attack.replace(":from",attacker);
-		attack = attack.replace(":name",target);
+		attack = attack.replace(":name",secureTarget(target));
 		String foaas;
 		try {
 			foaas = query(attack);
@@ -58,6 +59,10 @@ public class AttackCommand extends AbstractCommand{
 	@Override
 	public void process(Message message) {
 
+	}
+
+	protected String secureTarget(String target){
+		return URLEncoder.encode(target);
 	}
 
 	protected String pickAttack(){
