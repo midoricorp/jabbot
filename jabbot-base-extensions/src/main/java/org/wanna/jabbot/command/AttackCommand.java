@@ -15,6 +15,7 @@ import org.apache.http.util.EntityUtils;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.util.StringUtils;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -43,7 +44,7 @@ public class AttackCommand extends AbstractCommand{
 	public void process(MucHolder chatroom, Message message) throws XMPPException, SmackException.NotConnectedException {
 		String attack = pickAttack();
 		String target = getParsedCommand().getArgs()[0];
-		String attacker = "me";
+		String attacker = StringUtils.parseResource(message.getFrom());
 		attack = attack.replace(":from",attacker);
 		attack = attack.replace(":name",secureTarget(target));
 		String foaas;
