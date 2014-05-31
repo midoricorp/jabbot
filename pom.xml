@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.wanna</groupId>
+    <artifactId>jabbot-master</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>jabbot-daemon</module>
+        <module>jabbot-extension-api</module>
+        <module>jabbot-base-extensions</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.wanna</groupId>
+                <artifactId>jabbot-extension-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.wanna</groupId>
+                <artifactId>jabbot-base-extensions</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.igniterealtime.smack</groupId>
+                <artifactId>smack-extensions</artifactId>
+                <version>${smack.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.igniterealtime.smack</groupId>
+                <artifactId>smack-tcp</artifactId>
+                <version>${smack.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.igniterealtime.smack</groupId>
+                <artifactId>smack-resolver-javax</artifactId>
+                <version>${smack.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.igniterealtime.smack</groupId>
+                <artifactId>smack-core</artifactId>
+                <version>${smack.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <properties>
+        <smack.version>4.0.0-rc2</smack.version>
+        <spring.version>4.0.2.RELEASE</spring.version>
+        <junit.version>4.11</junit.version>
+        <slf.version>1.7.6</slf.version>
+    </properties>
+</project>
