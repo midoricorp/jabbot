@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class AttackCommand extends AbstractCommand{
@@ -29,15 +31,31 @@ public class AttackCommand extends AbstractCommand{
 	private final String baseUrl = "http://foaas.com";
 	private final Random randomizer = new Random();
 
-	private final String[] attacks = new String[]{
-			"/you/:name/:from",
-			"/off/:name/:from",
-			"/donut/:name/:from",
-			"/shakespeare/:name/:from",
-			"/linus/:name/:from",
-			"/king/:name/:from",
-			"/chainsaw/:name/:from"
-	};
+	private Map<Integer,String[]> getAttacks(){
+		Map<Integer,String[]> attacks = new HashMap<>();
+		attacks.put(0,new String[]{
+				"/this/:from",
+				"/that/:from",
+				"/everything/:from",
+				"/everyone/:from",
+				"/pink/:from",
+				"/life/:from",
+				"/flying/:from",
+				"/fascinating/:from"
+		});
+
+		attacks.put(1,new String[]{
+				"/you/:name/:from",
+				"/off/:name/:from",
+				"/donut/:name/:from",
+				"/shakespeare/:name/:from",
+				"/linus/:name/:from",
+				"/king/:name/:from",
+				"/chainsaw/:name/:from",
+				"/:name/:from",
+		});
+		return attacks;
+	}
 
 	@Override
 	public String getCommandName() {
@@ -47,12 +65,19 @@ public class AttackCommand extends AbstractCommand{
 	@Override
 	public void process(MucHolder chatroom, Message message) throws XMPPException, SmackException.NotConnectedException {
 		String response;
-		if(getParsedCommand().getArgs() != null && getParsedCommand().getArgs().length > 0){
-			String attack = pickAttack();
-			String target = getParsedCommand().getArgs()[0];
+		if(getParsedCommand().getArgs() != null ){
+			String attack = pickAttack(getParsedCommand().getArgs().length);
+			String target = null;
+			if(getParsedCommand().getArgs().length > 0){
+				target = getParsedCommand().getArgs()[0];
+				attack = attack.replace(":name",secureTarget(target));
+				if(target.equals(chatroom.getNickname())){
+					chatroom.getMuc().sendMessage("I'm not gonna attack myself, you fool!");
+					return;
+				}
+			}
 			String attacker = StringUtils.parseResource(message.getFrom());
 			attack = attack.replace(":from",attacker);
-			attack = attack.replace(":name",secureTarget(target));
 			logger.debug("attack command: {}\nattacker: {}\ntarget: {}",attack,attacker,target);
 			try {
 				response = query(attack);
@@ -72,7 +97,9 @@ public class AttackCommand extends AbstractCommand{
 		return URLEncoder.encode(target);
 	}
 
-	protected String pickAttack(){
+	protected String pickAttack(int argsLength){
+		final int validArg = argsLength % getAttacks().size();
+		final String[] attacks = getAttacks().get(validArg);
 		return attacks[randomizer.nextInt(attacks.length)];
 	}
 
