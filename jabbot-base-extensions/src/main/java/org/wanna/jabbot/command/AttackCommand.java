@@ -16,12 +16,16 @@ import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Random;
 
 public class AttackCommand extends AbstractCommand{
+	final Logger logger = LoggerFactory.getLogger(AttackCommand.class);
+
 	private final String baseUrl = "http://foaas.com";
 	private final Random randomizer = new Random();
 
@@ -42,19 +46,21 @@ public class AttackCommand extends AbstractCommand{
 
 	@Override
 	public void process(MucHolder chatroom, Message message) throws XMPPException, SmackException.NotConnectedException {
-		String attack = pickAttack();
-		String target = getParsedCommand().getArgs()[0];
-		String attacker = StringUtils.parseResource(message.getFrom());
-		attack = attack.replace(":from",attacker);
-		attack = attack.replace(":name",secureTarget(target));
-		String foaas;
-		try {
-			foaas = query(attack);
-		} catch (IOException e) {
-			foaas = "unable to fuck you! (^_^)";
+		String response;
+		if(getParsedCommand().getArgs() != null && getParsedCommand().getArgs().length > 0){
+			String attack = pickAttack();
+			String target = getParsedCommand().getArgs()[0];
+			String attacker = StringUtils.parseResource(message.getFrom());
+			attack = attack.replace(":from",attacker);
+			attack = attack.replace(":name",secureTarget(target));
+			logger.debug("attack command: {}\nattacker: {}\ntarget: {}",attack,attacker,target);
+			try {
+				response = query(attack);
+			} catch (IOException e) {
+				response = "unable to fuck you! (^_^)";
+			}
+			chatroom.getMuc().sendMessage(response);
 		}
-
-		chatroom.getMuc().sendMessage(foaas);
 	}
 
 	@Override
