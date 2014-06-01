@@ -7,4 +7,5 @@
     </bean>
 
     <bean id="attackCommand" class="org.wanna.jabbot.command.AttackCommand"/>
+    <bean id="versionCommand" class="org.wanna.jabbot.command.VersionCommand"/>
 </beans>
