@@ -98,8 +98,12 @@ public class AttackCommand extends AbstractCommand{
 	}
 
 	protected String pickAttack(int argsLength){
-		final int validArg = argsLength % getAttacks().size();
-		final String[] attacks = getAttacks().get(validArg);
+		final String[] attacks;
+		if(argsLength >= getAttacks().size() ){
+			attacks = getAttacks().get(getAttacks().size()-1);
+		}else{
+			attacks = getAttacks().get(argsLength);
+		}
 		return attacks[randomizer.nextInt(attacks.length)];
 	}
 
