@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,21 +71,21 @@ public class AttackCommand extends AbstractCommand{
 			String target = null;
 			if(getParsedCommand().getArgs().length > 0){
 				target = getParsedCommand().getArgs()[0];
-				attack = attack.replace(":name",secureTarget(target));
+				attack = attack.replace(":name",URLEncoder.encode(target));
 				if(target.equals(chatroom.getNickname())){
 					chatroom.getMuc().sendMessage("I'm not gonna attack myself, you fool!");
 					return;
 				}
 			}
 			String attacker = StringUtils.parseResource(message.getFrom());
-			attack = attack.replace(":from",attacker);
+			attack = attack.replace(":from",URLEncoder.encode(attacker));
 			logger.debug("attack command: {}\nattacker: {}\ntarget: {}",attack,attacker,target);
 			try {
 				response = query(attack);
 			} catch (IOException e) {
-				response = "unable to fuck you! (^_^)";
+				response = "unable to attack target!";
 			}
-			chatroom.getMuc().sendMessage(response);
+			chatroom.getMuc().sendMessage(secureResponse(response));
 		}
 	}
 
@@ -93,8 +94,20 @@ public class AttackCommand extends AbstractCommand{
 
 	}
 
-	protected String secureTarget(String target){
-		return URLEncoder.encode(target);
+	/**
+	 * Make sure one does not use / command from jabber in order to spam someone else
+	 * using /say or having the bot acting weird using /me.
+	 * by Stripping all the leading / from the response
+	 *
+	 * @param response the raw response to be returned
+	 * @return cleaned response
+	 */
+	protected String secureResponse(String response){
+		response = URLDecoder.decode(response);
+		while(response.startsWith("/")){
+			response = response.replace("/","");
+		}
+		return response;
 	}
 
 	protected String pickAttack(int argsLength){
