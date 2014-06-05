@@ -1,12 +1,14 @@
 package org.wanna.jabbot.command;
 
-import java.util.Map;
+import java.util.Collection;
 
 /**
  * @author vmorsiani <vmorsiani>
  * @since 2014-05-31
  */
 public interface CommandFactory {
+	Command create(String commandName);
 	Command create(ParsedCommand parsedCommand);
-	Map<String,Command> getAvailableCommands();
+	Collection<Command> getAvailableCommands();
+
 }
