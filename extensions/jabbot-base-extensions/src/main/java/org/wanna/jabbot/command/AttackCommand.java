@@ -18,6 +18,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.extensions.AbstractCommand;
 
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -133,8 +134,8 @@ public class AttackCommand extends AbstractCommand{
 				return EntityUtils.toString(entity, HTTP.UTF_8);
 			}
 		}
-		catch (ClientProtocolException e) {e.printStackTrace();}
-		catch (IOException e) {e.printStackTrace();}
+		catch (ClientProtocolException e) {logger.error("error querying foaas",e);}
+		catch (IOException e) {logger.error("error querying foaas",e);}
 
 		return null;
 	}

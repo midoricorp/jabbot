@@ -6,9 +6,8 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.MucHolder;
-import org.wanna.jabbot.command.ParsedCommand;
+import org.wanna.jabbot.extensions.AbstractCommand;
 
 import java.util.Random;
 
@@ -16,25 +15,14 @@ import java.util.Random;
  * @author vmorsiani <vmorsiani>
  * @since 2014-06-06
  */
-public class RollCommand implements Command{
+public class RollCommand extends AbstractCommand{
 	private Logger logger = LoggerFactory.getLogger(RollCommand.class);
 
-	private ParsedCommand parsedCommand;
 	private final Random randomizer = new Random(System.currentTimeMillis());
 
 	@Override
 	public String getCommandName() {
 		return "roll";
-	}
-
-	@Override
-	public ParsedCommand getParsedCommand() {
-		return this.parsedCommand;
-	}
-
-	@Override
-	public void setParsedCommand(ParsedCommand parsedCommand) {
-		this.parsedCommand = parsedCommand;
 	}
 
 	@Override

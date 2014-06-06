@@ -3,6 +3,7 @@ package org.wanna.jabbot.command;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
+import org.wanna.jabbot.extensions.AbstractCommand;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;

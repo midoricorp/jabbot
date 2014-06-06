@@ -17,8 +17,14 @@
             <url>https://m2proxy.atlassian.com/repository/public</url>
         </repository>
     </repositories>
-    <dependencies>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.wanna.jabbot.extensions</groupId>
+            <artifactId>jabbot-extension-helpers</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        
         <dependency>
             <groupId>com.atlassian.jira</groupId>
             <artifactId>jira-rest-java-client</artifactId>
