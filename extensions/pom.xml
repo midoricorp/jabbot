@@ -18,27 +18,7 @@
     <modules>
         <module>jabbot-base-extensions</module>
     </modules>
-<!--
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.wanna.jabbot</groupId>
-                <artifactId>jabbot-extension-api</artifactId>
-                <version>1.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.6</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>4.0.2.RELEASE</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
--->
+
     <dependencies>
         <dependency>
             <groupId>org.wanna.jabbot</groupId>
