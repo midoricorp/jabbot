@@ -20,23 +20,22 @@ public class JabbotCommandFactory implements CommandFactory{
 	}
 
 	@Override
-	public Command create(String commandName) {
+	public Command create(String commandName) throws CommandNotFoundException{
 		Command command = registry.get(commandName);
+		if(command == null){
+			throw new CommandNotFoundException(commandName);
+		}
+
+		if(command instanceof CommandFactoryAware){
+			((CommandFactoryAware) command).setCommandFactory(this);
+		}
+
 		return command;
 	}
 
-
-	public Command create(ParsedCommand parsedCommand){
+	public Command create(ParsedCommand parsedCommand) throws CommandNotFoundException{
 		Command command = create(parsedCommand.getCommandName());
-		//If matching command is found, initialize it otherwise return null
-		if(command == null){
-			return null;
-		}else{
-			command.setParsedCommand(parsedCommand);
-			if(command instanceof CommandFactoryAware){
-				((CommandFactoryAware) command).setCommandFactory(this);
-			}
-		}
+		command.setParsedCommand(parsedCommand);
 		return command;
 	}
 

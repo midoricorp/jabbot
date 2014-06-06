@@ -43,22 +43,26 @@ public class MucCommandListener implements PacketListener{
 			logger.debug("received packet from {} with body: {}",message.getFrom(),message.getBody());
 			Chatroom room = getChatroom(message.getFrom());
 			String resource = StringUtils.parseResource(message.getFrom());
-			if(resource != null){
-				if(resource.equals(room.getNickname())){
+			if(resource != null) {
+				if (resource.equals(room.getNickname())) {
 					logger.debug("not going to process my own stuff");
-				}else{
-					logger.debug("received a message from {} using chatroom {} and preparing response..",resource,room.getRoomName());
+				} else {
+					logger.debug("received a message from {} using chatroom {} and preparing response..", resource, room.getRoomName());
 					ParsedCommand parsedCommand = commandParser.parse(message.getBody());
 
-					logger.debug("parsedCommand : {}",parsedCommand.getCommandName());
-					Command command = commandFactory.create(parsedCommand);
-					if(command != null){
-						try {
-							command.process(room,message);
-						} catch (XMPPException e) {
-							logger.error("error sending message", e);
-						}
+					logger.debug("parsedCommand : {}", parsedCommand.getCommandName());
+					Command command = null;
+
+					try {
+						command = commandFactory.create(parsedCommand);
+						command.process(room, message);
+
+					} catch (CommandNotFoundException e) {
+						logger.debug("command not found: '{}'", e.getCommandName());
+					} catch (XMPPException e) {
+						logger.error("error sending message", e);
 					}
+
 				}
 			}
 		}

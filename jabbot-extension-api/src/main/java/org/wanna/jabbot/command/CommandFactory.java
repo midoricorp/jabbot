@@ -7,8 +7,8 @@ import java.util.Collection;
  * @since 2014-05-31
  */
 public interface CommandFactory {
-	Command create(String commandName);
-	Command create(ParsedCommand parsedCommand);
+	Command create(String commandName) throws CommandNotFoundException;
+	Command create(ParsedCommand parsedCommand) throws CommandNotFoundException;
 	Collection<Command> getAvailableCommands();
 
 }
