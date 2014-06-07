@@ -1,4 +1,4 @@
-package org.wanna.jabbot.command;
+package org.wanna.jabbot.extensions.jira;
 
 import com.atlassian.jira.rest.client.JiraRestClient;
 import com.atlassian.jira.rest.client.NullProgressMonitor;
@@ -10,6 +10,7 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.extensions.AbstractCommand;
 
 import java.net.URI;
