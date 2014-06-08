@@ -1,4 +1,4 @@
-package org.wanna.jabbot.command;
+package org.wanna.jabbot.extensions.foaas;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -18,6 +18,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.extensions.AbstractCommand;
 
 import java.io.IOException;
