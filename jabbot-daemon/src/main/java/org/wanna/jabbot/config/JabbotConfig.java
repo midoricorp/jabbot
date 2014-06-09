@@ -3,6 +3,8 @@ package org.wanna.jabbot.config;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.*;
@@ -11,7 +13,15 @@ import org.springframework.core.io.InputStreamSource;
 import org.wanna.jabbot.Chatroom;
 import org.wanna.jabbot.Jabbot;
 import org.wanna.jabbot.command.CommandManager;
+import org.wanna.jabbot.ssl.SSLHelper;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +36,7 @@ import java.util.Map;
 @PropertySource("classpath:/jabbot.properties")
 @ImportResource("classpath:/chatrooms.xml")
 public class JabbotConfig {
+	final Logger logger = LoggerFactory.getLogger(JabbotConfig.class);
 
 	@Autowired
 	Environment env;
@@ -49,9 +60,19 @@ public class JabbotConfig {
 		final String host = env.getProperty("xmpp.host");
 		final int port = env.getProperty("xmpp.port",Integer.class);
 		final String serviceName = env.getProperty("xmpp.serviceName");
+		final boolean allowSelfSigned = env.getProperty("xmpp.ssl.allow_self_signed",Boolean.class,false);
 
 		ConnectionConfiguration config = new ConnectionConfiguration(host,port,serviceName);
-		config.setDebuggerEnabled(env.getProperty("xmpp.debug",Boolean.class));
+		config.setDebuggerEnabled(env.getProperty("xmpp.debug",Boolean.class,false));
+
+		if(allowSelfSigned){
+			try {
+				config.setCustomSSLContext(SSLHelper.newAllTrustingSslContext());
+			} catch (KeyManagementException | NoSuchAlgorithmException e) {
+				logger.error("Error registering custom ssl context",e);
+			}
+		}
+
 		return config;
 	}
 

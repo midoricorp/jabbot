@@ -10,13 +10,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.wanna.jabbot.config.JabbotConfig;
 import org.wanna.jabbot.config.PluginConfigurator;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
-
 /**
  * @author vmorsiani <vmorsiani>
  * @since 2014-05-29
@@ -28,25 +21,6 @@ public class Launcher implements Daemon{
 	@Override
 	public void init(DaemonContext daemonContext) throws DaemonInitException{
 		logger.debug("initializing...");
-
-		//THis is a temp workaround.
-		//Thrust ALL certificates in case a plugin try to access a service with self signed certificates
-		TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
-			public X509Certificate[] getAcceptedIssuers(){return null;}
-			public void checkClientTrusted(X509Certificate[] certs, String authType){}
-			public void checkServerTrusted(X509Certificate[] certs, String authType){}
-		}};
-
-		// Install the all-trusting trust manager
-		try {
-			SSLContext sc = SSLContext.getInstance("TLS");
-			sc.init(null, trustAllCerts, new SecureRandom());
-			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-
 		ApplicationContext ctx =
 				new AnnotationConfigApplicationContext(
 						JabbotConfig.class,

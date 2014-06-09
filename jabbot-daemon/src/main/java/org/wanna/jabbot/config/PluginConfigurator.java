@@ -25,7 +25,7 @@ public class PluginConfigurator{
 	final Logger logger = LoggerFactory.getLogger(PluginConfigurator.class);
 
 	@Bean(name="pluginContext")
-	public ApplicationContext newPluginContext(){
+	public ClassPathXmlApplicationContext newPluginContext(){
 		return new ClassPathXmlApplicationContext(new String[]{
 				"classpath*:jabbot-extension.xml"
 		});
