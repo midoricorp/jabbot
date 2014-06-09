@@ -5,4 +5,5 @@
 
     <bean id="helpCommand" class="org.wanna.jabbot.command.HelpCommand"/>
     <bean id="versionCommand" class="org.wanna.jabbot.command.VersionCommand"/>
+    <bean id="uptimeCommand" class="org.wanna.jabbot.command.UptimeCommand"/>
 </beans>
