@@ -21,7 +21,7 @@ import java.util.Map;
 public class Jabbot {
 	final Logger logger = LoggerFactory.getLogger(Jabbot.class);
 	private XMPPConnection connection;
-	private String username,password;
+	private String username,password,resource;
 	private Map<String,Chatroom> chatroomList;
 
 	public Jabbot(XMPPConnection connection) {
@@ -36,13 +36,17 @@ public class Jabbot {
 		this.password = password;
 	}
 
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
+
 	public void setChatroomList(Map<String,Chatroom> chatroomList) {
 		this.chatroomList = chatroomList;
 	}
 
 	public boolean connect() throws IOException, SmackException, XMPPException {
 		connection.connect();
-		connection.login(username,password);
+		connection.login(username,password,resource);
 
 		PacketFilter filter = new AndFilter(
 				new MessageTypeFilter(Message.Type.groupchat),

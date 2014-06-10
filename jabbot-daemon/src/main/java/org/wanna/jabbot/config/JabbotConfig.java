@@ -15,13 +15,8 @@ import org.wanna.jabbot.Jabbot;
 import org.wanna.jabbot.command.CommandManager;
 import org.wanna.jabbot.ssl.SSLHelper;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,6 +86,7 @@ public class JabbotConfig {
 		Jabbot jabbot = new Jabbot(connection);
 		jabbot.setUsername(env.getProperty("xmpp.credential.username"));
 		jabbot.setPassword(env.getProperty("xmpp.credential.password"));
+		jabbot.setResource(env.getProperty("xmpp.resource","Jabbot"));
 		Map<String,Chatroom> rooms = new HashMap<>();
 		for (Chatroom room : (List<Chatroom>)chatroomList) {
 			rooms.put(room.getRoomName(),room);
