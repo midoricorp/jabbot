@@ -91,11 +91,6 @@ public class AttackCommand extends AbstractCommand{
 		}
 	}
 
-	@Override
-	public void process(Message message) {
-
-	}
-
 	/**
 	 * Make sure one does not use / command from jabber in order to spam someone else
 	 * using /say or having the bot acting weird using /me.

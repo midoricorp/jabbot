@@ -34,9 +34,4 @@ public class VersionCommand extends AbstractCommand{
 
 		chatroom.getMuc().sendMessage(sb.toString());
 	}
-
-	@Override
-	public void process(Message message) {
-
-	}
 }

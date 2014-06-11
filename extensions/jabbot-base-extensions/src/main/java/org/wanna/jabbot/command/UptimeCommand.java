@@ -42,9 +42,4 @@ public class UptimeCommand extends AbstractCommand{
 		String result = String.format("I'm up since %s day(s) %s hour(s) %s minute(s) and %s seconds",elapsedDays,elapsedHours,elapsedMinutes,elapsedSeconds);
 		chatroom.getMuc().sendMessage(result);
 	}
-
-	@Override
-	public void process(Message message) {
-
-	}
 }

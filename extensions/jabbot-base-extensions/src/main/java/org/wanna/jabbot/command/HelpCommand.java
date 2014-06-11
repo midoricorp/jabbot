@@ -38,10 +38,6 @@ class HelpCommand extends AbstractCommand implements CommandFactoryAware{
 	}
 
 	@Override
-	public void process(Message message) {
-	}
-
-	@Override
 	public void setCommandFactory(CommandFactory commandFactory) {
 		this.commandFactory = commandFactory;
 	}

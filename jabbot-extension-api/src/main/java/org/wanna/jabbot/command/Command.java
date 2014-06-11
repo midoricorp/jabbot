@@ -13,6 +13,5 @@ public interface Command {
 	ParsedCommand getParsedCommand();
 	void setParsedCommand(ParsedCommand parsedCommand);
 	void process(MucHolder chatroom, Message message) throws XMPPException, SmackException.NotConnectedException;
-	void process(Message message);
 }
 

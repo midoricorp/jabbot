@@ -75,11 +75,6 @@ public class RollCommand extends AbstractCommand{
 		chatroom.getMuc().sendMessage(response);
 	}
 
-	@Override
-	public void process(Message message) {
-
-	}
-
 	private int pick(int max){
 		int result = 0;
 		while(result == 0){

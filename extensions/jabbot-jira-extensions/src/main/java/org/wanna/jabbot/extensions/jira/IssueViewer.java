@@ -67,11 +67,6 @@ public class IssueViewer extends AbstractCommand{
 		}
 	}
 
-	@Override
-	public void process(Message message) {
-
-	}
-
 	private com.atlassian.jira.rest.client.domain.Issue retrieveIssue(String key) throws URISyntaxException, InterruptedException {
 		final JerseyJiraRestClientFactory factory = new JerseyJiraRestClientFactory();
 		final URI jiraServerUri = new URI(jiraUrl);
