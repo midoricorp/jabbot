@@ -14,8 +14,8 @@ In order to get jabbot running you will need the following installed:
 - java 1.7
 
 In order ton configure jabbot, simply edit the 2 following files in jabbot-daemon:
-1. jabbot.properties : used to set jabber connection information as well as some additional settings for jabbot.
-2. chatrooms.xml: used to set a list of chatrooms to join on startup.
+- jabbot.properties : used to set jabber connection information as well as some additional settings for jabbot.
+- chatrooms.xml: used to set a list of chatrooms to join on startup.
 
 Once the above is complete, go into the root folder of the project and run
 ```
