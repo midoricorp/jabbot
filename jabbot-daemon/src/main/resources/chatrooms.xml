@@ -7,7 +7,9 @@
         <constructor-arg>
             <list>
                 <bean class="org.wanna.jabbot.Chatroom">
+                    <!-- Name of the bot in the chatroom. -->
                     <constructor-arg value="Jabbot"/>
+                    <!-- uri of the chatroom to join -->
                     <constructor-arg value="test_room@conference.hostname"/>
                 </bean>
             </list>
