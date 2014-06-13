@@ -8,8 +8,9 @@
     <artifactId>jabbot-master</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>jabbot-daemon</module>
         <module>jabbot-extension-api</module>
+        <module>jabbot-daemon</module>
+        <module>extensions</module>
     </modules>
     <packaging>pom</packaging>
 

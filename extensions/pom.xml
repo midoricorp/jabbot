@@ -9,6 +9,14 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>jabbot-extension-helpers</module>
+        <module>jabbot-base-extensions</module>
+        <module>jabbot-dice-command</module>
+        <module>jabbot-foaas-command</module>
+        <module>jabbot-jira-extensions</module>
+    </modules>
+
     <parent>
         <groupId>org.wanna.jabbot</groupId>
         <artifactId>jabbot-master</artifactId>
