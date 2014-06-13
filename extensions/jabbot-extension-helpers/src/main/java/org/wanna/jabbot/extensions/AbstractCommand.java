@@ -9,6 +9,14 @@ import org.wanna.jabbot.command.ParsedCommand;
  */
 public abstract class AbstractCommand implements Command {
 	private ParsedCommand parsedCommand;
+	private String commandName;
+
+	protected AbstractCommand(String commandName) {
+		this.commandName = commandName;
+	}
+
+	protected AbstractCommand() {
+	}
 
 	public ParsedCommand getParsedCommand() {
 		return parsedCommand;
@@ -18,5 +26,7 @@ public abstract class AbstractCommand implements Command {
 		this.parsedCommand = parsedCommand;
 	}
 
-
+	public String getCommandName() {
+		return commandName;
+	}
 }

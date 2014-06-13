@@ -20,9 +20,8 @@ public class RollCommand extends AbstractCommand{
 
 	private final Random randomizer = new Random(System.currentTimeMillis());
 
-	@Override
-	public String getCommandName() {
-		return "roll";
+	public RollCommand(String commandName) {
+		super(commandName);
 	}
 
 	@Override

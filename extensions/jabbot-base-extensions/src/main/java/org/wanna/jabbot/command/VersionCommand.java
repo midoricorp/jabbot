@@ -13,9 +13,9 @@ import java.lang.management.OperatingSystemMXBean;
  * @since 2014-06-01
  */
 public class VersionCommand extends AbstractCommand{
-	@Override
-	public String getCommandName() {
-		return "version";
+
+	public VersionCommand(String commandName) {
+		super(commandName);
 	}
 
 	@Override

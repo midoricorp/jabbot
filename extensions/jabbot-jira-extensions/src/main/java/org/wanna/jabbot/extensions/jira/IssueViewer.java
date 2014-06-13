@@ -25,9 +25,8 @@ public class IssueViewer extends AbstractCommand{
 	private String username, password;
 	private String jiraUrl;
 
-	@Override
-	public String getCommandName() {
-		return "jira";
+	public IssueViewer(String commandName) {
+		super(commandName);
 	}
 
 	public void setUsername(String username) {

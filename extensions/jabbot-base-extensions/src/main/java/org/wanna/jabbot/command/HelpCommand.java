@@ -18,10 +18,8 @@ class HelpCommand extends AbstractCommand implements CommandFactoryAware{
 	private CommandFactory commandFactory;
 	final Logger logger = LoggerFactory.getLogger(HelpCommand.class);
 
-
-	@Override
-	public String getCommandName() {
-		return "help";
+	public HelpCommand(String commandName) {
+		super(commandName);
 	}
 
 	@Override

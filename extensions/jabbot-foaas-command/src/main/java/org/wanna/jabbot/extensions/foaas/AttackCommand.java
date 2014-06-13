@@ -34,6 +34,10 @@ public class AttackCommand extends AbstractCommand{
 	private final String baseUrl = "http://foaas.com";
 	private final Random randomizer = new Random();
 
+	public AttackCommand(String commandName) {
+		super(commandName);
+	}
+
 	private Map<Integer,String[]> getAttacks(){
 		Map<Integer,String[]> attacks = new HashMap<>();
 		attacks.put(0,new String[]{
@@ -58,11 +62,6 @@ public class AttackCommand extends AbstractCommand{
 				"/:name/:from",
 		});
 		return attacks;
-	}
-
-	@Override
-	public String getCommandName() {
-		return "attack";
 	}
 
 	@Override

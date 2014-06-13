@@ -14,9 +14,8 @@ import java.lang.management.RuntimeMXBean;
  */
 public class UptimeCommand extends AbstractCommand{
 
-	@Override
-	public String getCommandName() {
-		return "uptime";
+	public UptimeCommand(String commandName) {
+		super(commandName);
 	}
 
 	@Override
