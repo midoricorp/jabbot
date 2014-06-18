@@ -53,6 +53,12 @@ public class RollCommand extends AbstractCommand{
 			return;
 		}
 
+		if(amount <= 0){
+			chatroom.getMuc().sendMessage("You need to roll at least 1 dice");
+			return;
+
+		}
+
 		if(amount > 5 ){
 			chatroom.getMuc().sendMessage("You cannot roll more than 5 dices");
 			return;
