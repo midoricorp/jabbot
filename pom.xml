@@ -89,7 +89,7 @@
     </build>
 
     <properties>
-        <smack.version>4.0.0-rc2</smack.version>
+        <smack.version>4.0.0</smack.version>
         <spring.version>4.0.2.RELEASE</spring.version>
         <junit.version>4.11</junit.version>
         <slf.version>1.7.6</slf.version>
