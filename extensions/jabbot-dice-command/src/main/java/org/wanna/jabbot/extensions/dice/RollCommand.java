@@ -75,10 +75,7 @@ public class RollCommand extends AbstractCommand{
 	}
 
 	private int pick(int max){
-		int result = 0;
-		while(result == 0){
-			result = randomizer.nextInt(max);
-		}
-		return result;
+		int result = randomizer.nextInt(max);
+		return result+1;
 	}
 }
