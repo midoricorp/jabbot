@@ -5,10 +5,13 @@ import org.apache.commons.daemon.DaemonContext;
 import org.apache.commons.daemon.DaemonInitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.wanna.jabbot.config.JabbotConfig;
 import org.wanna.jabbot.config.PluginConfigurator;
+
+import java.util.logging.Level;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -20,13 +23,21 @@ public class Launcher implements Daemon{
 
 	@Override
 	public void init(DaemonContext daemonContext) throws DaemonInitException{
-		logger.debug("initializing...");
+		logger.info("initializing...");
+		//Install slf4j bridge
+		SLF4JBridgeHandler.uninstall();
+		SLF4JBridgeHandler.install();
+		java.util.logging.Logger.getLogger("").setLevel(Level.FINEST);
+
+		//Bootstrap Spring context
 		ApplicationContext ctx =
 				new AnnotationConfigApplicationContext(
 						JabbotConfig.class,
 						PluginConfigurator.class
 				);
+		//Get a jabbot instance
 		jabbot = (Jabbot)ctx.getBean("jabbot");
+		logger.info("initialization completed.");
 	}
 
 	@Override
@@ -37,7 +48,7 @@ public class Launcher implements Daemon{
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				logger.error("error:",e);
 			}
 		}
 
