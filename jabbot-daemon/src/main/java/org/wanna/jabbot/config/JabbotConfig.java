@@ -3,6 +3,7 @@ package org.wanna.jabbot.config;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
+import org.jivesoftware.smackx.ping.PingManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,7 @@ public class JabbotConfig {
 		jabbot.setUsername(env.getProperty("xmpp.credential.username"));
 		jabbot.setPassword(env.getProperty("xmpp.credential.password"));
 		jabbot.setResource(env.getProperty("xmpp.resource","Jabbot"));
+		PingManager.getInstanceFor(connection).setPingInterval(env.getProperty("xmpp.server.ping",Integer.class,1800));
 		Map<String,Chatroom> rooms = new HashMap<>();
 		for (Chatroom room : (List<Chatroom>)chatroomList) {
 			rooms.put(room.getRoomName(),room);
