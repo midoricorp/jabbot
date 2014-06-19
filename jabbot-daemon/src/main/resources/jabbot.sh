@@ -1,18 +1,31 @@
-#!/bin/sh
+#!/bin/sh 
 
-JABOT_HOME=../
-JABBOT_MAIN="org.wanna.jabbot.Launcher"
 
 
 daemon_start(){
-  cd $JABOT_HOME/lib
-  exec jsvc  -cp "./*" -pidfile /tmp/jabbot.pid -debug -home $JAVA_HOME $JABBOT_MAIN
+  echo "starting.."
+  echo "JABBOT_HOME: "$JABBOT_HOME
+  echo "JAVA_HOME: "$JAVA_HOME
+  cd $JABBOT_HOME"/lib"
+  exec jsvc  -cp "./*" -pidfile $JABBOT_HOME"/jabbot.pid" -debug -home $JAVA_HOME $JABBOT_MAIN
 }
 
 daemon_stop(){
-  cd $JABOT_HOME/lib
-  exec jsvc -stop -cp "./*" -pidfile /tmp/jabbot.pid -debug -home $JAVA_HOME $JABBOT_MAIN
+  cd $JABBOT_HOME"/lib"
+  exec jsvc -stop -cp "./*" -pidfile $JABBOT_HOME"/jabbot.pid" -debug -home $JAVA_HOME $JABBOT_MAIN
 }
+
+
+###
+# Script main
+###
+
+# Absolute path to this script
+SCRIPT=$(readlink -f "$0")
+# Absolute path this script is in,
+SCRIPTPATH=$(dirname "$SCRIPT")
+JABBOT_HOME=$(dirname "$SCRIPTPATH")
+JABBOT_MAIN="org.wanna.jabbot.Launcher"
 
 case $1 in
 start)
