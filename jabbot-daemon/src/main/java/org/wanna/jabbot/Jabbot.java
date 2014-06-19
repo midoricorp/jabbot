@@ -62,6 +62,13 @@ public class Jabbot {
 		return true;
 	}
 
+	public void disconnect() throws SmackException.NotConnectedException, XMPPException {
+		for (Chatroom chatroom : chatroomList.values()) {
+			chatroom.getMuc().sendMessage("Bye! (shutdown in progress..)");
+		}
+		connection.disconnect();
+	}
+
 	public boolean initRooms() throws SmackException.NotConnectedException, XMPPException.XMPPErrorException, SmackException.NoResponseException, InterruptedException {
 		for (Chatroom chatroom : chatroomList.values()) {
 			chatroom.init(connection);

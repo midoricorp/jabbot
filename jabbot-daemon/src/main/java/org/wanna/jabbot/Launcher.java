@@ -44,19 +44,12 @@ public class Launcher implements Daemon{
 	public void start() throws Exception {
 		jabbot.connect();
 		jabbot.initRooms();
-		while(true){
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				logger.error("error:",e);
-			}
-		}
-
 	}
 
 	@Override
 	public void stop() throws Exception {
-
+		logger.info("Stopping Jabbot service");
+		jabbot.disconnect();
 	}
 
 	@Override
@@ -68,5 +61,15 @@ public class Launcher implements Daemon{
 		Launcher launcher = new Launcher();
 		launcher.init(null);
 		launcher.start();
+
+		while(true){
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		}
+
 	}
 }
