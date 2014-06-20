@@ -1,16 +1,15 @@
 #!/bin/sh 
 
 daemon_start(){
-  echo "starting.."
+  echo "starting Jabbot service.."
   echo "JABBOT_HOME: "$JABBOT_HOME
   echo "JAVA_HOME: "$JAVA_HOME
-  cd $JABBOT_HOME"/lib"
-  exec jsvc  -cp "./*" -Djabbot.logs_dir=$JABBOT_LOGS -pidfile $JABBOT_HOME"/jabbot.pid" -debug -home $JAVA_HOME $JABBOT_MAIN
+  exec jsvc  -cp $J_CLASSPATH -Djabbot.logs_dir=$JABBOT_LOGS -pidfile $JABBOT_HOME"/jabbot.pid" -debug -home $JAVA_HOME $JABBOT_MAIN
 }
 
 daemon_stop(){
-  cd $JABBOT_HOME"/lib"
-  exec jsvc -stop -cp "./*" -Djabbot.logs_dir=$JABBOT_LOGS -pidfile $JABBOT_HOME"/jabbot.pid" -debug -home $JAVA_HOME $JABBOT_MAIN
+  echo "stopping Jabbot service.."
+  exec jsvc -stop -cp $J_CLASSPATH -Djabbot.logs_dir=$JABBOT_LOGS -pidfile $JABBOT_HOME"/jabbot.pid" -debug -home $JAVA_HOME $JABBOT_MAIN
 }
 
 
@@ -25,6 +24,7 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 JABBOT_HOME=$(dirname "$SCRIPTPATH")
 JABBOT_MAIN="org.wanna.jabbot.Launcher"
 JABBOT_LOGS=$JABBOT_HOME"/logs"
+J_CLASSPATH=$JABBOT_HOME"/lib/*:"$JABBOT_HOME"/conf/"
 
 case $1 in
 start)
