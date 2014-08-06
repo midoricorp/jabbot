@@ -1,0 +1,126 @@
+{
+    "expand": "renderedFields,names,schema,transitions,editmeta,changelog",
+    "id": "10000",
+    "self": "http://localhost:8090/jira/rest/api/2/issue/10000",
+    "key": "MKY-1",
+    "fields": {
+        "summary": "First Test Issue",
+        "issuetype": {
+            "self": "http://localhost:8090/jira/rest/api/2/issuetype/1",
+            "id": "1",
+            "description": "A problem which impairs or prevents the functions of the product.",
+            "iconUrl": "http://localhost:8090/jira/images/icons/bug.gif",
+            "name": "Bug",
+            "subtask": false
+        },
+        "status": {
+            "self": "http://localhost:8090/jira/rest/api/2/status/1",
+            "description": "The issue is open and ready for the assignee to start work on it.",
+            "iconUrl": "http://localhost:8090/jira/images/icons/status_open.gif",
+            "name": "Open",
+            "id": "1"
+        },
+        "labels": [ ],
+        "votes": {
+            "self": "http://localhost:8090/jira/rest/api/2/issue/MKY-1/votes",
+            "votes": 0,
+            "hasVoted": false
+        },
+        "workratio": -1,
+        "assignee": {
+            "self": "http://localhost:8090/jira/rest/api/2/user?username=admin",
+            "name": "admin",
+            "emailAddress": "admin@example.com",
+            "avatarUrls": {
+                "16x16": "http://localhost:8090/jira/secure/useravatar?size=small&avatarId=10062",
+                "48x48": "http://localhost:8090/jira/secure/useravatar?avatarId=10062"
+            },
+            "displayName": "Administrator",
+            "active": true
+        },
+        "fixVersions": [ ],
+        "resolution": null,
+        "attachment": [ ],
+        "resolutiondate": null,
+        "reporter": {
+            "self": "http://localhost:8090/jira/rest/api/2/user?username=admin",
+            "name": "admin",
+            "emailAddress": "admin@example.com",
+            "avatarUrls": {
+                "16x16": "http://localhost:8090/jira/secure/useravatar?size=small&avatarId=10062",
+                "48x48": "http://localhost:8090/jira/secure/useravatar?avatarId=10062"
+            },
+            "displayName": "Administrator",
+            "active": true
+        },
+        "project": {
+            "self": "http://localhost:8090/jira/rest/api/2/project/MKY",
+            "id": "10001",
+            "key": "MKY",
+            "name": "monkey",
+            "avatarUrls": {
+                "16x16": "http://localhost:8090/jira/secure/projectavatar?size=small&pid=10001&avatarId=10011",
+                "48x48": "http://localhost:8090/jira/secure/projectavatar?pid=10001&avatarId=10011"
+            }
+        },
+        "versions": [ ],
+        "environment": null,
+        "updated": "2011-11-22T09:23:02.302+1100",
+        "created": "2011-11-22T09:22:59.899+1100",
+        "priority": {
+            "self": "http://localhost:8090/jira/rest/api/2/priority/3",
+            "iconUrl": "http://localhost:8090/jira/images/icons/priority_major.gif",
+            "name": "Major",
+            "id": "3"
+        },
+        "description": null,
+        "duedate": null,
+        "components": [ ],
+        "comment": {
+            "startAt": 0,
+            "maxResults": 1,
+            "total": 1,
+            "comments": [
+                {
+                    "self": "http://localhost:8090/jira/rest/api/2/issue/10000/comment/10000",
+                    "id": "10000",
+                    "author": {
+                        "self": "http://localhost:8090/jira/rest/api/2/user?username=admin",
+                        "name": "admin",
+                        "emailAddress": "admin@example.com",
+                        "avatarUrls": {
+                            "16x16": "http://localhost:8090/jira/secure/useravatar?size=small&avatarId=10062",
+                            "48x48": "http://localhost:8090/jira/secure/useravatar?avatarId=10062"
+                        },
+                        "displayName": "Administrator",
+                        "active": true
+                    },
+                    "body": "comment",
+                    "updateAuthor": {
+                        "self": "http://localhost:8090/jira/rest/api/2/user?username=admin",
+                        "name": "admin",
+                        "emailAddress": "admin@example.com",
+                        "avatarUrls": {
+                            "16x16": "http://localhost:8090/jira/secure/useravatar?size=small&avatarId=10062",
+                            "48x48": "http://localhost:8090/jira/secure/useravatar?avatarId=10062"
+                        },
+                        "displayName": "Administrator",
+                        "active": true
+                    },
+                    "created": "2011-11-22T09:23:02.129+1100",
+                    "updated": "2011-11-22T09:23:02.129+1100",
+                    "visibility": {
+                        "type": "role",
+                        "value": "Administrators"
+                    }
+                }
+            ]
+        },
+        "watches": {
+            "self": "http://localhost:8090/jira/rest/api/2/issue/MKY-1/watchers",
+            "watchCount": 0,
+            "isWatching": false
+        }
+    }
+
+}

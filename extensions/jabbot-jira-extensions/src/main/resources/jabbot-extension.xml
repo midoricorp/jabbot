@@ -15,7 +15,7 @@
 
     <bean id="jiraCommand" class="org.wanna.jabbot.extensions.jira.IssueViewer">
         <constructor-arg value="jira"/>
-        <property name="jiraUrl" value="${jira.url}"/>
+        <property name="baseUrl" value="${jira.url}"/>
         <property name="username" value="${jira.username}"/>
         <property name="password" value="${jira.password}"/>
     </bean>
