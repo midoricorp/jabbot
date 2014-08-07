@@ -60,6 +60,7 @@ public class AttackCommand extends AbstractCommand{
 				"/king/:name/:from",
 				"/chainsaw/:name/:from",
 				"/:name/:from",
+				"/madison/:name/:from"
 		});
 		return attacks;
 	}
