@@ -12,12 +12,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.extensions.AbstractCommand;
 
@@ -66,7 +63,7 @@ public class AttackCommand extends AbstractCommand{
 	}
 
 	@Override
-	public void process(MucHolder chatroom, Message message) throws XMPPException, SmackException.NotConnectedException {
+	public void process(MucHolder chatroom, MessageWrapper message) {
 		String response;
 		if(getParsedCommand().getArgs() != null ){
 			String attack = pickAttack(getParsedCommand().getArgs().length);
@@ -75,11 +72,11 @@ public class AttackCommand extends AbstractCommand{
 				target = getParsedCommand().getArgs()[0];
 				attack = attack.replace(":name",URLEncoder.encode(target));
 				if(target.equals(chatroom.getNickname())){
-					chatroom.getMuc().sendMessage("I'm not gonna attack myself, you fool!");
+					chatroom.sendMessage("I'm not gonna attack myself, you fool!");
 					return;
 				}
 			}
-			String attacker = StringUtils.parseResource(message.getFrom());
+			String attacker = message.getSender();
 			attack = attack.replace(":from",URLEncoder.encode(attacker));
 			logger.debug("attack command: {}\nattacker: {}\ntarget: {}",attack,attacker,target);
 			try {
@@ -87,7 +84,7 @@ public class AttackCommand extends AbstractCommand{
 			} catch (IOException e) {
 				response = "unable to attack target!";
 			}
-			chatroom.getMuc().sendMessage(secureResponse(response));
+			chatroom.sendMessage(secureResponse(response));
 		}
 	}
 

@@ -1,11 +1,8 @@
 package org.wanna.jabbot.extensions.dice;
 
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.extensions.AbstractCommand;
 
@@ -25,7 +22,7 @@ public class RollCommand extends AbstractCommand{
 	}
 
 	@Override
-	public void process(MucHolder chatroom, Message message) throws XMPPException, SmackException.NotConnectedException {
+	public void process(MucHolder chatroom, MessageWrapper message) {
 		String[] args = getParsedCommand().getArgs();
 
 		//Set default values
@@ -43,24 +40,24 @@ public class RollCommand extends AbstractCommand{
 			}
 		}catch(NumberFormatException e){
 			logger.debug("invalid parameter",e);
-			chatroom.getMuc().sendMessage("Invalid parameters");
+			chatroom.sendMessage("Invalid parameters");
 			return;
 		}
 
 		if(value <= 0 ){
 			logger.debug("illegal dice value: {}",value);
-			chatroom.getMuc().sendMessage("invalid dice value: "+value);
+			chatroom.sendMessage("invalid dice value: " + value);
 			return;
 		}
 
 		if(amount <= 0){
-			chatroom.getMuc().sendMessage("You need to roll at least 1 dice");
+			chatroom.sendMessage("You need to roll at least 1 dice");
 			return;
 
 		}
 
 		if(amount > 5 ){
-			chatroom.getMuc().sendMessage("You cannot roll more than 5 dices");
+			chatroom.sendMessage("You cannot roll more than 5 dices");
 			return;
 		}
 
@@ -75,9 +72,9 @@ public class RollCommand extends AbstractCommand{
 
 		}
 
-		String player = StringUtils.parseResource(message.getFrom());
+		String player = message.getSender();
 		String response = String.format("%s rolled %s dice of %s for a total of %s\n:details: %s",player,amount,value,total,resultString);
-		chatroom.getMuc().sendMessage(response);
+		chatroom.sendMessage(response);
 	}
 
 	private int pick(int max){

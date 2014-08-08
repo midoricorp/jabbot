@@ -1,8 +1,5 @@
 package org.wanna.jabbot.command;
 
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Message;
 import org.wanna.jabbot.extensions.AbstractCommand;
 
 import java.lang.management.ManagementFactory;
@@ -19,7 +16,7 @@ public class VersionCommand extends AbstractCommand{
 	}
 
 	@Override
-	public void process(MucHolder chatroom, Message message) throws XMPPException, SmackException.NotConnectedException {
+	public void process(MucHolder chatroom, MessageWrapper message) {
 		StringBuilder sb = new StringBuilder();
 		OperatingSystemMXBean os = ManagementFactory.getOperatingSystemMXBean();
 		sb.append("I am running Jabot beta\n")
@@ -32,6 +29,6 @@ public class VersionCommand extends AbstractCommand{
 				.append(" )").append("\n")
 				.append("https://github.com/vmorsiani/jabbot");
 
-		chatroom.getMuc().sendMessage(sb.toString());
+		chatroom.sendMessage(sb.toString());
 	}
 }

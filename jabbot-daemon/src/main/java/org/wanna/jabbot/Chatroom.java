@@ -101,4 +101,15 @@ public class Chatroom implements MucHolder{
 	public void sendMessage(Message message) throws XMPPException, SmackException.NotConnectedException {
 		muc.sendMessage(message);
 	}
+
+	@Override
+	public boolean sendMessage(String message) {
+		try {
+			muc.sendMessage(message);
+			return true;
+		} catch (XMPPException | SmackException.NotConnectedException e) {
+			logger.error("an error occured while sending message '{}'\nto {}",message,roomName);
+		}
+		return false;
+	}
 }

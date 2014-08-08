@@ -2,7 +2,6 @@ package org.wanna.jabbot.command;
 
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.util.StringUtils;
@@ -55,14 +54,13 @@ public class MucCommandListener implements PacketListener{
 
 					try {
 						command = commandFactory.create(parsedCommand);
-						command.process(room, message);
-
+						MessageWrapper wrapper = new MessageWrapper(message);
+						//TODO: This will only work for chatroom message.
+						wrapper.setSender(StringUtils.parseResource(message.getFrom()));
+						command.process(room, wrapper);
 					} catch (CommandNotFoundException e) {
 						logger.debug("command not found: '{}'", e.getCommandName());
-					} catch (XMPPException e) {
-						logger.error("error sending message", e);
 					}
-
 				}
 			}
 		}

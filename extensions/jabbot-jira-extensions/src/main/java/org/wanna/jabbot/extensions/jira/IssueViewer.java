@@ -12,11 +12,9 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.extensions.AbstractCommand;
 import org.wanna.jabbot.extensions.jira.binding.Issue;
@@ -45,10 +43,10 @@ public class IssueViewer extends AbstractCommand{
 	}
 
 	@Override
-	public void process(MucHolder chatroom, Message message) throws XMPPException, SmackException.NotConnectedException {
+	public void process(MucHolder chatroom, MessageWrapper message) {
 		String[] args = super.getParsedCommand().getArgs();
 		if( args == null || args.length < 1 ){
-			chatroom.getMuc().sendMessage("invalid parameter");
+			chatroom.sendMessage("invalid parameter");
 			return;
 		}
 
@@ -75,7 +73,7 @@ public class IssueViewer extends AbstractCommand{
 				}
 				sb.append("URL: ").append(baseUrl).append("/browse/").append(issue.getKey());
 			}
-			chatroom.getMuc().sendMessage(sb.toString());
+			chatroom.sendMessage(sb.toString());
 		} catch (IOException e) {
 			logger.error("error querying",e);
 		}

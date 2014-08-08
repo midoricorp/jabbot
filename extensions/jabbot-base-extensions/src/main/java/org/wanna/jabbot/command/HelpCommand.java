@@ -1,8 +1,5 @@
 package org.wanna.jabbot.command;
 
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.extensions.AbstractCommand;
@@ -23,8 +20,7 @@ class HelpCommand extends AbstractCommand implements CommandFactoryAware{
 	}
 
 	@Override
-	public void process(MucHolder chatroom, Message message) throws XMPPException, SmackException.NotConnectedException {
-		logger.debug("{} triggered on {} for message {}",getCommandName(),chatroom.getRoomName(),message.getBody());
+	public void process(MucHolder chatroom, MessageWrapper message){
 		StringBuilder sb = new StringBuilder("Below is the list of available commands:\n");
 
 		Collection<Command> availableCommands = commandFactory.getAvailableCommands();
@@ -32,7 +28,7 @@ class HelpCommand extends AbstractCommand implements CommandFactoryAware{
 			sb.append(availableCommand.getCommandName()).append("\n");
 		}
 
-		chatroom.getMuc().sendMessage(sb.toString());
+		chatroom.sendMessage(sb.toString());
 	}
 
 	@Override

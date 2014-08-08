@@ -1,8 +1,5 @@
 package org.wanna.jabbot.command;
 
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Message;
 import org.wanna.jabbot.extensions.AbstractCommand;
 
 import java.lang.management.ManagementFactory;
@@ -19,7 +16,7 @@ public class UptimeCommand extends AbstractCommand{
 	}
 
 	@Override
-	public void process(MucHolder chatroom, Message message) throws XMPPException, SmackException.NotConnectedException {
+	public void process(MucHolder chatroom, MessageWrapper message) {
 		RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
 		long uptime = rb.getUptime();
 
@@ -39,6 +36,6 @@ public class UptimeCommand extends AbstractCommand{
 
 		long elapsedSeconds = uptime / secondsInMilli;
 		String result = String.format("I'm up since %s day(s) %s hour(s) %s minute(s) and %s seconds",elapsedDays,elapsedHours,elapsedMinutes,elapsedSeconds);
-		chatroom.getMuc().sendMessage(result);
+		chatroom.sendMessage(result);
 	}
 }
