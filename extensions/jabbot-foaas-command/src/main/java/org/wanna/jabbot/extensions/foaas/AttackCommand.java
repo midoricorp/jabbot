@@ -117,6 +117,7 @@ public class AttackCommand extends AbstractCommand{
 	protected String query(String option) throws IOException {
 		DefaultHttpClient httpclient = new DefaultHttpClient();
 		HttpGet httpGet = new HttpGet(baseUrl+option);
+		httpGet.setHeader("Accept","text/plain");
 
 		try
 		{
