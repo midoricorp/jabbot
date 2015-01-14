@@ -78,7 +78,7 @@ public class ChuckCommand extends AbstractCommand{
 
 	private String query(String option) throws IOException {
 		final DefaultHttpClient httpclient = new DefaultHttpClient();
-		String url = "http://api.icndb.com/jokes/random?escape=html";
+		String url = "http://api.icndb.com/jokes/random?escape=html?exclude=[explicit]";
 		if(option != null ){
 			url += option;
 		}
