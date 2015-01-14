@@ -15,6 +15,7 @@
         <module>jabbot-dice-command</module>
         <module>jabbot-foaas-command</module>
         <module>jabbot-jira-extensions</module>
+        <module>chuck-icndb-extension</module>
     </modules>
 
     <parent>
