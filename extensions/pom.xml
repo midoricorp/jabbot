@@ -17,7 +17,6 @@
         <module>jabbot-jira-extensions</module>
         <module>chuck-icndb-extension</module>
         <module>jabbot-call-command</module>
-
     </modules>
 
     <parent>
