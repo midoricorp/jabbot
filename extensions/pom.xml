@@ -16,6 +16,11 @@
         <module>jabbot-foaas-command</module>
         <module>jabbot-jira-extensions</module>
         <module>chuck-icndb-extension</module>
+<<<<<<< HEAD
+        <module>jabbot-call-command</module>
+
+=======
+>>>>>>> d2d0396516024e72efd7b40f4a2fc44e666a862a
     </modules>
 
     <parent>
