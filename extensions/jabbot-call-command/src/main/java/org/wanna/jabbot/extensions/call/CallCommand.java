@@ -22,8 +22,8 @@ public class CallCommand extends AbstractCommand{
 	public void process(MucHolder chatroom, MessageWrapper message) {
 		String[] args = getParsedCommand().getArgs();
 		String baseurl = "https://voxbone-click2call.rhcloud.com";
-		String callee = args[0];
-		if(args.length > 0) String callee = args[0]{
+		if(args != null && args.length > 0){
+			String callee = args[0];
 			String response = String.format("Call %s at %s/%s",callee, baseurl, callee);
 		}
 		else{
