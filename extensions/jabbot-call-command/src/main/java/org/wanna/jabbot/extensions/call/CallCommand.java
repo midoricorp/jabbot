@@ -23,7 +23,12 @@ public class CallCommand extends AbstractCommand{
 		String[] args = getParsedCommand().getArgs();
 		String baseurl = "https://voxbone-click2call.rhcloud.com";
 		String callee = args[0];
-		String response = String.format("Call %s at %s/%s",callee, baseurl, callee);
+		if(args.length > 0) String callee = args[0]{
+			String response = String.format("Call %s at %s/%s",callee, baseurl, callee);
+		}
+		else{
+			String response = String.format("please add someone to call, you idiot");
+		}
 		chatroom.sendMessage(response);
 	}
 }
