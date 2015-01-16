@@ -2,6 +2,7 @@ package org.wanna.jabbot.extensions.icndb;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -51,7 +52,8 @@ public class ChuckCommand extends AbstractCommand{
 			String response = query(options);
 			Result parsed = mapper.readValue(response,Result.class);
 			if(parsed.getType().equalsIgnoreCase("success")){
-				chatroom.sendMessage(secureResponse(parsed.getValue().getJoke()));
+				String joke = StringEscapeUtils.unescapeHtml4(parsed.getValue().getJoke());
+				chatroom.sendMessage(joke);
 			}
 		} catch (IOException e) {
 			logger.error("error querying icndb",e);
