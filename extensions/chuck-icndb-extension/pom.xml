@@ -5,12 +5,12 @@
     <parent>
         <artifactId>jabbot-extensions-master</artifactId>
         <groupId>org.wanna.jabbot.extensions</groupId>
-        <version>0.1</version>
+        <version>0.2-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>chuck-icndb-extension</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.wanna.jabbot.extensions</groupId>
             <artifactId>jabbot-extension-helpers</artifactId>
-            <version>0.1</version>
+            <version>0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
