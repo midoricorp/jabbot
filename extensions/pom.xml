@@ -6,7 +6,7 @@
 
     <groupId>org.wanna.jabbot.extensions</groupId>
     <artifactId>jabbot-extensions-master</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -22,7 +22,7 @@
     <parent>
         <groupId>org.wanna.jabbot</groupId>
         <artifactId>jabbot-master</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.1</version>
     </parent>
 
     <dependencies>
