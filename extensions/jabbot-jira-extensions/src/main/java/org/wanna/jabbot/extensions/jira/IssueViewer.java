@@ -16,16 +16,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.MucHolder;
+import org.wanna.jabbot.command.behavior.Configurable;
 import org.wanna.jabbot.extensions.AbstractCommand;
 import org.wanna.jabbot.extensions.jira.binding.Issue;
 
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author vmorsiani <vmorsiani>
  * @since 2014-06-20
  */
-public class IssueViewer extends AbstractCommand{
+public class IssueViewer extends AbstractCommand implements Configurable{
 	final Logger logger = LoggerFactory.getLogger(IssueViewer.class);
 	private String baseUrl;
 	private String username;
@@ -40,6 +42,13 @@ public class IssueViewer extends AbstractCommand{
 		mapper = new ObjectMapper(); // can reuse, share globally
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
+	}
+
+	@Override
+	public void configure(Map<String, Object> configuration) {
+		this.baseUrl = (String)configuration.get("url");
+		this.username = (String)configuration.get("username");
+		this.password = (String)configuration.get("password");
 	}
 
 	@Override
@@ -104,7 +113,7 @@ public class IssueViewer extends AbstractCommand{
 				return EntityUtils.toString(entity, HTTP.UTF_8);
 			}
 		} catch (IOException e) {
-			logger.error("error querying foaas",e);
+			logger.error("error querying jira",e);
 		}
 
 		return null;

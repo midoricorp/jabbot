@@ -1,16 +1,21 @@
 package org.wanna.jabbot;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.daemon.Daemon;
 import org.apache.commons.daemon.DaemonContext;
 import org.apache.commons.daemon.DaemonInitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.wanna.jabbot.config.JabbotConfig;
-import org.wanna.jabbot.config.PluginConfigurator;
+import org.wanna.jabbot.binding.ConnectionFactory;
+import org.wanna.jabbot.binding.JabbotConnection;
+import org.wanna.jabbot.binding.config.BindingConfiguration;
+import org.wanna.jabbot.config.JabbotConfiguration;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
 import java.util.logging.Level;
 
 /**
@@ -19,7 +24,9 @@ import java.util.logging.Level;
  */
 public class Launcher implements Daemon{
 	final Logger logger = LoggerFactory.getLogger(Launcher.class);
-	Jabbot jabbot;
+	private final static String CONFIG_FILE = "jabbot.json";
+
+	private Jabbot jabbot;
 
 	@Override
 	public void init(DaemonContext daemonContext) throws DaemonInitException{
@@ -29,21 +36,16 @@ public class Launcher implements Daemon{
 		SLF4JBridgeHandler.install();
 		java.util.logging.Logger.getLogger("").setLevel(Level.FINEST);
 
-		//Bootstrap Spring context
-		ApplicationContext ctx =
-				new AnnotationConfigApplicationContext(
-						JabbotConfig.class,
-						PluginConfigurator.class
-				);
-		//Get a jabbot instance
-		jabbot = (Jabbot)ctx.getBean("jabbot");
+		InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(CONFIG_FILE);
+		JabbotConfiguration jabbotConfiguration = newConfiguration(is);
+
+		jabbot = newInstance(jabbotConfiguration,newConnectionFactory(jabbotConfiguration.getBindings()));
 		logger.info("initialization completed.");
 	}
 
 	@Override
 	public void start() throws Exception {
 		jabbot.connect();
-		jabbot.initRooms();
 	}
 
 	@Override
@@ -57,6 +59,46 @@ public class Launcher implements Daemon{
 
 	}
 
+	private JabbotConfiguration newConfiguration(InputStream is){
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		try {
+			return mapper.readValue(is,JabbotConfiguration.class);
+		} catch (IOException e) {
+			logger.error("unable to read json config file",e);
+			return null;
+		}
+
+	}
+
+	public Jabbot newInstance(JabbotConfiguration configuration,
+							  ConnectionFactory connectionFactory){
+		Jabbot jabbot = new Jabbot(configuration);
+		jabbot.setConnectionFactory(connectionFactory);
+		return jabbot;
+	}
+
+	public ConnectionFactory newConnectionFactory(Collection<BindingConfiguration> bindings){
+		ConnectionFactory factory =  new JabbotConnectionFactory();
+		for (BindingConfiguration binding : bindings) {
+			try {
+				Class clazz = Class.forName(String.valueOf(binding.getClazz()));
+					Class<? extends JabbotConnection> connectionClass = (Class<? extends JabbotConnection>)clazz;
+					logger.info("registering {} binding with class {}",binding.getName(),binding.getClazz());
+					factory.register(binding.getName(),connectionClass);
+			} catch (ClassNotFoundException e) {
+				logger.error("unable to register {} binding with class {}",binding.getName(),binding.getClazz());
+			}
+		}
+		return factory;
+	}
+
+	/**
+	 * Main method allowing to easily run the bot in an IDE
+	 *
+	 * @param args command line args
+	 * @throws Exception
+	 */
 	public static void main(String args[]) throws Exception {
 		Launcher launcher = new Launcher();
 		launcher.init(null);

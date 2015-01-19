@@ -16,7 +16,6 @@
         <dependency>
             <groupId>org.wanna.jabbot.extensions</groupId>
             <artifactId>jabbot-extension-helpers</artifactId>
-            <version>0.2-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

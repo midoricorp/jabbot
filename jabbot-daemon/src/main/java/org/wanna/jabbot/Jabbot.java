@@ -1,18 +1,14 @@
 package org.wanna.jabbot;
 
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.filter.AndFilter;
-import org.jivesoftware.smack.filter.MessageTypeFilter;
-import org.jivesoftware.smack.filter.PacketFilter;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.packet.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.binding.ConnectionFactory;
+import org.wanna.jabbot.binding.JabbotConnection;
+import org.wanna.jabbot.config.JabbotConfiguration;
+import org.wanna.jabbot.binding.config.JabbotConnectionConfiguration;
 
-import java.io.IOException;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -20,59 +16,31 @@ import java.util.Map;
  */
 public class Jabbot {
 	final Logger logger = LoggerFactory.getLogger(Jabbot.class);
-	private XMPPConnection connection;
-	private String username,password,resource;
-	private Map<String,Chatroom> chatroomList;
 
-	public Jabbot(XMPPConnection connection) {
-		this.connection = connection;
+	private JabbotConfiguration configuration;
+	private List<JabbotConnection> connectionList = new ArrayList<>();
+	private ConnectionFactory connectionFactory;
+
+	public Jabbot( JabbotConfiguration configuration ) {
+		this.configuration = configuration;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public void setResource(String resource) {
-		this.resource = resource;
-	}
-
-	public void setChatroomList(Map<String,Chatroom> chatroomList) {
-		this.chatroomList = chatroomList;
-	}
-
-	public boolean connect() throws IOException, SmackException, XMPPException {
-		connection.connect();
-		connection.login(username,password,resource);
-
-		PacketFilter filter = new AndFilter(
-				new MessageTypeFilter(Message.Type.groupchat),
-				new PacketFilter() {
-					@Override
-					public boolean accept(Packet packet) {
-						return packet instanceof Message && ((Message) packet).getBody().startsWith("!");
-					}
-				}
-		);
-
-		//connection.addPacketListener(new MucCommandListener(chatroomList),filter);
-		return true;
-	}
-
-	public void disconnect() throws SmackException.NotConnectedException, XMPPException {
-		for (Chatroom chatroom : chatroomList.values()) {
-			chatroom.sendMessage("Bye! (shutdown in progress..)");
-		}
-		connection.disconnect();
-	}
-
-	public boolean initRooms() throws SmackException.NotConnectedException, XMPPException.XMPPErrorException, SmackException.NoResponseException, InterruptedException {
-		for (Chatroom chatroom : chatroomList.values()) {
-			chatroom.init(connection);
+	public boolean connect(){
+		for (JabbotConnectionConfiguration connectionConfiguration : configuration.getServerList()) {
+			JabbotConnection conn = connectionFactory.create(connectionConfiguration);
+			conn.connect(connectionConfiguration);
+			connectionList.add(conn);
+			if(conn.isConnected()){
+				logger.debug("connection established to {} as {}",connectionConfiguration.getUrl(),connectionConfiguration.getUsername());
+			}
 		}
 		return true;
+	}
+
+	public void disconnect(){
+	}
+
+	public void setConnectionFactory(ConnectionFactory connectionFactory) {
+		this.connectionFactory = connectionFactory;
 	}
 }

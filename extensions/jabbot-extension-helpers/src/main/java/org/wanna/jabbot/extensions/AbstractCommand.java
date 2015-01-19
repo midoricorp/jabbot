@@ -1,7 +1,7 @@
 package org.wanna.jabbot.extensions;
 
 import org.wanna.jabbot.command.Command;
-import org.wanna.jabbot.command.ParsedCommand;
+import org.wanna.jabbot.command.parser.ParsedCommand;
 
 /**
  * @author vmorsiani <vmorsiani>

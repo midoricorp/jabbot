@@ -13,6 +13,7 @@
             <outputDirectory>/conf</outputDirectory>
             <filtered>true</filtered>
             <includes>
+                <include>*.json</include>
                 <include>*.properties</include>
                 <include>*.xml</include>
             </includes>

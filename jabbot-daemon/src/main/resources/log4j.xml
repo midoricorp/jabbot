@@ -17,15 +17,11 @@
     </appender>
 
     <logger name="org.wanna.jabbot">
-        <level value="debug"/>
-    </logger>
-
-    <logger name="org.jivesoftware">
-        <level value="debug"/>
+        <level value="DEBUG"/>
     </logger>
 
     <root>
-        <priority value ="warn" />
+        <priority value ="WARN" />
         <appender-ref ref="console" />
         <appender-ref ref="file"/>
     </root>

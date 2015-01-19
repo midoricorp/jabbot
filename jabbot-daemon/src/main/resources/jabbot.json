@@ -1,0 +1,60 @@
+{
+    "bindings":[
+        {   "name":"XMPP",
+            "clazz":"org.wanna.jabbot.binding.xmpp.XmppConnection"
+        },
+        {
+            "name":"IRC",
+            "clazz":"org.wanna.jabbot.binding.irc.IrcConnection"
+        }
+    ],
+    "serverList":[
+        {   "type" : "XMPP",
+            "url":"jabber.hostname.com",
+            "serverName":"hostname.com",
+            "port":5222,
+            "username":"Jabbot",
+            "password":"password",
+            "identifier":"jabbot",
+            "commandPrefix":"!",
+            "debug":false,
+            "rooms":[
+                {"name":"test_room@conference.hostname.com","nickname":"Jabbot"}
+            ],
+            "commands":[
+                {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"},
+                {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"},
+                {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
+                {"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
+                {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
+                {"name":"jira","className":"org.wanna.jabbot.extensions.jira.IssueViewer",
+                    "configuration":{
+                        "url":"https://jira.hostname.com",
+                        "username":"username",
+                        "password":"password"
+                    }
+                }
+            ]
+        },
+        {   "type" : "IRC",
+            "url":"irc.hostname.com",
+            "serverName":"hostname.com",
+            "port":6667,
+            "username":"Jabbot",
+            "password":"password",
+            "identifier":"Jabbot",
+            "commandPrefix":"!",
+            "rooms":[
+                {"name":"jabbot-dev","nickname":"Jabbot"}
+            ],
+            "commands":[
+                {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"},
+                {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
+                {"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
+                {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
+                {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"}
+            ]
+
+        }
+    ]
+}

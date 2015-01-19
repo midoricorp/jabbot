@@ -74,7 +74,7 @@ public class OperationTest {
 
 		from = new Field();
 		from.setField("from");
-		from.setValue("vincent");
+		from.setValue("sender");
 
 		target = new Field();
 		target.setField("name");
