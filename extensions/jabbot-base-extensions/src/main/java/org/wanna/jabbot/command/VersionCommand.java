@@ -1,5 +1,6 @@
 package org.wanna.jabbot.command;
 
+import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.AbstractCommand;
 
 import java.lang.management.ManagementFactory;
@@ -11,8 +12,8 @@ import java.lang.management.OperatingSystemMXBean;
  */
 public class VersionCommand extends AbstractCommand{
 
-	public VersionCommand(String commandName) {
-		super(commandName);
+	public VersionCommand(CommandConfig configuration) {
+		super(configuration);
 	}
 
 	@Override

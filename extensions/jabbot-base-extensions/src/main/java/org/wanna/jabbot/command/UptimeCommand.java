@@ -1,5 +1,6 @@
 package org.wanna.jabbot.command;
 
+import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.AbstractCommand;
 
 import java.lang.management.ManagementFactory;
@@ -11,8 +12,8 @@ import java.lang.management.RuntimeMXBean;
  */
 public class UptimeCommand extends AbstractCommand{
 
-	public UptimeCommand(String commandName) {
-		super(commandName);
+	public UptimeCommand(CommandConfig config){
+		super(config);
 	}
 
 	@Override

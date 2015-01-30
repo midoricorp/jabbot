@@ -3,6 +3,7 @@ package org.wanna.jabbot.command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
+import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.AbstractCommand;
 
 import java.util.Collection;
@@ -16,8 +17,8 @@ public class HelpCommand extends AbstractCommand implements CommandFactoryAware 
 	private CommandFactory commandFactory;
 	final Logger logger = LoggerFactory.getLogger(HelpCommand.class);
 
-	public HelpCommand(String commandName) {
-		super(commandName);
+	public HelpCommand(final CommandConfig config){
+		super(config);
 	}
 
 	@Override

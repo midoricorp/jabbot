@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.MucHolder;
+import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.AbstractCommand;
 import org.wanna.jabbot.extensions.foaas.binding.Field;
 import org.wanna.jabbot.extensions.foaas.binding.Operation;
@@ -35,12 +36,10 @@ public class AttackCommand extends AbstractCommand{
 	private final Random randomizer = new Random();
 	private Map<Integer,List<Operation>> operationsMap = new HashMap<>();
 
-	public AttackCommand(String commandName) {
-		super(commandName);
+	public AttackCommand(CommandConfig configuration) {
+		super(configuration);
 		initializeOperations();
 	}
-
-
 
 	@Override
 	public void process(MucHolder chatroom, MessageWrapper message) {

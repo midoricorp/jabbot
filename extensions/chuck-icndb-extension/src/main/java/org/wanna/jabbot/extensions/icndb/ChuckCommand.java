@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.MucHolder;
+import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.AbstractCommand;
 import org.wanna.jabbot.extensions.icndb.binding.Result;
 
@@ -29,8 +30,8 @@ public class ChuckCommand extends AbstractCommand{
 	final Logger logger = LoggerFactory.getLogger(ChuckCommand.class);
 	final ObjectMapper mapper = new ObjectMapper();
 
-	public ChuckCommand(String commandName) {
-		super(commandName);
+	public ChuckCommand(CommandConfig configuration) {
+		super(configuration);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
 

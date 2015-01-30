@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.command.behavior.Configurable;
+import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.AbstractCommand;
 import org.wanna.jabbot.extensions.jira.binding.Issue;
 
@@ -36,10 +37,9 @@ public class IssueViewer extends AbstractCommand implements Configurable{
 	private UsernamePasswordCredentials credentials;
 	private final DefaultHttpClient httpclient = new DefaultHttpClient();
 
-
-	public IssueViewer(String commandName) {
-		super(commandName);
-		mapper = new ObjectMapper(); // can reuse, share globally
+	public IssueViewer(CommandConfig configuration) {
+		super(configuration);
+		mapper = new ObjectMapper(); //TODO can reuse, share globally
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 	}

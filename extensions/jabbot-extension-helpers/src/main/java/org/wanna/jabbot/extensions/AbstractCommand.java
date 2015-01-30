@@ -1,6 +1,7 @@
 package org.wanna.jabbot.extensions;
 
 import org.wanna.jabbot.command.Command;
+import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.command.parser.ParsedCommand;
 
 /**
@@ -10,12 +11,11 @@ import org.wanna.jabbot.command.parser.ParsedCommand;
 public abstract class AbstractCommand implements Command {
 	private ParsedCommand parsedCommand;
 	private String commandName;
+	private final CommandConfig configuration;
 
-	protected AbstractCommand(String commandName) {
-		this.commandName = commandName;
-	}
-
-	protected AbstractCommand() {
+	protected AbstractCommand(final CommandConfig configuration){
+		this.configuration = configuration;
+		this.commandName = configuration.getName();
 	}
 
 	public ParsedCommand getParsedCommand() {
@@ -28,5 +28,9 @@ public abstract class AbstractCommand implements Command {
 
 	public String getCommandName() {
 		return commandName;
+	}
+
+	public CommandConfig getConfiguration() {
+		return configuration;
 	}
 }

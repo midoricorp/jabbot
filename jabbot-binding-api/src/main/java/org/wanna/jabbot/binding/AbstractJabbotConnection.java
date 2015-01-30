@@ -44,7 +44,7 @@ public abstract class AbstractJabbotConnection<T> implements JabbotConnection<T>
 		for (CommandConfig commandConfig : commandConfigs) {
 			try {
 				Class<Command> commandClass = (Class<Command>)Class.forName(commandConfig.getClassName());
-				Command command = commandClass.getDeclaredConstructor(String.class).newInstance(commandConfig.getName());
+				Command command = commandClass.getDeclaredConstructor(CommandConfig.class).newInstance(commandConfig);
 				if(command instanceof CommandFactoryAware){
 					((CommandFactoryAware)command).setCommandFactory(commandFactory);
 				}

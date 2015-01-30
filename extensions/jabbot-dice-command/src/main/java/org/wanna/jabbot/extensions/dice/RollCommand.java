@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.MucHolder;
+import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.AbstractCommand;
 
 import java.util.Random;
@@ -17,8 +18,8 @@ public class RollCommand extends AbstractCommand{
 
 	private final Random randomizer = new Random(System.currentTimeMillis());
 
-	public RollCommand(String commandName) {
-		super(commandName);
+	public RollCommand(CommandConfig configuration) {
+		super(configuration);
 	}
 
 	@Override
