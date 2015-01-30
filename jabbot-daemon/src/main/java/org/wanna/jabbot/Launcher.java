@@ -82,12 +82,12 @@ public class Launcher implements Daemon{
 		ConnectionFactory factory =  new JabbotConnectionFactory();
 		for (BindingConfiguration binding : bindings) {
 			try {
-				Class clazz = Class.forName(String.valueOf(binding.getClazz()));
+				Class clazz = Class.forName(String.valueOf(binding.getClassName()));
 					Class<? extends JabbotConnection> connectionClass = (Class<? extends JabbotConnection>)clazz;
-					logger.info("registering {} binding with class {}",binding.getName(),binding.getClazz());
+					logger.info("registering {} binding with class {}",binding.getName(),binding.getClassName());
 					factory.register(binding.getName(),connectionClass);
 			} catch (ClassNotFoundException e) {
-				logger.error("unable to register {} binding with class {}",binding.getName(),binding.getClazz());
+				logger.error("unable to register {} binding with class {}",binding.getName(),binding.getClassName());
 			}
 		}
 		return factory;

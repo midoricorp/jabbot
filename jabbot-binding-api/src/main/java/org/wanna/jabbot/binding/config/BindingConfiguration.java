@@ -6,7 +6,7 @@ package org.wanna.jabbot.binding.config;
  */
 public class BindingConfiguration {
 	private String name;
-	private String clazz;
+	private String className;
 
 	public String getName() {
 		return name;
@@ -16,11 +16,11 @@ public class BindingConfiguration {
 		this.name = name;
 	}
 
-	public String getClazz() {
-		return clazz;
+	public String getClassName() {
+		return className;
 	}
 
-	public void setClazz(String clazz) {
-		this.clazz = clazz;
+	public void setClassName(String className) {
+		this.className = className;
 	}
 }

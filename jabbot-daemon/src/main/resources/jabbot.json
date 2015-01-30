@@ -1,11 +1,11 @@
 {
     "bindings":[
         {   "name":"XMPP",
-            "clazz":"org.wanna.jabbot.binding.xmpp.XmppConnection"
+            "className":"org.wanna.jabbot.binding.xmpp.XmppConnection"
         },
         {
             "name":"IRC",
-            "clazz":"org.wanna.jabbot.binding.irc.IrcConnection"
+            "className":"org.wanna.jabbot.binding.irc.IrcConnection"
         }
     ],
     "serverList":[
