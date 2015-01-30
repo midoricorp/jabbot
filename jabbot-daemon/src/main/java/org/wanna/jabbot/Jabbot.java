@@ -28,7 +28,7 @@ public class Jabbot {
 	public boolean connect(){
 		for (JabbotConnectionConfiguration connectionConfiguration : configuration.getServerList()) {
 			JabbotConnection conn = connectionFactory.create(connectionConfiguration);
-			conn.connect(connectionConfiguration);
+			conn.connect();
 			connectionList.add(conn);
 			if(conn.isConnected()){
 				logger.debug("connection established to {} as {}",connectionConfiguration.getUrl(),connectionConfiguration.getUsername());

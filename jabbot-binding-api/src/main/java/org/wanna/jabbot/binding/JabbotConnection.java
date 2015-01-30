@@ -1,6 +1,5 @@
 package org.wanna.jabbot.binding;
 
-import org.wanna.jabbot.binding.config.JabbotConnectionConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 
 /**
@@ -9,11 +8,10 @@ import org.wanna.jabbot.binding.config.RoomConfiguration;
  */
 public interface JabbotConnection<T> {
 	/**
-	 * Create a connection to the instant messenger service
-	 * @param configuration connection configuration
+	 * Create a connection to the messaging service
 	 * @return true if connection is properly established.
 	 */
-	boolean connect(final JabbotConnectionConfiguration configuration);
+	boolean connect();
 
 	/**
 	 * Check if a connection to an instant messaging service is properly established.

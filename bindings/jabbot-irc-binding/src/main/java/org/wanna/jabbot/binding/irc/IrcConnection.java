@@ -33,7 +33,8 @@ public class IrcConnection extends AbstractJabbotConnection<IRCApi> {
 	}
 
 	@Override
-	public boolean connect(final JabbotConnectionConfiguration configuration) {
+	public boolean connect() {
+		final JabbotConnectionConfiguration configuration = super.getConfiguration();
 		connection = new IRCApiImpl(false);
 		Callback<IIRCState> callback = new Callback<IIRCState>(){
 			@Override
