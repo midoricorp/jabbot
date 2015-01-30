@@ -11,6 +11,8 @@ import org.wanna.jabbot.command.behavior.Configurable;
 import org.wanna.jabbot.command.config.CommandConfig;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -35,6 +37,10 @@ public abstract class AbstractJabbotConnection<T> implements JabbotConnection<T>
 
 	private CommandFactory newCommandFactory(Set<CommandConfig> commandConfigs){
 		CommandFactory commandFactory = new JabbotCommandFactory();
+		if(commandConfigs == null){
+			return commandFactory;
+		}
+
 		for (CommandConfig commandConfig : commandConfigs) {
 			try {
 				Class<Command> commandClass = (Class<Command>)Class.forName(commandConfig.getClassName());
@@ -44,7 +50,8 @@ public abstract class AbstractJabbotConnection<T> implements JabbotConnection<T>
 				}
 
 				if(command instanceof Configurable){
-					((Configurable)command).configure(commandConfig.getConfiguration());
+					Map map = (commandConfig.getConfiguration() == null? new HashMap() : commandConfig.getConfiguration());
+					((Configurable)command).configure(map);
 				}
 				commandFactory.register(commandConfig.getName(),command);
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
