@@ -4,13 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.extensions.AbstractCommand;
+import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 
 /**
  * @author vmorsiani <vmorsiani>
  * @since 2014-05-31
  */
-public class HelpCommand extends AbstractCommand implements CommandFactoryAware {
+public class HelpCommand extends AbstractCommandAdapter implements CommandFactoryAware {
 	private CommandFactory commandFactory;
 	final Logger logger = LoggerFactory.getLogger(HelpCommand.class);
 	final String NO_HELP_MESSAGE = "No help available for command";

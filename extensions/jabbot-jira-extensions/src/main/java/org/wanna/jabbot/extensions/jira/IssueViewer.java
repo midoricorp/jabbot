@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.extensions.AbstractCommand;
+import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 import org.wanna.jabbot.extensions.jira.binding.Issue;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ import java.util.Map;
  * @author vmorsiani <vmorsiani>
  * @since 2014-06-20
  */
-public class IssueViewer extends AbstractCommand{
+public class IssueViewer extends AbstractCommandAdapter {
 	final Logger logger = LoggerFactory.getLogger(IssueViewer.class);
 	private String baseUrl;
 	private String username;

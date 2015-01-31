@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.extensions.AbstractCommand;
+import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 
 import java.util.Random;
 
@@ -13,7 +13,7 @@ import java.util.Random;
  * @author vmorsiani <vmorsiani>
  * @since 2014-06-06
  */
-public class RollCommand extends AbstractCommand{
+public class RollCommand extends AbstractCommandAdapter {
 	private Logger logger = LoggerFactory.getLogger(RollCommand.class);
 
 	private final Random randomizer = new Random(System.currentTimeMillis());

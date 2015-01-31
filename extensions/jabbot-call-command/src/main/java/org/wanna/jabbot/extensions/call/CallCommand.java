@@ -3,7 +3,7 @@ package org.wanna.jabbot.extensions.call;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.extensions.AbstractCommand;
+import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 
 import java.util.Map;
 
@@ -12,7 +12,7 @@ import java.util.Map;
  * @author snacar <snacar>
  * @since 2015-01-15
  */
-public class CallCommand extends AbstractCommand{
+public class CallCommand extends AbstractCommandAdapter {
 	private String baseUrl = null;
 	private String missingUserMessage = "please add someone to call, you idiot";
 

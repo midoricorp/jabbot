@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.extensions.AbstractCommand;
+import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 import org.wanna.jabbot.extensions.icndb.binding.Result;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ import java.net.URLEncoder;
  * @author vmorsiani <vmorsiani>
  * @since 2015-01-14
  */
-public class ChuckCommand extends AbstractCommand{
+public class ChuckCommand extends AbstractCommandAdapter {
 	final Logger logger = LoggerFactory.getLogger(ChuckCommand.class);
 	final ObjectMapper mapper = new ObjectMapper();
 

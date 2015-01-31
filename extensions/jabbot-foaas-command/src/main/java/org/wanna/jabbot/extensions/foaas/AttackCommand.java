@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.extensions.AbstractCommand;
+import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 import org.wanna.jabbot.extensions.foaas.binding.Field;
 import org.wanna.jabbot.extensions.foaas.binding.Operation;
 
@@ -30,7 +30,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
 
-public class AttackCommand extends AbstractCommand{
+public class AttackCommand extends AbstractCommandAdapter {
 	final Logger logger = LoggerFactory.getLogger(AttackCommand.class);
 
 	private final Random randomizer = new Random();
