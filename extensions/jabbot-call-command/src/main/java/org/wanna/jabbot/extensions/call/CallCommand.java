@@ -2,7 +2,6 @@ package org.wanna.jabbot.extensions.call;
 
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.MucHolder;
-import org.wanna.jabbot.command.behavior.Configurable;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.AbstractCommand;
 
@@ -13,7 +12,7 @@ import java.util.Map;
  * @author snacar <snacar>
  * @since 2015-01-15
  */
-public class CallCommand extends AbstractCommand implements Configurable{
+public class CallCommand extends AbstractCommand{
 	private String baseUrl = null;
 	private String missingUserMessage = "please add someone to call, you idiot";
 

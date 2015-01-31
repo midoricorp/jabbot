@@ -4,6 +4,8 @@ import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.command.parser.ParsedCommand;
 
+import java.util.Map;
+
 /**
  * @author vmorsiani <vmorsiani>
  * @since 2014-05-31
@@ -16,6 +18,9 @@ public abstract class AbstractCommand implements Command {
 	protected AbstractCommand(final CommandConfig configuration){
 		this.configuration = configuration;
 		this.commandName = configuration.getName();
+		if(configuration.getConfiguration() != null){
+			configure(configuration.getConfiguration());
+		}
 	}
 
 	public ParsedCommand getParsedCommand() {
@@ -32,5 +37,13 @@ public abstract class AbstractCommand implements Command {
 
 	public CommandConfig getConfiguration() {
 		return configuration;
+	}
+
+	/**
+	 * Override this method if you want to process entries from the configuration map
+	 * @param configMap config map which is passed to the json command config
+	 */
+	public void configure(Map<String,Object> configMap){
+
 	}
 }
