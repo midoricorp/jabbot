@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.parser.ParsedCommand;
-
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,8 +29,8 @@ public class JabbotCommandFactory implements CommandFactory{
 	}
 
 	@Override
-	public Collection<Command> getAvailableCommands() {
-		return (registry ==null?null: registry.values());
+	public Map<String, Command> getAvailableCommands() {
+		return (registry ==null? new HashMap<String,Command>(): registry);
 	}
 
 	private Map<String,Command> registry = new HashMap<>();

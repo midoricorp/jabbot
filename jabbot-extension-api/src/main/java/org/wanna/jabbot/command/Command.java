@@ -8,10 +8,42 @@ import org.wanna.jabbot.command.parser.ParsedCommand;
  * @since 2014-05-30
  */
 public interface Command {
+	/**
+	 * Returns the name under which the command is registered
+	 *
+	 * @return String command name
+	 */
 	String getCommandName();
+
+	/**
+	 * Returns a short description of the command
+	 * @return String command description
+	 */
+	String getDescription();
+
+	/**
+	 * Returns the command help
+	 * @return String help message
+	 */
+	String getHelpMessage();
+
+	/**
+	 * Returns the Command configuration object which has been used to 
+	 * Configure the command during initialization
+	 *
+	 * @see org.wanna.jabbot.command.config.CommandConfig
+	 * @return Command configuration
+	 */
 	CommandConfig getConfiguration();
 	ParsedCommand getParsedCommand();
 	void setParsedCommand(ParsedCommand parsedCommand);
+
+	/**
+	 * Execute the command for a given message in a chat room
+	 *
+	 * @param chatroom chat room in which command has been triggered
+	 * @param message message which triggered the command
+	 */
 	void process(MucHolder chatroom, MessageWrapper message);
 }
 

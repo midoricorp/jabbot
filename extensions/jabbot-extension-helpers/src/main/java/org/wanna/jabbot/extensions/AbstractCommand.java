@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public abstract class AbstractCommand implements Command {
 	private ParsedCommand parsedCommand;
-	private String commandName;
+	private final String commandName;
 	private final CommandConfig configuration;
 
 	protected AbstractCommand(final CommandConfig configuration){
@@ -31,11 +31,21 @@ public abstract class AbstractCommand implements Command {
 		this.parsedCommand = parsedCommand;
 	}
 
-	public String getCommandName() {
+	public final String getCommandName() {
 		return commandName;
 	}
 
-	public CommandConfig getConfiguration() {
+	@Override
+	public String getDescription() {
+		return null;
+	}
+
+	@Override
+	public String getHelpMessage() {
+		return null;
+	}
+
+	public final CommandConfig getConfiguration() {
 		return configuration;
 	}
 

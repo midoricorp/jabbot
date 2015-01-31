@@ -1,8 +1,7 @@
 package org.wanna.jabbot.command;
 
 import org.wanna.jabbot.command.parser.ParsedCommand;
-
-import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -10,6 +9,6 @@ import java.util.Collection;
  */
 public interface CommandFactory {
 	Command create(ParsedCommand parsedCommand) throws CommandNotFoundException;
-	Collection<Command> getAvailableCommands();
+	Map<String,Command> getAvailableCommands();
 	void register(String commandName,Command command);
 }
