@@ -25,6 +25,7 @@
                 {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"},
                 {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"},
                 {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
+                {"name":"quote","className":"org.wanna.jabbot.extensions.quote.QuoteCommand"},
                 {"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
                 {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
                 {"name":"call","className":"org.wanna.jabbot.extensions.call.CallCommand",
