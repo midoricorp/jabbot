@@ -1,41 +1,36 @@
-## Introduction
+# Jabbot
 
-Jabbot is an easily extensible jabber robot written in Java.
+Jabbot is an easily extensible chat robot written in java.
+It supports connection to multiple servers & chat systems, and a pluggable chatroom command system and focus on extensibility. 
 
-It mainly consist of 2 projects:
-- jabbot-daemon: which is the current main application.
-- jaboot-extension-api: which contains the api to provide a basic command interface for the robot.
+Jabbot consists of 3 projects:
 
-Extensions can be written using this api and are currently stored under the [extensions](https://github.com/vmorsiani/jabbot/tree/master/extensions) directory.
+1. **jabbot-binding-api** whihch provide a set of interfaces to create new chat system bindings such like XMPP, IRC...
+2. **jabbot-extension-api** which aims at providing an interface for plugging new commands & features for chat rooms
+3. **jabbot-daemon** which is the actual Bot daemon
 
-## Building Jabbot
-In order to get jabbot running you will need the following installed:
-- [maven2](http://maven.apache.org/)
-- java 1.7
+**Bindings** can be written using jabbot-binding api and are currently stored under the
+[bindings](https://github.com/vmorsiani/jabbot/tree/master/bindings) directory.
 
-In order to configure jabbot, simply edit the 2 following files in jabbot-daemon:
-- jabbot.properties : used to set jabber connection information as well as some additional settings for jabbot.
-- chatrooms.xml: used to set a list of chatrooms to join on startup.
+**Extensions** can be written using jabbot-extension-api and are currently stored under the [extensions](https://github.com/vmorsiani/jabbot/tree/master/extensions) directory.
 
-Once the above is complete, go into the root folder of the project and run
-```
-mvn clean install
-```
-This will produce a tar.gz file under jabbot-daemon/target
-untar the file, go in the bin directory and run
-```
-sh jabbot.sh start
-```
+## Quickstart
+Assuming you have git, java 7 and maven2 installed
 
-By default, jabbot comes only with the [base command](https://github.com/vmorsiani/jabbot/tree/master/extensions/jabbot-base-extensions) extension.
-If you want to add more modules to jabbot, simply go into the desired extension, and run once more 
+**Build it**
+```bash
+host$ git clone https://github.com/vmorsiani/jabbot.git
+host$ cd jabbot/
+host$ mvn clean install -Pstandalone
+host$ cd jabbot-daemon/target/
+host$ tar -xzf jabbot-daemon-<version>.tar.gz
+host$ cd jabbot-daemon-<version>/
 ```
-mvn clean install
+**Configure it**
+```bash
+host$ vi conf/jabbot.json
 ```
-This should produce a jar file under the target directory.
-simply copy this jar file into the lib folder of the previously untared jabbot-daemon.
-And restart the service:
-```
-sh jabbot.sh stop
-sh jabbot.sh start
+**Start it**
+```bash
+host$ sh bin/jabbot.sh start
 ```
