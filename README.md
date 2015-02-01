@@ -34,3 +34,48 @@ host$ vi conf/jabbot.json
 ```bash
 host$ sh bin/jabbot.sh start
 ```
+
+## Jabbot Configuration
+Jabbot can be configured by editing the main config file jabbot.json under the conf/ directory.
+The config file consists in the following main areas
+
+####bindings####
+```json
+    "bindings":[
+        {   "name":"XMPP",
+            "className":"org.wanna.jabbot.binding.xmpp.XmppConnection"
+        }
+    ]
+```
+Defines a list of available binding type such as xmpp, irc..
+
+* **name:** a unique identifier for this binding
+* **className:** the canonical name of the binding connection class
+
+####serverList####
+```json
+    "serverList":[
+        {   "type" : "XMPP",
+            "url":"jabber.hostname.com",
+            "serverName":"hostname.com",
+            "port":5222,
+            "username":"Jabbot",
+            "password":"password",
+            "commandPrefix":"!",
+            "rooms":[
+                {"name":"test_room@conference.hostname.com","nickname":"Jabbot"}
+            ],
+            "commands":[
+                {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"}
+            ]
+        }
+    ]
+```
+
+Defines a list of servers to which Jabbot will connect
+
+* **type:** the name of a binding
+* **url:** the url to which to connect
+* **commandPrefix:** the command prefix used to trigger commands & action in a chatroom
+* **rooms:**  list of rooms to join on this connection
+* **commands:** list of commands available for this connection.
