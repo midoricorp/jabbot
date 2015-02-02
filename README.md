@@ -79,3 +79,22 @@ Defines a list of servers to which Jabbot will connect
 * **commandPrefix:** the command prefix used to trigger commands & action in a chatroom
 * **rooms:**  list of rooms to join on this connection
 * **commands:** list of commands available for this connection.
+
+####commands####
+```json
+    "commands":[
+        {"name":"jira","className":"org.wanna.jabbot.extensions.jira.IssueViewer",
+            "configuration":{
+                "url":"https://jira.hostname.com",
+                "username":"username",
+                "password":"password"
+            }
+        }
+    ]
+```
+
+Defines a list of availble commands for the parent object
+
+* **name:** the name of the command
+* **className:* the canonical name of the Command class
+* **configuration:** a configuration Map passed to the Command at initialization phase
