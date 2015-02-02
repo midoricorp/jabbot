@@ -96,5 +96,5 @@ Defines a list of servers to which Jabbot will connect
 Defines a list of availble commands for the parent object
 
 * **name:** the name of the command
-* **className:* the canonical name of the Command class
+* **className:** the canonical name of the Command class
 * **configuration:** a configuration Map passed to the Command at initialization phase
