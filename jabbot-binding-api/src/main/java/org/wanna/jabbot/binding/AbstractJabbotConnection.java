@@ -7,6 +7,7 @@ import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.JabbotCommandFactory;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
+import org.wanna.jabbot.command.behavior.Configurable;
 import org.wanna.jabbot.command.config.CommandConfig;
 
 import java.lang.reflect.InvocationTargetException;
@@ -45,6 +46,11 @@ public abstract class AbstractJabbotConnection<T> implements JabbotConnection<T>
 				if(command instanceof CommandFactoryAware){
 					((CommandFactoryAware)command).setCommandFactory(commandFactory);
 				}
+
+				if(command instanceof Configurable){
+					((Configurable)command).configure(commandConfig.getConfiguration());
+				}
+
 				commandFactory.register(commandConfig.getName(),command);
 			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
 				logger.error("error creating command",e);

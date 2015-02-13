@@ -117,17 +117,4 @@ public class IssueViewer extends AbstractCommandAdapter {
 
 		return null;
 	}
-
-	public void setBaseUrl(String baseUrl) {
-		this.baseUrl = baseUrl;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 }

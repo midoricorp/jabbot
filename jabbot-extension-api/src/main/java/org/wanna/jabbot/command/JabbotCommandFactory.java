@@ -36,6 +36,7 @@ public class JabbotCommandFactory implements CommandFactory{
 	private Map<String,Command> registry = new HashMap<>();
 	@Override
 	public void register(String commandName, Command command) {
+		logger.debug("registering command {} with class {}",commandName,command.getClass());
 		registry.put(commandName, command);
 	}
 }
