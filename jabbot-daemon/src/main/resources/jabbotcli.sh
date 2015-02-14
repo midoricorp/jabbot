@@ -4,7 +4,7 @@ daemon_start(){
   echo "starting Jabbot service.."
   echo "JABBOT_HOME: "$JABBOT_HOME
   echo "JAVA_HOME: "$JAVA_HOME
-  exec $(which jsvc) -nodetach -cp $J_CLASSPATH -Djabbot.logs_dir=$JABBOT_LOGS -pidfile $JABBOT_HOME"/jabbot.pid" -debug -home $JAVA_HOME $JABBOT_MAIN
+  exec java -cp $J_CLASSPATH -Djabbot.logs_dir=$JABBOT_LOGS $JABBOT_MAIN
 }
 
 ###

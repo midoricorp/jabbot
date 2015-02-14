@@ -6,6 +6,10 @@
         {
             "name":"IRC",
             "className":"org.wanna.jabbot.binding.irc.IrcConnection"
+        },
+        {
+            "name":"CLI",
+            "className":"org.wanna.jabbot.binding.cli.CliConnection"
         }
     ],
     "serverList":[
@@ -49,6 +53,22 @@
             "port":6667,
             "username":"Jabbot",
             "password":"password",
+            "identifier":"Jabbot",
+            "commandPrefix":"!",
+            "rooms":[
+                {"name":"jabbot-dev","nickname":"Jabbot"}
+            ],
+            "commands":[
+                {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"},
+                {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
+                {"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
+                {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
+                {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"}
+            ]
+
+        },
+        {   "type" : "CLI",
+            "url":"localhost",
             "identifier":"Jabbot",
             "commandPrefix":"!",
             "rooms":[

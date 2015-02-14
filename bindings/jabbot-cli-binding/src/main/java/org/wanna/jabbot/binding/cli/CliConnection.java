@@ -32,6 +32,7 @@ public class CliConnection extends AbstractJabbotConnection<Object> {
 		final JabbotConnectionConfiguration configuration = super.getConfiguration();
 		connection = new Object();
 		commandPrefix = configuration.getCommandPrefix();
+		joinChannels(configuration.getRooms());
 		return true;
 	}
 
