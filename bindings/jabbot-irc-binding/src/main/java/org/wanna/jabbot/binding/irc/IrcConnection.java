@@ -36,22 +36,21 @@ public class IrcConnection extends AbstractJabbotConnection<IRCApi> {
 	public boolean connect() {
 		final JabbotConnectionConfiguration configuration = super.getConfiguration();
 		connection = new IRCApiImpl(false);
-		Callback<IIRCState> callback = new Callback<IIRCState>(){
-			@Override
-			public void onSuccess(IIRCState aObject) {
-				joinChannels(configuration.getRooms());
-			}
-
-			@Override
-			public void onFailure(Exception aExc) {
-
-			}
-		};
-		IServerParameters parameters = getServerParameters(configuration);
-		connection.connect(parameters, callback );
 		RoomListener listener = new RoomListener(commandFactory,new DefaultCommandParser(configuration.getCommandPrefix()));
 		listener.setRooms(rooms);
 		connection.addListener(listener);
+
+		ConnectionCallback connectionCallback = new ConnectionCallback();
+		IServerParameters parameters = getServerParameters(configuration);
+		connection.connect(parameters, connectionCallback );
+
+		while(!connectionCallback.isConnected()){
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				return false;
+			}
+		}
 		return true;
 	}
 
@@ -62,12 +61,6 @@ public class IrcConnection extends AbstractJabbotConnection<IRCApi> {
 		rooms.put("#" + room.getRoomName(), room);
 
 		return room;
-	}
-
-	private void joinChannels(final List<RoomConfiguration> roomConfigurations){
-		for (RoomConfiguration roomConfiguration : roomConfigurations) {
-			joinRoom(roomConfiguration);
-		}
 	}
 
 	private IServerParameters getServerParameters(final JabbotConnectionConfiguration configuration){
@@ -98,6 +91,25 @@ public class IrcConnection extends AbstractJabbotConnection<IRCApi> {
 			}
 		};
 
+	}
+
+	class ConnectionCallback implements Callback<IIRCState>{
+		private boolean connected = false;
+
+		@Override
+		public void onSuccess(IIRCState aObject) {
+			logger.info("[IRC] connection established on {}",aObject.getServer().getHostname());
+			connected = aObject.isConnected();
+		}
+
+		@Override
+		public void onFailure(Exception aExc) {
+
+		}
+
+		public boolean isConnected() {
+			return connected;
+		}
 	}
 
 	@Override

@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,7 +47,6 @@ public class XmppConnection extends AbstractJabbotConnection<XMPPConnection> {
 			connection.login(configuration.getUsername(),configuration.getPassword(),configuration.getIdentifier());
 			PingManager.getInstanceFor(connection).setPingInterval(3000);
 			this.initListeners(connection);
-			this.joinRooms(configuration.getRooms());
 			return connection.isConnected();
 		} catch (XMPPException | SmackException | IOException e) {
 			logger.error("error while connecting",e);
@@ -63,12 +61,6 @@ public class XmppConnection extends AbstractJabbotConnection<XMPPConnection> {
 		rooms.put(configuration.getName(),room);
 
 		return room;
-	}
-
-	private void joinRooms(List<RoomConfiguration> roomConfigurationList){
-		for (RoomConfiguration configuration : roomConfigurationList) {
-			joinRoom(configuration);
-		}
 	}
 
 	private void initListeners(XMPPConnection connection){

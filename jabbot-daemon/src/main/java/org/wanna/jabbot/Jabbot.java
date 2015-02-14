@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.ConnectionFactory;
 import org.wanna.jabbot.binding.JabbotConnection;
+import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.config.JabbotConfiguration;
 import org.wanna.jabbot.binding.config.JabbotConnectionConfiguration;
 
@@ -29,6 +30,9 @@ public class Jabbot {
 		for (JabbotConnectionConfiguration connectionConfiguration : configuration.getServerList()) {
 			JabbotConnection conn = connectionFactory.create(connectionConfiguration);
 			conn.connect();
+			for (RoomConfiguration roomConfiguration : connectionConfiguration.getRooms()) {
+				conn.joinRoom(roomConfiguration);
+			}
 			connectionList.add(conn);
 			if(conn.isConnected()){
 				logger.debug("connection established to {} as {}",connectionConfiguration.getUrl(),connectionConfiguration.getUsername());
