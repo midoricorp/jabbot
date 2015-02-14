@@ -79,7 +79,20 @@
                 {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
                 {"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
                 {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
-                {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"}
+                {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"},
+                {"name":"propaganda","className":"org.wanna.jabbot.extensions.propaganda.PropagandaCommand",
+                    "configuration":{
+                        ":{guy1}":"The CEO",
+                        ":{guy2}":"The CTO",
+                        ":{guy3}":"Team Leader",
+                        ":{company}":"company",
+                        ":{exec}":"Exec Team",
+                        ":{enemy}":"Evil Company",
+                        ":{corporate}":"corporate",
+                        ":{company_name}":"My Company",
+                        ":{group}":"My Team"
+                    }
+                }
             ]
 
         }

@@ -18,6 +18,7 @@
         <module>chuck-icndb-extension</module>
         <module>jabbot-call-command</module>
         <module>jabbot-quote-command</module>
+        <module>jabbot-propaganda-command</module>
     </modules>
 
     <parent>
