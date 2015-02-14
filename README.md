@@ -62,6 +62,10 @@ Defines a list of available binding type such as xmpp, irc..
             "username":"Jabbot",
             "password":"password",
             "commandPrefix":"!",
+            "parameters":{
+                "allow_self_signed":true,
+                "ping_interval":600
+            },            
             "rooms":[
                 {"name":"test_room@conference.hostname.com","nickname":"Jabbot"}
             ],
@@ -77,6 +81,7 @@ Defines a list of servers to which Jabbot will connect
 * **type:** the name of a binding
 * **url:** the url to which to connect
 * **commandPrefix:** the command prefix used to trigger commands & action in a chatroom
+* **parameters**: a map of binding specific parameters
 * **rooms:**  list of rooms to join on this connection
 * **commands:** list of commands available for this connection.
 
