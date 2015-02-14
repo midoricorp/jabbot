@@ -33,9 +33,19 @@ public class XmppConnection extends AbstractJabbotConnection<XMPPConnection> {
 	private final Logger logger = LoggerFactory.getLogger(XmppConnection.class);
 	private Map<String,Room> rooms = new HashMap<>();
 	private MucCommandListener commandListener;
+	private int pingInterval = 3000;
+	private boolean allowSelfSigned = false;
 
 	public XmppConnection(JabbotConnectionConfiguration configuration) {
 		super(configuration);
+		if(configuration.getParameters() != null){
+			if(configuration.getParameters().containsKey("ping_interval")){
+				pingInterval = (int)configuration.getParameters().get("ping_interval");
+			}
+			if(configuration.getParameters().containsKey("allow_self_signed")){
+				allowSelfSigned = (boolean)configuration.getParameters().get("allow_self_signed");
+			}
+		}
 	}
 
 	@Override
@@ -45,7 +55,7 @@ public class XmppConnection extends AbstractJabbotConnection<XMPPConnection> {
 		try {
 			connection.connect();
 			connection.login(configuration.getUsername(),configuration.getPassword(),configuration.getIdentifier());
-			PingManager.getInstanceFor(connection).setPingInterval(3000);
+			PingManager.getInstanceFor(connection).setPingInterval(pingInterval);
 			this.initListeners(connection);
 			return connection.isConnected();
 		} catch (XMPPException | SmackException | IOException e) {
@@ -92,8 +102,6 @@ public class XmppConnection extends AbstractJabbotConnection<XMPPConnection> {
 				configuration.getUrl(),configuration.getPort(),configuration.getServerName()
 		);
 		config.setDebuggerEnabled(configuration.isDebug());
-		//TODO : push param below to configuration
-		boolean allowSelfSigned = true;
 		if(allowSelfSigned){
 			try {
 				config.setCustomSSLContext(SSLHelper.newAllTrustingSslContext());

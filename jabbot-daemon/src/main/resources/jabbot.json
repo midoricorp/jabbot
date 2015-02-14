@@ -22,6 +22,10 @@
             "identifier":"jabbot",
             "commandPrefix":"!",
             "debug":false,
+            "parameters":{
+                "allow_self_signed":true,
+                "ping_interval":600
+            },
             "rooms":[
                 {"name":"test_room@conference.hostname.com","nickname":"Jabbot"}
             ],

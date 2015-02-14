@@ -3,9 +3,12 @@ package org.wanna.jabbot.binding.config;
 import org.wanna.jabbot.command.config.CommandConfig;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
+ * Configuration class for a {@link org.wanna.jabbot.binding.JabbotConnection}
+ *
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-09
  */
@@ -17,7 +20,7 @@ public class JabbotConnectionConfiguration {
 	private int port;
 	private List<RoomConfiguration> rooms;
 	private Set<CommandConfig> commands;
-
+	private Map<String,Object> parameters;
 	private boolean debug;
 
 	public String getType() {
@@ -106,5 +109,13 @@ public class JabbotConnectionConfiguration {
 
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
+	}
+
+	public Map<String, Object> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(Map<String, Object> parameters) {
+		this.parameters = parameters;
 	}
 }
