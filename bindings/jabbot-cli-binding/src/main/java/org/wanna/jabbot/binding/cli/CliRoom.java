@@ -39,21 +39,26 @@ public class CliRoom extends AbstractRoom<Object> implements Runnable {
 		BufferedReader buffer=new BufferedReader(new InputStreamReader(System.in));
 		while (true) {
 			try {
-			String line=buffer.readLine();
-			logger.debug("received {}",line);
-			if(line != null && line.startsWith(commandParser.getCommandPrefix())){
-				ParsedCommand parsedCommand = commandParser.parse(line);
-				try {
-					Command command = commandFactory.create(parsedCommand);
-					MessageWrapper wrapper = new MessageWrapper(line);
-					wrapper.setSender("cli");
-					wrapper.setBody(line);
-					command.process(this,wrapper);
-				} catch (CommandNotFoundException e) {
-					logger.error("erorr instantating command",e);
-				}
+				String line=buffer.readLine();
+				logger.debug("received {}",line);
 
-			}
+				if(line == null) {
+					logger.error("Got a null, probably no console, dying now");
+					return;
+				}
+				if(line.startsWith(commandParser.getCommandPrefix())){
+					ParsedCommand parsedCommand = commandParser.parse(line);
+					try {
+						Command command = commandFactory.create(parsedCommand);
+						MessageWrapper wrapper = new MessageWrapper(line);
+						wrapper.setSender("cli");
+						wrapper.setBody(line);
+						command.process(this,wrapper);
+					} catch (CommandNotFoundException e) {
+						logger.error("erorr instantating command",e);
+					}
+
+				}
 			} catch (IOException e) {
 				logger.error("IO Error reading sdtin, dying");
 				return;
