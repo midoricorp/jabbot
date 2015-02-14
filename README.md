@@ -15,7 +15,7 @@ Jabbot consists of 3 projects:
 **Extensions** can be written using jabbot-extension-api and are currently stored under the [extensions](https://github.com/vmorsiani/jabbot/tree/master/extensions) directory.
 
 ## Quickstart
-Assuming you have git, java 7 and maven2 installed
+Assuming you have git, java 7, jsvc and maven2 installed
 
 **Build it**
 ```bash
