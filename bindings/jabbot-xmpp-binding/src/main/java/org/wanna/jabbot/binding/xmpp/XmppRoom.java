@@ -1,5 +1,6 @@
 package org.wanna.jabbot.binding.xmpp;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.XMPPError;
@@ -11,6 +12,7 @@ import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 
 import java.util.Date;
+import java.util.StringTokenizer;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -31,9 +33,17 @@ public class XmppRoom extends AbstractRoom<XmppConnection> {
 		return configuration;
 	}
 
-	public boolean sendMessage(String message) {
+	public boolean sendMessage(final String message) {
 		try {
-			muc.sendMessage(message);
+			StringTokenizer tokenizer = new StringTokenizer(message,"\n");
+			StringBuilder sb = new StringBuilder();
+			while (tokenizer.hasMoreTokens()){
+				String token = tokenizer.nextToken();
+				token = StringEscapeUtils.escapeJava(token);
+				sb.append(token).append('\n');
+			}
+			logger.debug("sending message: {}",sb.toString());
+			muc.sendMessage(sb.toString());
 			return true;
 		} catch (XMPPException | SmackException.NotConnectedException e) {
 			logger.error("error while sending message",e);
