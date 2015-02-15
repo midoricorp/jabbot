@@ -2,6 +2,7 @@ package org.wanna.jabbot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.binding.ConnectionCreationException;
 import org.wanna.jabbot.binding.ConnectionFactory;
 import org.wanna.jabbot.binding.JabbotConnection;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
@@ -28,14 +29,19 @@ public class Jabbot {
 
 	public boolean connect(){
 		for (JabbotConnectionConfiguration connectionConfiguration : configuration.getServerList()) {
-			JabbotConnection conn = connectionFactory.create(connectionConfiguration);
-			conn.connect();
-			for (RoomConfiguration roomConfiguration : connectionConfiguration.getRooms()) {
-				conn.joinRoom(roomConfiguration);
-			}
-			connectionList.add(conn);
-			if(conn.isConnected()){
-				logger.debug("connection established to {} as {}",connectionConfiguration.getUrl(),connectionConfiguration.getUsername());
+			JabbotConnection conn;
+			try {
+				conn = connectionFactory.create(connectionConfiguration);
+				conn.connect();
+				for (RoomConfiguration roomConfiguration : connectionConfiguration.getRooms()) {
+					conn.joinRoom(roomConfiguration);
+				}
+				connectionList.add(conn);
+				if(conn.isConnected()){
+					logger.debug("connection established to {} as {}",connectionConfiguration.getUrl(),connectionConfiguration.getUsername());
+				}
+			} catch (ConnectionCreationException e) {
+				logger.error("failed to create binding for {}",connectionConfiguration.getType(),e);
 			}
 		}
 		return true;

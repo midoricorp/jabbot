@@ -1,7 +1,6 @@
 package org.wanna.jabbot;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.binding.ConnectionCreationException;
 import org.wanna.jabbot.binding.ConnectionFactory;
 import org.wanna.jabbot.binding.JabbotConnection;
 import org.wanna.jabbot.binding.config.JabbotConnectionConfiguration;
@@ -15,21 +14,20 @@ import java.util.Map;
  * @since 2014-08-09
  */
 public class JabbotConnectionFactory implements ConnectionFactory {
-	private final Logger logger = LoggerFactory.getLogger(JabbotConnectionFactory.class);
 
 	private Map<String,Class<? extends JabbotConnection>> registry = new HashMap<>();
 
-	public JabbotConnection create(JabbotConnectionConfiguration connectionConfiguration){
-		JabbotConnection connection = null;
-		if(registry.containsKey(connectionConfiguration.getType())){
-			Class<? extends JabbotConnection> clazz = registry.get(connectionConfiguration.getType());
-			try {
-				connection = clazz.getDeclaredConstructor(JabbotConnectionConfiguration.class).newInstance(connectionConfiguration);
-			} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-				logger.error("unable to instantiate binding for "+connectionConfiguration.getType());
-			}
-		}else{
-			logger.warn("could not create {} binding",connectionConfiguration.getType());
+	public JabbotConnection create(JabbotConnectionConfiguration connectionConfiguration) throws ConnectionCreationException{
+		JabbotConnection connection;
+		if(!registry.containsKey(connectionConfiguration.getType())){
+			throw new ConnectionCreationException("No binding found for type "+connectionConfiguration.getType());
+		}
+
+		Class<? extends JabbotConnection> clazz = registry.get(connectionConfiguration.getType());
+		try {
+			connection = clazz.getDeclaredConstructor(JabbotConnectionConfiguration.class).newInstance(connectionConfiguration);
+		} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+			throw new ConnectionCreationException("binding instantiation error",e);
 		}
 		return connection;
 	}
