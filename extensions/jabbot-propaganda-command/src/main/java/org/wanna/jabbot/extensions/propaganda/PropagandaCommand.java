@@ -9,8 +9,6 @@ import java.util.Random;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -40,6 +38,24 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 		scanner.close();
 	 
 		
+	}
+
+	@Override
+	public String getHelpMessage() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getCommandName());
+		sb.append(" [filter]*\n");
+		sb.append("Returns a quote filterd with the optional keywords\n");
+		sb.append("Current Substitution Map:\n");
+
+		for (String key : replace.keySet()) {
+			sb.append(key);
+			sb.append(" => ");
+			sb.append(replace.get(key));
+			sb.append("\n");
+		}
+
+		return sb.toString();
 	}
 
 	@Override
