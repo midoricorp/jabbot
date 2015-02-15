@@ -43,6 +43,24 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
+	public String getHelpMessage() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getCommandName());
+		sb.append(" [filter]*\n");
+		sb.append("Returns a quote filterd with the optional keywords\n");
+		sb.append("Current Substitution Map:\n");
+
+		for (String key : replace.keySet()) {
+			sb.append(key);
+			sb.append(" => ");
+			sb.append(replace.get(key));
+			sb.append("\n");
+		}
+
+		return sb.toString();
+	}
+
+	@Override
 	public void process(MucHolder chatroom, MessageWrapper message) {
 		String[] args = getParsedCommand().getArgs();
 		ArrayList<String> quote_list = null;
