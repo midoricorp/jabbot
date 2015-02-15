@@ -45,16 +45,37 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 	@Override
 	public void process(MucHolder chatroom, MessageWrapper message) {
 		String[] args = getParsedCommand().getArgs();
-		int i = Math.abs(rand.nextInt())%quotes.size();
-		String response = quotes.get(i);
+		ArrayList<String> quote_list = null;
+
+		if (args != null && args.length > 0){
+			quote_list = new ArrayList<String>();
+			for (String quote : quotes) {
+				boolean found = true;
+				for (String arg : args) {
+					if (!quote.contains(arg)) {
+						found = false;
+						break;
+					}
+				}
+
+				if (found) {
+					quote_list.add(quote);
+				}
+			}
+
+			if (quote_list.size() == 0) {
+				quote_list.add("No matching propaganda found");
+			}
+		}
+		else {
+			quote_list = quotes;
+		}
+
+		int i = Math.abs(rand.nextInt())%quote_list.size();
+		String response = quote_list.get(i);
 
 		for (String key : replace.keySet()) {
 			response = response.replace(key, replace.get(key));
-		}
-
-		if(args != null && args.length > 0){
-		}
-		else{
 		}
 		chatroom.sendMessage(response);
 	}
