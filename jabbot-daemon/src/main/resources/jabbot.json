@@ -86,15 +86,18 @@
                 {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"},
                 {"name":"propaganda","className":"org.wanna.jabbot.extensions.propaganda.PropagandaCommand",
                     "configuration":{
-                        ":{guy1}":"The CEO",
-                        ":{guy2}":"The CTO",
-                        ":{guy3}":"Team Leader",
-                        ":{company}":"company",
-                        ":{exec}":"Exec Team",
-                        ":{enemy}":"Evil Company",
-                        ":{corporate}":"corporate",
-                        ":{company_name}":"My Company",
-                        ":{group}":"My Team"
+                        ":{guy1}":"Kim Il Sung",
+                        ":{guy2}":"Kim Jong Il",
+                        ":{guy3}":"Kim Jong Un",
+                        ":{company}":"country",
+                        ":{exec}":"Party",
+                        ":{enemy}":"Japan",
+                        ":{corporate}":"national",
+                        ":{company_name}":"Korea",
+                        ":{group}":"People's Army",
+			":{hq}":"Paektu",
+			":{capital}":"Pyongyang",
+			":{philosophy}":"socialism"
                     }
                 }
             ]

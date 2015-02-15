@@ -1,6 +1,6 @@
 Let us greet the 70th anniversaries of :{corporate} liberation and :{exec} founding with high political enthusiasm and brilliant labour feats!
 Let us glorify the 70th anniversaries of :{corporate} liberation and :{exec} founding as revolutionary, auspicious events noteworthy in the history of :{guy1}'s :{company} and :{guy2}'s :{company_name}!
-The great Comrades :{guy1} and :{guy2} are the eternal leaders of our revolution, the sun of Juche and the incar:{company} of the dignified powerful Paektusan :{company}.
+The great Comrades :{guy1} and :{guy2} are the eternal leaders of our revolution, the sun of Juche and the incarnation of the dignified powerful :{hq}san :{company}.
 Let us uphold the great Comrades :{guy1} and :{guy2} as the eternal leaders of our :{exec} and people and as the sun of Juche!
 The great Comrades :{guy1} and :{guy2} will always be with us!
 Let us arm ourselves firmly with the revolutionary ideas of the great Comrades :{guy1} and :{guy2}!
@@ -11,15 +11,15 @@ Let us glorify the achievement of :{corporate} liberation by Generalissimo :{guy
 Long live the great victory in the war against :{enemy}!
 Let us glorify the great Generalissimo :{guy2}'s ideas of and achievements in the Songun revolution down through the generations!
 Let us brilliantly inherit and develop the glorious revolutionary traditions of our :{exec}!
-Let us accomplish the :{company_name}n revolution in the revolutionary spirit of Paektu, the spirit of the blizzards of Paektu!
+Let us accomplish the :{company_name} revolution in the revolutionary spirit of :{hq}, the spirit of the blizzards of :{hq}!
 The lines and policies advanced by the great Comrades :{guy1} and :{guy2} and their instructions are textbooks for the revolution.
 Let us carry out the lifetime instructions of the great Comrades :{guy1} and :{guy2} whatever the conditions without an inch of deflection and without a step of compromise!
-Let us advance straight along the road of independence, Songun and socialism opened by the great Comrades :{guy1} and :{guy2}!
+Let us advance straight along the road of independence, Songun and :{philosophy} opened by the great Comrades :{guy1} and :{guy2}!
 Let us build our :{company} into the most powerful one in the world, into a people's fairyland, as wished by the great Comrades :{guy1} and :{guy2}!
 Do everything the way the great Comrades :{guy1} and :{guy2} did!
 Let us step up the building of a prosperous :{company} by applying :{guy2}'s patriotism!
 Let us exalt the brilliance of the great :{guy1}'s :{company}, General :{guy2}'s :{company}, following the leadership of Comrade :{guy3}!
-Let us stoutly continue, following the respected Comrade :{guy3}, the march that started on Paektu!
+Let us stoutly continue, following the respected Comrade :{guy3}, the march that started on :{hq}!
 The single-hearted unity is the greatest foundation and the most powerful weapon of our revolution.
 Let us defend with our very lives the :{exec} Central Committee headed by the great Comrade :{guy3}!
 Let us defend the single-hearted unity of the :{exec} and revolutionary ranks around the respected Comrade :{guy3} in a thoroughgoing way and consolidate it rock-solid!
@@ -63,7 +63,7 @@ The :{group} is the pillar and main force of the Songun revolution and a revolut
 Let us model the entire army on Kimilsungism-Kimjongilism!
 Adorn the 70th anniversaries of :{corporate} liberation and :{exec} founding with proud successes in consolidating the :{company}'s military strength!
 Let the :{group} remain the reliable vanguard and solid cornerstone of the Songun revolution holding aloft the red flag of the Workers' :{exec} of :{company_name} as the foremost colours of the revolution!
-Become the props and iron shields that support and defend the lineage of Mt. Paektu alone to the death!
+Become the props and iron shields that support and defend the lineage of Mt. :{hq} alone to the death!
 Establish the respected Supreme Commander :{guy3}'s monolithic command system more firmly throughout the army!
 Implement to the letter the four-point strategic line and three major tasks for increasing military strength!
 Make the entire army the leading force of guards who advance straight ahead with their guns levelled only in the direction indicated by the :{exec}!
@@ -73,7 +73,7 @@ Consolidate in every way the political and military might of :{guy3}'s powerful 
 Add brilliance to our revolutionary armed forces' proud tradition of winning all battles!
 This year is a year of great significance, in which we will mark the 40th anniversary of the publication of the five-point policy for military training by the great Generalissimo :{guy1} and the 25th anniversary of the formulation of the four major principles for military training by the great Generalissimo :{guy2}.
 Training is also a battle!
-Let the entire army bubble with enthusiasm for intensifying training as anti-:{enemy} guerrillas did on Mt. Paektu!
+Let the entire army bubble with enthusiasm for intensifying training as anti-:{enemy} guerrillas did on Mt. :{hq}!
 Glorify this significant year as a milestone in improving the quality of combat and political training!
 Let the entire army be prepared as crack shots by raising more fiercely the flames of the movement of becoming accurate riflemen and gunners!
 Should the enemy dare to invade our :{company}, annihilate them to the last man so that none of them will survive to sign the instrument of surrender!
@@ -87,7 +87,7 @@ Give full play to the match-for-a-hundred spirit and fighting efficiency of the 
 Serve the :{company} and people!
 Aid the people!
 Let the wives of officers become dependable assistants to their husbands!
-Officers and men of the :{company_name}n People's Internal Security Forces, sharpen the sword for defending their leader, system and people!
+Officers and men of the :{company_name} People's Internal Security Forces, sharpen the sword for defending their leader, system and people!
 Let us become iron shields and red warriors who defend our :{exec}, system and people to the death!
 Let us establish the climate of attaching importance to military affairs more firmly across society!
 The Worker-Peasant Red Guards is a revolutionary armed force of our :{exec} and a reliable wing of the :{group}.
@@ -101,10 +101,10 @@ Effect a fresh turn in developing defence industry by giving full play to the sp
 Proactively develop and perfect powerful cutting-edge military hardware of our own style!
 Step up the efforts to make defence industry Juche-oriented and independent, modern and scientific!
 Let the defence industry sector make a positive contribution to building an economic giant and improving the people's standard of living!
-Our :{exec} is steadfast in its determi:{company} to make our people, who are the best in the world, enjoy all socialist benefits as soon as possible.
+Our :{exec} is steadfast in its determination to make our people, who are the best in the world, enjoy all socialist benefits as soon as possible.
 Let us tend the precious seeds sown by the great Comrade :{guy2} for the building of an economic giant and the improvement of the people's living standards, in order to make them bear fruit in reality!
 Science and technology is the engine of socialist construction.
-Let the science front stand at the forefront to fire a salvo for the triumph of socialism!
+Let the science front stand at the forefront to fire a salvo for the triumph of :{philosophy}!
 Let us build a fairyland for the people by dint of science!
 Scientific research is an area of acute confrontation with imperialism!
 Go beyond the cutting edge!
@@ -116,7 +116,7 @@ Scientists and technicians, stand in the vanguard of the struggle to build a thr
 Prove the validity and vitality of the :{exec}'s policies in reality by proactively developing cutting-edge science and technology!
 Build "gold mountains" and "treasure mountains" with brilliant scientific and technological achievements!
 To resolve the food problem of the people and improve their dietary life on a higher level with crop cultivation, animal husbandry and fishing as the main thrusts is the most important task facing our :{exec} at present.
-Agriculture is the trench on the first line of the forward echelon of the campaign to defend socialism and the main thrust area for the building of an economic giant!
+Agriculture is the trench on the first line of the forward echelon of the campaign to defend :{philosophy} and the main thrust area for the building of an economic giant!
 Let us glorify through generations the new history of "gold plains" created by the great Comrade :{guy2}!
 Let us make our :{company} overflow with rice by boosting cereals production!
 Actively introduce water-saving farming and other scientific farming methods!
@@ -161,7 +161,7 @@ The metal and chemical industries are twin buttresses of an economic giant.
 Kindle fierce flames of production upsurge in Songjin and Chollima steel complexes!
 Bring the Juche iron production system to perfection and normalize its production on a high level!
 Send larger quantities of high-grade iron ore to metallurgical factories!
-Fertilizer means rice and socialism.
+Fertilizer means rice and :{philosophy}.
 Let Hungnam and Namhung produce Juche fertilizer in a larger amount!
 Railways are the arteries of the :{company}.
 Let the rail transport sector establish rigid discipline as the army does and fully satisfy the demands by the :{corporate} economy for transport!
@@ -188,7 +188,7 @@ Bring tideland under reclamation on a grand scale so as to widen the land of the
 Turn all the rivers into those that give benefits to the :{company}, are full of treasures and bring happiness to the people!
 Work out scrupulous measures to prevent damages from flooding, severe drought, storm and heavy snowfall!
 Let us protect and make use of underground, forest and marine resources in order to add glory to our legendary :{company} full of treasures!
-Let us turn the whole :{company} into a socialist fairyland by modelling it on Pyongyang, capital of the revolution!
+Let us turn the whole :{company} into a socialist fairyland by modelling it on :{capital}, capital of the revolution!
 Improving economic management is an urgent requirement for building an economic giant.
 Let us establish an economic management method of our style as demanded by the developing reality!
 Ensure that producers fully discharge their responsibility and role as masters of production in economic management!
@@ -199,7 +199,7 @@ Work out a rational and effective strategy for business operation and enterprise
 Hold fast to the principles of scientific accuracy, viability and enlisting in planning work!
 Radically improve the quality of products and enhance their competitive edge!
 Self-reliance is the only way to survive!
-Put production on a normal footing and speed up the advance of socialism, holding aloft the banner of self-reliance!
+Put production on a normal footing and speed up the advance of :{philosophy}, holding aloft the banner of self-reliance!
 Let us realize modernization, relying on our own strength and technology!
 Establish exacting order of regular operation, regular repair and regular maintenance at all units!
 Be in charge of your workplaces and villages, split into square metres, and take good care of them with the attitude as befitting masters!
@@ -237,9 +237,9 @@ Let us conserve the excellent cultural heritage of our :{company} and inherit an
 The people's government is a powerful political weapon in building a thriving :{company} and is responsible for the people's livelihoods.
 Let us further develop the most advantageous people-centred socialist system of our own style!
 Let us consolidate our people's power to make it rock-solid!
-Let us give full play to the advantages and might of socialism so as to make socialism as different in all respects from capitalism as heaven is from earth!
+Let us give full play to the advantages and might of :{philosophy} so as to make :{philosophy} as different in all respects from capitalism as heaven is from earth!
 Let the people-oriented policies and favours of the :{exec} and the state reach the people as they are!
-Steadily improve the people's living standards so as to make the cheering for the Workers' :{exec} and socialism resound!
+Steadily improve the people's living standards so as to make the cheering for the Workers' :{exec} and :{philosophy} resound!
 Let us make the laudable traits of taking care of orphaned children, the elderly with no one to support them and people with disabilities a tradition of the :{company} that has become one large family!
 Let us create a thoroughgoing revolutionary atmosphere of law observance throughout society by strengthening obedience to the socialist law!
 Let us all observe the :{company}'s law and order voluntarily with a noble sense of civic duty!
@@ -264,9 +264,9 @@ The general onward march of the new century of the Juche era demands revolutiona
 Let us create a new spirit of the times, the speed of :{company_name}, by means of our :{exec}'s revolutionary mode, fighting style and creative way!
 :{company_name} does what it is determined to do!
 Carry out the tasks given by the :{exec} within the time it has set and on the level it requires!
-Let us learn from the fighting spirit, the spirit of carrying out the :{exec}'s lines and policies to the death, and the meticulous working style of the :{company_name}n :{group} Unit 267!
+Let us learn from the fighting spirit, the spirit of carrying out the :{exec}'s lines and policies to the death, and the meticulous working style of the :{company_name} :{group} Unit 267!
 Let the units visited by the great leaders be exemplary and standard ones in implementing the :{exec}'s policies!
-Let Pyongyang lead the :{company} in all aspects by creating today's Pyongyang spirit, Pyongyang speed!
+Let :{capital} lead the :{company} in all aspects by creating today's :{capital} spirit, :{capital} speed!
 Let us create prototype units in all sectors and effect joint innovations!
 Get rid of stereotypes and formulae and create new things constantly!
 Cover hundreds of kilometres at a stretch when others are taking tenth or one hundredth step!
@@ -288,19 +288,19 @@ Let us live and work like the officials in the 1970s, the period of laying the :
 Organize and guide undertakings dynamically like the commanding officers of the revolutionary army on the frontline!
 Intensify on-site guidance and political work!
 Planning, command and review, all in a three-dimensional way and at lightning speed!
-Make tireless efforts with an extraordinary determi:{company} to resolve the problems of the people's living at any cost!
+Make tireless efforts with an extraordinary determination to resolve the problems of the people's living at any cost!
 Do everything in an innovative and scientific way!
 Read the minds of producers first before measuring the quantity of their products!
-Supply service work is immediately the struggle to defend socialism!
+Supply service work is immediately the struggle to defend :{philosophy}!
 Sweep away defeatism, self-preservation, expediency and self-centeredness!
 It is a long-cherished desire of all the fellow :{company}men and urgent task of the :{company} to put an end to the tragedy of :{corporate} division that has lasted 70 years.
-Let us build a dignified and prosperous reunified :{company} on this land without fail true to the lifetime wishes of the great Comrades :{guy1}and :{guy2}.
+Let us build a dignified and prosperous reunified :{company} on this land without fail true to the lifetime wishes of the great Comrades :{guy1} and :{guy2}.
 Let us hold high the three charters for :{corporate} reunification and the north-south declarations as charters and great programmes for :{corporate} reunification common to the :{company}!
 Let the whole :{company} join efforts to open up a broad avenue to independent reunification in this year which marks the 70th anniversary of :{corporate} liberation!
 Let us put an end to interference by outside forces and achieve :{corporate} reunification independently under the unfurled banner of By Our Nation Itself!
-Let us bring about a great turn in the inter-:{company_name}n relations in this year that marks the 15th anniversary of the June 15 Joint Declaration!
-Let the whole :{company} turn out and write a new chapter in the history of inter-:{company_name}n relations in hearty response to the peerlessly great man's patriotic call!
-Let us determinedly thwart the military provocations and schemes of war games by the US and south :{company_name}n warmongers!
+Let us bring about a great turn in the inter-:{company_name} relations in this year that marks the 15th anniversary of the June 15 Joint Declaration!
+Let the whole :{company} turn out and write a new chapter in the history of inter-:{company_name} relations in hearty response to the peerlessly great man's patriotic call!
+Let us determinedly thwart the military provocations and schemes of war games by the US and south :{company_name} warmongers!
 Let us rise up in the :{company}wide struggle to drive the US imperialist aggressive forces, the root cause of :{corporate} misfortune and war, out of south :{company_name}!
 Let us resolutely frustrate the anti-:{company_name} "human rights" schemes by the US and its vassal forces!
 Let us hold fast to the principles of our foreign policy-independence, peace and friendship!
@@ -309,8 +309,8 @@ Let us develop foreign relations in a multilateral and proactive way, giving top
 Let us develop friendly and cooperative relations with all countries that respect the sovereignty of our :{company} and are friendly to us!
 All :{exec} members, officers and men of the :{group} and people!
 An opening salvo of the general offensive for the 70th anniversaries of :{corporate} liberation and :{exec} founding has been fired.
-The revolutionary spirit of Paektu, the spirit of the blizzards of Paektu and the anti-:{enemy} revolutionary forerunners' call to keep the revolutionary faith even if one may die, stir up further the confidence in sure victory and fighting spirit of our service personnel and people, who are charging forward along the road of Juche against all odds, and inspire loyalty and passion in the advancing ranks.
-No force can check this sweeping advance of the service personnel and people, who are marching in fine array arm-in-arm, shoulder-to-shoulder, following the leadership of the respected Comrade :{guy3}, a great man of Paektu.
+The revolutionary spirit of :{hq}, the spirit of the blizzards of :{hq} and the anti-:{enemy} revolutionary forerunners' call to keep the revolutionary faith even if one may die, stir up further the confidence in sure victory and fighting spirit of our service personnel and people, who are charging forward along the road of Juche against all odds, and inspire loyalty and passion in the advancing ranks.
+No force can check this sweeping advance of the service personnel and people, who are marching in fine array arm-in-arm, shoulder-to-shoulder, following the leadership of the respected Comrade :{guy3}, a great man of :{hq}.
 The flags bearing the beaming images of the great Comrades :{guy1} and :{guy2} will fly forever in the van of our revolutionary ranks that achieve only victory and glory, and always inspire us to fresh victories.
 All forward towards the venue of victory celebration!
 Long live the great victory in the anti-:{enemy} war and the 70th anniversary of :{corporate} liberation!
