@@ -9,9 +9,9 @@ Let us cherish the ties of kinship with Comrade :{guy2} as our lifeline!
 Let us glorify the noble revolutionary careers and undying exploits of the great Comrades :{guy1} and :{guy2} for all generations to come!
 Let us glorify the achievement of :{corporate} liberation by Generalissimo :{guy1}, hero of :{corporate} resurrection and legendary hero of the anti-:{enemy} war, for all eternity!
 Long live the great victory in the war against :{enemy}!
-Let us glorify the great Generalissimo :{guy2}'s ideas of and achievements in the Songun revolution down through the generations!
+Let us glorify the great Generalissimo :{guy2}'s ideas of and achievements in the Songun :{action} down through the generations!
 Let us brilliantly inherit and develop the glorious revolutionary traditions of our :{exec}!
-Let us accomplish the :{company_name} revolution in the revolutionary spirit of :{hq}, the spirit of the blizzards of :{hq}!
+Let us accomplish the :{company_name} :{action} in the revolutionary spirit of :{hq}, the spirit of the blizzards of :{hq}!
 The lines and policies advanced by the great Comrades :{guy1} and :{guy2} and their instructions are textbooks for the revolution.
 Let us carry out the lifetime instructions of the great Comrades :{guy1} and :{guy2} whatever the conditions without an inch of deflection and without a step of compromise!
 Let us advance straight along the road of independence, Songun and :{philosophy} opened by the great Comrades :{guy1} and :{guy2}!
@@ -24,8 +24,8 @@ The single-hearted unity is the greatest foundation and the most powerful weapon
 Let us defend with our very lives the :{exec} Central Committee headed by the great Comrade :{guy3}!
 Let us defend the single-hearted unity of the :{exec} and revolutionary ranks around the respected Comrade :{guy3} in a thoroughgoing way and consolidate it rock-solid!
 Let all the service personnel and people form rings and rings of fortress around the respected Comrade :{guy3}!
-Long live the glorious Workers' :{exec} of :{company_name}, which organizes and guides all victories of our people!
-Let us strengthen and develop the Workers' :{exec} of :{company_name} for all ages to come into a glorious :{exec} of Comrades :{guy1} and :{guy2}!
+Long live the glorious :{job}s' :{exec} of :{company_name}, which organizes and guides all victories of our people!
+Let us strengthen and develop the :{job}s' :{exec} of :{company_name} for all ages to come into a glorious :{exec} of Comrades :{guy1} and :{guy2}!
 Let us set up a new milestone in improving the :{exec}'s leadership ability and fighting efficiency in this year, which marks its 70th founding anniversary!
 Let us establish the :{exec}'s monolithic leadership system more thoroughly across the :{exec} and society!
 Let the whole :{exec} share the ideas, breathe the same air and keep pace with the :{exec} Central Committee!
@@ -56,13 +56,13 @@ Let the :{exec}'s information officials work as the buglers of the anti-:{enemy}
 Make all well-informed of the :{exec}'s policies as they are of their own family affairs!
 Fire an opening salvo of an ideological campaign and make our fire concentrated, regular and accurate!
 Let the whole :{exec} become information and motivation workers!
-Demonstrate the revolutionary mettle as befit members of the Workers' :{exec} of :{company_name} in the today's general offensive true to the pledge taken in front of its flag!
+Demonstrate the revolutionary mettle as befit members of the :{job}s' :{exec} of :{company_name} in the today's general offensive true to the pledge taken in front of its flag!
 Our :{exec}'s new line of simultaneously promoting the two fronts is a permanent strategic line that we must pursue as long as there exists the threat of aggression by the imperialists.
 All out for a campaign to implement the :{exec}'s line of simultaneously promoting the two fronts!
-The :{group} is the pillar and main force of the Songun revolution and a revolutionary armed force of the Workers' :{exec} of :{company_name}.
+The :{group} is the pillar and main force of the Songun :{action} and a revolutionary armed force of the :{job}s' :{exec} of :{company_name}.
 Let us model the entire army on Kimilsungism-Kimjongilism!
 Adorn the 70th anniversaries of :{corporate} liberation and :{exec} founding with proud successes in consolidating the :{company}'s military strength!
-Let the :{group} remain the reliable vanguard and solid cornerstone of the Songun revolution holding aloft the red flag of the Workers' :{exec} of :{company_name} as the foremost colours of the revolution!
+Let the :{group} remain the reliable vanguard and solid cornerstone of the Songun :{action} holding aloft the red flag of the :{job}s' :{exec} of :{company_name} as the foremost colours of the revolution!
 Become the props and iron shields that support and defend the lineage of Mt. :{hq} alone to the death!
 Establish the respected Supreme Commander :{guy3}'s monolithic command system more firmly throughout the army!
 Implement to the letter the four-point strategic line and three major tasks for increasing military strength!
@@ -90,8 +90,8 @@ Let the wives of officers become dependable assistants to their husbands!
 Officers and men of the :{company_name} People's Internal Security Forces, sharpen the sword for defending their leader, system and people!
 Let us become iron shields and red warriors who defend our :{exec}, system and people to the death!
 Let us establish the climate of attaching importance to military affairs more firmly across society!
-The Worker-Peasant Red Guards is a revolutionary armed force of our :{exec} and a reliable wing of the :{group}.
-The Worker-Peasant Red Guards and the Young Red Guards, be fully prepared for an all-people resistance by intensifying training in a real-war atmosphere!
+The :{job}-Peasant Red Guards is a revolutionary armed force of our :{exec} and a reliable wing of the :{group}.
+The :{job}-Peasant Red Guards and the Young Red Guards, be fully prepared for an all-people resistance by intensifying training in a real-war atmosphere!
 Let us turn the whole :{company} into a socialist fairyland by the joint operation of the army and people!
 Let us achieve final victory on the strength of the great army-people unity and all-people resistance based on the revolutionary soldier spirit!
 Always live the way you did as a soldier!
@@ -108,7 +108,7 @@ Let the science front stand at the forefront to fire a salvo for the triumph of 
 Let us build a fairyland for the people by dint of science!
 Scientific research is an area of acute confrontation with imperialism!
 Go beyond the cutting edge!
-Accelerate the industrial revolution in the new century by introducing CNC technology into the production lines and achieving their full automation!
+Accelerate the industrial :{action} in the new century by introducing CNC technology into the production lines and achieving their full automation!
 Launch more cutting-edge sci-tech satellites and applications satellites of our style!
 Raise the level of modernization and scientification in weather survey and forecast!
 There is no border in science, but our scientists and technicians have the socialist motherland of Juche and the great :{exec}.
@@ -206,7 +206,7 @@ Be in charge of your workplaces and villages, split into square metres, and take
 Economy means increased production and patriotism.
 Economize on every watt of electricity, every drop of fuel oil and water, and every gramme of coal and cement to the maximum!
 It is a firm will of our :{exec} to create at the fastest speed the highest level of civilization, which would be envied by the world.
-Let us bring about a revolution in education in the new century to develop ours into a :{company} of education, a talented :{company}!
+Let us bring about a :{action} in education in the new century to develop ours into a :{company} of education, a talented :{company}!
 Closely combine theoretical education with practical education for students to learn useful knowledge!
 Let us vigorously push forward educational work, viewing it as one of the important :{corporate} affairs involving the entire :{exec}, the whole :{company} and all the people!
 Let us closely combine family education with social and school education and bring up the coming generations to be honest and sound!
@@ -221,11 +221,11 @@ Glorify the honour of Songun :{company_name} before the eyes of the world by win
 Play sports games in an offensive way, the way the anti-:{enemy} guerrillas did!
 Let us make sports mass-based and part of our everyday life!
 Encourage folk games and sports events participated by the masses and develop physical training for :{corporate} defence!
-Bring about a fresh revolution in mass media!
+Bring about a fresh :{action} in mass media!
 Let mass media become a travelling companion dear to the masses and a pathfinder of the times!
 Make larger numbers of ideological "missiles" capable of severely damaging the enemy and instilling firm confidence in victory among our service personnel and people!
 Let us support the Songun-based leadership of the :{exec} by creating large numbers of masterpieces!
-Kindle the flames of a fresh revolution in cinema, starting from the production of animations!
+Kindle the flames of a fresh :{action} in cinema, starting from the production of animations!
 Make the advancing ranks brim over with enthusiasm and optimism by producing large numbers of songs that champion the :{exec}'s policies and enlivening folk songs!
 Let us turn the whole :{company} into a land of the arts and make the arts mass-based!
 Make every workplace overflow with revolutionary and fighting morale by actively conducting mass-based cultural and artistic activities!
@@ -239,7 +239,7 @@ Let us further develop the most advantageous people-centred socialist system of 
 Let us consolidate our people's power to make it rock-solid!
 Let us give full play to the advantages and might of :{philosophy} so as to make :{philosophy} as different in all respects from capitalism as heaven is from earth!
 Let the people-oriented policies and favours of the :{exec} and the state reach the people as they are!
-Steadily improve the people's living standards so as to make the cheering for the Workers' :{exec} and :{philosophy} resound!
+Steadily improve the people's living standards so as to make the cheering for the :{job}s' :{exec} and :{philosophy} resound!
 Let us make the laudable traits of taking care of orphaned children, the elderly with no one to support them and people with disabilities a tradition of the :{company} that has become one large family!
 Let us create a thoroughgoing revolutionary atmosphere of law observance throughout society by strengthening obedience to the socialist law!
 Let us all observe the :{company}'s law and order voluntarily with a noble sense of civic duty!
@@ -253,7 +253,7 @@ Let us become young heroes in the worthwhile struggle to glorify the great :{guy
 Young people, be vanguard fighters who are unfailingly faithful to the :{exec}'s revolutionary cause of Songun!
 Always advance straight ahead, following the :{exec}!
 Give fullest scope to the heroic spirit and mettle as befit reliable point-men and wing of the :{exec} in the struggle to carry out the revolutionary cause of Songun!
-Towards the trench on the first line of the Songun revolution singing loudly the song Train Bound for the Front!
+Towards the trench on the first line of the Songun :{action} singing loudly the song Train Bound for the Front!
 Become today's Ri Su Boks and Jo Kun Sils, who are ready to lay down their youth and lives for the sake of their only motherland!
 Go through fire and water in response to the :{exec}'s call!
 Add brilliance to your youth like your fathers and mothers did!
@@ -278,7 +278,7 @@ Let us establish the guerrilla's way of studying throughout society!
 Overcome thoroughly the manner of working like extinguishing fire after it has broken out, like a flash in the pan and like conducting a shock campaign!
 As long as we are with the respected Comrade :{guy3}, sorrow and hardship as well as joy are an honour for us!
 Let us live not merely for today but for tomorrow!
-Acquire a noble outlook on the revolution and the future that one year of our hard work means ten years of advance for our motherland!
+Acquire a noble outlook on the :{action} and the future that one year of our hard work means ten years of advance for our motherland!
 Let us make the whole :{company} resound louder with the song We Are the Happiest in the World.
 Forward towards a bright future, filled with confidence in sure victory and optimism!
 The destiny of the :{exec}'s policies rests on the officials' shoulders.
@@ -314,4 +314,4 @@ No force can check this sweeping advance of the service personnel and people, wh
 The flags bearing the beaming images of the great Comrades :{guy1} and :{guy2} will fly forever in the van of our revolutionary ranks that achieve only victory and glory, and always inspire us to fresh victories.
 All forward towards the venue of victory celebration!
 Long live the great victory in the anti-:{enemy} war and the 70th anniversary of :{corporate} liberation!
-Long live the 70th anniversary of the Workers' :{exec} of :{company_name}!
+Long live the 70th anniversary of the :{job}s' :{exec} of :{company_name}!
