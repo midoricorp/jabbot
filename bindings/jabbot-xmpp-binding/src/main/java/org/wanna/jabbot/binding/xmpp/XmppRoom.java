@@ -1,6 +1,5 @@
 package org.wanna.jabbot.binding.xmpp;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.XMPPError;
@@ -12,7 +11,6 @@ import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 
 import java.util.Date;
-import java.util.StringTokenizer;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -20,7 +18,8 @@ import java.util.StringTokenizer;
  */
 public class XmppRoom extends AbstractRoom<XmppConnection> {
 	public final Logger logger = LoggerFactory.getLogger(XmppRoom.class);
-
+	//escape characters which would cause smack to crash
+	private final char[] escapeChars = new char[]{'\f','\b'};
 	private MultiUserChat muc;
 	private RoomConfiguration configuration;
 
@@ -35,15 +34,12 @@ public class XmppRoom extends AbstractRoom<XmppConnection> {
 
 	public boolean sendMessage(final String message) {
 		try {
-			StringTokenizer tokenizer = new StringTokenizer(message,"\n");
-			StringBuilder sb = new StringBuilder();
-			while (tokenizer.hasMoreTokens()){
-				String token = tokenizer.nextToken();
-				token = StringEscapeUtils.escapeJava(token);
-				sb.append(token).append('\n');
+			String secured = message;
+			for (char escapeChar : escapeChars) {
+				secured = secured.replace(escapeChar,' ');
 			}
-			logger.debug("sending message: {}",sb.toString());
-			muc.sendMessage(sb.toString());
+			logger.debug("sending message: {}",secured);
+			muc.sendMessage(secured);
 			return true;
 		} catch (XMPPException | SmackException.NotConnectedException e) {
 			logger.error("error while sending message",e);
