@@ -97,7 +97,9 @@
                         ":{group}":"People's Army",
 			":{hq}":"Paektu",
 			":{capital}":"Pyongyang",
-			":{philosophy}":"socialism"
+			":{philosophy}":"socialism",
+			":{job}":"Worker",
+			":{action}":"revolution"
                     }
                 }
             ]
