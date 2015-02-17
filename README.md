@@ -103,3 +103,11 @@ Defines a list of availble commands for the parent object
 * **name:** the name of the command
 * **className:** the canonical name of the Command class
 * **configuration:** a configuration Map passed to the Command at initialization phase
+
+## Testing
+If you don't want to configure any binding and run a quick test of your new extension, there's one special type of binding.
+**cli binding** is a binding emulator which will just read from standard input, process the command and print the response on the console.
+In order to use it, simply follow the same steps show in the quickstart section but start it as following 
+```bash
+host$ sh bin/jabbotcli.sh
+```
