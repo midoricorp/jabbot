@@ -44,13 +44,13 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 	public String getHelpMessage() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getCommandName());
-		sb.append(" [filter]*\n");
+		sb.append(" [filter [= replacement]]*\n");
 		sb.append("Returns a quote filterd with the optional keywords\n");
 		sb.append("Current Substitution Map:\n");
 
 		for (String key : replace.keySet()) {
 			sb.append(key);
-			sb.append(" => ");
+			sb.append(" = ");
 			sb.append(replace.get(key));
 			sb.append("\n");
 		}
@@ -62,12 +62,26 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 	public void process(MucHolder chatroom, MessageWrapper message) {
 		String[] args = getParsedCommand().getArgs();
 		ArrayList<String> quote_list = null;
+		ArrayList<String> filter_list = new ArrayList<String>();
+		HashMap<String,String> tmp_replace = new HashMap<String,String>();
+
 
 		if (args != null && args.length > 0){
+			for (int i = 0; i < args.length; i++) {
+				filter_list.add(args[i]);
+
+				// do we have a substitution rule?
+				if (i+2 < args.length 
+						&& args[i+1].equals("=")) {
+					tmp_replace.put(args[i], args[i+2]);
+					i += 2;
+				}
+			}	
+
 			quote_list = new ArrayList<String>();
 			for (String quote : quotes) {
 				boolean found = true;
-				for (String arg : args) {
+				for (String arg : filter_list) {
 					if (!quote.contains(arg)) {
 						found = false;
 						break;
@@ -90,7 +104,18 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 		int i = Math.abs(rand.nextInt())%quote_list.size();
 		String response = quote_list.get(i);
 
+		//first do the override substitutions
+		for (String key : tmp_replace.keySet()) {
+			response = response.replace(key, tmp_replace.get(key));
+		}
+
+		//then the default ones
 		for (String key : replace.keySet()) {
+			// if we override this substitution, skip it
+			if (tmp_replace.containsKey(key)) {
+				continue;
+			}
+
 			response = response.replace(key, replace.get(key));
 		}
 		chatroom.sendMessage(response);
