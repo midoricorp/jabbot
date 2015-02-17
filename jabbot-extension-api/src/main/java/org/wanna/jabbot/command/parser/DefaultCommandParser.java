@@ -30,14 +30,59 @@ public class DefaultCommandParser implements CommandParser {
 		}
 
 		parsed.setCommandName(command);
-		StringTokenizer tokenizer = new StringTokenizer(message.substring((commandPrefix + command).length()), " ");
+		String argString = message.substring((commandPrefix + command).length());
 		List<String> args = new ArrayList<String>();
-		while (tokenizer.hasMoreTokens()) {
-			String token = tokenizer.nextToken();
-			token = clearArgument(token);
-			log.debug("one argument as been found '{}'", token);
+		boolean inQuote = false;
+		boolean inToken = false;
+		int start = 0;
+		int end = 0;
+		for (;end < argString.length();end++) {
+			if (inQuote) {
+				// if in a quoted string, token ends with endquote
+				if (argString.charAt(end) == '"') {
+					String token = argString.substring(start+1,end);
+					args.add(token);
+					inQuote = false;
+					inToken = false;
+				}
+			} else if (!inToken) {
+				// skip wite space until we hit the token start
+				if(argString.charAt(end) != ' ' 
+						&& argString.charAt(end) != '\t'
+						&& argString.charAt(end) != '\r'
+						&& argString.charAt(end) != '\n')
+				{
+					inToken = true;
+					start = end;
+
+					if (argString.charAt(end) == '"') {
+						// woo this token is quoted
+						// special rules apply!
+						inQuote = true;
+					}
+				}
+			} else {
+				if(argString.charAt(end) == ' ' 
+						|| argString.charAt(end) == '\t'
+						|| argString.charAt(end) == '\r'
+						|| argString.charAt(end) == '\n')
+				{
+					inToken = false;
+					String token = argString.substring(start,end);
+					args.add(token);
+				}
+			}
+		}
+
+		if (inToken) {
+			// hit the end and it isn't whitespace! let's record the token
+			inToken = false;
+			String token = argString.substring(inQuote?start+1:start,end);
 			args.add(token);
 		}
+
+
+
 		parsed.setArgs(args.toArray(new String[args.size()]));
 		return parsed;
 	}
