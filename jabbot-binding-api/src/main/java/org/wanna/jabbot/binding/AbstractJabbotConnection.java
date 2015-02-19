@@ -14,6 +14,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 /**
+ * Adapter class for a {@link org.wanna.jabbot.binding.JabbotConnection} implementation.
+ * It instantiate and populate the Binding {@link org.wanna.jabbot.binding.ConnectionFactory}
+ * based on the binding configuration
+ *
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-08
  */
@@ -29,10 +33,19 @@ public abstract class AbstractJabbotConnection<T> implements JabbotConnection<T>
 		this.commandFactory = newCommandFactory(configuration.getCommands());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public T getWrappedConnection() {
 		return connection;
 	}
 
+	/**
+	 * Create a new Commandractory and populate it with the commands registered for that binding
+	 * @param commandConfigs The List of {@link org.wanna.jabbot.command.Command} to register in the factory
+	 *
+	 * @return populated CommandFactory
+	 */
 	private CommandFactory newCommandFactory(Set<CommandConfig> commandConfigs){
 		CommandFactory commandFactory = new JabbotCommandFactory();
 		if(commandConfigs == null){

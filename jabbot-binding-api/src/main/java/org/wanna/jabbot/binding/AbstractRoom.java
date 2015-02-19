@@ -11,6 +11,9 @@ public abstract class AbstractRoom<T> implements Room<T>{
 		this.connection = connection;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public T getConnection() {
 		return connection;
 	}

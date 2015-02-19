@@ -28,5 +28,12 @@ public interface JabbotConnection<T> {
 	 */
 	T getWrappedConnection();
 
+	/**
+	 * Join a chatroom for the current connection
+	 *
+	 * @param configuration the chatromm configuration
+	 * @return the joined chatroom
+	 * @see {@link org.wanna.jabbot.binding.config.RoomConfiguration}
+	 */
 	Room joinRoom(RoomConfiguration configuration);
 }
