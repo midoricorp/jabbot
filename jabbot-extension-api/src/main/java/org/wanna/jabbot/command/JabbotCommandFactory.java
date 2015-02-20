@@ -2,7 +2,6 @@ package org.wanna.jabbot.command;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,11 +18,6 @@ public class JabbotCommandFactory implements CommandFactory{
 		if(command == null){
 			throw new CommandNotFoundException(commandName);
 		}
-
-		if(command instanceof CommandFactoryAware){
-			((CommandFactoryAware) command).setCommandFactory(this);
-		}
-
 		return command;
 	}
 
