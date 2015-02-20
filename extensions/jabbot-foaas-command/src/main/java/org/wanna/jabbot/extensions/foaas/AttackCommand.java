@@ -55,8 +55,8 @@ public class AttackCommand extends AbstractCommandAdapter {
 			String from = message.getSender();
 
 			try {
-				this.feedFields(operation,from,getParsedCommand().getArgs());
-				response = operation.execute();
+				String url = buildUrl(operation,from,getParsedCommand().getArgs());
+				response = execute(url);
 				chatroom.sendMessage(secureResponse(response));
 			} catch (UnsupportedEncodingException e) {
 				logger.error("unable to set Fields",e);
@@ -64,16 +64,49 @@ public class AttackCommand extends AbstractCommandAdapter {
 		}
 	}
 
-	private void feedFields(Operation operation,String from, String[] args) throws UnsupportedEncodingException {
+	public String execute(String url){
+		final String baseUrl = "http://foaas.com";
+		DefaultHttpClient httpclient = new DefaultHttpClient();
+
+		HttpGet httpGet = new HttpGet(baseUrl +url);
+		httpGet.setHeader("Accept","text/plain");
+		logger.debug("foaas url: {}",httpGet.getURI().toString());
+
+		try
+		{
+			HttpResponse response = httpclient.execute(httpGet);
+			HttpEntity entity = response.getEntity();
+			if (entity != null)
+			{
+				return EntityUtils.toString(entity, HTTP.UTF_8);
+			}
+		} catch (IOException e) {
+			logger.error("error querying foaas",e);
+		}
+
+		return null;
+	}
+
+	private String buildUrl(Operation operation,String from, String[] args){
+		String url = operation.getUrl();
 		int i = 0;
 		for (Field field : operation.getFields()) {
+			String value;
 			if(field.getField().equalsIgnoreCase("from")){
-				field.setValue(URLEncoder.encode(from,"UTF-8"));
-			}else if(args != null && args.length > i){
-				field.setValue(URLEncoder.encode(args[i],"UTF-8"));
+				value = from;
+				url = url.replace(":"+field.getField(),from);
+			}else{
+				value = args[i];
+
 				i++;
 			}
+			try {
+				url = url.replace(":"+field.getField(),URLEncoder.encode(value,"UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+				logger.error("unable to encode {}",value,e);
+			}
 		}
+		return url;
 	}
 
 	/**
@@ -87,7 +120,7 @@ public class AttackCommand extends AbstractCommandAdapter {
 	private String secureResponse(String response) throws UnsupportedEncodingException {
 		response = URLDecoder.decode(response,"UTF-8");
 		while(response.startsWith("/")){
-			response = response.replace("/","");
+			response = response.replaceFirst("/", "");
 		}
 		return response;
 	}
