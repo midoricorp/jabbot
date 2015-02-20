@@ -3,7 +3,8 @@ package org.wanna.jabbot.extensions;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.behavior.Configurable;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.command.parser.ParsedCommand;
+import org.wanna.jabbot.command.parser.args.ArgsParser;
+import org.wanna.jabbot.command.parser.args.QuotedStringArgParser;
 
 import java.util.Map;
 
@@ -23,7 +24,6 @@ import java.util.Map;
  * @since 2014-05-31
  */
 public abstract class AbstractCommandAdapter implements Command, Configurable {
-	private ParsedCommand parsedCommand;
 	private final String commandName;
 	private final CommandConfig configuration;
 
@@ -37,12 +37,17 @@ public abstract class AbstractCommandAdapter implements Command, Configurable {
 		this.commandName = configuration.getName();
 	}
 
-	public ParsedCommand getParsedCommand() {
-		return parsedCommand;
-	}
-
-	public void setParsedCommand(ParsedCommand parsedCommand) {
-		this.parsedCommand = parsedCommand;
+	/**
+	 * Returns a default implementation of ArgsParser.
+	 * Override this method if you want to use a custom parser;
+	 *
+	 * default: {@link org.wanna.jabbot.command.parser.args.QuotedStringArgParser}
+	 *
+	 * @return default ArgsParser
+	 */
+	@Override
+	public ArgsParser getArgsParser() {
+		return new QuotedStringArgParser();
 	}
 
 	public final String getCommandName() {

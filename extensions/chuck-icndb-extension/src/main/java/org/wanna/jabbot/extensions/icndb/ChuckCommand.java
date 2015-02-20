@@ -37,7 +37,7 @@ public class ChuckCommand extends AbstractCommandAdapter {
 
 	@Override
 	public void process(MucHolder chatroom, MessageWrapper message) {
-		String args[] = getParsedCommand().getArgs();
+		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
 		String options = null;
 		if(args != null && args.length > 0){
 			try {

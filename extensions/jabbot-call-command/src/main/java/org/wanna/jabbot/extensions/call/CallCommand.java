@@ -25,8 +25,8 @@ public class CallCommand extends AbstractCommandAdapter {
 		if(baseUrl == null){
 			chatroom.sendMessage("Call command not configured: missing base_url");
 		}
-		String[] args = getParsedCommand().getArgs();
-		if(args != null && args.length > 0){
+		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
+		if(args.length > 0){
 			String callee = args[0];
 			String response = String.format("Call %s at %s/%s",callee, baseUrl, callee);
 			chatroom.sendMessage(response);

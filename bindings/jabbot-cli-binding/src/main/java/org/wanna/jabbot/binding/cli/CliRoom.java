@@ -9,11 +9,12 @@ import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.CommandNotFoundException;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.parser.CommandParser;
-import org.wanna.jabbot.command.parser.ParsedCommand;
-import java.io.*;
+import org.wanna.jabbot.command.parser.CommandParsingResult;
 
-
-import java.util.StringTokenizer;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.List;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -47,10 +48,12 @@ public class CliRoom extends AbstractRoom<Object> implements Runnable {
 					return;
 				}
 				if(line.startsWith(commandParser.getCommandPrefix())){
-					ParsedCommand parsedCommand = commandParser.parse(line);
+					CommandParsingResult result = commandParser.parse(line);
 					try {
-						Command command = commandFactory.create(parsedCommand);
+						Command command = commandFactory.create(result.getCommandName());
+						List<String> args = command.getArgsParser().parse(result.getRawArgsLine());
 						MessageWrapper wrapper = new MessageWrapper(line);
+						wrapper.setArgs(args);
 						wrapper.setSender("cli");
 						wrapper.setBody(line);
 						command.process(this,wrapper);

@@ -1,13 +1,18 @@
 package org.wanna.jabbot.command;
 
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.command.parser.ParsedCommand;
+import org.wanna.jabbot.command.parser.args.ArgsParser;
 
 /**
  * @author vmorsiani <vmorsiani>
  * @since 2014-05-30
  */
 public interface Command {
+	/**
+	 * Return the argument parser implementation
+	 * @return
+	 */
+	ArgsParser getArgsParser();
 	/**
 	 * Returns the name under which the command is registered
 	 *
@@ -35,8 +40,6 @@ public interface Command {
 	 * @return Command configuration
 	 */
 	CommandConfig getConfiguration();
-	ParsedCommand getParsedCommand();
-	void setParsedCommand(ParsedCommand parsedCommand);
 
 	/**
 	 * Execute the command for a given message in a chat room

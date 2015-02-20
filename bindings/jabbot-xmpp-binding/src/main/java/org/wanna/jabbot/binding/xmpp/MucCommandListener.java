@@ -13,9 +13,10 @@ import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.CommandNotFoundException;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.parser.CommandParser;
-import org.wanna.jabbot.command.parser.ParsedCommand;
+import org.wanna.jabbot.command.parser.CommandParsingResult;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,14 +63,12 @@ public class MucCommandListener implements PacketListener{
 					logger.debug("not going to process my own stuff");
 				} else {
 					logger.debug("received a message from {} using chatroom {} and preparing response..", resource, room.getConfiguration().getName());
-					ParsedCommand parsedCommand = commandParser.parse(message.getBody());
-
-					logger.debug("parsedCommand : {}", parsedCommand.getCommandName());
-					Command command = null;
-
+					CommandParsingResult result = commandParser.parse(message.getBody());
 					try {
-						command = commandFactory.create(parsedCommand);
+						Command command = commandFactory.create(result.getCommandName());
+						List<String> args = command.getArgsParser().parse(result.getRawArgsLine());
 						MessageWrapper wrapper = new MessageWrapper(message);
+						wrapper.setArgs(args);
 						wrapper.setSender(StringUtils.parseResource(message.getFrom()));
 						command.process(room, wrapper);
 					} catch (CommandNotFoundException e) {

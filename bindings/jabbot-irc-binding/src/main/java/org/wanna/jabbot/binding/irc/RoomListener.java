@@ -10,8 +10,9 @@ import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.CommandNotFoundException;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.parser.CommandParser;
-import org.wanna.jabbot.command.parser.ParsedCommand;
+import org.wanna.jabbot.command.parser.CommandParsingResult;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,10 +35,13 @@ public class RoomListener extends VariousMessageListenerAdapter{
 
 		logger.debug("received {} on {}",aMsg.getText(),aMsg.getChannelName());
 		if(aMsg != null && aMsg.getText().startsWith(commandParser.getCommandPrefix())){
-			ParsedCommand parsedCommand = commandParser.parse(aMsg.getText());
+			CommandParsingResult result = commandParser.parse(aMsg.getText());
 			try {
-				Command command = commandFactory.create(parsedCommand);
+
+				Command command = commandFactory.create(result.getCommandName());
+				List<String> args = command.getArgsParser().parse(result.getRawArgsLine());
 				MessageWrapper wrapper = new MessageWrapper(aMsg);
+				wrapper.setArgs(args);
 				wrapper.setSender(aMsg.getSource().getNick());
 				command.process(getRoom(aMsg.getChannelName()),wrapper);
 			} catch (CommandNotFoundException e) {

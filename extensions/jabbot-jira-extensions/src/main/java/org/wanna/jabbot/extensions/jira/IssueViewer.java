@@ -52,8 +52,8 @@ public class IssueViewer extends AbstractCommandAdapter {
 
 	@Override
 	public void process(MucHolder chatroom, MessageWrapper message) {
-		String[] args = super.getParsedCommand().getArgs();
-		if( args == null || args.length < 1 ){
+		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
+		if( args.length < 1 ){
 			chatroom.sendMessage("invalid parameter");
 			return;
 		}

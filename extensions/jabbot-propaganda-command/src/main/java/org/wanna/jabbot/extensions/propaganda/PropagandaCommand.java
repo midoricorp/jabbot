@@ -5,12 +5,8 @@ import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 
-import java.util.Random;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
 import java.io.InputStream;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @author tsearle 
@@ -60,13 +56,13 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 
 	@Override
 	public void process(MucHolder chatroom, MessageWrapper message) {
-		String[] args = getParsedCommand().getArgs();
+		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
 		ArrayList<String> quote_list = null;
 		ArrayList<String> filter_list = new ArrayList<String>();
 		HashMap<String,String> tmp_replace = new HashMap<String,String>();
 
 
-		if (args != null && args.length > 0){
+		if (args.length > 0){
 			for (int i = 0; i < args.length; i++) {
 				filter_list.add(args[i]);
 

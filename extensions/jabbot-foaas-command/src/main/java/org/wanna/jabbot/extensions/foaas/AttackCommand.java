@@ -43,10 +43,11 @@ public class AttackCommand extends AbstractCommandAdapter {
 
 	@Override
 	public void process(MucHolder chatroom, MessageWrapper message) {
+		String[] args = message.getArgs().toArray(new String[message.getArgs().size()]);
 		String response;
-		if(getParsedCommand().getArgs() != null ){
+		if(args != null ){
 			//Add +1 to args lenght as we'll always have a "from" arg from Sender
-			int length = getParsedCommand().getArgs().length+1;
+			int length = args.length+1;
 			if(length > 2){
 				length = 2;
 			}
@@ -55,15 +56,15 @@ public class AttackCommand extends AbstractCommandAdapter {
 			String from = message.getSender();
 
 			try {
-				String url = buildUrl(operation,from,getParsedCommand().getArgs());
-				response = execute(url);
+				String url = buildUrl(operation,from,args);
+				response = query(url);
 				chatroom.sendMessage(secureResponse(response));
-			} catch (UnsupportedEncodingException e) {
-				logger.error("unable to set Fields",e);
+			} catch (IOException e) {
+				logger.error("error while querying foaas",e);
 			}
 		}
 	}
-
+/*
 	public String execute(String url){
 		final String baseUrl = "http://foaas.com";
 		DefaultHttpClient httpclient = new DefaultHttpClient();
@@ -86,7 +87,7 @@ public class AttackCommand extends AbstractCommandAdapter {
 
 		return null;
 	}
-
+*/
 	private String buildUrl(Operation operation,String from, String[] args){
 		String url = operation.getUrl();
 		int i = 0;

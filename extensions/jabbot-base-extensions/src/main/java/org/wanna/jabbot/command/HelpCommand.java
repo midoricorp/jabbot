@@ -21,9 +21,10 @@ public class HelpCommand extends AbstractCommandAdapter implements CommandFactor
 
 	@Override
 	public void process(MucHolder chatroom, MessageWrapper message) {
+		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
 		StringBuilder sb = new StringBuilder();
-		if((getParsedCommand().getArgs() != null) && (getParsedCommand().getArgs().length > 0)){
-			String commandName = getParsedCommand().getArgs()[0];
+		if(args.length > 0){
+			String commandName = args[0];
 			if(commandFactory.getAvailableCommands().containsKey(commandName)){
 				Command command = commandFactory.getAvailableCommands().get(commandName);
 				if(command.getHelpMessage() == null){

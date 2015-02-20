@@ -3,7 +3,7 @@ package org.wanna.jabbot.command;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
-import org.wanna.jabbot.command.parser.ParsedCommand;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,17 +14,16 @@ import java.util.Map;
 public class JabbotCommandFactory implements CommandFactory{
 	final Logger logger = LoggerFactory.getLogger(JabbotCommandFactory.class);
 
-	public Command create(ParsedCommand parsedCommand) throws CommandNotFoundException{
-		Command command = registry.get(parsedCommand.getCommandName());
+	public Command create(String commandName) throws CommandNotFoundException{
+		Command command = registry.get(commandName);
 		if(command == null){
-			throw new CommandNotFoundException(parsedCommand.getCommandName());
+			throw new CommandNotFoundException(commandName);
 		}
 
 		if(command instanceof CommandFactoryAware){
 			((CommandFactoryAware) command).setCommandFactory(this);
 		}
 
-		command.setParsedCommand(parsedCommand);
 		return command;
 	}
 
