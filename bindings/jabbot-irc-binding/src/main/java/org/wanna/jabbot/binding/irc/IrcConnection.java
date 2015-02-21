@@ -32,8 +32,7 @@ public class IrcConnection extends AbstractJabbotConnection<IRCApi> {
 	}
 
 	@Override
-	public boolean connect() {
-		final JabbotConnectionConfiguration configuration = super.getConfiguration();
+	public boolean connect(JabbotConnectionConfiguration configuration) {
 		connection = new IRCApiImpl(false);
 		RoomListener listener = new RoomListener(this,listeners);
 		connection.addListener(listener);

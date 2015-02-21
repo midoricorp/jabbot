@@ -20,9 +20,7 @@ public class CliConnection extends AbstractJabbotConnection<Object> {
 	}
 
 	@Override
-	public boolean connect() {
-		final JabbotConnectionConfiguration configuration = super.getConfiguration();
-		connection = new Object();
+	public boolean connect(JabbotConnectionConfiguration configuration) {
 		return true;
 	}
 

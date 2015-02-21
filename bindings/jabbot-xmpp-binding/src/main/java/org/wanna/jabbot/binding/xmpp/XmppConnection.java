@@ -49,8 +49,7 @@ public class XmppConnection extends AbstractJabbotConnection<XMPPConnection> {
 	}
 
 	@Override
-	public boolean connect() {
-		JabbotConnectionConfiguration configuration = super.getConfiguration();
+	public boolean connect(JabbotConnectionConfiguration configuration) {
 		connection = new XMPPTCPConnection(newConnectionConfiguration(configuration));
 		try {
 			connection.connect();

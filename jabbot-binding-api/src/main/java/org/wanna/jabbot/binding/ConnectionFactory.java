@@ -10,7 +10,7 @@ public interface ConnectionFactory {
 	/**
 	 * Instantiate a binding based on the connection configuration which is passed to it.
 	 * The returned connection won't initiate the connection to the defined server.
-	 * and thus a call to {@link JabbotConnection#connect()} will be required in order to initiate the connection.
+	 * and thus a call to {@link JabbotConnection#connect(org.wanna.jabbot.binding.config.JabbotConnectionConfiguration)} will be required in order to initiate the connection.
 	 *
 	 * @param connectionConfiguration the binding configuration
 	 * @return a preconfigured connection
