@@ -7,6 +7,7 @@ import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.BindingMessage;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandNotFoundException;
+import org.wanna.jabbot.command.CommandResult;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.parser.CommandParser;
 import org.wanna.jabbot.command.parser.CommandParsingResult;
@@ -42,7 +43,13 @@ public class JabbotBindingListener implements BindingListener{
 			MessageWrapper wrapper = new MessageWrapper(message);
 			wrapper.setArgs(args);
 			wrapper.setSender(message.getSender());
-			command.process(binding.getRoom(message.getRoomName()), wrapper);
+			CommandResult commandResult = command.process(wrapper);
+			if(commandResult == null){
+				logger.warn("Aborting due to undefined command result for command {}",command.getClass());
+				return;
+			}
+			BindingMessage response = new BindingMessage(message.getRoomName(),message.getSender(),commandResult.getText());
+			binding.sendMessage(response);
 		} catch (CommandNotFoundException e) {
 			logger.debug("command not found: '{}'", e.getCommandName());
 		}

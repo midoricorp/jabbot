@@ -44,9 +44,8 @@ public interface Command {
 	/**
 	 * Execute the command for a given message in a chat room
 	 *
-	 * @param chatroom chat room in which command has been triggered
 	 * @param message message which triggered the command
 	 */
-	void process(MucHolder chatroom, MessageWrapper message);
+	CommandResult process(MessageWrapper message);
 }
 

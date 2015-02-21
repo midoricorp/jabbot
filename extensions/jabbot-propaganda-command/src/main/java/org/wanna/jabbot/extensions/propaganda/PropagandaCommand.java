@@ -1,7 +1,7 @@
 package org.wanna.jabbot.extensions.propaganda;
 
+import org.wanna.jabbot.command.CommandResult;
 import org.wanna.jabbot.command.MessageWrapper;
-import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 
@@ -55,7 +55,7 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public void process(MucHolder chatroom, MessageWrapper message) {
+	public CommandResult process(MessageWrapper message) {
 		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
 		ArrayList<String> quote_list = null;
 		ArrayList<String> filter_list = new ArrayList<String>();
@@ -67,12 +67,12 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 				filter_list.add(args[i]);
 
 				// do we have a substitution rule?
-				if (i+2 < args.length 
+				if (i+2 < args.length
 						&& args[i+1].equals("=")) {
 					tmp_replace.put(args[i], args[i+2]);
 					i += 2;
 				}
-			}	
+			}
 
 			quote_list = new ArrayList<String>();
 			for (String quote : quotes) {
@@ -114,7 +114,9 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 
 			response = response.replace(key, replace.get(key));
 		}
-		chatroom.sendMessage(response);
+		CommandResult result = new CommandResult();
+		result.setText(response);
+		return result;
 	}
 
 	@Override

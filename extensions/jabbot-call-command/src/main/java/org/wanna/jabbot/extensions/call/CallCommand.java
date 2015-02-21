@@ -1,7 +1,7 @@
 package org.wanna.jabbot.extensions.call;
 
+import org.wanna.jabbot.command.CommandResult;
 import org.wanna.jabbot.command.MessageWrapper;
-import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 
@@ -21,20 +21,22 @@ public class CallCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public void process(MucHolder chatroom, MessageWrapper message) {
+	public CommandResult process(MessageWrapper message) {
+		CommandResult result = new CommandResult();
 		if(baseUrl == null){
-			chatroom.sendMessage("Call command not configured: missing base_url");
+			result.setText("Call command not configured: missing base_url");
 		}
 		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
 		if(args.length > 0){
 			String callee = args[0];
 			String response = String.format("Call %s at %s/%s",callee, baseUrl, callee);
-			chatroom.sendMessage(response);
+			result.setText(response);
 		}
 		else{
 			String response = String.format(missingUserMessage);
-			chatroom.sendMessage(response);
+			result.setText(response);
 		}
+		return result;
 	}
 
 	@Override

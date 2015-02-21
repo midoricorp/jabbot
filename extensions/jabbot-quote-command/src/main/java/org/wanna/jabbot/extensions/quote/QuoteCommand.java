@@ -10,8 +10,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.command.CommandResult;
 import org.wanna.jabbot.command.MessageWrapper;
-import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 import org.wanna.jabbot.extensions.quote.binding.Result;
@@ -38,16 +38,19 @@ public class QuoteCommand extends AbstractCommandAdapter{
 	}
 
 	@Override
-	public void process(MucHolder chatroom, MessageWrapper message) {
+	public CommandResult process(MessageWrapper message) {
 		String response = query(null);
 		if(response != null){
 			try {
 				Result result = mapper.readValue(response,Result.class);
-				chatroom.sendMessage(result.getQuote());
+				CommandResult commandResult = new CommandResult();
+				commandResult.setText(result.getQuote());
+				return commandResult;
 			} catch (IOException e) {
 				logger.error("error parsing json string {}",response,e);
 			}
 		}
+		return null;
 	}
 
 	private String query(String option){

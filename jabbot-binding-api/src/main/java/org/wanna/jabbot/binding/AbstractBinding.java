@@ -54,4 +54,10 @@ public abstract class AbstractBinding<T> implements Binding<T>, CommandFactoryAw
 	public void registerListener(BindingListener listener) {
 		listeners.add(listener);
 	}
+
+	@Override
+	public void sendMessage(BindingMessage message) {
+		Room room = this.getRoom(message.getRoomName());
+		room.sendMessage(message.getBody());
+	}
 }

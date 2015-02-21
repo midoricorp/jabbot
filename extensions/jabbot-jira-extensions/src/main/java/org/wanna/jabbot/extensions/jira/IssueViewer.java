@@ -14,8 +14,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.command.CommandResult;
 import org.wanna.jabbot.command.MessageWrapper;
-import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 import org.wanna.jabbot.extensions.jira.binding.Issue;
@@ -51,11 +51,12 @@ public class IssueViewer extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public void process(MucHolder chatroom, MessageWrapper message) {
+	public CommandResult process(MessageWrapper message) {
 		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
+		CommandResult result = new CommandResult();
 		if( args.length < 1 ){
-			chatroom.sendMessage("invalid parameter");
-			return;
+			result.setText("invalid parameter");
+			return result;
 		}
 
 		String key = args[0];
@@ -81,12 +82,13 @@ public class IssueViewer extends AbstractCommandAdapter {
 				}
 				sb.append("URL: ").append(baseUrl).append("/browse/").append(issue.getKey());
 			}
-			chatroom.sendMessage(sb.toString());
+			result.setText(sb.toString());
+			return result;
 		} catch (IOException e) {
 			logger.error("error querying",e);
 		}
+		return null;
 	}
-
 
 	private void initCredentials(){
 		credentials = new UsernamePasswordCredentials(username,password);

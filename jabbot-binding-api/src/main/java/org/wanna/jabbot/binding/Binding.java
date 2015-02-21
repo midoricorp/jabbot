@@ -45,4 +45,6 @@ public interface Binding<T> {
 	CommandFactory getCommandFactory();
 
 	void registerListener(BindingListener listener);
+
+	void sendMessage(BindingMessage message);
 }

@@ -17,8 +17,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.command.CommandResult;
 import org.wanna.jabbot.command.MessageWrapper;
-import org.wanna.jabbot.command.MucHolder;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 import org.wanna.jabbot.extensions.foaas.binding.Field;
@@ -42,7 +42,7 @@ public class AttackCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public void process(MucHolder chatroom, MessageWrapper message) {
+	public CommandResult process(MessageWrapper message) {
 		String[] args = message.getArgs().toArray(new String[message.getArgs().size()]);
 		String response;
 		if(args != null ){
@@ -58,36 +58,17 @@ public class AttackCommand extends AbstractCommandAdapter {
 			try {
 				String url = buildUrl(operation,from,args);
 				response = query(url);
-				chatroom.sendMessage(secureResponse(response));
+				CommandResult result = new CommandResult();
+				result.setText(secureResponse(response));
+				return result;
 			} catch (IOException e) {
 				logger.error("error while querying foaas",e);
+
 			}
 		}
-	}
-/*
-	public String execute(String url){
-		final String baseUrl = "http://foaas.com";
-		DefaultHttpClient httpclient = new DefaultHttpClient();
-
-		HttpGet httpGet = new HttpGet(baseUrl +url);
-		httpGet.setHeader("Accept","text/plain");
-		logger.debug("foaas url: {}",httpGet.getURI().toString());
-
-		try
-		{
-			HttpResponse response = httpclient.execute(httpGet);
-			HttpEntity entity = response.getEntity();
-			if (entity != null)
-			{
-				return EntityUtils.toString(entity, HTTP.UTF_8);
-			}
-		} catch (IOException e) {
-			logger.error("error querying foaas",e);
-		}
-
 		return null;
 	}
-*/
+
 	private String buildUrl(Operation operation,String from, String[] args){
 		String url = operation.getUrl();
 		int i = 0;

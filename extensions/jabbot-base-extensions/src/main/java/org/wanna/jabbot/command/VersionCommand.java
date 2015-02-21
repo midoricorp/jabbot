@@ -17,7 +17,7 @@ public class VersionCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public void process(MucHolder chatroom, MessageWrapper message) {
+	public CommandResult process(MessageWrapper message) {
 		StringBuilder sb = new StringBuilder();
 		OperatingSystemMXBean os = ManagementFactory.getOperatingSystemMXBean();
 		sb.append("I am running Jabot beta\n")
@@ -30,6 +30,8 @@ public class VersionCommand extends AbstractCommandAdapter {
 				.append(" )").append("\n")
 				.append("https://github.com/vmorsiani/jabbot");
 
-		chatroom.sendMessage(sb.toString());
+		CommandResult result = new CommandResult();
+		result.setText(sb.toString());
+		return result;
 	}
 }

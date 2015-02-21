@@ -20,7 +20,7 @@ public class HelpCommand extends AbstractCommandAdapter implements CommandFactor
 	}
 
 	@Override
-	public void process(MucHolder chatroom, MessageWrapper message) {
+	public CommandResult process(MessageWrapper message) {
 		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
 		StringBuilder sb = new StringBuilder();
 		if(args.length > 0){
@@ -48,7 +48,9 @@ public class HelpCommand extends AbstractCommandAdapter implements CommandFactor
 			}
 			sb.append("\n").append("more help can be obtained using 'help <commandName>'");
 		}
-		chatroom.sendMessage(sb.toString());
+		CommandResult result = new CommandResult();
+		result.setText(sb.toString());
+		return result;
 	}
 
 	@Override

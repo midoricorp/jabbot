@@ -17,7 +17,7 @@ public class UptimeCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public void process(MucHolder chatroom, MessageWrapper message) {
+	public CommandResult process(MessageWrapper message) {
 		RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
 		long uptime = rb.getUptime();
 
@@ -37,6 +37,8 @@ public class UptimeCommand extends AbstractCommandAdapter {
 
 		long elapsedSeconds = uptime / secondsInMilli;
 		String result = String.format("I'm up since %s day(s) %s hour(s) %s minute(s) and %s seconds",elapsedDays,elapsedHours,elapsedMinutes,elapsedSeconds);
-		chatroom.sendMessage(result);
+		CommandResult commandResult = new CommandResult();
+		commandResult.setText(result);
+		return commandResult;
 	}
 }
