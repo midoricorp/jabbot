@@ -11,6 +11,8 @@ import org.wanna.jabbot.command.behavior.Configurable;
 import org.wanna.jabbot.command.config.CommandConfig;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,6 +28,7 @@ public abstract class AbstractJabbotConnection<T> implements JabbotConnection<T>
 	protected T connection;
 	protected CommandFactory commandFactory;
 	private JabbotConnectionConfiguration configuration;
+	protected List<BindingListener> listeners = new ArrayList<>();
 
 	protected AbstractJabbotConnection(JabbotConnectionConfiguration configuration) {
 		this.configuration = configuration;
@@ -74,5 +77,15 @@ public abstract class AbstractJabbotConnection<T> implements JabbotConnection<T>
 
 	public JabbotConnectionConfiguration getConfiguration(){
 		return configuration;
+	}
+
+	@Override
+	public CommandFactory getCommandFactory() {
+		return commandFactory;
+	}
+
+	@Override
+	public void registerListener(BindingListener listener) {
+		listeners.add(listener);
 	}
 }

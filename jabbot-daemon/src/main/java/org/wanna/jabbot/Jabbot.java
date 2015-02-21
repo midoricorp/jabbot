@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.ConnectionCreationException;
 import org.wanna.jabbot.binding.ConnectionFactory;
 import org.wanna.jabbot.binding.JabbotConnection;
+import org.wanna.jabbot.binding.config.JabbotConnectionConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.config.JabbotConfiguration;
-import org.wanna.jabbot.binding.config.JabbotConnectionConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,7 @@ public class Jabbot {
 			JabbotConnection conn;
 			try {
 				conn = connectionFactory.create(connectionConfiguration);
+				conn.registerListener(new JabbotBindingListener(connectionConfiguration.getCommandPrefix()));
 				conn.connect();
 				for (RoomConfiguration roomConfiguration : connectionConfiguration.getRooms()) {
 					conn.joinRoom(roomConfiguration);

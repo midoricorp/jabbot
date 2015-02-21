@@ -14,7 +14,7 @@ import org.wanna.jabbot.command.parser.DefaultCommandParser;
  */
 public class CliConnection extends AbstractJabbotConnection<Object> {
 	private final Logger logger = LoggerFactory.getLogger(CliConnection.class);
-
+	private Room room;
 	private String commandPrefix;
 
 	public CliConnection(JabbotConnectionConfiguration configuration) {
@@ -32,7 +32,7 @@ public class CliConnection extends AbstractJabbotConnection<Object> {
 	@Override
 	public Room joinRoom(RoomConfiguration configuration) {
 		logger.debug("Joining room " + configuration.getName());
-		Room room = new CliRoom(this, commandFactory,new DefaultCommandParser(commandPrefix));
+		room = new CliRoom(this, commandFactory,new DefaultCommandParser(commandPrefix));
 		room.join(configuration);
 		return room;
 	}
@@ -40,5 +40,10 @@ public class CliConnection extends AbstractJabbotConnection<Object> {
 	@Override
 	public boolean isConnected() {
 		return true;
+	}
+
+	@Override
+	public Room getRoom(String roomName) {
+		return room;
 	}
 }

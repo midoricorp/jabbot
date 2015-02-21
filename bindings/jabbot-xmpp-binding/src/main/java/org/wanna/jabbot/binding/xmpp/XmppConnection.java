@@ -10,6 +10,7 @@ import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
+import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smackx.ping.PingManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,6 @@ import org.wanna.jabbot.binding.AbstractJabbotConnection;
 import org.wanna.jabbot.binding.Room;
 import org.wanna.jabbot.binding.config.JabbotConnectionConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
-import org.wanna.jabbot.command.parser.DefaultCommandParser;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -85,10 +85,7 @@ public class XmppConnection extends AbstractJabbotConnection<XMPPConnection> {
 				}
 		);
 
-		commandListener = new MucCommandListener();
-		commandListener.setCommandFactory(commandFactory);
-		commandListener.setCommandParser(new DefaultCommandParser(prefix));
-		commandListener.setRooms(this.rooms);
+		commandListener = new MucCommandListener(this,listeners);
 		connection.addPacketListener(commandListener,filter);
 	}
 
@@ -113,4 +110,11 @@ public class XmppConnection extends AbstractJabbotConnection<XMPPConnection> {
 		return config;
 	}
 
+	@Override
+	public Room getRoom(String roomName) {
+		if(roomName == null ){
+			return null;
+		}
+		return rooms.get(StringUtils.parseBareAddress(roomName));
+	}
 }

@@ -1,6 +1,7 @@
 package org.wanna.jabbot.binding;
 
 import org.wanna.jabbot.binding.config.RoomConfiguration;
+import org.wanna.jabbot.command.CommandFactory;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -36,4 +37,10 @@ public interface JabbotConnection<T> {
 	 * @see {@link org.wanna.jabbot.binding.config.RoomConfiguration}
 	 */
 	Room joinRoom(RoomConfiguration configuration);
+
+	Room getRoom(String roomName);
+
+	CommandFactory getCommandFactory();
+
+	void registerListener(BindingListener listener);
 }

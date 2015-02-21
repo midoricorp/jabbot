@@ -12,7 +12,6 @@ import org.wanna.jabbot.binding.AbstractJabbotConnection;
 import org.wanna.jabbot.binding.Room;
 import org.wanna.jabbot.binding.config.JabbotConnectionConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
-import org.wanna.jabbot.command.parser.DefaultCommandParser;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -36,8 +35,7 @@ public class IrcConnection extends AbstractJabbotConnection<IRCApi> {
 	public boolean connect() {
 		final JabbotConnectionConfiguration configuration = super.getConfiguration();
 		connection = new IRCApiImpl(false);
-		RoomListener listener = new RoomListener(commandFactory,new DefaultCommandParser(configuration.getCommandPrefix()));
-		listener.setRooms(rooms);
+		RoomListener listener = new RoomListener(this,listeners);
 		connection.addListener(listener);
 
 		ConnectionCallback connectionCallback = new ConnectionCallback();
@@ -115,5 +113,13 @@ public class IrcConnection extends AbstractJabbotConnection<IRCApi> {
 	@Override
 	public boolean isConnected() {
 		return true;
+	}
+
+	@Override
+	public Room getRoom(String roomName) {
+		if(roomName==null){
+			return null;
+		}
+		return rooms.get(roomName);
 	}
 }
