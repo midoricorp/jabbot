@@ -32,7 +32,7 @@ host$ vi conf/jabbot.json
 ```
 **Start it**
 ```bash
-host$ sh bin/jabbot.sh start
+host$ bin/jabbot.sh start
 ```
 
 ## Jabbot Configuration
@@ -110,5 +110,5 @@ If you don't want to quickly test your new extension, there's one special type o
 The **cli binding** is a binding emulator which will just read from standard input, process the command and print the response on the console.
 In order to use it, simply follow the same steps show in the quickstart section but start it as following 
 ```bash
-host$ sh bin/jabbotcli.sh
+host$ bin/jabbotcli.sh
 ```
