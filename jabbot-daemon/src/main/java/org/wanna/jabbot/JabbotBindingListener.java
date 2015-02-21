@@ -10,7 +10,6 @@ import org.wanna.jabbot.command.CommandNotFoundException;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.parser.CommandParser;
 import org.wanna.jabbot.command.parser.CommandParsingResult;
-import org.wanna.jabbot.command.parser.DefaultCommandParser;
 
 import java.util.List;
 

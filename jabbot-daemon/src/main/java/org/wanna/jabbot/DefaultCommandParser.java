@@ -1,7 +1,9 @@
-package org.wanna.jabbot.command.parser;
+package org.wanna.jabbot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.command.parser.CommandParser;
+import org.wanna.jabbot.command.parser.CommandParsingResult;
 
 /**
  * @author vmorsiani <vmorsiani>

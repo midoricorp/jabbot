@@ -3,17 +3,14 @@ package org.wanna.jabbot.binding.cli;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractRoom;
+import org.wanna.jabbot.binding.BindingListener;
+import org.wanna.jabbot.binding.BindingMessage;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
-import org.wanna.jabbot.command.Command;
-import org.wanna.jabbot.command.CommandFactory;
-import org.wanna.jabbot.command.CommandNotFoundException;
-import org.wanna.jabbot.command.MessageWrapper;
-import org.wanna.jabbot.command.parser.CommandParser;
-import org.wanna.jabbot.command.parser.CommandParsingResult;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,15 +19,14 @@ import java.util.List;
  */
 public class CliRoom extends AbstractRoom<Object> implements Runnable {
 	private final static Logger logger = LoggerFactory.getLogger(CliRoom.class);
-        private CommandFactory commandFactory;
-	private CommandParser commandParser;
 	private RoomConfiguration configuration;
+	private final List<BindingListener> listeners;
 
 
-	public CliRoom(CliConnection connection, CommandFactory commandFactory, CommandParser commandParser) {
+	public CliRoom(CliConnection connection,List<BindingListener> listeners) {
 		super(connection);
-		this.commandFactory = commandFactory;
-		this.commandParser = commandParser;
+		this.listeners = (listeners==null?new ArrayList<BindingListener>() : listeners);
+
 	}
 
 	@Override
@@ -47,20 +43,10 @@ public class CliRoom extends AbstractRoom<Object> implements Runnable {
 					logger.error("Got a null, probably no console, dying now");
 					return;
 				}
-				if(line.startsWith(commandParser.getCommandPrefix())){
-					CommandParsingResult result = commandParser.parse(line);
-					try {
-						Command command = commandFactory.create(result.getCommandName());
-						List<String> args = command.getArgsParser().parse(result.getRawArgsLine());
-						MessageWrapper wrapper = new MessageWrapper(line);
-						wrapper.setArgs(args);
-						wrapper.setSender("cli");
-						wrapper.setBody(line);
-						command.process(this,wrapper);
-					} catch (CommandNotFoundException e) {
-						logger.error("erorr instantating command",e);
-					}
 
+				for (BindingListener listener : listeners) {
+					BindingMessage message = new BindingMessage(this.getRoomName(),"cli",line);
+					listener.onMessage((CliConnection)connection,message);
 				}
 			} catch (IOException e) {
 				logger.error("IO Error reading sdtin, dying");
