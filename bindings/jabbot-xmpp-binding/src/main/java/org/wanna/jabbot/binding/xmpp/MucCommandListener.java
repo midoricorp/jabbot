@@ -20,9 +20,9 @@ import java.util.List;
 public class MucCommandListener implements PacketListener{
 	final Logger logger = LoggerFactory.getLogger(MucCommandListener.class);
 	private List<BindingListener> listeners = new ArrayList<>();
-	final XmppConnection binding;
+	final XmppBinding binding;
 
-	public MucCommandListener(XmppConnection binding, List<BindingListener> listeners) {
+	public MucCommandListener(XmppBinding binding, List<BindingListener> listeners) {
 		this.binding = binding;
 		this.listeners = (listeners==null?new ArrayList<BindingListener>() : listeners);
 	}

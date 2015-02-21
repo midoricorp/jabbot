@@ -2,9 +2,9 @@ package org.wanna.jabbot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.BindingMessage;
-import org.wanna.jabbot.binding.JabbotConnection;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandNotFoundException;
 import org.wanna.jabbot.command.MessageWrapper;
@@ -28,7 +28,7 @@ public class JabbotBindingListener implements BindingListener{
 	}
 
 	@Override
-	public void onMessage(JabbotConnection binding, BindingMessage message) {
+	public void onMessage(Binding binding, BindingMessage message) {
 		if(message == null || !message.getBody().startsWith(commandPrefix)){
 			return;
 		}

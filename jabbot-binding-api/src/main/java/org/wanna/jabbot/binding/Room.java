@@ -26,7 +26,7 @@ public interface Room<C> extends MucHolder{
 	boolean sendMessage(String message);
 
 	/**
-	 * Retrieve the @{@link org.wanna.jabbot.binding.JabbotConnection} to which this Room is bound.
+	 * Retrieve the @{@link Binding} to which this Room is bound.
 	 * @return connection
 	 */
 	C getConnection();

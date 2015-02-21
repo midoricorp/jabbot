@@ -23,7 +23,7 @@ public class CliRoom extends AbstractRoom<Object> implements Runnable {
 	private final List<BindingListener> listeners;
 
 
-	public CliRoom(CliConnection connection,List<BindingListener> listeners) {
+	public CliRoom(CliBinding connection,List<BindingListener> listeners) {
 		super(connection);
 		this.listeners = (listeners==null?new ArrayList<BindingListener>() : listeners);
 
@@ -46,7 +46,7 @@ public class CliRoom extends AbstractRoom<Object> implements Runnable {
 
 				for (BindingListener listener : listeners) {
 					BindingMessage message = new BindingMessage(this.getRoomName(),"cli",line);
-					listener.onMessage((CliConnection)connection,message);
+					listener.onMessage((CliBinding)connection,message);
 				}
 			} catch (IOException e) {
 				logger.error("IO Error reading sdtin, dying");

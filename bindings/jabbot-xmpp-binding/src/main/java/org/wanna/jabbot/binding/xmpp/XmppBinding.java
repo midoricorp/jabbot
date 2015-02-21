@@ -14,9 +14,9 @@ import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smackx.ping.PingManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.binding.AbstractJabbotConnection;
+import org.wanna.jabbot.binding.AbstractBinding;
 import org.wanna.jabbot.binding.Room;
-import org.wanna.jabbot.binding.config.JabbotConnectionConfiguration;
+import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 
 import java.io.IOException;
@@ -29,14 +29,14 @@ import java.util.Map;
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-08
  */
-public class XmppConnection extends AbstractJabbotConnection<XMPPConnection> {
-	private final Logger logger = LoggerFactory.getLogger(XmppConnection.class);
+public class XmppBinding extends AbstractBinding<XMPPConnection> {
+	private final Logger logger = LoggerFactory.getLogger(XmppBinding.class);
 	private Map<String,Room> rooms = new HashMap<>();
 	private MucCommandListener commandListener;
 	private int pingInterval = 3000;
 	private boolean allowSelfSigned = false;
 
-	public XmppConnection(JabbotConnectionConfiguration configuration) {
+	public XmppBinding(BindingConfiguration configuration) {
 		super(configuration);
 		if(configuration.getParameters() != null){
 			if(configuration.getParameters().containsKey("ping_interval")){
@@ -49,7 +49,7 @@ public class XmppConnection extends AbstractJabbotConnection<XMPPConnection> {
 	}
 
 	@Override
-	public boolean connect(JabbotConnectionConfiguration configuration) {
+	public boolean connect(BindingConfiguration configuration) {
 		connection = new XMPPTCPConnection(newConnectionConfiguration(configuration));
 		try {
 			connection.connect();
@@ -93,7 +93,7 @@ public class XmppConnection extends AbstractJabbotConnection<XMPPConnection> {
 		return connection.isConnected();
 	}
 
-	private ConnectionConfiguration newConnectionConfiguration(final JabbotConnectionConfiguration configuration){
+	private ConnectionConfiguration newConnectionConfiguration(final BindingConfiguration configuration){
 		ConnectionConfiguration config = new ConnectionConfiguration(
 				configuration.getUrl(),configuration.getPort(),configuration.getServerName()
 		);

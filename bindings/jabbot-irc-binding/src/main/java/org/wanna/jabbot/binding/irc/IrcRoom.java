@@ -14,11 +14,11 @@ import java.util.StringTokenizer;
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-14
  */
-public class IrcRoom extends AbstractRoom<IrcConnection> {
+public class IrcRoom extends AbstractRoom<IrcBinding> {
 	private final static Logger logger = LoggerFactory.getLogger(IrcRoom.class);
 	private RoomConfiguration configuration;
 
-	public IrcRoom(IrcConnection connection) {
+	public IrcRoom(IrcBinding connection) {
 		super(connection);
 	}
 

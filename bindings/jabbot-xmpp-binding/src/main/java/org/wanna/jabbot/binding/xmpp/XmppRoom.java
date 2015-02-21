@@ -16,14 +16,14 @@ import java.util.Date;
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-09
  */
-public class XmppRoom extends AbstractRoom<XmppConnection> {
+public class XmppRoom extends AbstractRoom<XmppBinding> {
 	public final Logger logger = LoggerFactory.getLogger(XmppRoom.class);
 	//escape characters which would cause smack to crash
 	private final char[] escapeChars = new char[]{'\f','\b'};
 	private MultiUserChat muc;
 	private RoomConfiguration configuration;
 
-	public XmppRoom(XmppConnection connection) {
+	public XmppRoom(XmppBinding connection) {
 		super(connection);
 	}
 
@@ -84,7 +84,7 @@ public class XmppRoom extends AbstractRoom<XmppConnection> {
 		return configuration.getName();
 	}
 
-	public XmppConnection getConnection() {
+	public XmppBinding getConnection() {
 		return connection;
 	}
 }

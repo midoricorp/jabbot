@@ -2,10 +2,10 @@ package org.wanna.jabbot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.binding.ConnectionCreationException;
+import org.wanna.jabbot.binding.Binding;
+import org.wanna.jabbot.binding.BindingCreationException;
 import org.wanna.jabbot.binding.ConnectionFactory;
-import org.wanna.jabbot.binding.JabbotConnection;
-import org.wanna.jabbot.binding.config.JabbotConnectionConfiguration;
+import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandFactory;
@@ -27,7 +27,7 @@ public class Jabbot {
 	final Logger logger = LoggerFactory.getLogger(Jabbot.class);
 
 	private JabbotConfiguration configuration;
-	private List<JabbotConnection> connectionList = new ArrayList<>();
+	private List<Binding> connectionList = new ArrayList<>();
 	private ConnectionFactory connectionFactory;
 
 	public Jabbot( JabbotConfiguration configuration ) {
@@ -35,8 +35,8 @@ public class Jabbot {
 	}
 
 	public boolean connect(){
-		for (JabbotConnectionConfiguration connectionConfiguration : configuration.getServerList()) {
-			JabbotConnection conn;
+		for (BindingConfiguration connectionConfiguration : configuration.getServerList()) {
+			Binding conn;
 			try {
 				conn = connectionFactory.create(connectionConfiguration);
 				if(conn instanceof CommandFactoryAware){
@@ -53,7 +53,7 @@ public class Jabbot {
 				if(conn.isConnected()){
 					logger.debug("connection established to {} as {}",connectionConfiguration.getUrl(),connectionConfiguration.getUsername());
 				}
-			} catch (ConnectionCreationException e) {
+			} catch (BindingCreationException e) {
 				logger.error("failed to create binding for {}",connectionConfiguration.getType(),e);
 			}
 		}

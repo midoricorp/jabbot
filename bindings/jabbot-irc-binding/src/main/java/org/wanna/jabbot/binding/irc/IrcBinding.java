@@ -8,9 +8,9 @@ import com.ircclouds.irc.api.domain.IRCServer;
 import com.ircclouds.irc.api.state.IIRCState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.binding.AbstractJabbotConnection;
+import org.wanna.jabbot.binding.AbstractBinding;
 import org.wanna.jabbot.binding.Room;
-import org.wanna.jabbot.binding.config.JabbotConnectionConfiguration;
+import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 
 import java.util.Arrays;
@@ -22,17 +22,17 @@ import java.util.Map;
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-14
  */
-public class IrcConnection extends AbstractJabbotConnection<IRCApi> {
-	private final Logger logger = LoggerFactory.getLogger(IrcConnection.class);
+public class IrcBinding extends AbstractBinding<IRCApi> {
+	private final Logger logger = LoggerFactory.getLogger(IrcBinding.class);
 
 	private Map<String,Room> rooms = new HashMap<>();
 
-	public IrcConnection(JabbotConnectionConfiguration configuration) {
+	public IrcBinding(BindingConfiguration configuration) {
 		super(configuration);
 	}
 
 	@Override
-	public boolean connect(JabbotConnectionConfiguration configuration) {
+	public boolean connect(BindingConfiguration configuration) {
 		connection = new IRCApiImpl(false);
 		RoomListener listener = new RoomListener(this,listeners);
 		connection.addListener(listener);
@@ -60,7 +60,7 @@ public class IrcConnection extends AbstractJabbotConnection<IRCApi> {
 		return room;
 	}
 
-	private IServerParameters getServerParameters(final JabbotConnectionConfiguration configuration){
+	private IServerParameters getServerParameters(final BindingConfiguration configuration){
 		return new IServerParameters() {
 			@Override
 			public String getNickname() {

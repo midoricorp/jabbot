@@ -2,25 +2,25 @@ package org.wanna.jabbot.binding.cli;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.binding.AbstractJabbotConnection;
+import org.wanna.jabbot.binding.AbstractBinding;
 import org.wanna.jabbot.binding.Room;
-import org.wanna.jabbot.binding.config.JabbotConnectionConfiguration;
+import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 
 /**
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-14
  */
-public class CliConnection extends AbstractJabbotConnection<Object> {
-	private final Logger logger = LoggerFactory.getLogger(CliConnection.class);
+public class CliBinding extends AbstractBinding<Object> {
+	private final Logger logger = LoggerFactory.getLogger(CliBinding.class);
 	private Room room;
 
-	public CliConnection(JabbotConnectionConfiguration configuration) {
+	public CliBinding(BindingConfiguration configuration) {
 		super(configuration);
 	}
 
 	@Override
-	public boolean connect(JabbotConnectionConfiguration configuration) {
+	public boolean connect(BindingConfiguration configuration) {
 		return true;
 	}
 

@@ -8,9 +8,9 @@ import org.apache.commons.daemon.DaemonInitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
+import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.ConnectionFactory;
-import org.wanna.jabbot.binding.JabbotConnection;
-import org.wanna.jabbot.binding.config.BindingConfiguration;
+import org.wanna.jabbot.binding.config.BindingDefinition;
 import org.wanna.jabbot.config.JabbotConfiguration;
 
 import java.io.IOException;
@@ -78,12 +78,12 @@ public class Launcher implements Daemon{
 		return jabbot;
 	}
 
-	public ConnectionFactory newConnectionFactory(Collection<BindingConfiguration> bindings){
+	public ConnectionFactory newConnectionFactory(Collection<BindingDefinition> bindings){
 		ConnectionFactory factory =  new JabbotConnectionFactory();
-		for (BindingConfiguration binding : bindings) {
+		for (BindingDefinition binding : bindings) {
 			try {
 				Class clazz = Class.forName(String.valueOf(binding.getClassName()));
-					Class<? extends JabbotConnection> connectionClass = (Class<? extends JabbotConnection>)clazz;
+					Class<? extends Binding> connectionClass = (Class<? extends Binding>)clazz;
 					logger.info("registering {} binding with class {}",binding.getName(),binding.getClassName());
 					factory.register(binding.getName(),connectionClass);
 			} catch (ClassNotFoundException e) {

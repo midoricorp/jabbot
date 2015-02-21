@@ -17,9 +17,9 @@ import java.util.List;
 public class RoomListener extends VariousMessageListenerAdapter{
 	final Logger logger = LoggerFactory.getLogger(RoomListener.class);
 	private final List<BindingListener> listeners;
-	private final IrcConnection binding;
+	private final IrcBinding binding;
 
-	public RoomListener(IrcConnection binding, List<BindingListener> listeners) {
+	public RoomListener(IrcBinding binding, List<BindingListener> listeners) {
 		this.binding = binding;
 		this.listeners =(listeners == null ? new ArrayList<BindingListener>() : listeners);
 	}

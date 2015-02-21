@@ -2,7 +2,7 @@ package org.wanna.jabbot.binding;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.binding.config.JabbotConnectionConfiguration;
+import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 
@@ -10,21 +10,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Adapter class for a {@link org.wanna.jabbot.binding.JabbotConnection} implementation.
+ * Adapter class for a {@link Binding} implementation.
  * It instantiate and populate the Binding {@link org.wanna.jabbot.binding.ConnectionFactory}
  * based on the binding configuration
  *
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-08
  */
-public abstract class AbstractJabbotConnection<T> implements JabbotConnection<T>, CommandFactoryAware {
-	private final Logger logger = LoggerFactory.getLogger(AbstractJabbotConnection.class);
+public abstract class AbstractBinding<T> implements Binding<T>, CommandFactoryAware {
+	private final Logger logger = LoggerFactory.getLogger(AbstractBinding.class);
 	protected T connection;
 	protected CommandFactory commandFactory;
-	private JabbotConnectionConfiguration configuration;
+	private BindingConfiguration configuration;
 	protected List<BindingListener> listeners = new ArrayList<>();
 
-	protected AbstractJabbotConnection(JabbotConnectionConfiguration configuration) {
+	protected AbstractBinding(BindingConfiguration configuration) {
 		this.configuration = configuration;
 		logger.debug("initializing command factory for {}",configuration.getUrl());
 	}
@@ -36,7 +36,7 @@ public abstract class AbstractJabbotConnection<T> implements JabbotConnection<T>
 		return connection;
 	}
 
-	public JabbotConnectionConfiguration getConfiguration(){
+	public BindingConfiguration getConfiguration(){
 		return configuration;
 	}
 
