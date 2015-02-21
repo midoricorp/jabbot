@@ -1,7 +1,6 @@
 package org.wanna.jabbot.binding;
 
 import org.wanna.jabbot.binding.config.RoomConfiguration;
-import org.wanna.jabbot.command.MucHolder;
 
 /**
  * This is the actual representation of a binding chatroom
@@ -11,7 +10,7 @@ import org.wanna.jabbot.command.MucHolder;
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-09
  */
-public interface Room<C> extends MucHolder{
+public interface Room<C> /*extends MucHolder*/{
 	/**
 	 * Retrieve the room configuration
 	 * @return
@@ -37,4 +36,6 @@ public interface Room<C> extends MucHolder{
 	 * @return
 	 */
 	boolean join(final RoomConfiguration configuration);
+
+	String getRoomName();
 }

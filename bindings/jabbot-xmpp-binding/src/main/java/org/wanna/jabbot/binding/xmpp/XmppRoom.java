@@ -75,11 +75,6 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 	}
 
 	@Override
-	public String getNickname() {
-		return configuration.getNickname();
-	}
-
-	@Override
 	public String getRoomName() {
 		return configuration.getName();
 	}

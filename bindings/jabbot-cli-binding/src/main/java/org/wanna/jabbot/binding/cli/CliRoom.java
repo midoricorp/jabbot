@@ -74,11 +74,6 @@ public class CliRoom extends AbstractRoom<Object> implements Runnable {
 	}
 
 	@Override
-	public String getNickname() {
-		return configuration.getNickname();
-	}
-
-	@Override
 	public String getRoomName() {
 		return configuration.getName();
 	}

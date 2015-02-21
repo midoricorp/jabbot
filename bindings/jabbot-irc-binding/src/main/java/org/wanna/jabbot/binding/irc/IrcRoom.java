@@ -57,11 +57,6 @@ public class IrcRoom extends AbstractRoom<IrcBinding> {
 	}
 
 	@Override
-	public String getNickname() {
-		return configuration.getNickname();
-	}
-
-	@Override
 	public String getRoomName() {
 		return configuration.getName();
 	}
