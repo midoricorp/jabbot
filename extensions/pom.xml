@@ -19,6 +19,7 @@
         <module>jabbot-call-command</module>
         <module>jabbot-quote-command</module>
         <module>jabbot-propaganda-command</module>
+        <module>jabbot-cgi-command</module>
     </modules>
 
     <parent>
