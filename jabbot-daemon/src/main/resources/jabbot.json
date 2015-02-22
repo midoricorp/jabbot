@@ -84,6 +84,11 @@
                 {"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
                 {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
                 {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"},
+                {"name":"perl","className":"org.wanna.jabbot.extensions.cgi.CGICommand",
+			"configuration":{
+				"script":"bin/example_cgi.pl"
+			}
+		},
                 {"name":"propaganda","className":"org.wanna.jabbot.extensions.propaganda.PropagandaCommand",
                     "configuration":{
                         ":{guy1}":"Kim Il Sung",
