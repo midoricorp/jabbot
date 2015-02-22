@@ -1,11 +1,14 @@
 package org.wanna.jabbot.extensions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.CommandResult;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.config.CommandConfig;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -13,6 +16,7 @@ import java.util.List;
  * @since 2015-02-22
  */
 public abstract class AbstractCGICommand extends AbstractCommandAdapter{
+	private final Logger logger = LoggerFactory.getLogger(AbstractCGICommand.class);
 
 	protected AbstractCGICommand(CommandConfig configuration) {
 		super(configuration);
@@ -24,9 +28,12 @@ public abstract class AbstractCGICommand extends AbstractCommandAdapter{
 	public final CommandResult process(MessageWrapper message) {
 		String[] envp = { "JABBOT_ACTION=run", "JABBOT_COMMAND=" + getCommandName(), "JABBOT_FROM=" + message.getSender() };
 		List<String> argList =  message.getArgs();
-
+		String script = getFilePath(getScriptName());
+		if(script == null){
+			return null;
+		}
 		//add script to run as arg0
-		argList.add(0, getScriptName());
+		argList.add(0, script);
 		String[] command = argList.toArray(new String[argList.size()]);
 
 		String response = exec(command, envp);
@@ -38,11 +45,25 @@ public abstract class AbstractCGICommand extends AbstractCommandAdapter{
 
 	@Override
 	public final String getHelpMessage() {
-		String[] command = { getScriptName() };
+		String script = getFilePath(getScriptName());
+		if(script == null){
+			return null;
+		}
+		String[] command = { script };
 		String[] envp = { "JABBOT_ACTION=help", "JABBOT_COMMAND=" + getCommandName() };
 
 
 		return exec(command, envp);
+	}
+
+	private String getFilePath(String scriptName){
+		URL url = ClassLoader.getSystemResource(scriptName);
+		if(url == null){
+			logger.warn("unable to find {} in classpath",scriptName);
+			return null;
+		}else{
+			return url.getFile();
+		}
 	}
 
 	private String exec(String[] command, String[] envp) {
@@ -59,7 +80,7 @@ public abstract class AbstractCGICommand extends AbstractCommandAdapter{
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("error executing {}",getScriptName(),e);
 		}
 
 		return output.toString();
