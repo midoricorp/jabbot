@@ -86,7 +86,7 @@
                 {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"},
                 {"name":"perl","className":"org.wanna.jabbot.extensions.cgi.CGICommand",
 			"configuration":{
-				"script":"bin/example_cgi.pl"
+				"script":"example_cgi.pl"
 			}
 		},
                 {"name":"propaganda","className":"org.wanna.jabbot.extensions.propaganda.PropagandaCommand",

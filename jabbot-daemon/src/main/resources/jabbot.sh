@@ -24,7 +24,7 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 JABBOT_HOME=$(dirname "$SCRIPTPATH")
 JABBOT_MAIN="org.wanna.jabbot.Launcher"
 JABBOT_LOGS=$JABBOT_HOME"/logs"
-J_CLASSPATH=$JABBOT_HOME"/lib/*:"$JABBOT_HOME"/conf/"
+J_CLASSPATH=$JABBOT_HOME"/lib/*:"$JABBOT_HOME"/conf/:"$JABBOT_HOME"/extension-scripts/"
 
 case $1 in
 start)
