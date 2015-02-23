@@ -6,8 +6,8 @@ import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.CommandNotFoundException;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -26,10 +26,10 @@ public class JabbotCommandFactory implements CommandFactory {
 
 	@Override
 	public Map<String, Command> getAvailableCommands() {
-		return (registry ==null? new HashMap<String,Command>(): registry);
+		return (registry ==null? new TreeMap<String,Command>(): registry);
 	}
 
-	private Map<String,Command> registry = new HashMap<>();
+	private Map<String,Command> registry = new TreeMap<>();
 	@Override
 	public void register(String commandName, Command command) {
 		logger.debug("registering command {} with class {}",commandName,command.getClass());
