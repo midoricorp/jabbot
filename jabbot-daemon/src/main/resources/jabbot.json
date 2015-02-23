@@ -89,6 +89,11 @@
 				"script":"example_cgi.pl"
 			}
 		},
+                {"name":"urbandict","className":"org.wanna.jabbot.extensions.cgi.CGICommand",
+			"configuration":{
+				"script":"urbandict.pl"
+			}
+		},
                 {"name":"propaganda","className":"org.wanna.jabbot.extensions.propaganda.PropagandaCommand",
                     "configuration":{
                         ":{guy1}":"Kim Il Sung",
