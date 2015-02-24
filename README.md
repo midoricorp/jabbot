@@ -43,7 +43,7 @@ The config file consists in the following main areas
 ```json
     "bindings":[
         {   "name":"XMPP",
-            "className":"org.wanna.jabbot.binding.xmpp.XmppConnection"
+            "className":"org.wanna.jabbot.binding.xmpp.XmppBinding"
         }
     ]
 ```
