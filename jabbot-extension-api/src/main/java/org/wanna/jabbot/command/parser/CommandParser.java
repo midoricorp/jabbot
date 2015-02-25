@@ -7,6 +7,5 @@ package org.wanna.jabbot.command.parser;
 
 public interface CommandParser {
 	CommandParsingResult parse(String message);
-	String getCommandPrefix();
 }
 

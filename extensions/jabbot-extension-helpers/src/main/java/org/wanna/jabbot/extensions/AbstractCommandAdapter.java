@@ -64,6 +64,13 @@ public abstract class AbstractCommandAdapter implements Command, Configurable {
 		return null;
 	}
 
+	/**
+	 * Returns the Command configuration object which has been used to
+	 * Configure the command during initialization
+	 *
+	 * @see org.wanna.jabbot.command.config.CommandConfig
+	 * @return Command configuration
+	 */
 	public final CommandConfig getConfiguration() {
 		return configuration;
 	}

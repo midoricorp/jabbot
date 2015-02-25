@@ -1,6 +1,5 @@
 package org.wanna.jabbot.command;
 
-import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.command.parser.args.ArgsParser;
 
 /**
@@ -9,8 +8,9 @@ import org.wanna.jabbot.command.parser.args.ArgsParser;
  */
 public interface Command {
 	/**
-	 * Return the argument parser implementation
-	 * @return
+	 * Return the argument parser implementation that will be used to pre-process the args line
+	 * Prior to get them passed the MessageWrapper & invoke process method
+	 * @return ArgsParser implementation
 	 */
 	ArgsParser getArgsParser();
 	/**
@@ -31,15 +31,6 @@ public interface Command {
 	 * @return String help message
 	 */
 	String getHelpMessage();
-
-	/**
-	 * Returns the Command configuration object which has been used to 
-	 * Configure the command during initialization
-	 *
-	 * @see org.wanna.jabbot.command.config.CommandConfig
-	 * @return Command configuration
-	 */
-	CommandConfig getConfiguration();
 
 	/**
 	 * Execute the command for a given message in a chat room
