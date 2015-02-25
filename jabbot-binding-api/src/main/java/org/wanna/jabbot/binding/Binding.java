@@ -8,7 +8,7 @@ import org.wanna.jabbot.command.CommandFactory;
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-08
  */
-public interface Binding<T> {
+public interface Binding {
 	/**
 	 * Create a connection to the messaging service
 	 * @param configuration The configuration for the connection;
@@ -22,14 +22,6 @@ public interface Binding<T> {
 	 * @return true if connection is established.
 	 */
 	boolean isConnected();
-
-	/**
-	 * Returns the underlying connection object.
-	 * example smack XMPPConnection object
-	 *
-	 * @return T underlying connection
-	 */
-	T getWrappedConnection();
 
 	/**
 	 * Join a chatroom for the current connection

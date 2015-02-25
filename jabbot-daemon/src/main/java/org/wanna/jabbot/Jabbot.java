@@ -4,8 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingCreationException;
-import org.wanna.jabbot.binding.ConnectionFactory;
+import org.wanna.jabbot.binding.BindingFactory;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
+import org.wanna.jabbot.binding.config.BindingDefinition;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandFactory;
@@ -16,6 +17,7 @@ import org.wanna.jabbot.config.JabbotConfiguration;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -28,17 +30,18 @@ public class Jabbot {
 
 	private JabbotConfiguration configuration;
 	private List<Binding> connectionList = new ArrayList<>();
-	private ConnectionFactory connectionFactory;
+	private BindingFactory bindingFactory;
 
 	public Jabbot( JabbotConfiguration configuration ) {
 		this.configuration = configuration;
+		this.bindingFactory = newConnectionFactory(configuration.getBindings());
 	}
 
 	public boolean connect(){
 		for (BindingConfiguration connectionConfiguration : configuration.getServerList()) {
 			Binding conn;
 			try {
-				conn = connectionFactory.create(connectionConfiguration);
+				conn = bindingFactory.create(connectionConfiguration);
 				if(conn instanceof CommandFactoryAware){
 					CommandFactory commandFactory = newCommandFactory(connectionConfiguration.getCommands());
 					((CommandFactoryAware)conn).setCommandFactory(commandFactory);
@@ -63,8 +66,27 @@ public class Jabbot {
 	public void disconnect(){
 	}
 
+	private BindingFactory newConnectionFactory(Collection<BindingDefinition> bindings){
+		BindingFactory factory =  new JabbotBindingFactory();
+		if(bindings == null){
+			return factory;
+		}
+
+		for (BindingDefinition binding : bindings) {
+			try {
+				Class clazz = Class.<Command>forName(String.valueOf(binding.getClassName()));
+				Class<? extends Binding> connectionClass = (Class<? extends Binding>)clazz;
+				logger.info("registering {} binding with class {}",binding.getName(),binding.getClassName());
+				factory.register(binding.getName(),connectionClass);
+			} catch (ClassNotFoundException e) {
+				logger.error("unable to register {} binding with class {}",binding.getName(),binding.getClassName());
+			}
+		}
+		return factory;
+	}
+
 	/**
-	 * Create a new Commandractory and populate it with the commands registered for that binding
+	 * Create a new CommandFactory and populate it with the commands registered for that binding
 	 * @param commandConfigs The List of {@link org.wanna.jabbot.command.Command} to register in the factory
 	 *
 	 * @return populated CommandFactory
@@ -93,9 +115,5 @@ public class Jabbot {
 			}
 		}
 		return commandFactory;
-	}
-
-	public void setConnectionFactory(ConnectionFactory connectionFactory) {
-		this.connectionFactory = connectionFactory;
 	}
 }

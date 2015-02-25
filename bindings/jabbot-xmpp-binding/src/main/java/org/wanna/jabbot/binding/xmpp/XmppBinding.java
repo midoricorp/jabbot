@@ -32,7 +32,6 @@ import java.util.Map;
 public class XmppBinding extends AbstractBinding<XMPPConnection> {
 	private final Logger logger = LoggerFactory.getLogger(XmppBinding.class);
 	private Map<String,Room> rooms = new HashMap<>();
-	private MucCommandListener commandListener;
 	private int pingInterval = 3000;
 	private boolean allowSelfSigned = false;
 
@@ -55,7 +54,7 @@ public class XmppBinding extends AbstractBinding<XMPPConnection> {
 			connection.connect();
 			connection.login(configuration.getUsername(),configuration.getPassword(),configuration.getIdentifier());
 			PingManager.getInstanceFor(connection).setPingInterval(pingInterval);
-			this.initListeners(connection);
+			this.initListeners(configuration.getCommandPrefix(),connection);
 			return connection.isConnected();
 		} catch (XMPPException | SmackException | IOException e) {
 			logger.error("error while connecting",e);
@@ -72,8 +71,14 @@ public class XmppBinding extends AbstractBinding<XMPPConnection> {
 		return room;
 	}
 
-	private void initListeners(XMPPConnection connection){
-		final String prefix = getConfiguration().getCommandPrefix();
+	/**
+	 * Initialize PacketListener for a given {@link org.jivesoftware.smack.XMPPConnection}
+	 * and a Command prefix
+	 *
+	 * @param prefix the command prefix used to filter message
+	 * @param connection the connection on which PacketListener will be registered
+	 */
+	private void initListeners(final String prefix, final XMPPConnection connection){
 		PacketFilter filter = new AndFilter(
 				new MessageTypeFilter(Message.Type.groupchat),
 				new PacketFilter() {
@@ -84,7 +89,7 @@ public class XmppBinding extends AbstractBinding<XMPPConnection> {
 				}
 		);
 
-		commandListener = new MucCommandListener(this,listeners);
+		MucCommandListener commandListener = new MucCommandListener(this, listeners);
 		connection.addPacketListener(commandListener,filter);
 	}
 

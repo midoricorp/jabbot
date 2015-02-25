@@ -2,7 +2,7 @@ package org.wanna.jabbot;
 
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingCreationException;
-import org.wanna.jabbot.binding.ConnectionFactory;
+import org.wanna.jabbot.binding.BindingFactory;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 
 import java.lang.reflect.InvocationTargetException;
@@ -13,7 +13,7 @@ import java.util.Map;
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-09
  */
-public class JabbotConnectionFactory implements ConnectionFactory {
+public class JabbotBindingFactory implements BindingFactory {
 
 	private Map<String,Class<? extends Binding>> registry = new HashMap<>();
 

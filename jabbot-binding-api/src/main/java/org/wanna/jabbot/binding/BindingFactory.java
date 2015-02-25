@@ -6,7 +6,7 @@ import org.wanna.jabbot.binding.config.BindingConfiguration;
  * @author vmorsiani <vmorsiani>
  * @since 2015-01-17
  */
-public interface ConnectionFactory {
+public interface BindingFactory {
 	/**
 	 * Instantiate a binding based on the connection configuration which is passed to it.
 	 * The returned connection won't initiate the connection to the defined server.

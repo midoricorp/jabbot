@@ -11,13 +11,13 @@ import java.util.List;
 
 /**
  * Adapter class for a {@link Binding} implementation.
- * It instantiate and populate the Binding {@link org.wanna.jabbot.binding.ConnectionFactory}
+ * It instantiate and populate the Binding {@link BindingFactory}
  * based on the binding configuration
  *
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-08
  */
-public abstract class AbstractBinding<T> implements Binding<T>, CommandFactoryAware {
+public abstract class AbstractBinding<T> implements Binding, CommandFactoryAware {
 	private final Logger logger = LoggerFactory.getLogger(AbstractBinding.class);
 	protected T connection;
 	protected CommandFactory commandFactory;
@@ -36,6 +36,12 @@ public abstract class AbstractBinding<T> implements Binding<T>, CommandFactoryAw
 		return connection;
 	}
 
+	/**
+	 * Returns the underlying connection object.
+	 * example smack XMPPConnection object
+	 *
+	 * @return T underlying connection
+	 */
 	public BindingConfiguration getConfiguration(){
 		return configuration;
 	}
