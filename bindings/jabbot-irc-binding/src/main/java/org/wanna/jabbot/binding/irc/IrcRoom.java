@@ -23,11 +23,6 @@ public class IrcRoom extends AbstractRoom<IrcBinding> {
 	}
 
 	@Override
-	public RoomConfiguration getConfiguration() {
-		return configuration;
-	}
-
-	@Override
 	public boolean sendMessage(String message) {
 		IRCApi ircApi = connection.getWrappedConnection();
 		StringTokenizer tokenizer  = new StringTokenizer(message,"\n");

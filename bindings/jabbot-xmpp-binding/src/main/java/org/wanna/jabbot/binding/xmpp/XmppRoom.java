@@ -27,11 +27,6 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 		super(connection);
 	}
 
-	@Override
-	public RoomConfiguration getConfiguration() {
-		return configuration;
-	}
-
 	public boolean sendMessage(final String message) {
 		try {
 			String secured = message;
@@ -49,28 +44,31 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 
 	@Override
 	public boolean join(RoomConfiguration configuration) {
+		final int nickChangeAttempts = 5;
 		this.configuration = configuration;
 		muc = new MultiUserChat(connection.getWrappedConnection(),configuration.getName());
 		String nickname = configuration.getNickname();
 		int i = 0;
-
-		try{
-			DiscussionHistory history = new DiscussionHistory();
-			history.setSince(new Date());
-			muc.join(nickname,null,history,connection.getWrappedConnection().getPacketReplyTimeout());
-			logger.info("[XMPP] joining room {}",configuration.getName());
-		}catch (XMPPException.XMPPErrorException e){
-			logger.error("error condition",e.getXMPPError().getCondition());
-			if(e.getXMPPError().getCondition().equals(XMPPError.Condition.conflict.toString())){
-				logger.debug("nickname already taken.. changing");
-				nickname+=i;
-				i++;
-				configuration.setNickname(nickname);
+		while(i<nickChangeAttempts){
+			try{
+				DiscussionHistory history = new DiscussionHistory();
+				history.setSince(new Date());
+				muc.join(nickname,null,history,connection.getWrappedConnection().getPacketReplyTimeout());
+				logger.info("[XMPP] joining room {}",configuration.getName());
+				return true;
+			}catch (XMPPException.XMPPErrorException e){
+				logger.error("error condition",e.getXMPPError().getCondition());
+				if(e.getXMPPError().getCondition().equals(XMPPError.Condition.conflict.toString())){
+					logger.debug("nickname already taken.. changing");
+					nickname+=i;
+					i++;
+					configuration.setNickname(nickname);
+				}
+			} catch ( SmackException e) {
+				logger.error("error while joining room", e);
+				return false;
 			}
-		} catch ( SmackException e) {
-			logger.error("error while joining room", e);
 		}
-
 		return false;
 	}
 

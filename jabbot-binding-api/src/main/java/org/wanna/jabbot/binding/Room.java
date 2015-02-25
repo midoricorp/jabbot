@@ -10,30 +10,19 @@ import org.wanna.jabbot.binding.config.RoomConfiguration;
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-09
  */
-public interface Room<C> /*extends MucHolder*/{
-	/**
-	 * Retrieve the room configuration
-	 * @return
-	 */
-	RoomConfiguration getConfiguration();
+public interface Room{
 
 	/**
 	 * Send a message to the room itself
-	 * @param message
-	 * @return
+	 * @param message the string message to send to the room
+	 * @return true if message has been sent properly
 	 */
 	boolean sendMessage(String message);
 
 	/**
-	 * Retrieve the @{@link Binding} to which this Room is bound.
-	 * @return connection
-	 */
-	C getConnection();
-
-	/**
 	 * Join on room on the current binding
 	 * @param configuration the room configuration
-	 * @return
+	 * @return true if room as been joined properly
 	 */
 	boolean join(final RoomConfiguration configuration);
 

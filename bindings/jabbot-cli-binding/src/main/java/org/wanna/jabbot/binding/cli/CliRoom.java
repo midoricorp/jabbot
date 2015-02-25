@@ -56,11 +56,6 @@ public class CliRoom extends AbstractRoom<Object> implements Runnable {
 	}
 
 	@Override
-	public RoomConfiguration getConfiguration() {
-		return configuration;
-	}
-
-	@Override
 	public boolean sendMessage(String message) {
 		System.out.println(message);
 		return true;
