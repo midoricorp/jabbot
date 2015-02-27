@@ -3,7 +3,7 @@
     <parent>
         <artifactId>jabbot-extensions-master</artifactId>
         <groupId>org.wanna.jabbot.extensions</groupId>
-        <version>0.2</version>
+        <version>0.3-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
