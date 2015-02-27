@@ -43,6 +43,7 @@ public class JabbotBindingListener implements BindingListener{
 			MessageWrapper wrapper = new MessageWrapper(message);
 			wrapper.setArgs(args);
 			wrapper.setSender(message.getSender());
+			wrapper.setRoomName(message.getRoomName());
 			CommandResult commandResult = command.process(wrapper);
 			if(commandResult == null){
 				logger.warn("Aborting due to undefined command result for command {}",command.getClass());

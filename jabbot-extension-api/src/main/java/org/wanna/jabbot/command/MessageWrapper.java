@@ -10,6 +10,7 @@ import java.util.List;
 public class MessageWrapper {
 	private Object wrappedMessage;
 	private String body;
+	private String roomName;
 	private String sender;
 	private List<String> args = new ArrayList<>();
 
@@ -39,6 +40,14 @@ public class MessageWrapper {
 
 	public void setSender(String sender) {
 		this.sender = sender;
+	}
+
+	public String getRoomName() {
+		return roomName;
+	}
+
+	public void setRoomName(String roomName) {
+		this.roomName = roomName;
 	}
 
 	public List<String> getArgs() {

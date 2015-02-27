@@ -5,13 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingCreationException;
 import org.wanna.jabbot.binding.BindingFactory;
+import org.wanna.jabbot.binding.BindingMessage;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.BindingDefinition;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
-import org.wanna.jabbot.command.Command;
-import org.wanna.jabbot.command.CommandFactory;
+import org.wanna.jabbot.command.*;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.behavior.Configurable;
+import org.wanna.jabbot.command.behavior.MessageSenderAware;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.config.JabbotConfiguration;
 
@@ -43,7 +44,7 @@ public class Jabbot {
 			try {
 				conn = bindingFactory.create(connectionConfiguration);
 				if(conn instanceof CommandFactoryAware){
-					CommandFactory commandFactory = newCommandFactory(connectionConfiguration.getCommands());
+					CommandFactory commandFactory = newCommandFactory(conn,connectionConfiguration.getCommands());
 					((CommandFactoryAware)conn).setCommandFactory(commandFactory);
 				}
 
@@ -91,7 +92,7 @@ public class Jabbot {
 	 *
 	 * @return populated CommandFactory
 	 */
-	private CommandFactory newCommandFactory(Set<CommandConfig> commandConfigs){
+	private CommandFactory newCommandFactory(final Binding binding,Set<CommandConfig> commandConfigs){
 		CommandFactory commandFactory = new JabbotCommandFactory();
 		if(commandConfigs == null){
 			return commandFactory;
@@ -107,6 +108,18 @@ public class Jabbot {
 
 				if(command instanceof Configurable){
 					((Configurable)command).configure(commandConfig.getConfiguration());
+				}
+
+				if(command instanceof MessageSenderAware){
+					((MessageSenderAware)command).setMessageSender(
+							new MessageSender() {
+								@Override
+								public void sendMessage(MessageWrapper request,CommandResult result) {
+									BindingMessage response = new BindingMessage(request.getRoomName(), request.getSender(), result.getText());
+									binding.sendMessage(response);
+								}
+							}
+					);
 				}
 
 				commandFactory.register(commandConfig.getName(),command);
