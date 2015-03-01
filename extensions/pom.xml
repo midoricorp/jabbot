@@ -18,6 +18,7 @@
         <module>jabbot-quote-command</module>
         <module>jabbot-propaganda-command</module>
         <module>jabbot-cgi-command</module>
+        <module>jabbot-script-command</module>
     </modules>
 
     <parent>
