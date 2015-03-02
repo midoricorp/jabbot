@@ -86,11 +86,6 @@
             <artifactId>jabbot-cgi-command</artifactId>
             <version>0.3-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>org.wanna.jabbot.extensions</groupId>
-            <artifactId>jabbot-script-command</artifactId>
-            <version>0.3-SNAPSHOT</version>
-        </dependency>
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>

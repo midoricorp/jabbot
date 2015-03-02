@@ -85,21 +85,15 @@
                 {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
                 {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"},
                 {"name":"perl","className":"org.wanna.jabbot.extensions.cgi.CGICommand",
-			"configuration":{
-				"script":"example_cgi.pl"
-			}
-		},
+			        "configuration":{
+				        "script":"example_cgi.pl"
+			        }
+		        },
                 {"name":"urbandict","className":"org.wanna.jabbot.extensions.cgi.CGICommand",
-			"configuration":{
-				"script":"urbandict.pl"
-			}
-		},
-                {"name":"script","className":"org.wanna.jabbot.extensions.script.ScriptCommand",
-			"configuration":{
-				"loop_limit":"100",
-				"buffer_limit":"1000"
-			}
-		},
+                    "configuration":{
+                        "script":"urbandict.pl"
+                    }
+    		    },
                 {"name":"propaganda","className":"org.wanna.jabbot.extensions.propaganda.PropagandaCommand",
                     "configuration":{
                         ":{guy1}":"Kim Il Sung",
@@ -111,15 +105,14 @@
                         ":{corporate}":"national",
                         ":{company_name}":"Korea",
                         ":{group}":"People's Army",
-			":{hq}":"Paektu",
-			":{capital}":"Pyongyang",
-			":{philosophy}":"socialism",
-			":{job}":"Worker",
-			":{action}":"revolution"
+                        ":{hq}":"Paektu",
+                        ":{capital}":"Pyongyang",
+                        ":{philosophy}":"socialism",
+                        ":{job}":"Worker",
+                        ":{action}":"revolution"
                     }
                 }
             ]
-
         }
     ]
 }
