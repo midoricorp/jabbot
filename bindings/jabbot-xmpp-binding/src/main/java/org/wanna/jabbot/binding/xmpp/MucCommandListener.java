@@ -36,7 +36,12 @@ public class MucCommandListener implements PacketListener{
 			String roomName = StringUtils.parseBareAddress(message.getFrom());
 			BindingMessage m = new BindingMessage(roomName,from,message.getBody());
 			logger.debug("received packet from {} with body: {}",message.getFrom(),message.getBody());
-
+			XmppRoom room = (XmppRoom)binding.getRoom(roomName);
+			//If message is sent by myself, ignore it.
+			if(room == null || from.equals(room.getConfiguration().getNickname())){
+				logger.debug("ignoring packet as it's sent by myself");
+				return;
+			}
 			for (BindingListener listener : listeners) {
 				listener.onMessage(binding,m);
 			}

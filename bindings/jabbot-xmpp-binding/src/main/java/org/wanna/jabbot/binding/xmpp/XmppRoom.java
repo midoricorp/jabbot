@@ -77,6 +77,10 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 		return configuration.getName();
 	}
 
+	public RoomConfiguration getConfiguration() {
+		return configuration;
+	}
+
 	public XmppBinding getConnection() {
 		return connection;
 	}
