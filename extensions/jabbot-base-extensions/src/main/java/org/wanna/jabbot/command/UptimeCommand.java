@@ -1,6 +1,7 @@
 package org.wanna.jabbot.command;
 
-import org.wanna.jabbot.extensions.AbstractCommand;
+import org.wanna.jabbot.command.config.CommandConfig;
+import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -9,14 +10,14 @@ import java.lang.management.RuntimeMXBean;
  * @author vmorsiani <vmorsiani>
  * @since 2014-06-09
  */
-public class UptimeCommand extends AbstractCommand{
+public class UptimeCommand extends AbstractCommandAdapter {
 
-	public UptimeCommand(String commandName) {
-		super(commandName);
+	public UptimeCommand(CommandConfig config){
+		super(config);
 	}
 
 	@Override
-	public void process(MucHolder chatroom, MessageWrapper message) {
+	public CommandResult process(MessageWrapper message) {
 		RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
 		long uptime = rb.getUptime();
 
@@ -36,6 +37,8 @@ public class UptimeCommand extends AbstractCommand{
 
 		long elapsedSeconds = uptime / secondsInMilli;
 		String result = String.format("I'm up since %s day(s) %s hour(s) %s minute(s) and %s seconds",elapsedDays,elapsedHours,elapsedMinutes,elapsedSeconds);
-		chatroom.sendMessage(result);
+		CommandResult commandResult = new CommandResult();
+		commandResult.setText(result);
+		return commandResult;
 	}
 }

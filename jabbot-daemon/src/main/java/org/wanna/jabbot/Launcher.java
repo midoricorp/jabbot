@@ -8,14 +8,10 @@ import org.apache.commons.daemon.DaemonInitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
-import org.wanna.jabbot.binding.ConnectionFactory;
-import org.wanna.jabbot.binding.JabbotConnection;
-import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.config.JabbotConfiguration;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
 import java.util.logging.Level;
 
 /**
@@ -25,7 +21,6 @@ import java.util.logging.Level;
 public class Launcher implements Daemon{
 	final Logger logger = LoggerFactory.getLogger(Launcher.class);
 	private final static String CONFIG_FILE = "jabbot.json";
-
 	private Jabbot jabbot;
 
 	@Override
@@ -35,11 +30,11 @@ public class Launcher implements Daemon{
 		SLF4JBridgeHandler.uninstall();
 		SLF4JBridgeHandler.install();
 		java.util.logging.Logger.getLogger("").setLevel(Level.FINEST);
-
+		//Load and parse Jabbot json config file
 		InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(CONFIG_FILE);
 		JabbotConfiguration jabbotConfiguration = newConfiguration(is);
-
-		jabbot = newInstance(jabbotConfiguration,newConnectionFactory(jabbotConfiguration.getBindings()));
+		//Create Jabbot instance
+		jabbot = new Jabbot(jabbotConfiguration);
 		logger.info("initialization completed.");
 	}
 
@@ -71,28 +66,6 @@ public class Launcher implements Daemon{
 
 	}
 
-	public Jabbot newInstance(JabbotConfiguration configuration,
-							  ConnectionFactory connectionFactory){
-		Jabbot jabbot = new Jabbot(configuration);
-		jabbot.setConnectionFactory(connectionFactory);
-		return jabbot;
-	}
-
-	public ConnectionFactory newConnectionFactory(Collection<BindingConfiguration> bindings){
-		ConnectionFactory factory =  new JabbotConnectionFactory();
-		for (BindingConfiguration binding : bindings) {
-			try {
-				Class clazz = Class.forName(String.valueOf(binding.getClazz()));
-					Class<? extends JabbotConnection> connectionClass = (Class<? extends JabbotConnection>)clazz;
-					logger.info("registering {} binding with class {}",binding.getName(),binding.getClazz());
-					factory.register(binding.getName(),connectionClass);
-			} catch (ClassNotFoundException e) {
-				logger.error("unable to register {} binding with class {}",binding.getName(),binding.getClazz());
-			}
-		}
-		return factory;
-	}
-
 	/**
 	 * Main method allowing to easily run the bot in an IDE
 	 *
@@ -108,7 +81,6 @@ public class Launcher implements Daemon{
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
 				throw e;
 			}
 		}

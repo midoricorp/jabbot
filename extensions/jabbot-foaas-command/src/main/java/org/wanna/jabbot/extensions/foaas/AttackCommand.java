@@ -17,9 +17,10 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.command.CommandResult;
 import org.wanna.jabbot.command.MessageWrapper;
-import org.wanna.jabbot.command.MucHolder;
-import org.wanna.jabbot.extensions.AbstractCommand;
+import org.wanna.jabbot.command.config.CommandConfig;
+import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 import org.wanna.jabbot.extensions.foaas.binding.Field;
 import org.wanna.jabbot.extensions.foaas.binding.Operation;
 
@@ -29,25 +30,24 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.*;
 
-public class AttackCommand extends AbstractCommand{
+public class AttackCommand extends AbstractCommandAdapter {
 	final Logger logger = LoggerFactory.getLogger(AttackCommand.class);
 
 	private final Random randomizer = new Random();
 	private Map<Integer,List<Operation>> operationsMap = new HashMap<>();
 
-	public AttackCommand(String commandName) {
-		super(commandName);
+	public AttackCommand(CommandConfig configuration) {
+		super(configuration);
 		initializeOperations();
 	}
 
-
-
 	@Override
-	public void process(MucHolder chatroom, MessageWrapper message) {
+	public CommandResult process(MessageWrapper message) {
+		String[] args = message.getArgs().toArray(new String[message.getArgs().size()]);
 		String response;
-		if(getParsedCommand().getArgs() != null ){
+		if(args != null ){
 			//Add +1 to args lenght as we'll always have a "from" arg from Sender
-			int length = getParsedCommand().getArgs().length+1;
+			int length = args.length+1;
 			if(length > 2){
 				length = 2;
 			}
@@ -56,25 +56,39 @@ public class AttackCommand extends AbstractCommand{
 			String from = message.getSender();
 
 			try {
-				this.feedFields(operation,from,getParsedCommand().getArgs());
-				response = operation.execute();
-				chatroom.sendMessage(secureResponse(response));
-			} catch (UnsupportedEncodingException e) {
-				logger.error("unable to set Fields",e);
+				String url = buildUrl(operation,from,args);
+				response = query(url);
+				CommandResult result = new CommandResult();
+				result.setText(secureResponse(response));
+				return result;
+			} catch (IOException e) {
+				logger.error("error while querying foaas",e);
+
 			}
 		}
+		return null;
 	}
 
-	private void feedFields(Operation operation,String from, String[] args) throws UnsupportedEncodingException {
+	private String buildUrl(Operation operation,String from, String[] args){
+		String url = operation.getUrl();
 		int i = 0;
 		for (Field field : operation.getFields()) {
+			String value;
 			if(field.getField().equalsIgnoreCase("from")){
-				field.setValue(URLEncoder.encode(from,"UTF-8"));
-			}else if(args != null && args.length > i){
-				field.setValue(URLEncoder.encode(args[i],"UTF-8"));
+				value = from;
+				url = url.replace(":"+field.getField(),from);
+			}else{
+				value = args[i];
+
 				i++;
 			}
+			try {
+				url = url.replace(":"+field.getField(),URLEncoder.encode(value,"UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+				logger.error("unable to encode {}",value,e);
+			}
 		}
+		return url;
 	}
 
 	/**
@@ -88,7 +102,7 @@ public class AttackCommand extends AbstractCommand{
 	private String secureResponse(String response) throws UnsupportedEncodingException {
 		response = URLDecoder.decode(response,"UTF-8");
 		while(response.startsWith("/")){
-			response = response.replace("/","");
+			response = response.replaceFirst("/", "");
 		}
 		return response;
 	}

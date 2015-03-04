@@ -6,8 +6,6 @@ package org.wanna.jabbot.command.parser;
  */
 
 public interface CommandParser {
-	ParsedCommand parse(String message);
-	String getCommandPrefix();
-	void setCommandPrefix(String prefix);
+	CommandParsingResult parse(String message);
 }
 

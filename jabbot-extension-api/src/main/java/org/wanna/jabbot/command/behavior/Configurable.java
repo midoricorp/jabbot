@@ -4,7 +4,7 @@ import java.util.Map;
 
 /**
  * Allow an object to receive extra arguments as a Map during initialization phase.
- * The Map will be fed from jabbot json config file.
+ * The Map will be fed from the json config file.
  *
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-25

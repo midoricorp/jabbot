@@ -7,7 +7,7 @@ import java.util.Map;
  * @since 2014-08-20
  */
 public class CommandConfig {
-	private String name,className;
+	private String name,className,helpMessage;
 	private Map<String,Object> configuration;
 	public String getName() {
 		return name;
@@ -31,5 +31,13 @@ public class CommandConfig {
 
 	public void setConfiguration(Map<String, Object> configuration) {
 		this.configuration = configuration;
+	}
+
+	public String getHelpMessage() {
+		return helpMessage;
+	}
+
+	public void setHelpMessage(String helpMessage) {
+		this.helpMessage = helpMessage;
 	}
 }

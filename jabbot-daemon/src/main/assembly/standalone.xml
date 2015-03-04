@@ -22,8 +22,10 @@
             <directory>src/main/resources</directory>
             <filtered>true</filtered>
             <outputDirectory>/bin/</outputDirectory>
+            <fileMode>0755</fileMode>
             <includes>
                 <include>*.sh</include>
+                <include>*.pl</include>
             </includes>
         </fileSet>
         <fileSet>
@@ -33,6 +35,14 @@
             <excludes>
                 <exclude>*</exclude>
             </excludes>
+        </fileSet>
+        <fileSet>
+            <directory>src/main/scripts</directory>
+            <outputDirectory>/extension-scripts</outputDirectory>
+            <directoryMode>0755</directoryMode>
+            <includes>
+                <include>**/*</include>
+            </includes>
         </fileSet>
     </fileSets>
 

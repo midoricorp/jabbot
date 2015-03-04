@@ -1,41 +1,114 @@
-## Introduction
+# Jabbot
 
-Jabbot is an easily extensible jabber robot written in Java.
+Jabbot is an easily extensible chat robot written in java.
+It supports connection to multiple servers & chat systems, and a pluggable chatroom command system and focus on extensibility. 
 
-It mainly consist of 2 projects:
-- jabbot-daemon: which is the current main application.
-- jaboot-extension-api: which contains the api to provide a basic command interface for the robot.
+Jabbot consists of 3 projects:
 
-Extensions can be written using this api and are currently stored under the [extensions](https://github.com/vmorsiani/jabbot/tree/master/extensions) directory.
+1. **jabbot-binding-api** whihch provide a set of interfaces to create new chat system bindings such like XMPP, IRC...
+2. **jabbot-extension-api** which aims at providing an interface for plugging new commands & features for chat rooms
+3. **jabbot-daemon** which is the actual Bot daemon
 
-## Building Jabbot
-In order to get jabbot running you will need the following installed:
-- [maven2](http://maven.apache.org/)
-- java 1.7
+**Bindings** can be written using jabbot-binding api and are currently stored under the
+[bindings](https://github.com/vmorsiani/jabbot/tree/master/bindings) directory.
 
-In order to configure jabbot, simply edit the 2 following files in jabbot-daemon:
-- jabbot.properties : used to set jabber connection information as well as some additional settings for jabbot.
-- chatrooms.xml: used to set a list of chatrooms to join on startup.
+**Extensions** can be written using jabbot-extension-api and are currently stored under the [extensions](https://github.com/vmorsiani/jabbot/tree/master/extensions) directory.
 
-Once the above is complete, go into the root folder of the project and run
+## Quickstart
+Assuming you have git, java 7, jsvc and maven2 installed
+
+**Build it**
+```bash
+host$ git clone https://github.com/vmorsiani/jabbot.git
+host$ cd jabbot/
+host$ mvn clean install -Pstandalone
+host$ cd jabbot-daemon/target/
+host$ tar -xzf jabbot-daemon-<version>.tar.gz
+host$ cd jabbot-daemon-<version>/
 ```
-mvn clean install
+**Configure it**
+```bash
+host$ vi conf/jabbot.json
 ```
-This will produce a tar.gz file under jabbot-daemon/target
-untar the file, go in the bin directory and run
-```
-sh jabbot.sh start
+**Start it**
+```bash
+host$ bin/jabbot.sh start
 ```
 
-By default, jabbot comes only with the [base command](https://github.com/vmorsiani/jabbot/tree/master/extensions/jabbot-base-extensions) extension.
-If you want to add more modules to jabbot, simply go into the desired extension, and run once more 
+## Jabbot Configuration
+Jabbot can be configured by editing the main config file jabbot.json under the conf/ directory.
+The config file consists in the following main areas
+
+####bindings####
+```json
+    "bindings":[
+        {   "name":"XMPP",
+            "className":"org.wanna.jabbot.binding.xmpp.XmppBinding"
+        }
+    ]
 ```
-mvn clean install
+Defines a list of available binding type such as xmpp, irc..
+
+* **name:** a unique identifier for this binding
+* **className:** the canonical name of the binding connection class
+
+####serverList####
+```json
+    "serverList":[
+        {   "type" : "XMPP",
+            "url":"jabber.hostname.com",
+            "serverName":"hostname.com",
+            "port":5222,
+            "username":"Jabbot",
+            "password":"password",
+            "commandPrefix":"!",
+            "parameters":{
+                "allow_self_signed":true,
+                "ping_interval":600
+            },            
+            "rooms":[
+                {"name":"test_room@conference.hostname.com","nickname":"Jabbot"}
+            ],
+            "commands":[
+                {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"}
+            ]
+        }
+    ]
 ```
-This should produce a jar file under the target directory.
-simply copy this jar file into the lib folder of the previously untared jabbot-daemon.
-And restart the service:
+
+Defines a list of servers to which Jabbot will connect
+
+* **type:** the name of a binding
+* **url:** the url to which to connect
+* **commandPrefix:** the command prefix used to trigger commands & action in a chatroom
+* **parameters**: a map of binding specific parameters
+* **rooms:**  list of rooms to join on this connection
+* **commands:** list of commands available for this connection.
+
+####commands####
+```json
+    "commands":[
+        {"name":"jira","className":"org.wanna.jabbot.extensions.jira.IssueViewer",
+            "configuration":{
+                "url":"https://jira.hostname.com",
+                "username":"username",
+                "password":"password"
+            }
+        }
+    ]
 ```
-sh jabbot.sh stop
-sh jabbot.sh start
+
+Defines a list of availble commands for the parent object
+
+* **name:** the name of the command
+* **className:** the canonical name of the Command class
+* **configuration:** a configuration Map passed to the Command at initialization phase
+
+## Testing
+If you want to quickly test your new extension, there's one special type of binding which allow you to start Jabbot without any configuration required.
+
+The **cli binding** is a binding emulator which will just read from standard input, process the command and print the response on the console.
+In order to use it, simply follow the same steps show in the quickstart section but start it as following 
+```bash
+host$ bin/jabbotcli.sh
 ```

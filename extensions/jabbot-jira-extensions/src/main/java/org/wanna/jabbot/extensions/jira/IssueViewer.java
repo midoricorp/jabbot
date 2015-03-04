@@ -14,10 +14,10 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.command.CommandResult;
 import org.wanna.jabbot.command.MessageWrapper;
-import org.wanna.jabbot.command.MucHolder;
-import org.wanna.jabbot.command.behavior.Configurable;
-import org.wanna.jabbot.extensions.AbstractCommand;
+import org.wanna.jabbot.command.config.CommandConfig;
+import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 import org.wanna.jabbot.extensions.jira.binding.Issue;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ import java.util.Map;
  * @author vmorsiani <vmorsiani>
  * @since 2014-06-20
  */
-public class IssueViewer extends AbstractCommand implements Configurable{
+public class IssueViewer extends AbstractCommandAdapter {
 	final Logger logger = LoggerFactory.getLogger(IssueViewer.class);
 	private String baseUrl;
 	private String username;
@@ -36,10 +36,9 @@ public class IssueViewer extends AbstractCommand implements Configurable{
 	private UsernamePasswordCredentials credentials;
 	private final DefaultHttpClient httpclient = new DefaultHttpClient();
 
-
-	public IssueViewer(String commandName) {
-		super(commandName);
-		mapper = new ObjectMapper(); // can reuse, share globally
+	public IssueViewer(CommandConfig configuration) {
+		super(configuration);
+		mapper = new ObjectMapper(); //TODO can reuse, share globally
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 	}
@@ -52,11 +51,12 @@ public class IssueViewer extends AbstractCommand implements Configurable{
 	}
 
 	@Override
-	public void process(MucHolder chatroom, MessageWrapper message) {
-		String[] args = super.getParsedCommand().getArgs();
-		if( args == null || args.length < 1 ){
-			chatroom.sendMessage("invalid parameter");
-			return;
+	public CommandResult process(MessageWrapper message) {
+		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
+		CommandResult result = new CommandResult();
+		if( args.length < 1 ){
+			result.setText("invalid parameter");
+			return result;
 		}
 
 		String key = args[0];
@@ -82,12 +82,13 @@ public class IssueViewer extends AbstractCommand implements Configurable{
 				}
 				sb.append("URL: ").append(baseUrl).append("/browse/").append(issue.getKey());
 			}
-			chatroom.sendMessage(sb.toString());
+			result.setText(sb.toString());
+			return result;
 		} catch (IOException e) {
 			logger.error("error querying",e);
 		}
+		return null;
 	}
-
 
 	private void initCredentials(){
 		credentials = new UsernamePasswordCredentials(username,password);
@@ -118,17 +119,4 @@ public class IssueViewer extends AbstractCommand implements Configurable{
 
 		return null;
 	}
-
-	public void setBaseUrl(String baseUrl) {
-		this.baseUrl = baseUrl;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 }

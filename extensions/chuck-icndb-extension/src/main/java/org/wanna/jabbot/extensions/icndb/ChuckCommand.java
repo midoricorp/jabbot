@@ -11,9 +11,10 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.command.CommandResult;
 import org.wanna.jabbot.command.MessageWrapper;
-import org.wanna.jabbot.command.MucHolder;
-import org.wanna.jabbot.extensions.AbstractCommand;
+import org.wanna.jabbot.command.config.CommandConfig;
+import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 import org.wanna.jabbot.extensions.icndb.binding.Result;
 
 import java.io.IOException;
@@ -25,18 +26,18 @@ import java.net.URLEncoder;
  * @author vmorsiani <vmorsiani>
  * @since 2015-01-14
  */
-public class ChuckCommand extends AbstractCommand{
+public class ChuckCommand extends AbstractCommandAdapter {
 	final Logger logger = LoggerFactory.getLogger(ChuckCommand.class);
 	final ObjectMapper mapper = new ObjectMapper();
 
-	public ChuckCommand(String commandName) {
-		super(commandName);
+	public ChuckCommand(CommandConfig configuration) {
+		super(configuration);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
 
 	@Override
-	public void process(MucHolder chatroom, MessageWrapper message) {
-		String args[] = getParsedCommand().getArgs();
+	public CommandResult process(MessageWrapper message) {
+		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
 		String options = null;
 		if(args != null && args.length > 0){
 			try {
@@ -53,12 +54,14 @@ public class ChuckCommand extends AbstractCommand{
 			Result parsed = mapper.readValue(response,Result.class);
 			if(parsed.getType().equalsIgnoreCase("success")){
 				String joke = StringEscapeUtils.unescapeHtml4(parsed.getValue().getJoke());
-				chatroom.sendMessage(joke);
+				CommandResult result = new CommandResult();
+				result.setText(joke);
+				return result;
 			}
 		} catch (IOException e) {
 			logger.error("error querying icndb",e);
 		}
-
+		return null;
 	}
 
 	/**

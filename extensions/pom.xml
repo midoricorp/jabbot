@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.wanna.jabbot.extensions</groupId>
     <artifactId>jabbot-extensions-master</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -17,12 +15,15 @@
         <module>jabbot-jira-extensions</module>
         <module>chuck-icndb-extension</module>
         <module>jabbot-call-command</module>
+        <module>jabbot-quote-command</module>
+        <module>jabbot-propaganda-command</module>
+        <module>jabbot-cgi-command</module>
     </modules>
 
     <parent>
         <groupId>org.wanna.jabbot</groupId>
         <artifactId>jabbot-master</artifactId>
-        <version>0.2-SNAPSHOT</version>
+        <version>0.3-SNAPSHOT</version>
     </parent>
 
     <dependencyManagement>
@@ -30,7 +31,7 @@
             <dependency>
                 <groupId>org.wanna.jabbot.extensions</groupId>
                 <artifactId>jabbot-extension-helpers</artifactId>
-                <version>0.2-SNAPSHOT</version>
+                <version>0.3-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -39,7 +40,7 @@
         <dependency>
             <groupId>org.wanna.jabbot</groupId>
             <artifactId>jabbot-extension-api</artifactId>
-            <version>0.2-SNAPSHOT</version>
+            <version>0.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

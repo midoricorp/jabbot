@@ -1,11 +1,15 @@
 {
     "bindings":[
         {   "name":"XMPP",
-            "clazz":"org.wanna.jabbot.binding.xmpp.XmppConnection"
+            "className":"org.wanna.jabbot.binding.xmpp.XmppBinding"
         },
         {
             "name":"IRC",
-            "clazz":"org.wanna.jabbot.binding.irc.IrcConnection"
+            "className":"org.wanna.jabbot.binding.irc.IrcBinding"
+        },
+        {
+            "name":"CLI",
+            "className":"org.wanna.jabbot.binding.cli.CliBinding"
         }
     ],
     "serverList":[
@@ -18,6 +22,10 @@
             "identifier":"jabbot",
             "commandPrefix":"!",
             "debug":false,
+            "parameters":{
+                "allow_self_signed":true,
+                "ping_interval":600
+            },
             "rooms":[
                 {"name":"test_room@conference.hostname.com","nickname":"Jabbot"}
             ],
@@ -25,8 +33,15 @@
                 {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"},
                 {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"},
                 {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
+                {"name":"quote","className":"org.wanna.jabbot.extensions.quote.QuoteCommand"},
                 {"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
                 {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
+                {"name":"call","className":"org.wanna.jabbot.extensions.call.CallCommand",
+                    "configuration":{
+                        "url":"http://voxcall.me",
+                        "missing_user":"Hey! Who should I call? (flastname)"
+                    }
+                },
                 {"name":"jira","className":"org.wanna.jabbot.extensions.jira.IssueViewer",
                     "configuration":{
                         "url":"https://jira.hostname.com",
@@ -55,6 +70,49 @@
                 {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"}
             ]
 
+        },
+        {   "type" : "CLI",
+            "url":"localhost",
+            "identifier":"Jabbot",
+            "commandPrefix":"!",
+            "rooms":[
+                {"name":"jabbot-dev","nickname":"Jabbot"}
+            ],
+            "commands":[
+                {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"},
+                {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
+                {"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
+                {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
+                {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"},
+                {"name":"perl","className":"org.wanna.jabbot.extensions.cgi.CGICommand",
+			        "configuration":{
+				        "script":"example_cgi.pl"
+			        }
+		        },
+                {"name":"urbandict","className":"org.wanna.jabbot.extensions.cgi.CGICommand",
+                    "configuration":{
+                        "script":"urbandict.pl"
+                    }
+    		    },
+                {"name":"propaganda","className":"org.wanna.jabbot.extensions.propaganda.PropagandaCommand",
+                    "configuration":{
+                        ":{guy1}":"Kim Il Sung",
+                        ":{guy2}":"Kim Jong Il",
+                        ":{guy3}":"Kim Jong Un",
+                        ":{company}":"country",
+                        ":{exec}":"Party",
+                        ":{enemy}":"Japan",
+                        ":{corporate}":"national",
+                        ":{company_name}":"Korea",
+                        ":{group}":"People's Army",
+                        ":{hq}":"Paektu",
+                        ":{capital}":"Pyongyang",
+                        ":{philosophy}":"socialism",
+                        ":{job}":"Worker",
+                        ":{action}":"revolution"
+                    }
+                }
+            ]
         }
     ]
 }
