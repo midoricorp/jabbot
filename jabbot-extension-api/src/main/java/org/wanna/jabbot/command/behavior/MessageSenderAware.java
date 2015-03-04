@@ -3,7 +3,7 @@ package org.wanna.jabbot.command.behavior;
 import org.wanna.jabbot.command.MessageSender;
 
 /**
- * Interface which indicates that the implementor is MessageSender aware.
+ * Interface which indicates that the implementer is MessageSender aware.
  * Any commands implementing this interface will have a MessageSender implementation injected
  * which will allow it to autonomously send message.
  * 
