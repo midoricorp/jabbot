@@ -5,6 +5,8 @@ import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.command.CommandFactory;
 
 /**
+ * A Binding represent an implementation of a Chat protocol such like XMPP, IRC, etc.
+ *
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-08
  */
