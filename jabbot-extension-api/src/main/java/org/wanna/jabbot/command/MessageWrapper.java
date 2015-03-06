@@ -8,23 +8,10 @@ import java.util.List;
  * @since 2014-08-07
  */
 public class MessageWrapper {
-	private Object wrappedMessage;
 	private String body;
 	private String roomName;
 	private String sender;
 	private List<String> args = new ArrayList<>();
-
-	public MessageWrapper(Object wrappedMessage) {
-		this.wrappedMessage = wrappedMessage;
-	}
-
-	public Object getWrappedMessage() {
-		return wrappedMessage;
-	}
-
-	public void setWrappedMessage(Object wrappedMessage) {
-		this.wrappedMessage = wrappedMessage;
-	}
 
 	public String getBody() {
 		return body;

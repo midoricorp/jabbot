@@ -40,7 +40,7 @@ public class JabbotBindingListener implements BindingListener{
 		try {
 			Command command = binding.getCommandFactory().create(result.getCommandName());
 			List<String> args = command.getArgsParser().parse(result.getRawArgsLine());
-			MessageWrapper wrapper = new MessageWrapper(message);
+			MessageWrapper wrapper = new MessageWrapper();
 			wrapper.setArgs(args);
 			wrapper.setSender(message.getSender());
 			wrapper.setRoomName(message.getRoomName());

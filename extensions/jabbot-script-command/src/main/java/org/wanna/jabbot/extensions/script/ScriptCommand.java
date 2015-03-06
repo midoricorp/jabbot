@@ -1,25 +1,19 @@
 package org.wanna.jabbot.extensions.script;
 
-import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.command.parser.args.NullArgParser;
-import org.wanna.jabbot.command.parser.args.ArgsParser;
-import org.wanna.jabbot.extensions.AbstractCommandAdapter;
+import com.sipstacks.script.ExternalFunction;
+import com.sipstacks.script.Script;
+import com.sipstacks.script.ScriptParseException;
+import org.wanna.jabbot.command.Command;
+import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.CommandResult;
 import org.wanna.jabbot.command.MessageWrapper;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.config.CommandConfig;
+import org.wanna.jabbot.command.parser.args.ArgsParser;
+import org.wanna.jabbot.command.parser.args.NullArgParser;
 import org.wanna.jabbot.extensions.AbstractCommandAdapter;
-import org.wanna.jabbot.command.MessageWrapper;
-import org.wanna.jabbot.command.Command;
-import org.wanna.jabbot.command.CommandFactory;
+
 import java.io.StringReader;
-
-
-import com.sipstacks.script.Script;
-import com.sipstacks.script.ScriptParseException;
-import com.sipstacks.script.ExternalFunction;
-
-
 import java.util.Map;
 
 /**
@@ -73,7 +67,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 				}
 
 				public String run(String args) {
-					MessageWrapper msg = new MessageWrapper(null);
+					MessageWrapper msg = new MessageWrapper();
 					msg.setBody(args);
 					msg.setArgs(cmd.getArgsParser().parse(msg.getBody()));
 					msg.setSender(sender);
