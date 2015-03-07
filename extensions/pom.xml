@@ -18,10 +18,7 @@
         <module>jabbot-quote-command</module>
         <module>jabbot-propaganda-command</module>
         <module>jabbot-cgi-command</module>
-	<!-- install tsearle/script before uncommenting -->
-	<!--
         <module>jabbot-script-command</module>
-	-->
     </modules>
 
     <parent>

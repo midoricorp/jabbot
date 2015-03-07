@@ -116,7 +116,8 @@
                         ":{job}":"Worker",
                         ":{action}":"revolution"
                     }
-                }
+                },
+                {"name":"script","className":"org.wanna.jabbot.extensions.script.ScriptCommand"}
             ]
         }
     ]

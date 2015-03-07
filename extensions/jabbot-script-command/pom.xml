@@ -12,6 +12,17 @@
     <artifactId>jabbot-script-command</artifactId>
     <version>0.3-SNAPSHOT</version>
 
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-tsearle-maven</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/tsearle/maven</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -20,7 +31,7 @@
         <dependency>
 	    <groupId>com.sipstacks.script</groupId>
 	    <artifactId>script</artifactId>
-	    <version>0.1-SNAPSHOT</version>
+	    <version>0.1</version>
         </dependency>
         <dependency>
             <groupId>org.wanna.jabbot.extensions</groupId>
