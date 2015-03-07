@@ -1,10 +1,9 @@
-package org.wanna.jabbot.extensions;
+package org.wanna.jabbot.command;
 
-import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.behavior.Configurable;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.command.parser.args.ArgsParser;
-import org.wanna.jabbot.command.parser.args.QuotedStringArgParser;
+import org.wanna.jabbot.command.parser.ArgsParser;
+import org.wanna.jabbot.command.parser.QuotedStringArgParser;
 
 import java.util.Map;
 
@@ -41,7 +40,7 @@ public abstract class AbstractCommandAdapter implements Command, Configurable {
 	 * Returns a default implementation of ArgsParser.
 	 * Override this method if you want to use a custom parser;
 	 *
-	 * default: {@link org.wanna.jabbot.command.parser.args.QuotedStringArgParser}
+	 * default: {@link org.wanna.jabbot.command.parser.QuotedStringArgParser}
 	 *
 	 * @return default ArgsParser
 	 */

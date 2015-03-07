@@ -1,17 +1,13 @@
 package org.wanna.jabbot.command;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @author vmorsiani <vmorsiani>
- * @since 2014-08-07
+ * @since 2015-02-21
  */
-public class MessageWrapper {
+public class DefaultCommandMessage implements CommandMessage{
 	private String body;
-	private String roomName;
 	private String sender;
-	private List<String> args = new ArrayList<>();
+	private String roomName;
 
 	public String getBody() {
 		return body;
@@ -21,6 +17,7 @@ public class MessageWrapper {
 		this.body = body;
 	}
 
+	@Override
 	public String getSender() {
 		return sender;
 	}
@@ -29,19 +26,12 @@ public class MessageWrapper {
 		this.sender = sender;
 	}
 
+	@Override
 	public String getRoomName() {
 		return roomName;
 	}
 
 	public void setRoomName(String roomName) {
 		this.roomName = roomName;
-	}
-
-	public List<String> getArgs() {
-		return args;
-	}
-
-	public void setArgs(List<String> args) {
-		this.args = args;
 	}
 }

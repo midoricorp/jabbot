@@ -1,4 +1,4 @@
-package org.wanna.jabbot.command.parser.args;
+package org.wanna.jabbot.command.parser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.List;
  * @author vmorsiani <vmorsiani>
  * @since 2015-02-18
  */
-public class QuotedStringArgParser implements ArgsParser{
+public class QuotedStringArgParser implements ArgsParser {
 	@Override
 	public List<String> parse(String argLine) {
 		List<String> args = new ArrayList<>();

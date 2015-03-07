@@ -6,13 +6,11 @@ import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.BindingMessage;
 import org.wanna.jabbot.command.Command;
+import org.wanna.jabbot.command.CommandMessage;
 import org.wanna.jabbot.command.CommandNotFoundException;
-import org.wanna.jabbot.command.CommandResult;
-import org.wanna.jabbot.command.MessageWrapper;
+import org.wanna.jabbot.command.DefaultCommandMessage;
 import org.wanna.jabbot.command.parser.CommandParser;
 import org.wanna.jabbot.command.parser.CommandParsingResult;
-
-import java.util.List;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -39,17 +37,16 @@ public class JabbotBindingListener implements BindingListener{
 
 		try {
 			Command command = binding.getCommandFactory().create(result.getCommandName());
-			List<String> args = command.getArgsParser().parse(result.getRawArgsLine());
-			MessageWrapper wrapper = new MessageWrapper();
-			wrapper.setArgs(args);
+			DefaultCommandMessage wrapper = new DefaultCommandMessage();
+			wrapper.setBody(result.getRawArgsLine());
 			wrapper.setSender(message.getSender());
 			wrapper.setRoomName(message.getRoomName());
-			CommandResult commandResult = command.process(wrapper);
+			CommandMessage commandResult = command.process(wrapper);
 			if(commandResult == null){
 				logger.warn("Aborting due to undefined command result for command {}",command.getClass());
 				return;
 			}
-			BindingMessage response = new BindingMessage(message.getRoomName(),message.getSender(),commandResult.getText());
+			BindingMessage response = new BindingMessage(message.getRoomName(),message.getSender(),commandResult.getBody());
 			binding.sendMessage(response);
 		} catch (CommandNotFoundException e) {
 			logger.debug("command not found: '{}'", e.getCommandName());

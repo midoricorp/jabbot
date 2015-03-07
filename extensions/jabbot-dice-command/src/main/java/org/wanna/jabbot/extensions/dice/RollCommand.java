@@ -2,11 +2,12 @@ package org.wanna.jabbot.extensions.dice;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.command.CommandResult;
-import org.wanna.jabbot.command.MessageWrapper;
+import org.wanna.jabbot.command.AbstractCommandAdapter;
+import org.wanna.jabbot.command.CommandMessage;
+import org.wanna.jabbot.command.DefaultCommandMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -23,42 +24,42 @@ public class RollCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public CommandResult process(MessageWrapper message) {
-		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
-		CommandResult result = new CommandResult();
+	public CommandMessage process(CommandMessage message) {
+		List<String> args =  getArgsParser().parse(message.getBody());
+		DefaultCommandMessage result = new DefaultCommandMessage();
 		//Set default values
 		int amount = 1;
 		int value = 6;
 
 		try {
-			if(args != null && args.length > 0) {
-				if (args.length > 1) {
-					amount = Integer.parseInt(args[0]);
-					value = Integer.parseInt(args[1]);
+			if(args != null && args.size() > 0) {
+				if (args.size() > 1) {
+					amount = Integer.parseInt(args.get(0));
+					value = Integer.parseInt(args.get(1));
 				} else {
-					value = Integer.parseInt(args[0]);
+					value = Integer.parseInt(args.get(0));
 				}
 			}
 		}catch(NumberFormatException e){
 			logger.debug("invalid parameter",e);
-			result.setText("Invalid parameters");
+			result.setBody("Invalid parameters");
 			return result;
 		}
 
 		if(value <= 0 ){
 			logger.debug("illegal dice value: {}",value);
-			result.setText("invalid dice value: " + value);
+			result.setBody("invalid dice value: " + value);
 			return result;
 		}
 
 		if(amount <= 0){
-			result.setText("You need to roll at least 1 dice");
+			result.setBody("You need to roll at least 1 dice");
 			return result;
 
 		}
 
 		if(amount > 5 ){
-			result.setText("You cannot roll more than 5 dices");
+			result.setBody("You cannot roll more than 5 dices");
 			return result;
 		}
 
@@ -75,7 +76,7 @@ public class RollCommand extends AbstractCommandAdapter {
 
 		String player = message.getSender();
 		String response = String.format("%s rolled %s dice of %s for a total of %s\n:details: %s",player,amount,value,total,resultString);
-		result.setText(response);
+		result.setBody(response);
 		return result;
 	}
 

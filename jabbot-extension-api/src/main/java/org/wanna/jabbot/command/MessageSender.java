@@ -7,16 +7,13 @@ package org.wanna.jabbot.command;
  *
  * @author vmorsiani <vmorsiani>
  * @since 2015-02-24
- * @see org.wanna.jabbot.command.CommandResult
+ * @see org.wanna.jabbot.command.CommandMessage
  * @see org.wanna.jabbot.command.Command
  */
 public interface MessageSender {
 	/**
 	 * Send a message
 	 *
-	 * @param request
-	 * @param result
 	 */
-	//TODO: remove MessageWrapper and only send message based on CommandResult
-	void sendMessage(MessageWrapper request,CommandResult result);
+	void sendMessage(CommandMessage message);
 }

@@ -17,10 +17,10 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.command.CommandResult;
-import org.wanna.jabbot.command.MessageWrapper;
+import org.wanna.jabbot.command.AbstractCommandAdapter;
+import org.wanna.jabbot.command.CommandMessage;
+import org.wanna.jabbot.command.DefaultCommandMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 import org.wanna.jabbot.extensions.foaas.binding.Field;
 import org.wanna.jabbot.extensions.foaas.binding.Operation;
 
@@ -42,12 +42,12 @@ public class AttackCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public CommandResult process(MessageWrapper message) {
-		String[] args = message.getArgs().toArray(new String[message.getArgs().size()]);
+	public CommandMessage process(CommandMessage message) {
+		List<String> args = getArgsParser().parse(message.getBody());
 		String response;
 		if(args != null ){
 			//Add +1 to args lenght as we'll always have a "from" arg from Sender
-			int length = args.length+1;
+			int length = args.size()+1;
 			if(length > 2){
 				length = 2;
 			}
@@ -58,8 +58,8 @@ public class AttackCommand extends AbstractCommandAdapter {
 			try {
 				String url = buildUrl(operation,from,args);
 				response = query(url);
-				CommandResult result = new CommandResult();
-				result.setText(secureResponse(response));
+				DefaultCommandMessage result = new DefaultCommandMessage();
+				result.setBody(secureResponse(response));
 				return result;
 			} catch (IOException e) {
 				logger.error("error while querying foaas",e);
@@ -69,7 +69,7 @@ public class AttackCommand extends AbstractCommandAdapter {
 		return null;
 	}
 
-	private String buildUrl(Operation operation,String from, String[] args){
+	private String buildUrl(Operation operation,String from, List<String> args){
 		String url = operation.getUrl();
 		int i = 0;
 		for (Field field : operation.getFields()) {
@@ -78,8 +78,7 @@ public class AttackCommand extends AbstractCommandAdapter {
 				value = from;
 				url = url.replace(":"+field.getField(),from);
 			}else{
-				value = args[i];
-
+				value = args.get(i);
 				i++;
 			}
 			try {

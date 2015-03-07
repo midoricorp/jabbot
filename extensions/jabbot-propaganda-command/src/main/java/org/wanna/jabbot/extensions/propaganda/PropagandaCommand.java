@@ -1,9 +1,9 @@
 package org.wanna.jabbot.extensions.propaganda;
 
-import org.wanna.jabbot.command.CommandResult;
-import org.wanna.jabbot.command.MessageWrapper;
+import org.wanna.jabbot.command.AbstractCommandAdapter;
+import org.wanna.jabbot.command.CommandMessage;
+import org.wanna.jabbot.command.DefaultCommandMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 
 import java.io.InputStream;
 import java.util.*;
@@ -55,21 +55,21 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public CommandResult process(MessageWrapper message) {
-		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
+	public CommandMessage process(CommandMessage message) {
+		List<String> args =  getArgsParser().parse(message.getBody());
 		ArrayList<String> quote_list = null;
 		ArrayList<String> filter_list = new ArrayList<String>();
 		HashMap<String,String> tmp_replace = new HashMap<String,String>();
 
 
-		if (args.length > 0){
-			for (int i = 0; i < args.length; i++) {
-				filter_list.add(args[i]);
+		if (args.size() > 0){
+			for (int i = 0; i < args.size(); i++) {
+				filter_list.add(args.get(i));
 
 				// do we have a substitution rule?
-				if (i+2 < args.length
-						&& args[i+1].equals("=")) {
-					tmp_replace.put(args[i], args[i+2]);
+				if (i+2 < args.size()
+						&& args.get(i+1).equals("=")) {
+					tmp_replace.put(args.get(i), args.get(i+2));
 					i += 2;
 				}
 			}
@@ -114,8 +114,8 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 
 			response = response.replace(key, replace.get(key));
 		}
-		CommandResult result = new CommandResult();
-		result.setText(response);
+		DefaultCommandMessage result = new DefaultCommandMessage();
+		result.setBody(response);
 		return result;
 	}
 

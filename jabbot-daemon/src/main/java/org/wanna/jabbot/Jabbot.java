@@ -9,7 +9,10 @@ import org.wanna.jabbot.binding.BindingMessage;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.BindingDefinition;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
-import org.wanna.jabbot.command.*;
+import org.wanna.jabbot.command.Command;
+import org.wanna.jabbot.command.CommandFactory;
+import org.wanna.jabbot.command.CommandMessage;
+import org.wanna.jabbot.command.MessageSender;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.behavior.Configurable;
 import org.wanna.jabbot.command.behavior.MessageSenderAware;
@@ -114,8 +117,8 @@ public class Jabbot {
 					((MessageSenderAware)command).setMessageSender(
 							new MessageSender() {
 								@Override
-								public void sendMessage(MessageWrapper request,CommandResult result) {
-									BindingMessage response = new BindingMessage(request.getRoomName(), request.getSender(), result.getText());
+								public void sendMessage(CommandMessage message) {
+									BindingMessage response = new BindingMessage(message.getRoomName(), message.getSender(), message.getBody());
 									binding.sendMessage(response);
 								}
 							}

@@ -11,16 +11,17 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.command.CommandResult;
-import org.wanna.jabbot.command.MessageWrapper;
+import org.wanna.jabbot.command.AbstractCommandAdapter;
+import org.wanna.jabbot.command.CommandMessage;
+import org.wanna.jabbot.command.DefaultCommandMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 import org.wanna.jabbot.extensions.icndb.binding.Result;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.List;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -36,17 +37,17 @@ public class ChuckCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public CommandResult process(MessageWrapper message) {
-		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
+	public DefaultCommandMessage process(CommandMessage message) {
+		List<String> args = getArgsParser().parse(message.getBody());
 		String options = null;
-		if(args != null && args.length > 0){
+		if(args != null && args.size() > 0){
 			try {
-				options = "&firstName="+ URLEncoder.encode(args[0],"UTF-8");
-				if(args.length > 1){
-					options+="&lastName="+ URLEncoder.encode(args[1],"UTF-8");
+				options = "&firstName="+ URLEncoder.encode(args.get(0),"UTF-8");
+				if(args.size() > 1){
+					options+="&lastName="+ URLEncoder.encode(args.get(1),"UTF-8");
 				}
 			} catch (UnsupportedEncodingException e) {
-				logger.error("An error occured while encoding param {}",args[0],e);
+				logger.error("An error occured while encoding param {}",message.getBody(),e);
 			}
 		}
 		try {
@@ -54,8 +55,8 @@ public class ChuckCommand extends AbstractCommandAdapter {
 			Result parsed = mapper.readValue(response,Result.class);
 			if(parsed.getType().equalsIgnoreCase("success")){
 				String joke = StringEscapeUtils.unescapeHtml4(parsed.getValue().getJoke());
-				CommandResult result = new CommandResult();
-				result.setText(joke);
+				DefaultCommandMessage result = new DefaultCommandMessage();
+				result.setBody(joke);
 				return result;
 			}
 		} catch (IOException e) {

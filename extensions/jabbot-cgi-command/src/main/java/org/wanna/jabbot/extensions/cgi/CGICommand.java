@@ -1,7 +1,7 @@
 package org.wanna.jabbot.extensions.cgi;
 
+import org.wanna.jabbot.command.AbstractCGICommand;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.extensions.AbstractCGICommand;
 
 import java.util.Map;
 

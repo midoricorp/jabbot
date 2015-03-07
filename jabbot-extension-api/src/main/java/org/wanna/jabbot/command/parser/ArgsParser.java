@@ -1,4 +1,4 @@
-package org.wanna.jabbot.command.parser.args;
+package org.wanna.jabbot.command.parser;
 
 import java.util.List;
 

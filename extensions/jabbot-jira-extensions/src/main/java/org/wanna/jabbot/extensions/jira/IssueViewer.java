@@ -14,13 +14,14 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.command.CommandResult;
-import org.wanna.jabbot.command.MessageWrapper;
+import org.wanna.jabbot.command.AbstractCommandAdapter;
+import org.wanna.jabbot.command.CommandMessage;
+import org.wanna.jabbot.command.DefaultCommandMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.extensions.AbstractCommandAdapter;
 import org.wanna.jabbot.extensions.jira.binding.Issue;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,15 +52,15 @@ public class IssueViewer extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public CommandResult process(MessageWrapper message) {
-		String[] args =  message.getArgs().toArray(new String[message.getArgs().size()]);
-		CommandResult result = new CommandResult();
-		if( args.length < 1 ){
-			result.setText("invalid parameter");
+	public CommandMessage process(CommandMessage message) {
+		List<String> args =  getArgsParser().parse(message.getBody());
+		DefaultCommandMessage result = new DefaultCommandMessage();
+		if( args == null || args.isEmpty() ){
+			result.setBody("invalid parameter");
 			return result;
 		}
 
-		String key = args[0];
+		String key = args.get(0);
 
 		try {
 			String response = query("/rest/api/latest/issue/"+key);
@@ -82,7 +83,7 @@ public class IssueViewer extends AbstractCommandAdapter {
 				}
 				sb.append("URL: ").append(baseUrl).append("/browse/").append(issue.getKey());
 			}
-			result.setText(sb.toString());
+			result.setBody(sb.toString());
 			return result;
 		} catch (IOException e) {
 			logger.error("error querying",e);

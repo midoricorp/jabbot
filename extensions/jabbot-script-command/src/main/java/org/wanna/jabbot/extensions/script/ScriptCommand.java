@@ -3,15 +3,11 @@ package org.wanna.jabbot.extensions.script;
 import com.sipstacks.script.ExternalFunction;
 import com.sipstacks.script.Script;
 import com.sipstacks.script.ScriptParseException;
-import org.wanna.jabbot.command.Command;
-import org.wanna.jabbot.command.CommandFactory;
-import org.wanna.jabbot.command.CommandResult;
-import org.wanna.jabbot.command.MessageWrapper;
+import org.wanna.jabbot.command.*;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.command.parser.args.ArgsParser;
-import org.wanna.jabbot.command.parser.args.NullArgParser;
-import org.wanna.jabbot.extensions.AbstractCommandAdapter;
+import org.wanna.jabbot.command.parser.ArgsParser;
+import org.wanna.jabbot.command.parser.NullArgParser;
 
 import java.io.StringReader;
 import java.util.Map;
@@ -47,8 +43,8 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
         }
 
 	@Override
-	public CommandResult process(MessageWrapper message) {
-		String script = message.getArgs().get(0);
+	public CommandMessage process(CommandMessage message) {
+		String script = message.getBody();
 
 		Script s = new Script(new StringReader(script));
 		if (loopLimit > 0) {
@@ -67,12 +63,11 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 				}
 
 				public String run(String args) {
-					MessageWrapper msg = new MessageWrapper();
+					DefaultCommandMessage msg = new DefaultCommandMessage();
 					msg.setBody(args);
-					msg.setArgs(cmd.getArgsParser().parse(msg.getBody()));
 					msg.setSender(sender);
-					CommandResult result = cmd.process(msg);
-					return result.getText();
+					CommandMessage result = cmd.process(msg);
+					return result.getBody();
 				}
 			}.init(command, message.getSender()));
 		}
@@ -90,13 +85,13 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			}
 
 		} catch (ScriptParseException spe) {
-			CommandResult result = new CommandResult();
-			result.setText(spe.getMessage());
+			DefaultCommandMessage result = new DefaultCommandMessage();
+			result.setBody(spe.getMessage());
 			return result;
 		}
 		
-		CommandResult result = new CommandResult();
-		result.setText(response);
+		DefaultCommandMessage result = new DefaultCommandMessage();
+		result.setBody(response);
 		return result;
 	}
 
