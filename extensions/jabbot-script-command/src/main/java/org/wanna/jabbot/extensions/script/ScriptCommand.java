@@ -52,6 +52,11 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 		}
 
 		for(Command command : commandFactory.getAvailableCommands().values()){
+			// don't add yourself to limit recursion
+			if (command.getCommandName().equals(getCommandName())) {
+				continue;
+			}
+
 			s.addExternalFunction(command.getCommandName(), new ExternalFunction() {
 					
 				private Command cmd;
