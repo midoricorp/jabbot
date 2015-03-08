@@ -13,6 +13,19 @@ our $action = $ENV{'JABBOT_ACTION'};
 our $command = $ENV{'JABBOT_COMMAND'};
 our $from = $ENV{'JABBOT_FROM'};
 
+sub filter
+{
+	my $message = shift();
+	my @banlist = ("shit", "cum", "pussy", "dick", "vagina", "penis", "feces", "tits", "shat");
+
+	foreach my $ban_word (@banlist) {
+		if ($message =~ /$ban_word/iu) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 if ($action eq "help") {
 	print "Look Up In UrbanDictionary\n";
 	print "Synax:\n";
@@ -34,7 +47,20 @@ if ($action eq "help") {
 		if ($resp->is_success) {
 		    my $message = $resp->decoded_content;
 		    my $json_data = decode_json ($message);
-	            print $json_data->{'list'}[0]->{'definition'}."\n";
+		    my $filtered_items = 0;
+		    foreach my $node (@{$json_data->{'list'}}) {
+			if(!filter($node->{'definition'})) {
+				print $node->{'definition'}."\n";
+				exit;
+			}
+			$filtered_items++;
+		    }
+
+		    if ($filtered_items > 0) {
+			    print "$filtered_items censored definitions found: if you are feeling brave goto http://www.urbandictionary.com/define.php?term=".uri_encode(join(' ', @ARGV)); 
+		    } else {
+			    print "No defintion found for " . join(' ', @ARGV);
+		    }
 		}
 		else {
 			print "HTTP GET error code: ", $resp->code, "\n";
