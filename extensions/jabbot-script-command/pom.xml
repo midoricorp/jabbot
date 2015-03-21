@@ -31,7 +31,7 @@
         <dependency>
 	    <groupId>com.sipstacks.script</groupId>
 	    <artifactId>script</artifactId>
-	    <version>0.3-SNAPSHOT</version>
+	    <version>0.3</version>
         </dependency>
         <dependency>
             <groupId>org.wanna.jabbot.extensions</groupId>
