@@ -7,8 +7,8 @@ import com.sipstacks.script.ScriptParseException;
 import java.util.List;
 
 /**
- * @author vmorsiani <vmorsiani>
- * @since 2014-05-30
+ * @author tsearle <tsearle>
+ * @since 2015-03-20
  */
 public class ScriptScript implements Command {
 
@@ -59,6 +59,10 @@ public class ScriptScript implements Command {
 		DefaultCommandMessage result = new DefaultCommandMessage();
 		result.setBody(response);
 		return result;
+	}
+
+	public void reset() {
+		scriptCmd.reset();
 	}
 }
 
