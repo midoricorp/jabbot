@@ -36,6 +36,7 @@
                 {"name":"quote","className":"org.wanna.jabbot.extensions.quote.QuoteCommand"},
                 {"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
                 {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
+                {"name":"translate","className":"org.wanna.jabbot.extensions.translate.TranslateCommand"},
                 {"name":"call","className":"org.wanna.jabbot.extensions.call.CallCommand",
                     "configuration":{
                         "url":"http://voxcall.me",
@@ -67,6 +68,7 @@
                 {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
                 {"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
                 {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
+                {"name":"translate","className":"org.wanna.jabbot.extensions.translate.TranslateCommand"},
                 {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"}
             ]
 
@@ -83,6 +85,7 @@
                 {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
                 {"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
                 {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
+                {"name":"translate","className":"org.wanna.jabbot.extensions.translate.TranslateCommand"},
                 {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"},
                 {"name":"perl","className":"org.wanna.jabbot.extensions.cgi.CGICommand",
 			        "configuration":{
