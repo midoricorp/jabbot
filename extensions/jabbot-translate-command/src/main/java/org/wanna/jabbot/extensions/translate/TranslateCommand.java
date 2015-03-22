@@ -62,7 +62,7 @@ public class TranslateCommand extends AbstractCommandAdapter {
 				String response = query(options);
 				Result parsed = mapper.readValue(response,Result.class);
 				if(parsed.getResponseData() != null){
-					String translation = parsed.getResponseData().getTranslatedText();
+					String translation = StringEscapeUtils.unescapeHtml4(parsed.getResponseData().getTranslatedText());
 					DefaultCommandMessage result = new DefaultCommandMessage();
 					result.setBody(translation);
 					return result;
