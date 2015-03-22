@@ -17,6 +17,8 @@ public class QuotedStringArgDeparser {
 
 		for (String arg : args) {
 			sb.append("\"");
+			// escape "
+			arg = arg.replace("\"", "\\\"");
 			sb.append(arg);
 			sb.append("\" ");
 		}
