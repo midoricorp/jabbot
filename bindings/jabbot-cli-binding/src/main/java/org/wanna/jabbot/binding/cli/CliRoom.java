@@ -36,13 +36,24 @@ public class CliRoom extends AbstractRoom<Object> implements Runnable {
 		BufferedReader buffer=new BufferedReader(new InputStreamReader(System.in));
 		while (true) {
 			try {
-				String line=buffer.readLine();
-				logger.debug("received {}",line);
+				String line="";
+				
+				while (true) {
+					line += buffer.readLine();
 
-				if(line == null) {
-					logger.error("Got a null, probably no console, dying now");
-					return;
+					if(line == null) {
+						logger.error("Got a null, probably no console, dying now");
+						return;
+					}
+
+					if (line.endsWith("\\")) {
+						line = line.substring(0, line.length() - 1);
+					} else {
+						logger.debug("received {}",line);
+						break;
+					}
 				}
+
 
 				for (BindingListener listener : listeners) {
 					BindingMessage message = new BindingMessage(this.getRoomName(),"cli",line);
