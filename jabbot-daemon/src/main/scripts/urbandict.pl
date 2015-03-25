@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+use utf8;
 
 #urban dictionary plugin
 #requres json
@@ -8,6 +9,8 @@ use strict;
 use LWP::UserAgent;
 use URI::Encode qw(uri_encode uri_decode);
 use JSON::XS;
+
+binmode(STDOUT, ":utf8"); 
 
 our $action = $ENV{'JABBOT_ACTION'};
 our $command = $ENV{'JABBOT_COMMAND'};
