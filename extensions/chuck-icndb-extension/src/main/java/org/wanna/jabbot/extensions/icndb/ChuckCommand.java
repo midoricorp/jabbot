@@ -31,6 +31,8 @@ public class ChuckCommand extends AbstractCommandAdapter {
 	final Logger logger = LoggerFactory.getLogger(ChuckCommand.class);
 	final ObjectMapper mapper = new ObjectMapper();
 
+	private static final String REMOVE_ME = ":{REMOVE_ME}";
+
 	public ChuckCommand(CommandConfig configuration) {
 		super(configuration);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -45,6 +47,8 @@ public class ChuckCommand extends AbstractCommandAdapter {
 				options = "&firstName="+ URLEncoder.encode(args.get(0),"UTF-8");
 				if(args.size() > 1){
 					options+="&lastName="+ URLEncoder.encode(args.get(1),"UTF-8");
+				} else {
+					options+="&lastName="+ URLEncoder.encode(REMOVE_ME,"UTF-8");
 				}
 			} catch (UnsupportedEncodingException e) {
 				logger.error("An error occured while encoding param {}",message.getBody(),e);
@@ -55,6 +59,12 @@ public class ChuckCommand extends AbstractCommandAdapter {
 			Result parsed = mapper.readValue(response,Result.class);
 			if(parsed.getType().equalsIgnoreCase("success")){
 				String joke = StringEscapeUtils.unescapeHtml4(parsed.getValue().getJoke());
+
+				// remove the fake last name and it's leading space
+				joke = joke.replace(" " + REMOVE_ME, "");
+				// make sure to remove any that didn't have a leading space too
+				joke = joke.replace(REMOVE_ME, "");
+
 				DefaultCommandMessage result = new DefaultCommandMessage();
 				result.setBody(joke);
 				return result;
