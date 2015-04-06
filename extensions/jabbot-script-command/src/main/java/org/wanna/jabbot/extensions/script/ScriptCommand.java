@@ -25,6 +25,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 	private int bufferLimit = -1;
 
 	private class ScriptFunctionListener implements FunctionListener {
+		String author;
 
 		public void addFunction(String name, com.sipstacks.script.Command cmd) {
 
@@ -37,8 +38,13 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 				return;
 			}
 
-			ScriptScript ss = new ScriptScript(name, cmd);
+			ScriptScript ss = new ScriptScript(name, cmd, author);
 			commandFactory.register(name,ss);
+		}
+
+		public ScriptFunctionListener init(String author) {
+			this.author = author;
+			return this;
 		}
 	}
 
@@ -72,7 +78,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			s.setLoopLimit(loopLimit);
 		}
 
-		s.addFunctionListener(new ScriptFunctionListener());
+		s.addFunctionListener(new ScriptFunctionListener().init(message.getSender()));
 
 		for(Command command : commandFactory.getAvailableCommands().values()){
 			// don't add yourself to limit recursion
