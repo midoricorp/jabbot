@@ -83,6 +83,11 @@
         </dependency>
         <dependency>
             <groupId>org.wanna.jabbot.extensions</groupId>
+            <artifactId>jabbot-translate-command</artifactId>
+            <version>0.3-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wanna.jabbot.extensions</groupId>
             <artifactId>jabbot-cgi-command</artifactId>
             <version>0.3-SNAPSHOT</version>
         </dependency>
