@@ -164,7 +164,7 @@ sub makeCommands {
 				} else {
 					my $configuration = $extension->{'configuration'};
 					foreach my $conf (keys $configuration) {
-						$command{"configuration"}{$conf} = ask({question=>"$conf for $command_name of $type", default=>$configuration->{$conf}, save_key=>"binding.$type.command.$conf"});
+						$command{"configuration"}{$conf} = ask({question=>"value for '$conf' for $command_name command of $type", default=>$configuration->{$conf}, save_key=>"binding.$type.command.$conf"});
 					}
 				}
 			}
