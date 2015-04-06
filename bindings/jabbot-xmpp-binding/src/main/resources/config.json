@@ -1,0 +1,9 @@
+{
+	"className":"org.wanna.jabbot.binding.xmpp.XmppBinding",
+	"name": "XMPP",
+	"port":5222,
+    	"parameters":{
+		"allow_self_signed":true,
+		"ping_interval":600
+    	}
+}
