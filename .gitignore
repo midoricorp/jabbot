@@ -21,6 +21,10 @@ hs_err_pid*
 *.iml
 *.iws
 
+# stuff that can contain passwords
+jabbot.json
+saved_values.ini
+
 # Maven
 log/
 target/

@@ -1,8 +1,9 @@
-package org.wanna.jabbot.extensions.icndb;
+package org.wanna.jabbot.extensions.translate;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -15,7 +16,7 @@ import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.CommandMessage;
 import org.wanna.jabbot.command.DefaultCommandMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.extensions.icndb.binding.Result;
+import org.wanna.jabbot.extensions.translate.binding.Result;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -24,55 +25,56 @@ import java.net.URLEncoder;
 import java.util.List;
 
 /**
- * @author vmorsiani <vmorsiani>
- * @since 2015-01-14
+ * @author tsearle <tsearle>
+ * @since 2015-03-21
  */
-public class ChuckCommand extends AbstractCommandAdapter {
-	final Logger logger = LoggerFactory.getLogger(ChuckCommand.class);
+public class TranslateCommand extends AbstractCommandAdapter {
+	final Logger logger = LoggerFactory.getLogger(TranslateCommand.class);
 	final ObjectMapper mapper = new ObjectMapper();
 
-	private static final String REMOVE_ME = ":{REMOVE_ME}";
-
-	public ChuckCommand(CommandConfig configuration) {
+	public TranslateCommand(CommandConfig configuration) {
 		super(configuration);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+	}
+
+	@Override
+	public String getHelpMessage() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getCommandName());
+		sb.append(" <src_lang> <dst_lang> message\n");
+		sb.append("Returns message translated from src_lang to dst_lang\n");
+		sb.append("src_lang and dst_lang are 2 digit codes\n");
+		return sb.toString();
 	}
 
 	@Override
 	public DefaultCommandMessage process(CommandMessage message) {
 		List<String> args = getArgsParser().parse(message.getBody());
 		String options = null;
-		if(args != null && args.size() > 0){
+		if(args != null && args.size() >= 3){
 			try {
-				options = "&firstName="+ URLEncoder.encode(args.get(0),"UTF-8");
-				if(args.size() > 1){
-					options+="&lastName="+ URLEncoder.encode(args.get(1),"UTF-8");
-				} else {
-					options+="&lastName="+ URLEncoder.encode(REMOVE_ME,"UTF-8");
-				}
+				options = "langpair="+ URLEncoder.encode(args.get(0)+ "|"+ args.get(1),"UTF-8");
+				options+="&q="+ URLEncoder.encode(StringUtils.join(args.subList(2,args.size()), " "),"UTF-8");
 			} catch (UnsupportedEncodingException e) {
 				logger.error("An error occured while encoding param {}",message.getBody(),e);
 			}
-		}
-		try {
-			String response = query(options);
-			Result parsed = mapper.readValue(response,Result.class);
-			if(parsed.getType().equalsIgnoreCase("success")){
-				String joke = StringEscapeUtils.unescapeHtml4(parsed.getValue().getJoke());
-
-				// remove the fake last name and it's leading space
-				joke = joke.replace(" " + REMOVE_ME, "");
-				// make sure to remove any that didn't have a leading space too
-				joke = joke.replace(REMOVE_ME, "");
-
-				DefaultCommandMessage result = new DefaultCommandMessage();
-				result.setBody(joke);
-				return result;
+			try {
+				String response = query(options);
+				Result parsed = mapper.readValue(response,Result.class);
+				if(parsed.getResponseData() != null){
+					String translation = StringEscapeUtils.unescapeHtml4(parsed.getResponseData().getTranslatedText());
+					DefaultCommandMessage result = new DefaultCommandMessage();
+					result.setBody(translation);
+					return result;
+				}
+			} catch (IOException e) {
+				logger.error("error querying translation service",e);
 			}
-		} catch (IOException e) {
-			logger.error("error querying icndb",e);
 		}
-		return null;
+
+		DefaultCommandMessage result = new DefaultCommandMessage();
+		result.setBody("Insufficent Arguments: <src_lang> <dst_lang> <message>");
+		return result;
 	}
 
 	/**
@@ -94,7 +96,7 @@ public class ChuckCommand extends AbstractCommandAdapter {
 
 	private String query(String option) throws IOException {
 		final DefaultHttpClient httpclient = new DefaultHttpClient();
-		String url = "http://api.icndb.com/jokes/random?escape=html?exclude=[explicit]";
+		String url = "http://api.mymemory.translated.net/get?";
 		if(option != null ){
 			url += option;
 		}
@@ -111,7 +113,7 @@ public class ChuckCommand extends AbstractCommandAdapter {
 				return EntityUtils.toString(entity, HTTP.UTF_8);
 			}
 		} catch (IOException e) {
-			logger.error("error querying icndb",e);
+			logger.error("error querying translate",e);
 		}
 
 		return null;

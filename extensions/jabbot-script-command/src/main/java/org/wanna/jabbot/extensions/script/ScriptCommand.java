@@ -3,14 +3,17 @@ package org.wanna.jabbot.extensions.script;
 import com.sipstacks.script.ExternalFunction;
 import com.sipstacks.script.Script;
 import com.sipstacks.script.ScriptParseException;
+import com.sipstacks.script.FunctionListener;
 import org.wanna.jabbot.command.*;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.command.parser.ArgsParser;
 import org.wanna.jabbot.command.parser.NullArgParser;
+import org.wanna.jabbot.command.parser.QuotedStringArgDeparser;
 
 import java.io.StringReader;
 import java.util.Map;
+import java.util.List;
 
 /**
  * @author tsearle 
@@ -20,6 +23,24 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 	private CommandFactory commandFactory;
 	private int loopLimit = -1;
 	private int bufferLimit = -1;
+
+	private class ScriptFunctionListener implements FunctionListener {
+
+		public void addFunction(String name, com.sipstacks.script.Command cmd) {
+
+			Map<String,Command> cmds = commandFactory.getAvailableCommands();
+
+			Command oldCmd = cmds.get(name);
+			
+			if (oldCmd != null && !(oldCmd instanceof ScriptScript)) {
+				// don't nuke core commands!
+				return;
+			}
+
+			ScriptScript ss = new ScriptScript(name, cmd);
+			commandFactory.register(name,ss);
+		}
+	}
 
 	public ScriptCommand(CommandConfig configuration) {
 		super(configuration);
@@ -51,6 +72,8 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			s.setLoopLimit(loopLimit);
 		}
 
+		s.addFunctionListener(new ScriptFunctionListener());
+
 		for(Command command : commandFactory.getAvailableCommands().values()){
 			// don't add yourself to limit recursion
 			if (command.getCommandName().equals(getCommandName())) {
@@ -67,13 +90,25 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 					return this;
 				}
 
-				public String run(String args) {
+				public String run(List<String> args) {
 					DefaultCommandMessage msg = new DefaultCommandMessage();
-					msg.setBody(args);
+					if (args.size() > 0) {
+						msg.setBody(QuotedStringArgDeparser.deparse(args));
+					} else {
+						msg.setBody("");
+					}
+
 					msg.setSender(sender);
 					CommandMessage result = cmd.process(msg);
 					return result.getBody();
 				}
+
+				public void reset() {
+					if (cmd instanceof ScriptScript) {
+						((ScriptScript)cmd).reset();
+					}
+				}
+
 			}.init(command, message.getSender()));
 		}
 

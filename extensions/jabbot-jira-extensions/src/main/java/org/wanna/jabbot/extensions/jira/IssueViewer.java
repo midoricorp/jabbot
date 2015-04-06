@@ -60,35 +60,36 @@ public class IssueViewer extends AbstractCommandAdapter {
 			return result;
 		}
 
-		String key = args.get(0);
+		StringBuilder sb = new StringBuilder();
+		for (String key : args) {
+			try {
+				String response = query("/rest/api/latest/issue/"+key);
+				logger.trace("response: {}", response);
 
-		try {
-			String response = query("/rest/api/latest/issue/"+key);
-			logger.trace("response: {}", response);
-
-			Issue issue = mapper.readValue(response,Issue.class);
-			StringBuilder sb = new StringBuilder();
-			//If issue key is not set, it means issue couldn't be found or accessed
-			if(issue == null || issue.getKey() == null ){
-				sb.append("No issue found with key ").append(key);
-			}else {
-				sb.append("[").append(issue.getKey()).append("] ");
-				sb.append(issue.getFields().getSummary()).append('\n');
-				sb.append("Reporter: ").append(issue.getFields().getReporter().getDisplayName()).append('\n');
-				String assignee = (issue.getFields().getAssignee() == null ? "NONE" : issue.getFields().getAssignee().getDisplayName());
-				sb.append("Assignee: ").append(assignee).append('\n');
-				sb.append("Status: ").append(issue.getFields().getStatus().getName()).append('\n');
-				if (issue.getFields().getResolution() != null) {
-					sb.append("Resolution: ").append(issue.getFields().getResolution().getName()).append('\n');
+				Issue issue = mapper.readValue(response,Issue.class);
+				//If issue key is not set, it means issue couldn't be found or accessed
+				if(issue == null || issue.getKey() == null ){
+					sb.append("No issue found with key ").append(key);
+				}else {
+					sb.append("[").append(issue.getKey()).append("] ");
+					sb.append(issue.getFields().getSummary()).append('\n');
+					sb.append("Reporter: ").append(issue.getFields().getReporter().getDisplayName()).append('\n');
+					String assignee = (issue.getFields().getAssignee() == null ? "NONE" : issue.getFields().getAssignee().getDisplayName());
+					sb.append("Assignee: ").append(assignee).append('\n');
+					sb.append("Status: ").append(issue.getFields().getStatus().getName()).append('\n');
+					if (issue.getFields().getResolution() != null) {
+						sb.append("Resolution: ").append(issue.getFields().getResolution().getName()).append('\n');
+					}
+					sb.append("URL: ").append(baseUrl).append("/browse/").append(issue.getKey());
+					sb.append("\n");
 				}
-				sb.append("URL: ").append(baseUrl).append("/browse/").append(issue.getKey());
+			} catch (IOException e) {
+				logger.error("error querying",e);
+				return null;
 			}
-			result.setBody(sb.toString());
-			return result;
-		} catch (IOException e) {
-			logger.error("error querying",e);
 		}
-		return null;
+		result.setBody(sb.toString());
+		return result;
 	}
 
 	private void initCredentials(){

@@ -1,0 +1,6 @@
+{"name":"call","className":"org.wanna.jabbot.extensions.call.CallCommand",
+    "configuration":{
+	"url":"http://voxcall.me",
+	"missing_user":"Hey! Who should I call? (flastname)"
+    }
+}

@@ -1,0 +1,4 @@
+[
+ {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"},
+ {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"}
+]
