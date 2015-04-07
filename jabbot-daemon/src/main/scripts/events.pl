@@ -6,10 +6,11 @@
 
 use strict;
 use LWP::UserAgent;
++use utf8;
 use URI::Encode qw(uri_encode uri_decode);
 use JSON::XS;
 use POSIX qw( strftime );
-
+binmode(STDOUT, ":utf8"); 
 our $action = $ENV{'JABBOT_ACTION'};
 our $command = $ENV{'JABBOT_COMMAND'};
 our $from = $ENV{'JABBOT_FROM'};
