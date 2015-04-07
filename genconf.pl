@@ -43,8 +43,13 @@ sub ask_multi {
 	my $value;
 
 	if (defined $save_value) {
-		print "@$save_value\n";
-		$value=$save_value;
+		if (ref($save_key) eq 'ARRAY') {
+			print "@$save_value\n";
+			$value=$save_value;
+		} else {
+			print "$save_value\n";
+			$value=[$save_value];
+		}
 	} else {
 		my $answer = <>;
 		chomp($answer);
@@ -57,9 +62,6 @@ sub ask_multi {
 
 		$value = \@answer_list;
 
-		if (defined $save_key) {
-			$saved_values->param($save_key, $value);
-		}
 	}
 
 	return $value;
@@ -162,7 +164,7 @@ sub makeCommands {
 				} else {
 					my $configuration = $extension->{'configuration'};
 					foreach my $conf (keys $configuration) {
-						$command{"configuration"}{$conf} = ask({question=>"$conf for $command_name of $type", default=>$configuration->{$conf}, save_key=>"binding.$type.command.$conf"});
+						$command{"configuration"}{$conf} = ask({question=>"value for '$conf' for $command_name command of $type", default=>$configuration->{$conf}, save_key=>"binding.$type.command.$command_name.$conf"});
 					}
 				}
 			}
@@ -178,6 +180,8 @@ sub makeServer {
 	my $serverConfig = { 'debug' => "false", "commandPrefix"=>"!" };
 
 	my $type = shift;
+
+	$serverConfig->{'type'} = $type;
 
 	my $binding;
 	foreach $b (@binding_templates) {

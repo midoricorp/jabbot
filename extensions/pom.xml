@@ -19,6 +19,7 @@
         <module>jabbot-propaganda-command</module>
         <module>jabbot-cgi-command</module>
         <module>jabbot-script-command</module>
+        <module>jabbot-translate-command</module>
     </modules>
 
     <parent>

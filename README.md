@@ -24,14 +24,18 @@ host$ cd jabbot/
 host$ mvn clean install -Pstandalone
 host$ cd jabbot-daemon/target/
 host$ tar -xzf jabbot-daemon-<version>.tar.gz
-host$ cd jabbot-daemon-<version>/
+host$ cd ../../
+
 ```
 **Configure it**
 ```bash
-host$ vi conf/jabbot.json
+apt-get install libjson-perl libconfig-simple-perl
+./genconf.pl
+mv jabbot.json jabbot-daemon/target/jabbot-daemon-<version>/conf/
 ```
 **Start it**
 ```bash
+host$ cd jabbot-daemon/target/jabbot-daemon-<version>/
 host$ bin/jabbot.sh start
 ```
 

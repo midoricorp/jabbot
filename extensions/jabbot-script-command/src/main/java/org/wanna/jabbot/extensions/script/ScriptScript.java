@@ -14,10 +14,12 @@ public class ScriptScript implements Command {
 
 	com.sipstacks.script.Command scriptCmd;
 	String name;
+	String author;
 
-	public ScriptScript(String name, com.sipstacks.script.Command scriptCmd) {
+	public ScriptScript(String name, com.sipstacks.script.Command scriptCmd, String author) {
 		this.name = name;
 		this.scriptCmd = scriptCmd;
+		this.author = author;
 	}
 
         @Override
@@ -39,7 +41,7 @@ public class ScriptScript implements Command {
 	 * Returns the command help
 	 * @return String help message
 	 */
-	public String getHelpMessage() { return null;}
+	public String getHelpMessage() { return "Midori Script command written by " + author;}
 
 	public CommandMessage process(CommandMessage message) {
 		String argsString = message.getBody();
