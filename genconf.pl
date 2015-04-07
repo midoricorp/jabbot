@@ -6,6 +6,7 @@
 use strict;
 use JSON::XS;
 use Config::Simple;
+use Scalar::Util qw(looks_like_number);
 
 
 my @binding_templates = ();
@@ -13,6 +14,16 @@ my @extension_templates = ();
 
 my $conf;
 our $saved_values;
+
+sub to_bool {
+	my $val = shift;
+
+	if ($val eq "true" || $val == 1) {
+		return JSON::XS::true;
+	} else {
+		return JSON::XS::false;
+	}
+}
 
 sub ask_multi {
 	my $params = shift;
@@ -100,7 +111,7 @@ sub ask {
 
 	if (defined $save_value) {
 		print "$save_value\n";
-		$value=$save_value;
+		$value = $save_value;
 	} else {
 		my $answer = <>;
 		chomp($answer);
@@ -112,6 +123,15 @@ sub ask {
 		if ($save_key) {
 			$saved_values->param($save_key, $value);
 		}
+	}
+
+	# fix the type
+	if (defined $default && JSON::XS::is_bool($default)) {
+		$value = to_bool($value);
+	} else {
+		if (looks_like_number($default)) {
+			$value = $value +0;
+		} 
 	}
 
 	return $value;
@@ -177,7 +197,7 @@ sub makeCommands {
 sub makeServer {
 	my @serverKeys = ('url', 'serverName', 'port', 'username', 'password', 'identifier', "commandPrefix", "debug");
 
-	my $serverConfig = { 'debug' => "false", "commandPrefix"=>"!" };
+	my $serverConfig = { 'debug' => JSON::XS::false, "commandPrefix"=>"!" };
 
 	my $type = shift;
 
