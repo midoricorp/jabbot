@@ -43,8 +43,8 @@ sub ask_multi {
 	my $value;
 
 	if (defined $save_value) {
-		if (ref($save_key) eq 'ARRAY') {
-			print "@$save_value\n";
+		if (ref($save_value) eq 'ARRAY') {
+			print join(" ", @$save_value) . "\n";
 			$value=$save_value;
 		} else {
 			print "$save_value\n";
