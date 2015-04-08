@@ -40,7 +40,7 @@ clean:
 	dh_testdir
 	dh_testroot
 
-	[ ! -d $(CURDIR)/build/ ] || rm -rf $(CURDIR)/build
+	rm -rf $(CURDIR)/build
 
 	dh_clean
 	rm -f build-arch-stamp build-indep-stamp
@@ -65,7 +65,10 @@ binary-indep: build-indep install-indep
 	#jh_installjavadoc -i
 	dh_installexamples
 	dh_install
-#	dh_installinit -i --name=jabbot --noscripts
+	dh_install jabbot-daemon/src/main/scripts/config.json etc/jabbot-binding/src/main/scripts/
+	find extensions/ -name config.json -printf "dh_install %h/%f etc/jabbot/%h\n"|bash -C
+	find bindings/ -name config.json -printf "dh_install %h/%f etc/jabbot/%h\n"|bash -C
+	dh_installinit
 	dh_installman
 	dh_lintian
 	#jh_manifest -i
@@ -80,6 +83,10 @@ binary-indep: build-indep install-indep
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
+	dh_auto_clean
+
+	rm -rf $(CURDIR)/build
+	rm -f build-arch-stamp build-indep-stamp
 
 binary: binary-indep binary-arch
-.PHONY: build build-arch build-indep clean binary-indep binary-arch binary install-indep clean
+.PHONY: build build-arch build-indep clean binary-indep binary-arch binary install-indep

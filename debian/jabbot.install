@@ -1,1 +1,4 @@
+debian/bin/jabbot		          usr/bin/
 build/jabbot-daemon/lib/*.jar             usr/share/jabbot/
+build/jabbot-daemon/conf/log4j.xml        etc/jabbot/
+jabbot-daemon/src/main/scripts/*          usr/share/jabbot/bin/
