@@ -318,4 +318,4 @@ open FILE, ">$basedir/jabbot.json";
 print FILE JSON::XS->new->utf8(1)->pretty(1)->encode($conf);
 close FILE;
 
-print "jabbot.json witten, please move it to your config directory\n";
+print "$basedir/jabbot.json witten\n";
