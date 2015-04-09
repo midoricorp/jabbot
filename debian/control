@@ -9,7 +9,12 @@ Section: contrib/comm
 Package: jabbot
 Architecture: all
 Depends: ${misc:Depends},
-         default-jre-headless
+         default-jre-headless,
+	 perl,
+	 libjson-perl,
+	 libconfig-simple-perl,
+	 libwww-perl,
+	 liburi-encode-perl
 Description: Midori is a multi-protocol bot that can be easily
  Extended with plugins and is highly scriptable.
 

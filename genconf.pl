@@ -5,7 +5,7 @@
 
 use strict;
 use JSON::XS;
-use Config::Simple;
+use Config::Simple '-strict';
 use Scalar::Util qw(looks_like_number);
 use Getopt::Long;
 
@@ -106,6 +106,14 @@ sub ask {
 	print "\n";
 
 	my $value = $default;
+
+	if (JSON::XS::is_bool($value)) {
+		if ($value == JSON::XS::true) {
+			$value = "true";
+		} else {
+			$value = "false";
+		}
+	}
 
 	if (defined $value) {
 		print "[$value]>";
@@ -280,7 +288,7 @@ foreach my $binding (@binding_files) {
 }
 
 my @extension_files = glob("$basedir/extensions/*/src/main/resources/config.json");
-push @extension_files, "jabbot-daemon/src/main/scripts/config.json";
+push @extension_files, "$basedir/jabbot-daemon/src/main/scripts/config.json";
 
 foreach my $extension (@extension_files) {
 	print "loading extension file $extension\n";

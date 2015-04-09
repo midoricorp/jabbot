@@ -65,7 +65,7 @@ binary-indep: build-indep install-indep
 	#jh_installjavadoc -i
 	dh_installexamples
 	dh_install
-	dh_install jabbot-daemon/src/main/scripts/config.json etc/jabbot-binding/src/main/scripts/
+	dh_install jabbot-daemon/src/main/scripts/config.json etc/jabbot/jabbot-daemon/src/main/scripts/
 	find extensions/ -name config.json -printf "dh_install %h/%f etc/jabbot/%h\n"|bash -C
 	find bindings/ -name config.json -printf "dh_install %h/%f etc/jabbot/%h\n"|bash -C
 	dh_installinit
