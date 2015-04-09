@@ -7,6 +7,7 @@ use strict;
 use JSON::XS;
 use Config::Simple;
 use Scalar::Util qw(looks_like_number);
+use Getopt::Long;
 
 
 my @binding_templates = ();
@@ -73,6 +74,9 @@ sub ask_multi {
 
 		$value = \@answer_list;
 
+	}
+	if (defined $save_key) {
+		$saved_values->param($save_key, $value);
 	}
 
 	return $value;
@@ -260,7 +264,11 @@ sub makeServerList {
 
 # MAIN
 
-my @binding_files = glob("bindings/*/src/main/resources/config.json");
+my $basedir = ".";
+
+GetOptions("basedir=s", \$basedir) or die("Error in command line!");
+
+my @binding_files = glob("$basedir/bindings/*/src/main/resources/config.json");
 
 foreach my $binding (@binding_files) {
 	print "loading binding file $binding\n";
@@ -271,7 +279,7 @@ foreach my $binding (@binding_files) {
 
 }
 
-my @extension_files = glob("extensions/*/src/main/resources/config.json");
+my @extension_files = glob("$basedir/extensions/*/src/main/resources/config.json");
 push @extension_files, "jabbot-daemon/src/main/scripts/config.json";
 
 foreach my $extension (@extension_files) {
@@ -293,12 +301,12 @@ foreach my $extension (@extension_files) {
 
 
 $saved_values = new Config::Simple(syntax=>'ini');
-$saved_values->read('saved_values.ini');
+$saved_values->read("$basedir/saved_values.ini");
 makeBindings();
 makeServerList();
 $saved_values->save();
 
-open FILE, ">jabbot.json";
+open FILE, ">$basedir/jabbot.json";
 print FILE JSON::XS->new->utf8(1)->pretty(1)->encode($conf);
 close FILE;
 
