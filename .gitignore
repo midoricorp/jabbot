@@ -28,3 +28,15 @@ saved_values.ini
 # Maven
 log/
 target/
+
+#debian
+build/
+build-arch-stamp
+debian/files
+debian/jabbot.debhelper.log
+debian/jabbot.postinst.debhelper
+debian/jabbot.postrm.debhelper
+debian/jabbot.prerm.debhelper
+debian/jabbot.substvars
+debian/jabbot/
+

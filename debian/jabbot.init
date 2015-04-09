@@ -1,0 +1,105 @@
+#!/bin/bash
+#
+# init script for the jabbot service
+#
+
+### BEGIN INIT INFO
+# Provides: jabbot
+# Required-Start: $network $syslog $named $local_fs $remote_fs
+# Required-Stop: $network $syslog $named $local_fs $remote_fs
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Jabbot
+# Description: the Jabbot Daemon
+### END INIT INFO
+
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DESC="Jabbot Daemon"
+NAME=jabbot
+DAEMON=/usr/bin/jabbot
+PIDDIR=/var/run/jabbot
+PIDFILE=$PIDDIR/$NAME.pid
+
+USER="nobody"
+GROUP="nogroup"
+
+
+# Gracefully exit if the package has been removed.
+if [ ! -x $DAEMON ]; then
+	echo "ERROR: $DAEMON not found"
+	exit 5
+fi
+
+
+# Use the LSB standard functions for services management 
+. /lib/lsb/init-functions
+
+mkdir -p $PIDDIR
+chown $USER:$GROUP $PIDDIR
+
+do_start() {
+	if [ -e $PIDFILE ]; then
+		status_of_proc -p "$PIDFILE" "$DAEMON" "$NAME"
+		if [ $? = "0" ]; then
+			return 0
+		fi
+	fi
+
+	su -p -s /bin/bash -c "cd /tmp/ && ulimit -c unlimited ; $DAEMON &>/dev/null </dev/null &" $USER
+}
+
+do_stop() {
+	if [ -e $PIDFILE ]; then
+		start-stop-daemon --stop --quiet --retry 5 --pidfile $PIDFILE
+		sleep 3
+		rm -f $PIDFILE
+	fi
+}
+
+case "$1" in
+	start)
+		[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+		do_start
+		case "$?" in
+			0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+			*) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+		esac
+		;;
+	stop)
+		[ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+		do_stop
+		case "$?" in
+			0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+			*) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+		esac
+		;;
+	restart|force-reload)
+		log_daemon_msg "Restarting $DESC" "$NAME"
+		do_stop
+		case "$?" in
+			0|1)
+				do_start
+				case "$?" in
+					0) log_end_msg 0 ;;
+					1) log_end_msg 1 ;; # old process is still running
+					*) log_end_msg 1 ;; # failed to start
+				esac
+				;;
+			*)
+				# failed to stop
+				log_end_msg 1
+				;;
+		esac
+		;;
+	status)
+		status_of_proc -p "$PIDFILE" "$DAEMON" "$NAME" && exit 0 || exit $?
+		;;
+	*)
+		N=/etc/init.d/$NAME
+		echo "Usage: $N {start|stop|restart|force-reload|status}" >&2
+		exit 3
+		;;
+esac
+
+:

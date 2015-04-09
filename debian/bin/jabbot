@@ -1,0 +1,24 @@
+#!/bin/bash 
+
+###
+# Script main
+###
+
+JABBOT_MAIN="org.wanna.jabbot.Launcher"
+JABBOT_LOGS="/var/log/jabbot/"
+J_CLASSPATH="/usr/share/jabbot/*:/etc/jabbot/:/usr/share/jabbot/bin/"
+
+PIDFILE="/var/run/jabbot/jabbot.pid"
+
+EXEC="java -cp $J_CLASSPATH -Djabbot.logs_dir=$JABBOT_LOGS $JABBOT_MAIN"
+
+echo "starting Jabbot service.."
+RUNNING_PID=`cat $PIDFILE 2>/dev/null`
+if [ -f $PIDFILE -a /proc/$RUNNING_PID/exe -ef java ]; then
+        echo "Process already running : $RUNNING_PID"
+        exit 1
+fi
+
+echo $$ > $PIDFILE
+exec $EXEC
+

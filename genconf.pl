@@ -5,7 +5,9 @@
 
 use strict;
 use JSON::XS;
-use Config::Simple;
+use Config::Simple '-strict';
+use Scalar::Util qw(looks_like_number);
+use Getopt::Long;
 
 
 my @binding_templates = ();
@@ -13,6 +15,16 @@ my @extension_templates = ();
 
 my $conf;
 our $saved_values;
+
+sub to_bool {
+	my $val = shift;
+
+	if ($val eq "true" || $val == 1) {
+		return JSON::XS::true;
+	} else {
+		return JSON::XS::false;
+	}
+}
 
 sub ask_multi {
 	my $params = shift;
@@ -43,8 +55,8 @@ sub ask_multi {
 	my $value;
 
 	if (defined $save_value) {
-		if (ref($save_key) eq 'ARRAY') {
-			print "@$save_value\n";
+		if (ref($save_value) eq 'ARRAY') {
+			print join(" ", @$save_value) . "\n";
 			$value=$save_value;
 		} else {
 			print "$save_value\n";
@@ -62,6 +74,9 @@ sub ask_multi {
 
 		$value = \@answer_list;
 
+	}
+	if (defined $save_key) {
+		$saved_values->param($save_key, $value);
 	}
 
 	return $value;
@@ -92,6 +107,14 @@ sub ask {
 
 	my $value = $default;
 
+	if (JSON::XS::is_bool($value)) {
+		if ($value == JSON::XS::true) {
+			$value = "true";
+		} else {
+			$value = "false";
+		}
+	}
+
 	if (defined $value) {
 		print "[$value]>";
 	} else {
@@ -100,7 +123,7 @@ sub ask {
 
 	if (defined $save_value) {
 		print "$save_value\n";
-		$value=$save_value;
+		$value = $save_value;
 	} else {
 		my $answer = <>;
 		chomp($answer);
@@ -112,6 +135,15 @@ sub ask {
 		if ($save_key) {
 			$saved_values->param($save_key, $value);
 		}
+	}
+
+	# fix the type
+	if (defined $default && JSON::XS::is_bool($default)) {
+		$value = to_bool($value);
+	} else {
+		if (looks_like_number($default)) {
+			$value = $value +0;
+		} 
 	}
 
 	return $value;
@@ -177,7 +209,7 @@ sub makeCommands {
 sub makeServer {
 	my @serverKeys = ('url', 'serverName', 'port', 'username', 'password', 'identifier', "commandPrefix", "debug");
 
-	my $serverConfig = { 'debug' => "false", "commandPrefix"=>"!" };
+	my $serverConfig = { 'debug' => JSON::XS::false, "commandPrefix"=>"!" };
 
 	my $type = shift;
 
@@ -240,7 +272,11 @@ sub makeServerList {
 
 # MAIN
 
-my @binding_files = glob("bindings/*/src/main/resources/config.json");
+my $basedir = ".";
+
+GetOptions("basedir=s", \$basedir) or die("Error in command line!");
+
+my @binding_files = glob("$basedir/bindings/*/src/main/resources/config.json");
 
 foreach my $binding (@binding_files) {
 	print "loading binding file $binding\n";
@@ -251,8 +287,8 @@ foreach my $binding (@binding_files) {
 
 }
 
-my @extension_files = glob("extensions/*/src/main/resources/config.json");
-push @extension_files, "jabbot-daemon/src/main/scripts/config.json";
+my @extension_files = glob("$basedir/extensions/*/src/main/resources/config.json");
+push @extension_files, "$basedir/jabbot-daemon/src/main/scripts/config.json";
 
 foreach my $extension (@extension_files) {
 	print "loading extension file $extension\n";
@@ -273,13 +309,13 @@ foreach my $extension (@extension_files) {
 
 
 $saved_values = new Config::Simple(syntax=>'ini');
-$saved_values->read('saved_values.ini');
+$saved_values->read("$basedir/saved_values.ini");
 makeBindings();
 makeServerList();
 $saved_values->save();
 
-open FILE, ">jabbot.json";
+open FILE, ">$basedir/jabbot.json";
 print FILE JSON::XS->new->utf8(1)->pretty(1)->encode($conf);
 close FILE;
 
-print "jabbot.json witten, please move it to your config directory\n";
+print "$basedir/jabbot.json witten\n";
