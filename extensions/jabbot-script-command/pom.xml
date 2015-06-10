@@ -5,12 +5,12 @@
     <parent>
         <artifactId>jabbot-extensions-master</artifactId>
         <groupId>org.wanna.jabbot.extensions</groupId>
-        <version>0.3-SNAPSHOT</version>
+        <version>0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jabbot-script-command</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.3</version>
 
     <repositories>
         <repository>
