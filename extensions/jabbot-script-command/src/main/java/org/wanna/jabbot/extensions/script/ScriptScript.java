@@ -41,7 +41,7 @@ public class ScriptScript implements Command {
 	 * Returns the command help
 	 * @return String help message
 	 */
-	public String getHelpMessage() { return "Midori Script command written by " + author;}
+	public String getHelpMessage() { return "Midori Script command written by " + author + "\n" + "sub " + name + " \n" + scriptCmd.dump() ;}
 
 	public CommandMessage process(CommandMessage message) {
 		String argsString = message.getBody();
