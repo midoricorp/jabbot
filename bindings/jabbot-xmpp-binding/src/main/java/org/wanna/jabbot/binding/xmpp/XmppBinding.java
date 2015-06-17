@@ -1,17 +1,17 @@
 package org.wanna.jabbot.binding.xmpp;
 
-import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.filter.AndFilter;
 import org.jivesoftware.smack.filter.MessageTypeFilter;
-import org.jivesoftware.smack.filter.PacketFilter;
+import org.jivesoftware.smack.filter.StanzaFilter;
 import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.packet.Packet;
+import org.jivesoftware.smack.packet.Stanza;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
-import org.jivesoftware.smack.util.StringUtils;
+import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.ping.PingManager;
+import org.jxmpp.util.XmppStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractBinding;
@@ -29,7 +29,7 @@ import java.util.Map;
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-08
  */
-public class XmppBinding extends AbstractBinding<XMPPConnection> {
+public class XmppBinding extends AbstractBinding<XMPPTCPConnection> {
 	private final Logger logger = LoggerFactory.getLogger(XmppBinding.class);
 	private Map<String,Room> rooms = new HashMap<>();
 	private int pingInterval = 3000;
@@ -52,7 +52,7 @@ public class XmppBinding extends AbstractBinding<XMPPConnection> {
 		connection = new XMPPTCPConnection(newConnectionConfiguration(configuration));
 		try {
 			connection.connect();
-			connection.login(configuration.getUsername(),configuration.getPassword(),configuration.getIdentifier());
+			connection.login();
 			PingManager.getInstanceFor(connection).setPingInterval(pingInterval);
 			this.initListeners(configuration.getCommandPrefix(),connection);
 			return connection.isConnected();
@@ -79,18 +79,19 @@ public class XmppBinding extends AbstractBinding<XMPPConnection> {
 	 * @param connection the connection on which PacketListener will be registered
 	 */
 	private void initListeners(final String prefix, final XMPPConnection connection){
-		PacketFilter filter = new AndFilter(
-				new MessageTypeFilter(Message.Type.groupchat),
-				new PacketFilter() {
+		StanzaFilter filter = new AndFilter(
+				MessageTypeFilter.GROUPCHAT,
+				new StanzaFilter() {
 					@Override
-					public boolean accept(Packet packet) {
-						return packet instanceof Message && ((Message) packet).getBody().startsWith(prefix);
+					public boolean accept(Stanza stanza) {
+						return stanza instanceof Message && ((Message) stanza).getBody().startsWith(prefix);
 					}
+
 				}
 		);
 
 		MucCommandListener commandListener = new MucCommandListener(this, listeners);
-		connection.addPacketListener(commandListener,filter);
+		connection.addAsyncStanzaListener(commandListener,filter);
 	}
 
 	@Override
@@ -98,20 +99,24 @@ public class XmppBinding extends AbstractBinding<XMPPConnection> {
 		return connection.isConnected();
 	}
 
-	private ConnectionConfiguration newConnectionConfiguration(final BindingConfiguration configuration){
-		ConnectionConfiguration config = new ConnectionConfiguration(
-				configuration.getUrl(),configuration.getPort(),configuration.getServerName()
-		);
-		config.setDebuggerEnabled(configuration.isDebug());
+	private XMPPTCPConnectionConfiguration newConnectionConfiguration(final BindingConfiguration configuration){
+		XMPPTCPConnectionConfiguration.Builder configurationBuilder = XMPPTCPConnectionConfiguration.builder();
+		configurationBuilder.setHost(configuration.getUrl())
+				.setPort(configuration.getPort())
+				.setServiceName(configuration.getServerName())
+				.setUsernameAndPassword(configuration.getUsername(),configuration.getPassword())
+				.setResource(configuration.getIdentifier())
+				.setDebuggerEnabled(configuration.isDebug());
+
 		if(allowSelfSigned){
 			try {
-				config.setCustomSSLContext(SSLHelper.newAllTrustingSslContext());
+				configurationBuilder.setCustomSSLContext(SSLHelper.newAllTrustingSslContext());
 			} catch (KeyManagementException | NoSuchAlgorithmException e) {
 				logger.error("Error registering custom ssl context",e);
 			}
 		}
 
-		return config;
+		return configurationBuilder.build();
 	}
 
 	@Override
@@ -119,6 +124,6 @@ public class XmppBinding extends AbstractBinding<XMPPConnection> {
 		if(roomName == null ){
 			return null;
 		}
-		return rooms.get(StringUtils.parseBareAddress(roomName));
+		return rooms.get(XmppStringUtils.parseBareJid(roomName));
 	}
 }
