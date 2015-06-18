@@ -5,6 +5,7 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.XMPPError;
 import org.jivesoftware.smackx.muc.DiscussionHistory;
 import org.jivesoftware.smackx.muc.MultiUserChat;
+import org.jivesoftware.smackx.muc.MultiUserChatManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractRoom;
@@ -36,7 +37,7 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 			logger.debug("sending message: {}",secured);
 			muc.sendMessage(secured);
 			return true;
-		} catch (XMPPException | SmackException.NotConnectedException e) {
+		} catch (SmackException.NotConnectedException e) {
 			logger.error("error while sending message",e);
 		}
 		return false;
@@ -46,7 +47,7 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 	public boolean join(RoomConfiguration configuration) {
 		final int nickChangeAttempts = 5;
 		this.configuration = configuration;
-		muc = new MultiUserChat(connection.getWrappedConnection(),configuration.getName());
+		muc = MultiUserChatManager.getInstanceFor(connection.getWrappedConnection()).getMultiUserChat(configuration.getName());
 		String nickname = configuration.getNickname();
 		int i = 0;
 		while(i<nickChangeAttempts){
@@ -58,7 +59,7 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 				return true;
 			}catch (XMPPException.XMPPErrorException e){
 				logger.error("error condition",e.getXMPPError().getCondition());
-				if(e.getXMPPError().getCondition().equals(XMPPError.Condition.conflict.toString())){
+				if(e.getXMPPError().getCondition().equals(XMPPError.Condition.conflict)){
 					logger.debug("nickname already taken.. changing");
 					nickname+=i;
 					i++;
