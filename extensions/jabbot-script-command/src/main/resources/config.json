@@ -1,7 +1,7 @@
 {"name":"script","className":"org.wanna.jabbot.extensions.script.ScriptCommand",
 	"configuration":{
 		"loop_limit":"100",
-		"buffer_imit":"1000"
+		"buffer_limit":"1000"
 	}
 }
 
