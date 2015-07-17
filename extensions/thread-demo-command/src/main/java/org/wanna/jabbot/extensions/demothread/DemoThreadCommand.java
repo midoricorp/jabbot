@@ -1,10 +1,10 @@
 package org.wanna.jabbot.extensions.demothread;
 
 import org.wanna.jabbot.command.AbstractCommandAdapter;
-import org.wanna.jabbot.command.CommandMessage;
-import org.wanna.jabbot.command.DefaultCommandMessage;
-import org.wanna.jabbot.command.MessageSender;
-import org.wanna.jabbot.command.behavior.MessageSenderAware;
+import org.wanna.jabbot.command.messaging.DefaultMessage;
+import org.wanna.jabbot.command.messaging.Message;
+import org.wanna.jabbot.command.messaging.MessageSender;
+import org.wanna.jabbot.command.messaging.MessageSenderAware;
 import org.wanna.jabbot.command.config.CommandConfig;
 
 /**
@@ -19,12 +19,12 @@ public class DemoThreadCommand extends AbstractCommandAdapter implements Message
 	}
 
 	@Override
-	public CommandMessage process(final CommandMessage message) {
+	public Message process(final Message message) {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				while(true) {
-					DefaultCommandMessage result = new DefaultCommandMessage();
+					DefaultMessage result = new DefaultMessage();
 					result.setBody("hello world");
 					messageSender.sendMessage(result);
 					try {

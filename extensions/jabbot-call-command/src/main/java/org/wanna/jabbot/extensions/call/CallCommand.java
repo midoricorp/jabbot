@@ -1,8 +1,8 @@
 package org.wanna.jabbot.extensions.call;
 
 import org.wanna.jabbot.command.AbstractCommandAdapter;
-import org.wanna.jabbot.command.CommandMessage;
-import org.wanna.jabbot.command.DefaultCommandMessage;
+import org.wanna.jabbot.command.messaging.Message;
+import org.wanna.jabbot.command.messaging.DefaultMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
 
 import java.util.List;
@@ -22,8 +22,8 @@ public class CallCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public CommandMessage process(CommandMessage message) {
-		DefaultCommandMessage result = new DefaultCommandMessage();
+	public Message process(Message message) {
+		DefaultMessage result = new DefaultMessage();
 		if(baseUrl == null){
 			result.setBody("Call command not configured: missing base_url");
 		}

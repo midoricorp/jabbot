@@ -4,8 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.BindingListener;
-import org.wanna.jabbot.binding.BindingMessage;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
+import org.wanna.jabbot.command.messaging.Message;
+import org.wanna.jabbot.command.messaging.DefaultMessage;
+import org.wanna.jabbot.command.messaging.body.BodyPart;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -56,8 +58,9 @@ public class CliRoom extends AbstractRoom<Object> implements Runnable {
 
 
 				for (BindingListener listener : listeners) {
-					BindingMessage message = new BindingMessage(this.getRoomName(),"cli",line);
-					listener.onMessage((CliBinding)connection,message);
+					//BindingMessage message = new BindingMessage(this.getRoomName(),"cli",line);
+                    Message message = new DefaultMessage(line,"cli",this.getRoomName());
+                    listener.onMessage((CliBinding)connection,message);
 				}
 			} catch (IOException e) {
 				logger.error("IO Error reading sdtin, dying");
@@ -67,8 +70,11 @@ public class CliRoom extends AbstractRoom<Object> implements Runnable {
 	}
 
 	@Override
-	public boolean sendMessage(String message) {
-		System.out.println(message);
+	public boolean sendMessage(Message message) {
+        for (BodyPart bodyPart : message.getBodies()) {
+            System.out.println("received message with body type: "+bodyPart.getType());
+            System.out.println(bodyPart.getText());
+        }
 		return true;
 	}
 

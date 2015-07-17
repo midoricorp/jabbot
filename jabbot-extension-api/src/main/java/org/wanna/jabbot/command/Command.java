@@ -1,5 +1,6 @@
 package org.wanna.jabbot.command;
 
+import org.wanna.jabbot.command.messaging.Message;
 import org.wanna.jabbot.command.parser.ArgsParser;
 
 /**
@@ -37,6 +38,6 @@ public interface Command {
 	 *
 	 * @param message message which triggered the command
 	 */
-	CommandMessage process(CommandMessage message);
+	Message process(Message message);
 }
 

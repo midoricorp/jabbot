@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
+import org.wanna.jabbot.command.messaging.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +63,8 @@ public abstract class AbstractBinding<T> implements Binding, CommandFactoryAware
 	}
 
 	@Override
-	public void sendMessage(BindingMessage message) {
+	public void sendMessage(Message message) {
 		Room room = this.getRoom(message.getRoomName());
-		room.sendMessage(message.getBody());
+        room.sendMessage(message);
 	}
 }

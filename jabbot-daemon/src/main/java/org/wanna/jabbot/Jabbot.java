@@ -5,18 +5,17 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingCreationException;
 import org.wanna.jabbot.binding.BindingFactory;
-import org.wanna.jabbot.binding.BindingMessage;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.BindingDefinition;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandFactory;
-import org.wanna.jabbot.command.CommandMessage;
-import org.wanna.jabbot.command.MessageSender;
+import org.wanna.jabbot.command.messaging.MessageSender;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.behavior.Configurable;
-import org.wanna.jabbot.command.behavior.MessageSenderAware;
+import org.wanna.jabbot.command.messaging.MessageSenderAware;
 import org.wanna.jabbot.command.config.CommandConfig;
+import org.wanna.jabbot.command.messaging.Message;
 import org.wanna.jabbot.config.JabbotConfiguration;
 
 import java.lang.reflect.InvocationTargetException;
@@ -117,9 +116,8 @@ public class Jabbot {
 					((MessageSenderAware)command).setMessageSender(
 							new MessageSender() {
 								@Override
-								public void sendMessage(CommandMessage message) {
-									BindingMessage response = new BindingMessage(message.getRoomName(), message.getSender(), message.getBody());
-									binding.sendMessage(response);
+								public void sendMessage(Message message) {
+									binding.sendMessage(message);
 								}
 							}
 					);

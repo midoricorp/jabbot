@@ -1,6 +1,4 @@
-package org.wanna.jabbot.command.behavior;
-
-import org.wanna.jabbot.command.MessageSender;
+package org.wanna.jabbot.command.messaging;
 
 /**
  * Interface which indicates that the implementer is MessageSender aware.

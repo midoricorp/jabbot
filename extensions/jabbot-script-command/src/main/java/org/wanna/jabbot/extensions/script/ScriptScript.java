@@ -1,6 +1,8 @@
 package org.wanna.jabbot.extensions.script;
 
 import org.wanna.jabbot.command.*;
+import org.wanna.jabbot.command.messaging.Message;
+import org.wanna.jabbot.command.messaging.DefaultMessage;
 import org.wanna.jabbot.command.parser.ArgsParser;
 import org.wanna.jabbot.command.parser.QuotedStringArgParser;
 import com.sipstacks.script.ScriptParseException;
@@ -43,7 +45,7 @@ public class ScriptScript implements Command {
 	 */
 	public String getHelpMessage() { return "Midori Script command written by " + author + "\n" + "sub " + name + " \n" + scriptCmd.dump() ;}
 
-	public CommandMessage process(CommandMessage message) {
+	public Message process(Message message) {
 		String argsString = message.getBody();
 
 		List<String> args = getArgsParser().parse(argsString);
@@ -52,13 +54,13 @@ public class ScriptScript implements Command {
 		try {
 			response = scriptCmd.exec(args);
 		} catch (ScriptParseException e) {
-			DefaultCommandMessage result = new DefaultCommandMessage();
+			DefaultMessage result = new DefaultMessage();
 			result.setBody(e.getMessage());
 			return result;
 
 		}
 
-		DefaultCommandMessage result = new DefaultCommandMessage();
+		DefaultMessage result = new DefaultMessage();
 		result.setBody(response);
 		return result;
 	}

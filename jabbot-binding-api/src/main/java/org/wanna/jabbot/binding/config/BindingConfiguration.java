@@ -22,6 +22,7 @@ public class BindingConfiguration {
 	private Set<CommandConfig> commands;
 	private Map<String,Object> parameters;
 	private boolean debug;
+    private String preferredMessageStyle = "TEXT";
 
 	public String getType() {
 		return type;
@@ -118,4 +119,12 @@ public class BindingConfiguration {
 	public void setParameters(Map<String, Object> parameters) {
 		this.parameters = parameters;
 	}
+
+    public String getPreferredMessageStyle() {
+        return preferredMessageStyle;
+    }
+
+    public void setPreferredMessageStyle(String preferredMessageStyle) {
+        this.preferredMessageStyle = preferredMessageStyle;
+    }
 }

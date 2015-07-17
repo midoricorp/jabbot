@@ -11,8 +11,8 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
-import org.wanna.jabbot.command.CommandMessage;
-import org.wanna.jabbot.command.DefaultCommandMessage;
+import org.wanna.jabbot.command.messaging.Message;
+import org.wanna.jabbot.command.messaging.DefaultMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.quote.binding.Result;
 
@@ -38,12 +38,12 @@ public class QuoteCommand extends AbstractCommandAdapter{
 	}
 
 	@Override
-	public CommandMessage process(CommandMessage message) {
+	public Message process(Message message) {
 		String response = query(null);
 		if(response != null){
 			try {
 				Result result = mapper.readValue(response,Result.class);
-				DefaultCommandMessage commandMessage = new DefaultCommandMessage();
+				DefaultMessage commandMessage = new DefaultMessage();
 				commandMessage.setBody(result.getQuote());
 				return commandMessage;
 			} catch (IOException e) {

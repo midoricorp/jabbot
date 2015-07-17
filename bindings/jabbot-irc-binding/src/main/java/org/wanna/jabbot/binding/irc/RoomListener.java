@@ -5,7 +5,8 @@ import com.ircclouds.irc.api.listeners.VariousMessageListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.BindingListener;
-import org.wanna.jabbot.binding.BindingMessage;
+import org.wanna.jabbot.command.messaging.Message;
+import org.wanna.jabbot.command.messaging.DefaultMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +31,7 @@ public class RoomListener extends VariousMessageListenerAdapter{
 		logger.debug("received {} on {}",aMsg.getText(),aMsg.getChannelName());
 		String sender = aMsg.getSource().getNick();
 		String roomName = aMsg.getChannelName();
-		BindingMessage message = new BindingMessage(roomName,sender,aMsg.getText());
-
+        Message message = new DefaultMessage(aMsg.getText(),sender,roomName);
 		for (BindingListener listener : listeners) {
 			listener.onMessage(binding,message);
 		}

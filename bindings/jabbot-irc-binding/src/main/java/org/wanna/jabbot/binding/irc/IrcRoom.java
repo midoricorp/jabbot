@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
+import org.wanna.jabbot.command.messaging.Message;
 
 import java.util.StringTokenizer;
 
@@ -22,14 +23,18 @@ public class IrcRoom extends AbstractRoom<IrcBinding> {
 		super(connection);
 	}
 
+    /**
+     * Irc Chatroom will only process TEXT message body.
+     *
+     * {@inheritDoc}
+     */
 	@Override
-	public boolean sendMessage(String message) {
+	public boolean sendMessage(Message message) {
 		IRCApi ircApi = connection.getWrappedConnection();
-		StringTokenizer tokenizer  = new StringTokenizer(message,"\n");
+		StringTokenizer tokenizer  = new StringTokenizer(message.getBody(),"\n");
 		while (tokenizer.hasMoreElements()){
 			ircApi.message("#"+configuration.getName(),tokenizer.nextToken());
 		}
-
 		return true;
 	}
 

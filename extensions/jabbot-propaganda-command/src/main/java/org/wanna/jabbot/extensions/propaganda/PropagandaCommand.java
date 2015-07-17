@@ -1,8 +1,8 @@
 package org.wanna.jabbot.extensions.propaganda;
 
 import org.wanna.jabbot.command.AbstractCommandAdapter;
-import org.wanna.jabbot.command.CommandMessage;
-import org.wanna.jabbot.command.DefaultCommandMessage;
+import org.wanna.jabbot.command.messaging.Message;
+import org.wanna.jabbot.command.messaging.DefaultMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
 
 import java.io.InputStream;
@@ -55,7 +55,7 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public CommandMessage process(CommandMessage message) {
+	public Message process(Message message) {
 		List<String> args =  getArgsParser().parse(message.getBody());
 		ArrayList<String> quote_list = null;
 		ArrayList<String> filter_list = new ArrayList<String>();
@@ -114,7 +114,7 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 
 			response = response.replace(key, replace.get(key));
 		}
-		DefaultCommandMessage result = new DefaultCommandMessage();
+		DefaultMessage result = new DefaultMessage();
 		result.setBody(response);
 		return result;
 	}

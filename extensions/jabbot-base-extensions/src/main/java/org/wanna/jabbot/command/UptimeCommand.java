@@ -1,6 +1,8 @@
 package org.wanna.jabbot.command;
 
 import org.wanna.jabbot.command.config.CommandConfig;
+import org.wanna.jabbot.command.messaging.Message;
+import org.wanna.jabbot.command.messaging.DefaultMessage;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -16,7 +18,7 @@ public class UptimeCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public CommandMessage process(CommandMessage message) {
+	public Message process(Message message) {
 		RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
 		long uptime = rb.getUptime();
 
@@ -36,7 +38,7 @@ public class UptimeCommand extends AbstractCommandAdapter {
 
 		long elapsedSeconds = uptime / secondsInMilli;
 		String result = String.format("I'm up since %s day(s) %s hour(s) %s minute(s) and %s seconds",elapsedDays,elapsedHours,elapsedMinutes,elapsedSeconds);
-		DefaultCommandMessage commandMessage = new DefaultCommandMessage();
+		DefaultMessage commandMessage = new DefaultMessage();
 		commandMessage.setBody(result);
 		return commandMessage;
 	}

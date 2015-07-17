@@ -7,6 +7,8 @@ import com.sipstacks.script.FunctionListener;
 import org.wanna.jabbot.command.*;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.config.CommandConfig;
+import org.wanna.jabbot.command.messaging.Message;
+import org.wanna.jabbot.command.messaging.DefaultMessage;
 import org.wanna.jabbot.command.parser.ArgsParser;
 import org.wanna.jabbot.command.parser.NullArgParser;
 import org.wanna.jabbot.command.parser.QuotedStringArgDeparser;
@@ -70,7 +72,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
         }
 
 	@Override
-	public CommandMessage process(CommandMessage message) {
+	public Message process(Message message) {
 		String script = message.getBody();
 
 		Script s = new Script(new StringReader(script));
@@ -97,7 +99,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 				}
 
 				public String run(List<String> args) {
-					DefaultCommandMessage msg = new DefaultCommandMessage();
+					DefaultMessage msg = new DefaultMessage();
 					if (args.size() > 0) {
 						msg.setBody(QuotedStringArgDeparser.deparse(args));
 					} else {
@@ -105,7 +107,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 					}
 
 					msg.setSender(sender);
-					CommandMessage result = cmd.process(msg);
+					Message result = cmd.process(msg);
 					return result.getBody();
 				}
 
@@ -131,12 +133,12 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			}
 
 		} catch (ScriptParseException spe) {
-			DefaultCommandMessage result = new DefaultCommandMessage();
+			DefaultMessage result = new DefaultMessage();
 			result.setBody(spe.getMessage());
 			return result;
 		}
 		
-		DefaultCommandMessage result = new DefaultCommandMessage();
+		DefaultMessage result = new DefaultMessage();
 		result.setBody(response);
 		return result;
 	}

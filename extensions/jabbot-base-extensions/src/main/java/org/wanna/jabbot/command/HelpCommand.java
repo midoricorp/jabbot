@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.config.CommandConfig;
+import org.wanna.jabbot.command.messaging.Message;
+import org.wanna.jabbot.command.messaging.DefaultMessage;
 
 import java.util.List;
 
@@ -21,7 +23,7 @@ public class HelpCommand extends AbstractCommandAdapter implements CommandFactor
 	}
 
 	@Override
-	public CommandMessage process(CommandMessage message) {
+	public Message process(Message message) {
 		List<String> args =  getArgsParser().parse(message.getBody());
 		StringBuilder sb = new StringBuilder();
 		if(args.size() > 0){
@@ -49,7 +51,7 @@ public class HelpCommand extends AbstractCommandAdapter implements CommandFactor
 			}
 			sb.append("\n").append("more help can be obtained using 'help <commandName>'");
 		}
-		DefaultCommandMessage result = new DefaultCommandMessage();
+		DefaultMessage result = new DefaultMessage();
 		result.setBody(sb.toString());
 		return result;
 	}

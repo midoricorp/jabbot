@@ -12,14 +12,13 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
-import org.wanna.jabbot.command.CommandMessage;
-import org.wanna.jabbot.command.DefaultCommandMessage;
+import org.wanna.jabbot.command.messaging.Message;
+import org.wanna.jabbot.command.messaging.DefaultMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.icndb.binding.Result;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -39,7 +38,7 @@ public class ChuckCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public DefaultCommandMessage process(CommandMessage message) {
+	public DefaultMessage process(Message message) {
 		List<String> args = getArgsParser().parse(message.getBody());
 		String options = null;
 		if(args != null && args.size() > 0){
@@ -65,7 +64,7 @@ public class ChuckCommand extends AbstractCommandAdapter {
 				// make sure to remove any that didn't have a leading space too
 				joke = joke.replace(REMOVE_ME, "");
 
-				DefaultCommandMessage result = new DefaultCommandMessage();
+				DefaultMessage result = new DefaultMessage();
 				result.setBody(joke);
 				return result;
 			}
@@ -73,23 +72,6 @@ public class ChuckCommand extends AbstractCommandAdapter {
 			logger.error("error querying icndb",e);
 		}
 		return null;
-	}
-
-	/**
-	 * Make sure one does not use / command from jabber in order to spam someone else
-	 * using /say or having the bot acting weird using /me.
-	 * by Stripping all the leading / from the response
-	 *
-	 * @param response the raw response to be returned
-	 * @return cleaned response
-	 */
-	private String secureResponse(String response) throws UnsupportedEncodingException {
-		logger.debug("securing response {}",response);
-		response = URLDecoder.decode(response, "UTF-8");
-		while(response.startsWith("/")){
-			response = response.replace("/","");
-		}
-		return response;
 	}
 
 	private String query(String option) throws IOException {

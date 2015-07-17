@@ -2,13 +2,13 @@ package org.wanna.jabbot.binding.xmpp;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
-import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Stanza;
 import org.jxmpp.util.XmppStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.BindingListener;
-import org.wanna.jabbot.binding.BindingMessage;
+import org.wanna.jabbot.command.messaging.Message;
+import org.wanna.jabbot.command.messaging.DefaultMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +29,12 @@ public class MucCommandListener implements StanzaListener{
 
 	@Override
 	public void processPacket(Stanza packet) throws SmackException.NotConnectedException {
-		if(packet instanceof Message){
-			Message message = (Message)packet;
+		if(packet instanceof org.jivesoftware.smack.packet.Message){
+			org.jivesoftware.smack.packet.Message message = (org.jivesoftware.smack.packet.Message)packet;
 			String from = XmppStringUtils.parseResource(message.getFrom());
 			String roomName = XmppStringUtils.parseBareJid(message.getFrom());
-			BindingMessage m = new BindingMessage(roomName,from,message.getBody());
-			logger.debug("received packet from {} with body: {}",message.getFrom(),message.getBody());
+            Message m = new DefaultMessage(message.getBody(),from,roomName);
+            logger.debug("received packet from {} with body: {}",message.getFrom(),message.getBody());
 			XmppRoom room = (XmppRoom)binding.getRoom(roomName);
 			//If message is sent by myself, ignore it.
 			if(room == null || from.equals(room.getConfiguration().getNickname())){
