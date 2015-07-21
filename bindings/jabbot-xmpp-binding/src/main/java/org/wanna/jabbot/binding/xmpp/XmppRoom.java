@@ -46,7 +46,9 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
             BodyPart bodyPart = message.getBody("XHTML");
             if(bodyPart != null){
                 XmlStringBuilder sb = new XmlStringBuilder();
+                sb.append("<body>");
                 sb.append(bodyPart.getText());
+                sb.append("</body>");
                 XHTMLExtension xhtmlExtension = XHTMLExtension.from(xmppMessage);
                 if (xhtmlExtension == null) {
                     // Create an XHTMLExtension and add it to the message
