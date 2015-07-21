@@ -4,11 +4,13 @@ import com.sipstacks.script.ExternalFunction;
 import com.sipstacks.script.Script;
 import com.sipstacks.script.ScriptParseException;
 import com.sipstacks.script.FunctionListener;
+import com.sipstacks.script.OutputStream;
 import org.wanna.jabbot.command.*;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.command.messaging.Message;
 import org.wanna.jabbot.command.messaging.DefaultMessage;
+import org.wanna.jabbot.command.messaging.body.XhtmlBodyPart;
 import org.wanna.jabbot.command.parser.ArgsParser;
 import org.wanna.jabbot.command.parser.NullArgParser;
 import org.wanna.jabbot.command.parser.QuotedStringArgDeparser;
@@ -122,24 +124,34 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 
 
 
-		String response = null;
+		OutputStream response = null;
+		DefaultMessage result = new DefaultMessage();
 
 		try {
 			response = s.run();
+			String txt = response.getText();
+			String html = response.getHtml();
 
-			if (bufferLimit > 0 && response.length() > bufferLimit) {
-				response = response.substring(0, bufferLimit);
-				response += "\n*Message Truncated*";
+			if (bufferLimit > 0 && txt.length() > bufferLimit) {
+				txt = txt.substring(0, bufferLimit);
+				txt += "\n*Message Truncated*";
+			}
+			result.setBody(txt);
+			// can't safely truncate xhtml, so discard if too long
+			if (bufferLimit == 0 || html.length() > bufferLimit) {
+				html = "";
+			}
+
+			if (html.length() > 0) {
+				result.addBody(new XhtmlBodyPart(html));
 			}
 
 		} catch (ScriptParseException spe) {
-			DefaultMessage result = new DefaultMessage();
+			result = new DefaultMessage();
 			result.setBody(spe.getMessage());
 			return result;
 		}
 		
-		DefaultMessage result = new DefaultMessage();
-		result.setBody(response);
 		return result;
 	}
 
