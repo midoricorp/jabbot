@@ -3,9 +3,11 @@ package org.wanna.jabbot.extensions.script;
 import org.wanna.jabbot.command.*;
 import org.wanna.jabbot.command.messaging.Message;
 import org.wanna.jabbot.command.messaging.DefaultMessage;
+import org.wanna.jabbot.command.messaging.body.XhtmlBodyPart;
 import org.wanna.jabbot.command.parser.ArgsParser;
 import org.wanna.jabbot.command.parser.QuotedStringArgParser;
 import com.sipstacks.script.ScriptParseException;
+import com.sipstacks.script.OutputStream;
 import java.util.List;
 
 /**
@@ -49,7 +51,7 @@ public class ScriptScript implements Command {
 		String argsString = message.getBody();
 
 		List<String> args = getArgsParser().parse(argsString);
-		String response;
+		OutputStream response;
 
 		try {
 			response = scriptCmd.exec(args);
@@ -61,7 +63,10 @@ public class ScriptScript implements Command {
 		}
 
 		DefaultMessage result = new DefaultMessage();
-		result.setBody(response);
+		result.setBody(response.getText());
+		if (response.getHtml().length() > 0) {
+			result.addBody(new XhtmlBodyPart(response.getHtml()));
+		}
 		return result;
 	}
 
