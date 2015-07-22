@@ -5,7 +5,7 @@ package org.wanna.jabbot.command.messaging.body;
  *
  * @see {@link org.wanna.jabbot.command.messaging.body.BodyPart}
  *
- * @author Vincent Morsiani [vmorsiani@voxbone.com]
+ * @author Vincent Morsiani
  * @since 2015-07-14
  */
 public class XhtmlBodyPart implements BodyPart {

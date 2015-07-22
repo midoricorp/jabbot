@@ -1,7 +1,6 @@
 package org.wanna.jabbot.command.messaging;
 
 import org.wanna.jabbot.command.messaging.body.BodyPart;
-
 import java.util.Collection;
 
 /**
@@ -35,7 +34,7 @@ public interface Message {
      * @param type type of BodyPart to retrieve
      * @return BodyPart corresponding to the type.
      */
-	BodyPart getBody(String type);
+	BodyPart getBody(BodyPart.Type type);
 
     /**
      * Retrieves ALL the BodyPart which compose a Message

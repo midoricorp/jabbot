@@ -46,12 +46,8 @@ public class DefaultMessage implements Message {
     /**
      * {@inheritDoc}
      */
-    public BodyPart getBody(String type){
-        BodyPart.Type bodyType = BodyPart.Type.valueOf(type);
-        if( bodyType == null ){
-            bodyType = BodyPart.Type.TEXT;
-        }
-        return bodies.get(bodyType);
+    public BodyPart getBody(BodyPart.Type type){
+        return bodies.get(type);
     }
 
     /**
