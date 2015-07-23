@@ -138,7 +138,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			}
 			result.setBody(txt);
 			// can't safely truncate xhtml, so discard if too long
-			if (bufferLimit == 0 || html.length() > bufferLimit) {
+			if (bufferLimit > 0 && html.length() > bufferLimit) {
 				html = "";
 			}
 
