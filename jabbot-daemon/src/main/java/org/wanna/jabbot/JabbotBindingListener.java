@@ -9,6 +9,9 @@ import org.wanna.jabbot.command.CommandNotFoundException;
 import org.wanna.jabbot.command.messaging.Message;
 import org.wanna.jabbot.command.messaging.DefaultMessage;
 import org.wanna.jabbot.command.messaging.body.BodyPart;
+import org.wanna.jabbot.command.messaging.body.BodyPartValidator;
+import org.wanna.jabbot.command.messaging.body.BodyPartValidatorFactory;
+import org.wanna.jabbot.command.messaging.body.InvalidBodyPartException;
 import org.wanna.jabbot.command.parser.CommandParser;
 import org.wanna.jabbot.command.parser.CommandParsingResult;
 
@@ -48,7 +51,12 @@ public class JabbotBindingListener implements BindingListener{
 			}
 
 			Message response = createResponseFromResult(commandResult,message.getSender(),message.getRoomName());
-            binding.sendMessage(response);
+            //Only send message if it has at least 1 body part
+            if(!response.getBodies().isEmpty()){
+                binding.sendMessage(response);
+            }else{
+                logger.debug("Message contains no bodies and thus can be discarded");
+            }
 		} catch (CommandNotFoundException e) {
 			logger.debug("command not found: '{}'", e.getCommandName());
 		}
@@ -62,10 +70,21 @@ public class JabbotBindingListener implements BindingListener{
      * @param roomName room name from which the message has been sent
      * @return response message
      */
+    @SuppressWarnings("unchecked")
     private Message createResponseFromResult(Message result, String sender, String roomName){
         Message response = new DefaultMessage(result.getBody(),sender,roomName);
         for (BodyPart body : result.getBodies()) {
-            response.addBody(body);
+            BodyPartValidator validator = BodyPartValidatorFactory.getInstance().create(body.getType());
+            try {
+                //If a validator exists for that body type, validate the message
+                if(validator != null){
+                    validator.validate(body);
+                }
+                response.addBody(body);
+            } catch (InvalidBodyPartException e) {
+                logger.info("discarding XhtmlBodyPart as it's content is declared invalid: {}"
+                        ,(e.getInvalidBodyPart()==null?"NULL":e.getInvalidBodyPart().getText()));
+            }
         }
         return response;
     }

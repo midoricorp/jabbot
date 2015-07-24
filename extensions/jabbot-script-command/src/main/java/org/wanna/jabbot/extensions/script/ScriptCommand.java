@@ -5,12 +5,13 @@ import com.sipstacks.script.Script;
 import com.sipstacks.script.ScriptParseException;
 import com.sipstacks.script.FunctionListener;
 import com.sipstacks.script.OutputStream;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.wanna.jabbot.command.*;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.command.messaging.Message;
 import org.wanna.jabbot.command.messaging.DefaultMessage;
-import org.wanna.jabbot.command.messaging.body.XhtmlBodyPart;
+import org.wanna.jabbot.command.messaging.body.*;
 import org.wanna.jabbot.command.parser.ArgsParser;
 import org.wanna.jabbot.command.parser.NullArgParser;
 import org.wanna.jabbot.command.parser.QuotedStringArgDeparser;
@@ -143,7 +144,25 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			}
 
 			if (html.length() > 0) {
-				result.addBody(new XhtmlBodyPart(html));
+                BodyPart xhtmlPart = new XhtmlBodyPart(html);
+                try {
+                    BodyPartValidator validator = BodyPartValidatorFactory.getInstance().create(BodyPart.Type.XHTML);
+                    if(validator != null){
+                        validator.validate(xhtmlPart);
+                    }
+                    result.addBody(xhtmlPart);
+                } catch (InvalidBodyPartException e) {
+                    StringBuilder errorMessage = new StringBuilder();
+                    errorMessage.append(e.getMessage());
+                    if(e.getInvalidBodyPart() != null){
+                        errorMessage.append("<br/>");
+                        errorMessage.append(StringEscapeUtils.escapeXml11(e.getInvalidBodyPart().getText()))
+                                .append("<br/>")
+                                .append(StringEscapeUtils.escapeXml11(e.getCause().getMessage()));
+
+                    }
+                    result.addBody(new XhtmlBodyPart(errorMessage.toString()));
+                }
 			}
 
 		} catch (ScriptParseException spe) {

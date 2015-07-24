@@ -12,6 +12,7 @@ import org.wanna.jabbot.command.messaging.body.BodyPart;
  * @since 2015-07-22
  */
 public final class MessageHelper {
+
     /**
      * List of characters we don't want to see in an XMPP message body
      */
@@ -26,7 +27,7 @@ public final class MessageHelper {
 
     /**
      * Create an XMPP Message out of a Jabbot Message
-     * It will check for the presence of XHTML Body, and feed the XMPP with it if present.
+     * It will check for the presence of XHTML Body, and feed the XMPP message with it if present.
      * Otherwise, only the raw TEXT message will be fed.
      *
      * @param message Jabbot Message
@@ -43,9 +44,7 @@ public final class MessageHelper {
         xmppMessage.setBody(secured);
         //Check if there's any XHTML body part, if yes, set it
         BodyPart xhtmlPart = message.getBody(BodyPart.Type.XHTML);
-
         if(xhtmlPart != null){
-            //TODO validate XHTML here and throw an exception if message doesn't appear to be syntaxically valid.
             XmlStringBuilder sb = new XmlStringBuilder();
             sb.append("<body>");
             sb.append(xhtmlPart.getText());
