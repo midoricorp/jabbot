@@ -1,5 +1,19 @@
-jabbot (0.3) UNRELEASED; urgency=medium
+jabbot (0.4) UNRELEASED; urgency=medium
+  
+  [ Vincent Morsiani ] 
+  * added multi body part support for jabbot message 
+  * added body part validation mechanism 
 
+ -- Vincent Morsiani <vmorsiani@gmail.com>  Fri, 24 Jul 2015 21:40:42 +0200
+
+jabbot (0.3) unstable; urgency=medium
+
+  [ Torrey Searle ]
   * Initial release. (Closes: #XXXXXX)
+  * provide scripting interface
+  * genconf to provide an easy way to build jabbot.json configuration file
 
- -- Torrey Searle <tsearle@gmail.com>  Mon, 30 Mar 2015 20:50:36 +0200
+  [ Vincent Morsiani ]
+  * improving the messaging between the core and the bindings 
+
+ -- Vincent Morsiani <vmorsiani@gmail.com>  Fri, 24 Jul 2015 21:37:35 +0200
