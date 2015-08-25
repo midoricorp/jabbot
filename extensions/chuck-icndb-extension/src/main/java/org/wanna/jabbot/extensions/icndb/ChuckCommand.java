@@ -12,8 +12,8 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
-import org.wanna.jabbot.command.messaging.Message;
-import org.wanna.jabbot.command.messaging.DefaultMessage;
+import org.wanna.jabbot.command.messaging.CommandMessage;
+import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.icndb.binding.Result;
 
@@ -38,7 +38,7 @@ public class ChuckCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public DefaultMessage process(Message message) {
+	public DefaultCommandMessage process(CommandMessage message) {
 		List<String> args = getArgsParser().parse(message.getBody());
 		String options = null;
 		if(args != null && args.size() > 0){
@@ -64,7 +64,7 @@ public class ChuckCommand extends AbstractCommandAdapter {
 				// make sure to remove any that didn't have a leading space too
 				joke = joke.replace(REMOVE_ME, "");
 
-				DefaultMessage result = new DefaultMessage();
+				DefaultCommandMessage result = new DefaultCommandMessage();
 				result.setBody(joke);
 				return result;
 			}

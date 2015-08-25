@@ -14,42 +14,44 @@
     ],
     "serverList":[
         {   "type" : "XMPP",
-            "url":"jabber.hostname.com",
-            "serverName":"hostname.com",
+            "url":"localhost",
+            "serverName":"localhost",
             "port":5222,
-            "username":"Jabbot",
+            "username":"jabbot",
             "password":"password",
             "identifier":"jabbot",
-            "commandPrefix":"!",
+            "commandPrefix":"#",
             "debug":false,
             "parameters":{
                 "allow_self_signed":true,
                 "ping_interval":600
             },
             "rooms":[
-                {"name":"test_room@conference.hostname.com","nickname":"Jabbot"}
+                {"name":"jabbot-dev@conference.localhost","nickname":"jabbot"}
             ],
             "commands":[
                 {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"},
                 {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"},
-                {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
                 {"name":"quote","className":"org.wanna.jabbot.extensions.quote.QuoteCommand"},
-                {"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
+                {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
                 {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
-                {"name":"translate","className":"org.wanna.jabbot.extensions.translate.TranslateCommand"},
                 {"name":"call","className":"org.wanna.jabbot.extensions.call.CallCommand",
                     "configuration":{
                         "url":"http://voxcall.me",
                         "missing_user":"Hey! Who should I call? (flastname)"
                     }
                 },
-                {"name":"jira","className":"org.wanna.jabbot.extensions.jira.IssueViewer",
-                    "configuration":{
-                        "url":"https://jira.hostname.com",
-                        "username":"username",
-                        "password":"password"
+                {
+                    "name": "jira",
+                    "className": "org.wanna.jabbot.extensions.jira.IssueViewer",
+                    "configuration": {
+                        "url": "https://jira.localhost",
+                        "username": "username",
+                        "password": "password"
                     }
-                }
+                },
+                {"name":"propaganda","className":"org.wanna.jabbot.extensions.propaganda.PropagandaCommand"},
+                {"name":"script","className":"org.wanna.jabbot.extensions.script.ScriptCommand"}
             ]
         },
         {   "type" : "IRC",
@@ -76,56 +78,16 @@
         {   "type" : "CLI",
             "url":"localhost",
             "identifier":"Jabbot",
-            "commandPrefix":"!",
+            "commandPrefix":"#",
             "rooms":[
                 {"name":"jabbot-dev","nickname":"Jabbot"}
             ],
             "commands":[
                 {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"},
                 {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
-                {"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
                 {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
-                {"name":"translate","className":"org.wanna.jabbot.extensions.translate.TranslateCommand"},
                 {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"},
-                {"name":"perl","className":"org.wanna.jabbot.extensions.cgi.CGICommand",
-			        "configuration":{
-				        "script":"example_cgi.pl"
-			        }
-		        },
-                {"name":"urbandict","className":"org.wanna.jabbot.extensions.cgi.CGICommand",
-                    "configuration":{
-                        "script":"urbandict.pl"
-                    }
-    		    },
-                {"name":"events","className":"org.wanna.jabbot.extensions.cgi.CGICommand",
-                    "configuration":{
-                        "script":"events.pl"
-                    }
-                },
-                {"name":"propaganda","className":"org.wanna.jabbot.extensions.propaganda.PropagandaCommand",
-                    "configuration":{
-                        ":{guy1}":"Kim Il Sung",
-                        ":{guy2}":"Kim Jong Il",
-                        ":{guy3}":"Kim Jong Un",
-                        ":{company}":"country",
-                        ":{exec}":"Party",
-                        ":{enemy}":"Japan",
-                        ":{corporate}":"national",
-                        ":{company_name}":"Korea",
-                        ":{group}":"People's Army",
-                        ":{hq}":"Paektu",
-                        ":{capital}":"Pyongyang",
-                        ":{philosophy}":"socialism",
-                        ":{job}":"Worker",
-                        ":{action}":"revolution"
-                    }
-                },
-                {"name":"script","className":"org.wanna.jabbot.extensions.script.ScriptCommand",
-			"configuration":{
-				"loop_limit":"100",
-				"buffer_imit":"1000"
-			}
-		}
+                {"name":"script","className":"org.wanna.jabbot.extensions.script.ScriptCommand"}
             ]
         }
     ]

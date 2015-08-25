@@ -1,8 +1,9 @@
 package org.wanna.jabbot.command;
 
 import org.wanna.jabbot.command.config.CommandConfig;
+import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.command.messaging.Message;
-import org.wanna.jabbot.command.messaging.DefaultMessage;
+import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
@@ -18,7 +19,7 @@ public class VersionCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public Message process(Message message) {
+	public Message process(CommandMessage message) {
 		StringBuilder sb = new StringBuilder();
 		OperatingSystemMXBean os = ManagementFactory.getOperatingSystemMXBean();
 		sb.append("I am running Jabot beta\n")
@@ -31,7 +32,7 @@ public class VersionCommand extends AbstractCommandAdapter {
 				.append(" )").append("\n")
 				.append("https://github.com/vmorsiani/jabbot");
 
-		DefaultMessage result = new DefaultMessage();
+		DefaultCommandMessage result = new DefaultCommandMessage();
 		result.setBody(sb.toString());
 		return result;
 	}

@@ -5,8 +5,8 @@ import com.ircclouds.irc.api.listeners.VariousMessageListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.BindingListener;
-import org.wanna.jabbot.command.messaging.Message;
-import org.wanna.jabbot.command.messaging.DefaultMessage;
+import org.wanna.jabbot.binding.DefaultBindingMessage;
+import org.wanna.jabbot.command.messaging.body.TextBodyPart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +15,11 @@ import java.util.List;
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-15
  */
-public class RoomListener extends VariousMessageListenerAdapter{
-	final Logger logger = LoggerFactory.getLogger(RoomListener.class);
+public class IrcMessageListener extends VariousMessageListenerAdapter{
+	final Logger logger = LoggerFactory.getLogger(IrcMessageListener.class);
 	private final List<BindingListener> listeners;
-	private final IrcBinding binding;
 
-	public RoomListener(IrcBinding binding, List<BindingListener> listeners) {
-		this.binding = binding;
+	public IrcMessageListener(List<BindingListener> listeners) {
 		this.listeners =(listeners == null ? new ArrayList<BindingListener>() : listeners);
 	}
 
@@ -31,9 +29,13 @@ public class RoomListener extends VariousMessageListenerAdapter{
 		logger.debug("received {} on {}",aMsg.getText(),aMsg.getChannelName());
 		String sender = aMsg.getSource().getNick();
 		String roomName = aMsg.getChannelName();
-        Message message = new DefaultMessage(aMsg.getText(),sender,roomName);
-		for (BindingListener listener : listeners) {
-			listener.onMessage(binding,message);
+        DefaultBindingMessage message = new DefaultBindingMessage();
+        message.addBody(new TextBodyPart(aMsg.getText()));
+        message.setSender(sender);
+        message.setDestination(roomName);
+        message.setRoomName(roomName);
+        for (BindingListener listener : listeners) {
+			listener.onMessage(message);
 		}
 		super.onChannelMessage(aMsg);
 	}

@@ -2,8 +2,9 @@ package org.wanna.jabbot.binding.xmpp;
 
 import org.jivesoftware.smack.util.XmlStringBuilder;
 import org.jivesoftware.smackx.xhtmlim.packet.XHTMLExtension;
-import org.wanna.jabbot.command.messaging.Message;
+import org.jxmpp.util.XmppStringUtils;
 import org.wanna.jabbot.command.messaging.body.BodyPart;
+import org.wanna.jabbot.command.messaging.body.TextBodyPart;
 
 /**
  * MessageHelper is a class which provide some facilities with regards to Xmpp message.
@@ -33,7 +34,7 @@ public final class MessageHelper {
      * @param message Jabbot Message
      * @return Xmpp Message
      */
-    public static org.jivesoftware.smack.packet.Message createXmppMessage(Message message){
+    public static org.jivesoftware.smack.packet.Message createResponseMessage(XmppMessage message){
         org.jivesoftware.smack.packet.Message xmppMessage = new org.jivesoftware.smack.packet.Message();
         //First set the message body to raw text
         String secured = message.getBody();
@@ -58,6 +59,33 @@ public final class MessageHelper {
             // Add the required bodies to the message
             xhtmlExtension.addBody(sb);
         }
+        if(message.getRoomName() != null){
+            xmppMessage.setType(org.jivesoftware.smack.packet.Message.Type.groupchat);
+            xmppMessage.setTo(message.getRoomName());
+        }else{
+            xmppMessage.setTo(message.getDestination());
+            xmppMessage.setThread(message.getThread());
+            xmppMessage.setStanzaId(message.getId());
+            xmppMessage.setType(org.jivesoftware.smack.packet.Message.Type.chat);
+        }
+        xmppMessage.setFrom(message.getSender());
         return xmppMessage;
+    }
+
+    public static XmppMessage createRequestMessage(org.jivesoftware.smack.packet.Message xmppMessage){
+        XmppMessage msg = new XmppMessage();
+        msg.setId(xmppMessage.getStanzaId());
+        msg.addBody(new TextBodyPart(xmppMessage.getBody()));
+        msg.setDestination(xmppMessage.getTo());
+        msg.setThread(xmppMessage.getThread());
+
+        if(xmppMessage.getType().equals(org.jivesoftware.smack.packet.Message.Type.groupchat)){
+            msg.setSender(XmppStringUtils.parseResource(xmppMessage.getFrom()));
+            msg.setRoomName(XmppStringUtils.parseBareJid(xmppMessage.getFrom()));
+
+        }else{
+            msg.setSender(xmppMessage.getFrom());
+        }
+        return msg;
     }
 }

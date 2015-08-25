@@ -34,7 +34,7 @@ public class IrcBinding extends AbstractBinding<IRCApi> {
 	@Override
 	public boolean connect(BindingConfiguration configuration) {
 		connection = new IRCApiImpl(false);
-		RoomListener listener = new RoomListener(this,listeners);
+		IrcMessageListener listener = new IrcMessageListener(listeners);
 		connection.addListener(listener);
 
 		ConnectionCallback connectionCallback = new ConnectionCallback();

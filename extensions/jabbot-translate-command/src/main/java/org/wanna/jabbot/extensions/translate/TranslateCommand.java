@@ -13,8 +13,8 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
-import org.wanna.jabbot.command.messaging.Message;
-import org.wanna.jabbot.command.messaging.DefaultMessage;
+import org.wanna.jabbot.command.messaging.CommandMessage;
+import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.translate.binding.Result;
 
@@ -47,7 +47,7 @@ public class TranslateCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public DefaultMessage process(Message message) {
+	public DefaultCommandMessage process(CommandMessage message) {
 		List<String> args = getArgsParser().parse(message.getBody());
 		String options = null;
 		if(args != null && args.size() >= 3){
@@ -62,7 +62,7 @@ public class TranslateCommand extends AbstractCommandAdapter {
 				Result parsed = mapper.readValue(response,Result.class);
 				if(parsed.getResponseData() != null){
 					String translation = StringEscapeUtils.unescapeHtml4(parsed.getResponseData().getTranslatedText());
-					DefaultMessage result = new DefaultMessage();
+					DefaultCommandMessage result = new DefaultCommandMessage();
 					result.setBody(translation);
 					return result;
 				}
@@ -71,7 +71,7 @@ public class TranslateCommand extends AbstractCommandAdapter {
 			}
 		}
 
-		DefaultMessage result = new DefaultMessage();
+		DefaultCommandMessage result = new DefaultCommandMessage();
 		result.setBody("Insufficent Arguments: <src_lang> <dst_lang> <message>");
 		return result;
 	}

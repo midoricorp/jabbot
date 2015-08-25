@@ -18,8 +18,9 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
+import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.command.messaging.Message;
-import org.wanna.jabbot.command.messaging.DefaultMessage;
+import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.foaas.binding.Field;
 import org.wanna.jabbot.extensions.foaas.binding.Operation;
@@ -42,7 +43,7 @@ public class AttackCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public Message process(Message message) {
+	public Message process(CommandMessage message) {
 		List<String> args = getArgsParser().parse(message.getBody());
 		String response;
 		if(args != null ){
@@ -58,7 +59,7 @@ public class AttackCommand extends AbstractCommandAdapter {
 			try {
 				String url = buildUrl(operation,from,args);
 				response = query(url);
-				DefaultMessage result = new DefaultMessage();
+				DefaultCommandMessage result = new DefaultCommandMessage();
 				result.setBody(secureResponse(response));
 				return result;
 			} catch (IOException e) {

@@ -11,24 +11,22 @@ import java.util.Map;
  * @author vmorsiani <vmorsiani>
  * @since 2015-02-21
  */
-public class DefaultMessage implements Message {
+public class DefaultCommandMessage implements CommandMessage {
 	private String sender;
-	private String roomName;
     private Map<BodyPart.Type,BodyPart> bodies;
 
-    public DefaultMessage() {
+    public DefaultCommandMessage() {
         this(null);
     }
 
-    public DefaultMessage(String text){
-        this(text, null, null);
+    public DefaultCommandMessage(String text){
+        this(text, null);
     }
 
-    public DefaultMessage(String body, String sender, String roomName) {
+    public DefaultCommandMessage(String body, String sender){
         bodies = new HashMap<>();
-        bodies.put(BodyPart.Type.TEXT,new TextBodyPart(body));
+        bodies.put(BodyPart.Type.TEXT, new TextBodyPart(body));
         this.sender = sender;
-        this.roomName = roomName;
     }
 
     /**
@@ -70,7 +68,7 @@ public class DefaultMessage implements Message {
      * Set the message body as a TextBodyPart
      *
      * @param body text to set as TextBodyPart
-     * @deprecated usage {@link org.wanna.jabbot.command.messaging.DefaultMessage#addBody(org.wanna.jabbot.command.messaging.body.BodyPart)} instead
+     * @deprecated usage {@link DefaultCommandMessage#addBody(org.wanna.jabbot.command.messaging.body.BodyPart)} instead
      * @see {@link org.wanna.jabbot.command.messaging.body.BodyPart}
      */
     public void setBody(String body) {
@@ -84,14 +82,5 @@ public class DefaultMessage implements Message {
 
 	public void setSender(String sender) {
 		this.sender = sender;
-	}
-
-	@Override
-	public String getRoomName() {
-		return roomName;
-	}
-
-	public void setRoomName(String roomName) {
-		this.roomName = roomName;
 	}
 }

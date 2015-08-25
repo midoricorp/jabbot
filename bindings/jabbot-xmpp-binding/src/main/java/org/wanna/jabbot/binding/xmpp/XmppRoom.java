@@ -29,8 +29,7 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 
 	public boolean sendMessage(final Message message) {
 		try {
-            org.jivesoftware.smack.packet.Message xmppMessage = MessageHelper.createXmppMessage(message);
-            xmppMessage.setTo(message.getRoomName());
+            org.jivesoftware.smack.packet.Message xmppMessage = MessageHelper.createResponseMessage((XmppMessage)message);
 			muc.sendMessage(xmppMessage);
 			return true;
 		} catch (SmackException.NotConnectedException e) {

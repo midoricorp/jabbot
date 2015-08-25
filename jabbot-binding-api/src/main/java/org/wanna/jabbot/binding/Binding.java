@@ -2,7 +2,6 @@ package org.wanna.jabbot.binding;
 
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
-import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.messaging.Message;
 
 /**
@@ -37,9 +36,9 @@ public interface Binding {
 
 	Room getRoom(String roomName);
 
-	CommandFactory getCommandFactory();
-
 	void registerListener(BindingListener listener);
 
-	void sendMessage(Message message);
+	void sendMessage(BindingMessage message);
+
+    Message createResponseMessage(BindingMessage source, Message eventResponse);
 }

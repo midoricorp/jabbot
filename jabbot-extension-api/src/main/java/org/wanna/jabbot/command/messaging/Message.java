@@ -54,10 +54,4 @@ public interface Message {
      * @return sender resource
      */
     String getSender();
-
-    /**
-     * Retrieves the room name from which the message has been sent
-     * @return room name
-     */
-	String getRoomName();
 }

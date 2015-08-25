@@ -9,20 +9,11 @@ import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.BindingDefinition;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.command.Command;
-import org.wanna.jabbot.command.CommandFactory;
-import org.wanna.jabbot.command.messaging.MessageSender;
-import org.wanna.jabbot.command.behavior.CommandFactoryAware;
-import org.wanna.jabbot.command.behavior.Configurable;
-import org.wanna.jabbot.command.messaging.MessageSenderAware;
-import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.command.messaging.Message;
 import org.wanna.jabbot.config.JabbotConfiguration;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -45,12 +36,8 @@ public class Jabbot {
 			Binding conn;
 			try {
 				conn = bindingFactory.create(connectionConfiguration);
-				if(conn instanceof CommandFactoryAware){
-					CommandFactory commandFactory = newCommandFactory(conn,connectionConfiguration.getCommands());
-					((CommandFactoryAware)conn).setCommandFactory(commandFactory);
-				}
-
-				conn.registerListener(new JabbotBindingListener(connectionConfiguration.getCommandPrefix()));
+				CommandManager.getInstanceFor(conn).initializeFromConfigSet(connectionConfiguration.getCommands());
+                conn.registerListener(new JabbotBindingListener(conn,connectionConfiguration.getCommandPrefix()));
 				conn.connect(connectionConfiguration);
 				for (RoomConfiguration roomConfiguration : connectionConfiguration.getRooms()) {
 					conn.joinRoom(roomConfiguration);
@@ -78,6 +65,7 @@ public class Jabbot {
 		for (BindingDefinition binding : bindings) {
 			try {
 				Class clazz = Class.<Command>forName(String.valueOf(binding.getClassName()));
+                @SuppressWarnings("unchecked")
 				Class<? extends Binding> connectionClass = (Class<? extends Binding>)clazz;
 				logger.info("registering {} binding with class {}",binding.getName(),binding.getClassName());
 				factory.register(binding.getName(),connectionClass);
@@ -86,48 +74,5 @@ public class Jabbot {
 			}
 		}
 		return factory;
-	}
-
-	/**
-	 * Create a new CommandFactory and populate it with the commands registered for that binding
-	 * @param commandConfigs The List of {@link org.wanna.jabbot.command.Command} to register in the factory
-	 *
-	 * @return populated CommandFactory
-	 */
-	private CommandFactory newCommandFactory(final Binding binding,Set<CommandConfig> commandConfigs){
-		CommandFactory commandFactory = new JabbotCommandFactory();
-		if(commandConfigs == null){
-			return commandFactory;
-		}
-
-		for (CommandConfig commandConfig : commandConfigs) {
-			try {
-				Class<Command> commandClass = (Class<Command>)Class.forName(commandConfig.getClassName());
-				Command command = commandClass.getDeclaredConstructor(CommandConfig.class).newInstance(commandConfig);
-				if(command instanceof CommandFactoryAware){
-					((CommandFactoryAware)command).setCommandFactory(commandFactory);
-				}
-
-				if(command instanceof Configurable){
-					((Configurable)command).configure(commandConfig.getConfiguration());
-				}
-
-				if(command instanceof MessageSenderAware){
-					((MessageSenderAware)command).setMessageSender(
-							new MessageSender() {
-								@Override
-								public void sendMessage(Message message) {
-									binding.sendMessage(message);
-								}
-							}
-					);
-				}
-
-				commandFactory.register(commandConfig.getName(),command);
-			} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
-				logger.error("error creating command",e);
-			}
-		}
-		return commandFactory;
 	}
 }

@@ -1,8 +1,9 @@
 package org.wanna.jabbot.extensions.script;
 
 import org.wanna.jabbot.command.*;
+import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.command.messaging.Message;
-import org.wanna.jabbot.command.messaging.DefaultMessage;
+import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
 import org.wanna.jabbot.command.messaging.body.XhtmlBodyPart;
 import org.wanna.jabbot.command.parser.ArgsParser;
 import org.wanna.jabbot.command.parser.QuotedStringArgParser;
@@ -47,7 +48,7 @@ public class ScriptScript implements Command {
 	 */
 	public String getHelpMessage() { return "Midori Script command written by " + author + "\n" + "sub " + name + " \n" + scriptCmd.dump() ;}
 
-	public Message process(Message message) {
+	public Message process(CommandMessage message) {
 		String argsString = message.getBody();
 
 		List<String> args = getArgsParser().parse(argsString);
@@ -56,13 +57,13 @@ public class ScriptScript implements Command {
 		try {
 			response = scriptCmd.exec(args);
 		} catch (ScriptParseException e) {
-			DefaultMessage result = new DefaultMessage();
+			DefaultCommandMessage result = new DefaultCommandMessage();
 			result.setBody(e.getMessage());
 			return result;
 
 		}
 
-		DefaultMessage result = new DefaultMessage();
+		DefaultCommandMessage result = new DefaultCommandMessage();
 		result.setBody(response.getText());
 		if (response.getHtml().length() > 0) {
 			result.addBody(new XhtmlBodyPart(response.getHtml()));
