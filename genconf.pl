@@ -251,7 +251,7 @@ sub makeServer {
 	}
 
 	$serverConfig->{'rooms'} = makeRooms($type);
-	$serverConfig->{'commands'} = makeCommands($type);
+	$serverConfig->{'extensions'} = makeCommands($type);
 	push @serverList, $serverConfig;
 }
 

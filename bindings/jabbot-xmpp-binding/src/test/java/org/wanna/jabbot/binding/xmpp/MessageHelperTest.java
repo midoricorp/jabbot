@@ -4,7 +4,7 @@ package org.wanna.jabbot.binding.xmpp;
 import org.jivesoftware.smack.packet.Message;
 import org.junit.Assert;
 import org.junit.Test;
-import org.wanna.jabbot.command.messaging.body.TextBodyPart;
+import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;

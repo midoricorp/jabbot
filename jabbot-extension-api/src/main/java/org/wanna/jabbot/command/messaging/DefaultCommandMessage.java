@@ -1,7 +1,8 @@
 package org.wanna.jabbot.command.messaging;
 
-import org.wanna.jabbot.command.messaging.body.BodyPart;
-import org.wanna.jabbot.command.messaging.body.TextBodyPart;
+
+import org.wanna.jabbot.binding.messaging.body.BodyPart;
+import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -68,8 +69,8 @@ public class DefaultCommandMessage implements CommandMessage {
      * Set the message body as a TextBodyPart
      *
      * @param body text to set as TextBodyPart
-     * @deprecated usage {@link DefaultCommandMessage#addBody(org.wanna.jabbot.command.messaging.body.BodyPart)} instead
-     * @see {@link org.wanna.jabbot.command.messaging.body.BodyPart}
+     * @deprecated usage {@link DefaultCommandMessage#addBody(org.wanna.jabbot.binding.messaging.body.BodyPart)} instead
+     * @see {@link org.wanna.jabbot.binding.messaging.body.BodyPart}
      */
     public void setBody(String body) {
 		bodies.put(BodyPart.Type.TEXT,new TextBodyPart(body));

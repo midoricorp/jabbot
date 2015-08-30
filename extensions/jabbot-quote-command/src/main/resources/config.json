@@ -1,1 +1,1 @@
-{"name":"quote","className":"org.wanna.jabbot.extensions.quote.QuoteCommand"}
+{"name":"quote","type":"command","className":"org.wanna.jabbot.extensions.quote.QuoteCommand"}

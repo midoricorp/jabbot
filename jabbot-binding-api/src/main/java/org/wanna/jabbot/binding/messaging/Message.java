@@ -1,6 +1,6 @@
-package org.wanna.jabbot.command.messaging;
+package org.wanna.jabbot.binding.messaging;
 
-import org.wanna.jabbot.command.messaging.body.BodyPart;
+import org.wanna.jabbot.binding.messaging.body.BodyPart;
 import java.util.Collection;
 
 /**
@@ -14,7 +14,7 @@ import java.util.Collection;
  *     <li>The various BodyPart which compose the message</li>
  * </ul>
  *
- * @see {@link org.wanna.jabbot.command.messaging.body.BodyPart}
+ * @see {@link org.wanna.jabbot.binding.messaging.body.BodyPart}
  * @author vmorsiani <vmorsiani>
  * @since 2015-03-06
  */

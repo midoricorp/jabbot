@@ -3,11 +3,11 @@ package org.wanna.jabbot.binding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
-import org.wanna.jabbot.command.messaging.Message;
-import org.wanna.jabbot.command.messaging.body.BodyPart;
-import org.wanna.jabbot.command.messaging.body.BodyPartValidator;
-import org.wanna.jabbot.command.messaging.body.BodyPartValidatorFactory;
-import org.wanna.jabbot.command.messaging.body.InvalidBodyPartException;
+import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.body.BodyPart;
+import org.wanna.jabbot.binding.messaging.body.BodyPartValidator;
+import org.wanna.jabbot.binding.messaging.body.BodyPartValidatorFactory;
+import org.wanna.jabbot.binding.messaging.body.InvalidBodyPartException;
 
 import java.util.ArrayList;
 import java.util.List;

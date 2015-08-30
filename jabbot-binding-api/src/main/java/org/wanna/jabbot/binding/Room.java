@@ -1,7 +1,7 @@
 package org.wanna.jabbot.binding;
 
 import org.wanna.jabbot.binding.config.RoomConfiguration;
-import org.wanna.jabbot.command.messaging.Message;
+import org.wanna.jabbot.binding.messaging.Message;
 
 /**
  * This is the actual representation of a binding chatroom
@@ -17,7 +17,7 @@ public interface Room{
 	 * Send a message to the room itself
 	 * @param message the  message to send to the room
 	 * @return true if message has been sent properly
-     * @see {@link org.wanna.jabbot.command.messaging.Message}
+     * @see {@link org.wanna.jabbot.binding.messaging.Message}
 	 */
 	boolean sendMessage(final Message message);
 

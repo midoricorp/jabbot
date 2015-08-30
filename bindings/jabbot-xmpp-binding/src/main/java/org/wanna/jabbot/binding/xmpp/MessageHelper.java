@@ -3,8 +3,8 @@ package org.wanna.jabbot.binding.xmpp;
 import org.jivesoftware.smack.util.XmlStringBuilder;
 import org.jivesoftware.smackx.xhtmlim.packet.XHTMLExtension;
 import org.jxmpp.util.XmppStringUtils;
-import org.wanna.jabbot.command.messaging.body.BodyPart;
-import org.wanna.jabbot.command.messaging.body.TextBodyPart;
+import org.wanna.jabbot.binding.messaging.body.BodyPart;
+import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
 
 /**
  * MessageHelper is a class which provide some facilities with regards to Xmpp message.

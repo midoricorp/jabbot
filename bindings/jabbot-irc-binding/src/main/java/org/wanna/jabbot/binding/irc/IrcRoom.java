@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
-import org.wanna.jabbot.command.messaging.Message;
+import org.wanna.jabbot.binding.messaging.Message;
 
 import java.util.StringTokenizer;
 

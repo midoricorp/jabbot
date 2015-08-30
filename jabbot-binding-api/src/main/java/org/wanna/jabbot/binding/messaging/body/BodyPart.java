@@ -1,4 +1,4 @@
-package org.wanna.jabbot.command.messaging.body;
+package org.wanna.jabbot.binding.messaging.body;
 
 /**
  * BodyPart is a class which is part of a Message.
@@ -10,7 +10,7 @@ package org.wanna.jabbot.command.messaging.body;
  * A BodyPart is formed of a String representing the content
  * and a Type representing it's type (xhtml, text, ...)
  *
- * @see {@link org.wanna.jabbot.command.messaging.Message}
+ * @see {@link org.wanna.jabbot.binding.messaging.Message}
  *
  * @author Vincent Morsiani
  * @since 2015-07-14
@@ -36,7 +36,7 @@ public interface BodyPart {
     /**
      * Type of the body
      *
-     * @see {@link org.wanna.jabbot.command.messaging.body.BodyPart.Type}
+     * @see {@link BodyPart.Type}
      * @return type
      */
     Type getType();

@@ -23,10 +23,10 @@ import org.wanna.jabbot.binding.BindingMessage;
 import org.wanna.jabbot.binding.Room;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
-import org.wanna.jabbot.command.messaging.body.BodyPart;
-import org.wanna.jabbot.command.messaging.body.BodyPartValidator;
-import org.wanna.jabbot.command.messaging.body.BodyPartValidatorFactory;
-import org.wanna.jabbot.command.messaging.body.InvalidBodyPartException;
+import org.wanna.jabbot.binding.messaging.body.BodyPart;
+import org.wanna.jabbot.binding.messaging.body.BodyPartValidator;
+import org.wanna.jabbot.binding.messaging.body.BodyPartValidatorFactory;
+import org.wanna.jabbot.binding.messaging.body.InvalidBodyPartException;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -164,7 +164,7 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> {
     }
 
     @Override
-    public org.wanna.jabbot.command.messaging.Message createResponseMessage(BindingMessage source, org.wanna.jabbot.command.messaging.Message eventResponse) {
+    public org.wanna.jabbot.binding.messaging.Message createResponseMessage(BindingMessage source, org.wanna.jabbot.binding.messaging.Message eventResponse) {
         if(!(source instanceof XmppMessage)) return null;
         XmppMessage response = new XmppMessage();
         response.setId(((XmppMessage)source).getId());

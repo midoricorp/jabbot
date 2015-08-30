@@ -1,5 +1,7 @@
 package org.wanna.jabbot.command.messaging;
 
+import org.wanna.jabbot.binding.messaging.Message;
+
 /**
  * A MessageSender is a class which enables a command to autonomously send message.
  * This will enable a command to send messages during it's execution and still returns CommandResult
@@ -7,7 +9,7 @@ package org.wanna.jabbot.command.messaging;
  *
  * @author vmorsiani <vmorsiani>
  * @since 2015-02-24
- * @see Message
+ * @see org.wanna.jabbot.binding.messaging.Message
  * @see org.wanna.jabbot.command.Command
  */
 public interface MessageSender {

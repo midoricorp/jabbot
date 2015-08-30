@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.DefaultBindingMessage;
-import org.wanna.jabbot.command.messaging.body.TextBodyPart;
+import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,11 @@
-package org.wanna.jabbot.command.messaging.body;
+package org.wanna.jabbot.binding.messaging.body;
 
 import java.util.HashMap;
 
 /**
  * Factory class responsible of creating BodyPartValidator
  *
- * @see {@link org.wanna.jabbot.command.messaging.body.BodyPartValidator}
+ * @see {@link BodyPartValidator}
  * @author Vincent Morsiani
  * @since 2015-07-24
  */

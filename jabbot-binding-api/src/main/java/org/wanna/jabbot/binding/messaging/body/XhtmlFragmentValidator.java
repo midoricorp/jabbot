@@ -1,4 +1,4 @@
-package org.wanna.jabbot.command.messaging.body;
+package org.wanna.jabbot.binding.messaging.body;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -18,7 +18,7 @@ import java.io.StringReader;
 public class XhtmlFragmentValidator implements BodyPartValidator<XhtmlBodyPart>{
     /**
      * Wrap the BodyPart text into an html & body tags and run a DOM parser against the produced XML.
-     * If any error is encountered while parsing the Document, an {@link org.wanna.jabbot.command.messaging.body.InvalidBodyPartException}
+     * If any error is encountered while parsing the Document, an {@link InvalidBodyPartException}
      * will be thrown.
      *
      * If the BodyPart appears to be NULL, then an InvalidBodyPartException will also be thrown.

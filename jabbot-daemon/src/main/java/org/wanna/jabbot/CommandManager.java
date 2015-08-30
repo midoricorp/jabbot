@@ -2,12 +2,13 @@ package org.wanna.jabbot;
 
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingMessage;
+import org.wanna.jabbot.binding.config.ExtensionConfiguration;
+import org.wanna.jabbot.binding.messaging.Message;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.behavior.Configurable;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.command.messaging.Message;
 import org.wanna.jabbot.command.messaging.MessageSender;
 import org.wanna.jabbot.command.messaging.MessageSenderAware;
 
@@ -54,8 +55,8 @@ public class CommandManager {
      *
      * @param configSet set of command configuration used for initializing the CommandFactory
      */
-    public void initializeFromConfigSet(Set<CommandConfig> configSet) {
-        for (CommandConfig commandConfig : configSet) {
+    public void initializeFromConfigSet(Set<ExtensionConfiguration> configSet) {
+        for (ExtensionConfiguration commandConfig : configSet) {
             try {
                 @SuppressWarnings("unchecked")
                 Class<Command> commandClass = (Class<Command>) Class.forName(commandConfig.getClassName());

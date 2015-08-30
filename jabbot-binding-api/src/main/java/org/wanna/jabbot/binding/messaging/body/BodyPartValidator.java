@@ -1,4 +1,4 @@
-package org.wanna.jabbot.command.messaging.body;
+package org.wanna.jabbot.binding.messaging.body;
 
 /**
  * Validator for the BodyPart.
@@ -10,7 +10,7 @@ package org.wanna.jabbot.command.messaging.body;
  */
 public interface BodyPartValidator<T extends BodyPart> {
     /**
-     * Performs a validation on a BodyPart and throws an {@link org.wanna.jabbot.command.messaging.body.InvalidBodyPartException}
+     * Performs a validation on a BodyPart and throws an {@link InvalidBodyPartException}
      * if any validation exception is raised
      *
      * @param bodyPart the BodyPart to validate

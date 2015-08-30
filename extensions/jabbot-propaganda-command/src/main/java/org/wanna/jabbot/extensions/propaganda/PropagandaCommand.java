@@ -1,8 +1,8 @@
 package org.wanna.jabbot.extensions.propaganda;
 
+import org.wanna.jabbot.binding.messaging.Message;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
-import org.wanna.jabbot.command.messaging.Message;
 import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
 

@@ -1,6 +1,7 @@
 package org.wanna.jabbot.binding;
 
-import org.wanna.jabbot.command.messaging.Message;
+
+import org.wanna.jabbot.binding.messaging.Message;
 
 /**
  * @author vmorsiani <vmorsiani>

@@ -1,1 +1,1 @@
-{"name":"translate","className":"org.wanna.jabbot.extensions.translate.TranslateCommand"}
+{"name":"translate","type":"command","className":"org.wanna.jabbot.extensions.translate.TranslateCommand"}

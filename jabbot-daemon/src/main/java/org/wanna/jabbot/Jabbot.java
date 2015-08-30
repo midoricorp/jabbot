@@ -11,9 +11,7 @@ import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.config.JabbotConfiguration;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -23,7 +21,6 @@ public class Jabbot {
 	final Logger logger = LoggerFactory.getLogger(Jabbot.class);
 
 	private JabbotConfiguration configuration;
-	private List<Binding> connectionList = new ArrayList<>();
 	private BindingFactory bindingFactory;
 
 	public Jabbot( JabbotConfiguration configuration ) {
@@ -36,13 +33,12 @@ public class Jabbot {
 			Binding conn;
 			try {
 				conn = bindingFactory.create(connectionConfiguration);
-				CommandManager.getInstanceFor(conn).initializeFromConfigSet(connectionConfiguration.getCommands());
+				CommandManager.getInstanceFor(conn).initializeFromConfigSet(connectionConfiguration.getExtensions());
                 conn.registerListener(new JabbotBindingListener(conn,connectionConfiguration.getCommandPrefix()));
 				conn.connect(connectionConfiguration);
 				for (RoomConfiguration roomConfiguration : connectionConfiguration.getRooms()) {
 					conn.joinRoom(roomConfiguration);
 				}
-				connectionList.add(conn);
 				if(conn.isConnected()){
 					logger.debug("connection established to {} as {}",connectionConfiguration.getUrl(),connectionConfiguration.getUsername());
 				}

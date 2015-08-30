@@ -1,6 +1,5 @@
 package org.wanna.jabbot.binding.config;
 
-import org.wanna.jabbot.command.config.CommandConfig;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,7 @@ public class BindingConfiguration {
 	private String commandPrefix;
 	private int port;
 	private List<RoomConfiguration> rooms;
-	private Set<CommandConfig> commands;
+	private Set<ExtensionConfiguration> extensions;
 	private Map<String,Object> parameters;
 	private boolean debug;
     private String preferredMessageStyle = "TEXT";
@@ -88,12 +87,12 @@ public class BindingConfiguration {
 		this.debug = debug;
 	}
 
-	public Set<CommandConfig> getCommands() {
-		return commands;
+	public Set<ExtensionConfiguration> getExtensions() {
+		return extensions;
 	}
 
-	public void setCommands(Set<CommandConfig> commands) {
-		this.commands = commands;
+	public void setExtensions(Set<ExtensionConfiguration> extensions) {
+		this.extensions = extensions;
 	}
 
 	public String getCommandPrefix() {

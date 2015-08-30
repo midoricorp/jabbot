@@ -1,4 +1,4 @@
 [
- {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"},
- {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"}
+ {"name":"help","type":"command","className":"org.wanna.jabbot.command.HelpCommand"},
+ {"name":"uptime","type":"command","className":"org.wanna.jabbot.command.UptimeCommand"}
 ]

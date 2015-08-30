@@ -29,13 +29,13 @@
             "rooms":[
                 {"name":"jabbot-dev@conference.localhost","nickname":"jabbot"}
             ],
-            "commands":[
-                {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"},
-                {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"},
-                {"name":"quote","className":"org.wanna.jabbot.extensions.quote.QuoteCommand"},
-                {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
-                {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
-                {"name":"call","className":"org.wanna.jabbot.extensions.call.CallCommand",
+            "extensions":[
+                {"name":"help","type":"command","className":"org.wanna.jabbot.command.HelpCommand"},
+                {"name":"uptime","type":"command","className":"org.wanna.jabbot.command.UptimeCommand"},
+                {"name":"quote","type":"command","className":"org.wanna.jabbot.extensions.quote.QuoteCommand"},
+                {"name":"dice","type":"command","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
+                {"name":"chuck","type":"command","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
+                {"name":"call","type":"command","className":"org.wanna.jabbot.extensions.call.CallCommand",
                     "configuration":{
                         "url":"http://voxcall.me",
                         "missing_user":"Hey! Who should I call? (flastname)"
@@ -43,6 +43,7 @@
                 },
                 {
                     "name": "jira",
+                    "type":"command",
                     "className": "org.wanna.jabbot.extensions.jira.IssueViewer",
                     "configuration": {
                         "url": "https://jira.localhost",
@@ -50,8 +51,8 @@
                         "password": "password"
                     }
                 },
-                {"name":"propaganda","className":"org.wanna.jabbot.extensions.propaganda.PropagandaCommand"},
-                {"name":"script","className":"org.wanna.jabbot.extensions.script.ScriptCommand"}
+                {"name":"propaganda","type":"command","className":"org.wanna.jabbot.extensions.propaganda.PropagandaCommand"},
+                {"name":"script","type":"command","className":"org.wanna.jabbot.extensions.script.ScriptCommand"}
             ]
         },
         {   "type" : "IRC",
@@ -65,13 +66,13 @@
             "rooms":[
                 {"name":"jabbot-dev","nickname":"Jabbot"}
             ],
-            "commands":[
-                {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"},
-                {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
-                {"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
-                {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
-                {"name":"translate","className":"org.wanna.jabbot.extensions.translate.TranslateCommand"},
-                {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"}
+            "extensions":[
+                {"name":"help","type":"command","className":"org.wanna.jabbot.command.HelpCommand"},
+                {"name":"dice","type":"command","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
+                {"name":"attack","type":"command","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"},
+                {"name":"chuck","type":"command","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
+                {"name":"translate","type":"command","className":"org.wanna.jabbot.extensions.translate.TranslateCommand"},
+                {"name":"uptime","type":"command","className":"org.wanna.jabbot.command.UptimeCommand"}
             ]
 
         },
@@ -82,12 +83,12 @@
             "rooms":[
                 {"name":"jabbot-dev","nickname":"Jabbot"}
             ],
-            "commands":[
-                {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"},
-                {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
-                {"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
-                {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"},
-                {"name":"script","className":"org.wanna.jabbot.extensions.script.ScriptCommand"}
+            "extensions":[
+                {"name":"help","type":"command","className":"org.wanna.jabbot.command.HelpCommand"},
+                {"name":"dice","type":"command","className":"org.wanna.jabbot.extensions.dice.RollCommand"},
+                {"name":"chuck","type":"command","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
+                {"name":"uptime","type":"command","className":"org.wanna.jabbot.command.UptimeCommand"},
+                {"name":"script","type":"command","className":"org.wanna.jabbot.extensions.script.ScriptCommand"}
             ]
         }
     ]

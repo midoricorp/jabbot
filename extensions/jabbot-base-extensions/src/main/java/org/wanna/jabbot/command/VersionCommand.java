@@ -1,8 +1,8 @@
 package org.wanna.jabbot.command;
 
+import org.wanna.jabbot.binding.messaging.Message;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.command.messaging.CommandMessage;
-import org.wanna.jabbot.command.messaging.Message;
 import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
 
 import java.lang.management.ManagementFactory;

@@ -1,6 +1,7 @@
 package org.wanna.jabbot.binding;
 
-import org.wanna.jabbot.command.messaging.Message;
+
+import org.wanna.jabbot.binding.messaging.Message;
 
 /**
  * Interface which defines messages which flows between jabbot core and the bindings
@@ -8,7 +9,7 @@ import org.wanna.jabbot.command.messaging.Message;
  * @author Vincent Morsiani [vmorsiani@voxbone.com]
  * @since 2015-08-20
  */
-public interface BindingMessage extends Message{
+public interface BindingMessage extends Message {
     /**
      * Retrieve the resource to which the Message has been sent
      *

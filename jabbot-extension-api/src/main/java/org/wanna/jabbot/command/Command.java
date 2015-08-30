@@ -1,7 +1,7 @@
 package org.wanna.jabbot.command;
 
+import org.wanna.jabbot.binding.messaging.Message;
 import org.wanna.jabbot.command.messaging.CommandMessage;
-import org.wanna.jabbot.command.messaging.Message;
 import org.wanna.jabbot.command.parser.ArgsParser;
 
 /**

@@ -1,9 +1,9 @@
-package org.wanna.jabbot.command.messaging.body;
+package org.wanna.jabbot.binding.messaging.body;
 
 /**
  * This is the Raw Text implementation of BodyPart
  *
- * @see {@link org.wanna.jabbot.command.messaging.body.BodyPart}
+ * @see {@link BodyPart}
  *
  * @author Vincent Morsiani
  * @since 2015-07-14

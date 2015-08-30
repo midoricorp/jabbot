@@ -1,7 +1,7 @@
 package org.wanna.jabbot.binding.xmpp;
 
 import org.wanna.jabbot.binding.BindingMessage;
-import org.wanna.jabbot.command.messaging.body.BodyPart;
+import org.wanna.jabbot.binding.messaging.body.BodyPart;
 
 import java.util.Collection;
 import java.util.HashMap;

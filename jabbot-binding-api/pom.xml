@@ -15,11 +15,5 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.wanna.jabbot</groupId>
-            <artifactId>jabbot-extension-api</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
     </dependencies>
-
 </project>

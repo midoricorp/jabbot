@@ -1,12 +1,14 @@
 package org.wanna.jabbot.command.config;
 
+import org.wanna.jabbot.binding.config.ExtensionConfiguration;
+
 import java.util.Map;
 
 /**
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-20
  */
-public class CommandConfig {
+public class CommandConfig implements ExtensionConfiguration{
 	private String name,className,helpMessage;
 	private Map<String,Object> configuration;
 	public String getName() {
@@ -33,7 +35,12 @@ public class CommandConfig {
 		this.configuration = configuration;
 	}
 
-	public String getHelpMessage() {
+    @Override
+    public Type getType() {
+        return Type.COMMAND;
+    }
+
+    public String getHelpMessage() {
 		return helpMessage;
 	}
 

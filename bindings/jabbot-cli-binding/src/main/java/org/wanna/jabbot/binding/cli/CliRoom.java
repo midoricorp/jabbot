@@ -6,9 +6,9 @@ import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.DefaultBindingMessage;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
-import org.wanna.jabbot.command.messaging.Message;
-import org.wanna.jabbot.command.messaging.body.BodyPart;
-import org.wanna.jabbot.command.messaging.body.TextBodyPart;
+import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.body.BodyPart;
+import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
 
 import java.io.BufferedReader;
 import java.io.IOException;
