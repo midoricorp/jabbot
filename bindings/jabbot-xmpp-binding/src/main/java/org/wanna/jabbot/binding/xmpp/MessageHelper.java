@@ -3,6 +3,7 @@ package org.wanna.jabbot.binding.xmpp;
 import org.jivesoftware.smack.util.XmlStringBuilder;
 import org.jivesoftware.smackx.xhtmlim.packet.XHTMLExtension;
 import org.jxmpp.util.XmppStringUtils;
+import org.wanna.jabbot.binding.messaging.Resource;
 import org.wanna.jabbot.binding.messaging.body.BodyPart;
 import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
 
@@ -59,16 +60,16 @@ public final class MessageHelper {
             // Add the required bodies to the message
             xhtmlExtension.addBody(sb);
         }
-        if(message.getRoomName() != null){
+        if(message.getDestination().getType().equals(Resource.Type.ROOM)){
             xmppMessage.setType(org.jivesoftware.smack.packet.Message.Type.groupchat);
-            xmppMessage.setTo(message.getRoomName());
+            xmppMessage.setTo(message.getDestination().getAddress());
         }else{
-            xmppMessage.setTo(message.getDestination());
+            xmppMessage.setTo(message.getDestination().getAddress());
             xmppMessage.setThread(message.getThread());
             xmppMessage.setStanzaId(message.getId());
             xmppMessage.setType(org.jivesoftware.smack.packet.Message.Type.chat);
         }
-        xmppMessage.setFrom(message.getSender());
+        xmppMessage.setFrom(message.getSender().getAddress());
         return xmppMessage;
     }
 
@@ -76,15 +77,20 @@ public final class MessageHelper {
         XmppMessage msg = new XmppMessage();
         msg.setId(xmppMessage.getStanzaId());
         msg.addBody(new TextBodyPart(xmppMessage.getBody()));
-        msg.setDestination(xmppMessage.getTo());
+        msg.setDestination(new XmppResource(xmppMessage.getTo(),null));
         msg.setThread(xmppMessage.getThread());
 
         if(xmppMessage.getType().equals(org.jivesoftware.smack.packet.Message.Type.groupchat)){
-            msg.setSender(XmppStringUtils.parseResource(xmppMessage.getFrom()));
-            msg.setRoomName(XmppStringUtils.parseBareJid(xmppMessage.getFrom()));
+            msg.setSender(
+                    new XmppResource(
+                            XmppStringUtils.parseBareJid(xmppMessage.getFrom()),
+                            XmppStringUtils.parseResource(xmppMessage.getFrom()),
+                            Resource.Type.ROOM
+                    ));
+            //msg.setRoomName();
 
         }else{
-            msg.setSender(xmppMessage.getFrom());
+            msg.setSender(new XmppResource(xmppMessage.getFrom(),null, Resource.Type.USER));
         }
         return msg;
     }

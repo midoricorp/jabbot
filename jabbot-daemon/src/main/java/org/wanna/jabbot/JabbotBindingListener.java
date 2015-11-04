@@ -6,6 +6,8 @@ import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.BindingMessage;
 import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.privilege.PrivilegeGranter;
+import org.wanna.jabbot.binding.privilege.PrivilegedAction;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandNotFoundException;
 import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
@@ -42,6 +44,15 @@ public class JabbotBindingListener implements BindingListener{
 
             try {
                 Command command = CommandManager.getInstanceFor(binding).getCommandFactory().create(result.getCommandName());
+                if(command instanceof PrivilegedAction){
+                    if(binding instanceof PrivilegeGranter){
+                        boolean canExecute = ((PrivilegeGranter)binding).canExecute(message.getSender(),((BindingMessage) message).getDestination(),(PrivilegedAction)command);
+                        if(!canExecute){
+                            logger.debug("user {} cannot execute {}", message.getSender().getAddress(), command.getCommandName());
+                            return;
+                        }
+                    }
+                }
                 DefaultCommandMessage commandMessage = new DefaultCommandMessage(result.getRawArgsLine());
                 commandMessage.setSender(message.getSender());
                 Message commandResult = command.process(commandMessage);

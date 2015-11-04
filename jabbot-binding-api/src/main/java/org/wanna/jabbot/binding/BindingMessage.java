@@ -2,6 +2,7 @@ package org.wanna.jabbot.binding;
 
 
 import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.Resource;
 
 /**
  * Interface which defines messages which flows between jabbot core and the bindings
@@ -15,7 +16,7 @@ public interface BindingMessage extends Message {
      *
      * @return destination resource
      */
-    String getDestination();
+    Resource getDestination();
 
     /**
      * Retrieves the room name from which the message has been sent

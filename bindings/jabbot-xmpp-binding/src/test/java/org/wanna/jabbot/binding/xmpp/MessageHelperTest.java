@@ -4,6 +4,7 @@ package org.wanna.jabbot.binding.xmpp;
 import org.jivesoftware.smack.packet.Message;
 import org.junit.Assert;
 import org.junit.Test;
+import org.wanna.jabbot.binding.messaging.Resource;
 import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -21,13 +22,13 @@ public class MessageHelperTest {
     public void createResponseFromPrivateMessage(){
         jabbotMessage = new XmppMessage();
         jabbotMessage.addBody(new TextBodyPart("test body"));
-        jabbotMessage.setSender("user1@test.com/User");
-        jabbotMessage.setDestination("jabbot@test.com/jabbot");
+        jabbotMessage.setSender(new XmppResource("user1@test.com/User",null));
+        jabbotMessage.setDestination(new XmppResource("jabbot@test.com/jabbot",null, Resource.Type.USER));
 
         xmppMessage = MessageHelper.createResponseMessage(jabbotMessage);
         Assert.assertThat(xmppMessage.getType(),is(Message.Type.chat));
-        Assert.assertThat(xmppMessage.getTo(),is("user1@test.com/User"));
-        Assert.assertThat(xmppMessage.getFrom(),is("jabbot@test.com/jabbot"));
+        Assert.assertThat(xmppMessage.getFrom(),is("user1@test.com/User"));
+        Assert.assertThat(xmppMessage.getTo(),is("jabbot@test.com/jabbot"));
         Assert.assertThat(xmppMessage.getBody(),is(jabbotMessage.getBody()));
     }
 
@@ -35,13 +36,12 @@ public class MessageHelperTest {
     public void createResponseFromChatroomMessage(){
         jabbotMessage = new XmppMessage();
         jabbotMessage.addBody(new TextBodyPart("test body"));
-        jabbotMessage.setSender("User1");
-        jabbotMessage.setDestination("jabbot@test.com/jabbot");
-        jabbotMessage.setRoomName("chatroom1@conference.test.com");
+        jabbotMessage.setSender(new XmppResource("chatroom1@conference.test.com", "User1", Resource.Type.ROOM));
+        jabbotMessage.setDestination(new XmppResource("jabbot@test.com/jabbot",null));
         xmppMessage = MessageHelper.createResponseMessage(jabbotMessage);
         Assert.assertThat(xmppMessage.getType(),is(Message.Type.groupchat));
-        Assert.assertThat(xmppMessage.getTo(),is("chatroom1@conference.test.com"));
-        Assert.assertThat(xmppMessage.getFrom(),is("jabbot@test.com/jabbot"));
+        Assert.assertThat(xmppMessage.getFrom(),is("chatroom1@conference.test.com"));
+        Assert.assertThat(xmppMessage.getTo(),is("jabbot@test.com/jabbot"));
         Assert.assertThat(xmppMessage.getBody(),is(jabbotMessage.getBody()));
     }
 
@@ -54,8 +54,8 @@ public class MessageHelperTest {
         xmppMessage.setFrom("chatroom1@conference.test.com/User1");
 
         jabbotMessage = MessageHelper.createRequestMessage(xmppMessage);
-        Assert.assertThat(jabbotMessage.getDestination(),is("jabbot@test.com/jabbot"));
-        Assert.assertThat(jabbotMessage.getSender(),is("chatroom1@conference.test.com/User1"));
+        Assert.assertThat(jabbotMessage.getDestination().getAddress(),is("jabbot@test.com/jabbot"));
+        Assert.assertThat(jabbotMessage.getSender().getAddress(),is("chatroom1@conference.test.com/User1"));
         Assert.assertThat(jabbotMessage.getRoomName(),is(nullValue()));
         Assert.assertThat(jabbotMessage.getBody(),is(xmppMessage.getBody()));
     }
@@ -68,8 +68,8 @@ public class MessageHelperTest {
         xmppMessage.setFrom("chatroom1@conference.test.com/User1");
 
         jabbotMessage = MessageHelper.createRequestMessage(xmppMessage);
-        Assert.assertThat(jabbotMessage.getDestination(),is("jabbot@test.com/jabbot"));
-        Assert.assertThat(jabbotMessage.getSender(),is("User1"));
-        Assert.assertThat(jabbotMessage.getRoomName(),is("chatroom1@conference.test.com"));
+        Assert.assertThat(jabbotMessage.getDestination().getAddress(),is("jabbot@test.com/jabbot"));
+        Assert.assertThat(jabbotMessage.getSender().getName(),is("User1"));
+        Assert.assertThat(jabbotMessage.getRoomName(),is(nullValue()));
     }
 }

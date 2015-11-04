@@ -1,6 +1,8 @@
 package org.wanna.jabbot.command.messaging;
 
 
+import org.wanna.jabbot.binding.messaging.DefaultResource;
+import org.wanna.jabbot.binding.messaging.Resource;
 import org.wanna.jabbot.binding.messaging.body.BodyPart;
 import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
 
@@ -13,7 +15,7 @@ import java.util.Map;
  * @since 2015-02-21
  */
 public class DefaultCommandMessage implements CommandMessage {
-	private String sender;
+	private Resource sender;
     private Map<BodyPart.Type,BodyPart> bodies;
 
     public DefaultCommandMessage() {
@@ -27,7 +29,7 @@ public class DefaultCommandMessage implements CommandMessage {
     public DefaultCommandMessage(String body, String sender){
         bodies = new HashMap<>();
         bodies.put(BodyPart.Type.TEXT, new TextBodyPart(body));
-        this.sender = sender;
+        this.sender = new DefaultResource(sender,null);
     }
 
     /**
@@ -76,12 +78,12 @@ public class DefaultCommandMessage implements CommandMessage {
 		bodies.put(BodyPart.Type.TEXT,new TextBodyPart(body));
 	}
 
-	@Override
-	public String getSender() {
-		return sender;
-	}
+    @Override
+    public Resource getSender() {
+        return sender;
+    }
 
-	public void setSender(String sender) {
-		this.sender = sender;
-	}
+    public void setSender(Resource sender) {
+        this.sender = sender;
+    }
 }

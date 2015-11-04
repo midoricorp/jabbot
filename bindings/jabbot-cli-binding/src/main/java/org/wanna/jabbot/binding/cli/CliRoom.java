@@ -6,6 +6,7 @@ import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.DefaultBindingMessage;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
+import org.wanna.jabbot.binding.messaging.DefaultResource;
 import org.wanna.jabbot.binding.messaging.Message;
 import org.wanna.jabbot.binding.messaging.body.BodyPart;
 import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
@@ -63,8 +64,8 @@ public class CliRoom extends AbstractRoom<Object> implements Runnable {
                     //Message message = new DefaultCommandMessage(line,"cli","jabbot",this.getRoomName());
                     DefaultBindingMessage message = new DefaultBindingMessage();
                     message.addBody(new TextBodyPart(line));
-                    message.setSender("cli");
-                    message.setDestination("jabbot");
+                    message.setSender(new DefaultResource(this.getRoomName(),"cli"));
+                    message.setDestination(new DefaultResource("jabbot",null));
                     message.setRoomName(this.getRoomName());
                     listener.onMessage(message);
 				}

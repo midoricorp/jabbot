@@ -31,8 +31,8 @@ public class IrcMessageListener extends VariousMessageListenerAdapter{
 		String roomName = aMsg.getChannelName();
         DefaultBindingMessage message = new DefaultBindingMessage();
         message.addBody(new TextBodyPart(aMsg.getText()));
-        message.setSender(sender);
-        message.setDestination(roomName);
+        message.setSender(new IrcResource(sender,null));
+        message.setDestination(new IrcResource(roomName,null));
         message.setRoomName(roomName);
         for (BindingListener listener : listeners) {
 			listener.onMessage(message);

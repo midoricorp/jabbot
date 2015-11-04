@@ -42,14 +42,14 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 	public boolean join(RoomConfiguration configuration) {
 		final int nickChangeAttempts = 5;
 		this.configuration = configuration;
-		muc = MultiUserChatManager.getInstanceFor(connection.getWrappedConnection()).getMultiUserChat(configuration.getName());
+		muc = MultiUserChatManager.getInstanceFor(connection.getConnection()).getMultiUserChat(configuration.getName());
 		String nickname = configuration.getNickname();
 		int i = 0;
 		while(i<nickChangeAttempts){
 			try{
 				DiscussionHistory history = new DiscussionHistory();
 				history.setSince(new Date());
-				muc.join(nickname,null,history,connection.getWrappedConnection().getPacketReplyTimeout());
+				muc.join(nickname,null,history,connection.getConnection().getPacketReplyTimeout());
 				logger.info("[XMPP] joining room {}",configuration.getName());
 				return true;
 			}catch (XMPPException.XMPPErrorException e){

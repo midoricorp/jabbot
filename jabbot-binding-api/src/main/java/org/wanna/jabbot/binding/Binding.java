@@ -10,7 +10,7 @@ import org.wanna.jabbot.binding.messaging.Message;
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-08
  */
-public interface Binding {
+public interface Binding<T> {
 	/**
 	 * Create a connection to the messaging service
 	 * @param configuration The configuration for the connection;
@@ -41,4 +41,10 @@ public interface Binding {
 	void sendMessage(BindingMessage message);
 
     Message createResponseMessage(BindingMessage source, Message eventResponse);
+
+    /**
+     * Retrieves the connection
+     * @return connection
+     */
+    T getConnection();
 }

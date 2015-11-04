@@ -1,6 +1,7 @@
 package org.wanna.jabbot.binding.xmpp;
 
 import org.wanna.jabbot.binding.BindingMessage;
+import org.wanna.jabbot.binding.messaging.Resource;
 import org.wanna.jabbot.binding.messaging.body.BodyPart;
 
 import java.util.Collection;
@@ -15,8 +16,8 @@ public class XmppMessage implements BindingMessage {
     private String id;
     private String thread;
     private Map<BodyPart.Type,BodyPart> bodies = new HashMap<>();
-    private String sender;
-    private String destination;
+    private Resource sender;
+    private Resource destination;
     private String roomName;
 
     public String getId() {
@@ -53,22 +54,26 @@ public class XmppMessage implements BindingMessage {
     }
 
     @Override
-    public String getSender() {
+    public String getRoomName() {
+        return roomName;
+    }
+
+    @Override
+    public Resource getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    public void setSender(Resource sender) {
         this.sender = sender;
     }
 
     @Override
-    public String getDestination() {
+    public Resource getDestination() {
         return destination;
     }
 
-    @Override
-    public String getRoomName() {
-        return roomName;
+    public void setDestination(Resource destination) {
+        this.destination = destination;
     }
 
     public String getThread() {
@@ -77,10 +82,6 @@ public class XmppMessage implements BindingMessage {
 
     public void setThread(String thread) {
         this.thread = thread;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
     }
 
     public void setRoomName(String roomName) {

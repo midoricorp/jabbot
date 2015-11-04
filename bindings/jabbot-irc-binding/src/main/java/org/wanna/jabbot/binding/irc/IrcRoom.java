@@ -30,7 +30,7 @@ public class IrcRoom extends AbstractRoom<IrcBinding> {
      */
 	@Override
 	public boolean sendMessage(Message message) {
-		IRCApi ircApi = connection.getWrappedConnection();
+		IRCApi ircApi = connection.getConnection();
 		StringTokenizer tokenizer  = new StringTokenizer(message.getBody(),"\n");
 		while (tokenizer.hasMoreElements()){
 			ircApi.message("#"+configuration.getName(),tokenizer.nextToken());
@@ -41,7 +41,7 @@ public class IrcRoom extends AbstractRoom<IrcBinding> {
 	@Override
 	public boolean join(final RoomConfiguration configuration) {
 		this.configuration = configuration;
-		IRCApi ircApi = connection.getWrappedConnection();
+		IRCApi ircApi = connection.getConnection();
 		ircApi.joinChannel(configuration.getName(), new Callback<IRCChannel>() {
 			@Override
 			public void onSuccess(IRCChannel ircChannel) {

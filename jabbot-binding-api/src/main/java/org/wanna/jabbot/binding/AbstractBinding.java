@@ -20,7 +20,7 @@ import java.util.List;
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-08
  */
-public abstract class AbstractBinding<T> implements Binding{
+public abstract class AbstractBinding<T> implements Binding<T>{
 	private final Logger logger = LoggerFactory.getLogger(AbstractBinding.class);
 	protected T connection;
 	private BindingConfiguration configuration;
@@ -34,7 +34,7 @@ public abstract class AbstractBinding<T> implements Binding{
 	/**
 	 * {@inheritDoc}
 	 */
-	public T getWrappedConnection() {
+	public T getConnection() {
 		return connection;
 	}
 

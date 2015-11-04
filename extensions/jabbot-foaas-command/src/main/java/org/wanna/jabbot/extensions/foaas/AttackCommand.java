@@ -54,7 +54,7 @@ public class AttackCommand extends AbstractCommandAdapter {
 			}
 
 			Operation operation = pickOperation(length);
-			String from = message.getSender();
+			String from = message.getSender().getName();
 
 			try {
 				String url = buildUrl(operation,from,args);

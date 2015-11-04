@@ -6,6 +6,7 @@ import com.sipstacks.script.ScriptParseException;
 import com.sipstacks.script.FunctionListener;
 import com.sipstacks.script.OutputStream;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.wanna.jabbot.binding.messaging.DefaultResource;
 import org.wanna.jabbot.binding.messaging.Message;
 import org.wanna.jabbot.binding.messaging.body.*;
 import org.wanna.jabbot.command.*;
@@ -84,7 +85,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			s.setLoopLimit(loopLimit);
 		}
 
-		s.addFunctionListener(new ScriptFunctionListener().init(message.getSender()));
+		s.addFunctionListener(new ScriptFunctionListener().init(message.getSender().getAddress()));
 
 		for(Command command : commandFactory.getAvailableCommands().values()){
 			// don't add yourself to limit recursion
@@ -110,7 +111,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 						msg.setBody("");
 					}
 
-					msg.setSender(sender);
+					msg.setSender(new DefaultResource(sender,null));
 					Message result = cmd.process(msg);
 					return result.getBody();
 				}
@@ -121,7 +122,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 					}
 				}
 
-			}.init(command, message.getSender()));
+			}.init(command, message.getSender().getAddress()));
 		}
 
 

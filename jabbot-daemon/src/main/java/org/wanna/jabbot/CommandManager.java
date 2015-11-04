@@ -1,6 +1,7 @@
 package org.wanna.jabbot;
 
 import org.wanna.jabbot.binding.Binding;
+import org.wanna.jabbot.binding.BindingAware;
 import org.wanna.jabbot.binding.BindingMessage;
 import org.wanna.jabbot.binding.config.ExtensionConfiguration;
 import org.wanna.jabbot.binding.messaging.Message;
@@ -78,6 +79,10 @@ public class CommandManager {
                                 }
                             }
                     );
+                }
+
+                if( command instanceof BindingAware){
+                    ((BindingAware)command).setBinding(binding);
                 }
                 commandFactory.register(commandConfig.getName(), command);
             } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {

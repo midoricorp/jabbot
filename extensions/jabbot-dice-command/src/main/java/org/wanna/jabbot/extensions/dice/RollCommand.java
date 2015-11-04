@@ -75,7 +75,7 @@ public class RollCommand extends AbstractCommandAdapter {
 
 		}
 
-		String player = message.getSender();
+		String player = message.getSender().getName();
 		String response = String.format("%s rolled %s dice of %s for a total of %s\n:details: %s",player,amount,value,total,resultString);
 		result.setBody(response);
 		return result;

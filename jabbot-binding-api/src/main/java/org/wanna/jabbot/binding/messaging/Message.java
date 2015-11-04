@@ -53,5 +53,5 @@ public interface Message {
      * Retrieves the resource which sent the Message
      * @return sender resource
      */
-    String getSender();
+    Resource getSender();
 }

@@ -1,6 +1,7 @@
 package org.wanna.jabbot.binding;
 
 
+import org.wanna.jabbot.binding.messaging.Resource;
 import org.wanna.jabbot.binding.messaging.body.BodyPart;
 
 import java.util.Collection;
@@ -12,8 +13,8 @@ import java.util.Map;
  * @since 2015-08-20
  */
 public class DefaultBindingMessage implements BindingMessage{
-    private String sender;
-    private String destination;
+    private Resource sender;
+    private Resource destination;
     private String roomName;
     private Map<BodyPart.Type,BodyPart> bodies;
 
@@ -22,20 +23,20 @@ public class DefaultBindingMessage implements BindingMessage{
     }
 
     @Override
-    public String getSender() {
+    public Resource getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    public void setSender(Resource sender) {
         this.sender = sender;
     }
 
     @Override
-    public String getDestination() {
+    public Resource getDestination() {
         return destination;
     }
 
-    public void setDestination(String destination) {
+    public void setDestination(Resource destination) {
         this.destination = destination;
     }
 

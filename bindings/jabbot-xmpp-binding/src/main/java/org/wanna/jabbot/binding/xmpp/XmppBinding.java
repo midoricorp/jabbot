@@ -18,15 +18,17 @@ import org.jivesoftware.smackx.receipts.DeliveryReceipt;
 import org.jxmpp.util.XmppStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.binding.AbstractBinding;
-import org.wanna.jabbot.binding.BindingMessage;
-import org.wanna.jabbot.binding.Room;
+import org.wanna.jabbot.binding.*;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
+import org.wanna.jabbot.binding.messaging.Resource;
 import org.wanna.jabbot.binding.messaging.body.BodyPart;
 import org.wanna.jabbot.binding.messaging.body.BodyPartValidator;
 import org.wanna.jabbot.binding.messaging.body.BodyPartValidatorFactory;
 import org.wanna.jabbot.binding.messaging.body.InvalidBodyPartException;
+import org.wanna.jabbot.binding.privilege.Privilege;
+import org.wanna.jabbot.binding.privilege.PrivilegeGranter;
+import org.wanna.jabbot.binding.privilege.PrivilegedAction;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
@@ -38,11 +40,12 @@ import java.util.Map;
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-08
  */
-public class XmppBinding extends AbstractBinding<XMPPTCPConnection> {
+public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements PrivilegeGranter {
 	private final Logger logger = LoggerFactory.getLogger(XmppBinding.class);
 	private Map<String,Room> rooms = new HashMap<>();
 	private int pingInterval = 3000;
 	private boolean allowSelfSigned = false;
+    private PrivilegeMapper privilegeMapper;
 
 	public XmppBinding(BindingConfiguration configuration) {
 		super(configuration);
@@ -59,6 +62,7 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> {
 	@Override
 	public boolean connect(BindingConfiguration configuration) {
 		connection = new XMPPTCPConnection(newConnectionConfiguration(configuration));
+        privilegeMapper = new PrivilegeMapper(connection);
 		try {
 			connection.connect();
 			connection.login();
@@ -139,8 +143,8 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> {
     public void sendMessage(BindingMessage message) {
         if(! (message instanceof XmppMessage)) return;
 
-        if(message.getRoomName() != null){
-            Room room = getRoom(message.getRoomName());
+        if(message.getDestination().getType().equals(Resource.Type.ROOM)){
+            Room room = getRoom(message.getDestination().getAddress());
             if(room != null){
                 room.sendMessage(message);
             }
@@ -149,7 +153,7 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> {
             if(chat == null){
                 logger.trace("chat was null, creating a new chat instance");
 
-                chat = ChatManager.getInstanceFor(connection).createChat(message.getDestination(),((XmppMessage)message).getThread(),null);
+                chat = ChatManager.getInstanceFor(connection).createChat(message.getDestination().getAddress(),((XmppMessage)message).getThread(),null);
             }else{
                 logger.trace("an existing chat was found for thread id {}", ((XmppMessage) message).getThread());
             }
@@ -187,5 +191,15 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> {
             }
         }
         return response;
+    }
+
+    @Override
+    public boolean canExecute(Resource resource, Resource target, PrivilegedAction action) {
+        Privilege resourcePrivilege = privilegeMapper.getResourcePrivileges(resource,target);
+        logger.debug("resource privilege: {} required privilege {}",resourcePrivilege,action.getRequiredPrivilege());
+        int i = resourcePrivilege.compareTo(action.getRequiredPrivilege());//action.getRequiredPrivilege().compareTo(resourcePrivilege);
+        boolean allowed = i >= 0;
+        logger.debug("privilege check status: {} and thus is allowed: {}",i, allowed);
+        return allowed;
     }
 }
