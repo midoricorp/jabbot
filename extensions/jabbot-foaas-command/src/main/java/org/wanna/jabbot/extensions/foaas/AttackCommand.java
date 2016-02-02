@@ -76,7 +76,11 @@ public class AttackCommand extends AbstractCommandAdapter {
 			String value;
 			if(field.getField().equalsIgnoreCase("from")){
 				value = from;
-				url = url.replace(":"+field.getField(),from);
+				try {
+					url = url.replace(":"+field.getField(),URLEncoder.encode(from,"UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					logger.error("unable to encode from",value,e);
+				}
 			}else{
 				value = args.get(i);
 				i++;
