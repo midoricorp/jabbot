@@ -67,10 +67,6 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 						break;
 					}
 
-					// If we are here this is a new msg
-					System.err.println("LastId: " + lastId);
-					System.err.println("NextId: " + nextId);
-					System.err.println("CurrId: " + imsg.getId());
 					System.err.println(imsg.getPersonEmail() + ": " + imsg.getText());
 					msgList.push(imsg);
 				}
@@ -79,19 +75,16 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 
 				if (!msgList.empty()) break;
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(1000);
 				} catch(Exception e) {}
 			}
 
 
 			while(!msgList.empty()) {
 				com.ciscospark.Message msg = msgList.pop();
-				int i = 0;
-				System.err.println("Sending message to listeners");
 				for (BindingListener listener : listeners) {
 				    Message message = new DefaultMessage(msg.getText(),msg.getPersonEmail(),this.getRoomName());
 				    listener.onMessage((SparkBinding)connection,message);
-				    System.err.println("Sent to listener " + i++);
 				}
 			}
 		}

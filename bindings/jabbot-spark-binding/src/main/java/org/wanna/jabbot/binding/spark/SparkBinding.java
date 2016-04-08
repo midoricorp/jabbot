@@ -7,6 +7,7 @@ import org.wanna.jabbot.binding.Room;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import java.net.URI;
+import java.util.Hashtable;
 
 /**
  * @author tsearle <tsearle>
@@ -14,11 +15,12 @@ import java.net.URI;
  */
 public class SparkBinding extends AbstractBinding<Object> {
 	private final Logger logger = LoggerFactory.getLogger(SparkBinding.class);
-	protected Room room;
+	private Hashtable<String,Room> roomMap = null;
 	com.ciscospark.Spark spark = null;
 
 	public SparkBinding(BindingConfiguration configuration) {
 		super(configuration);
+		roomMap = new Hashtable<String,Room>();
 	}
 
 	@Override
@@ -33,7 +35,8 @@ public class SparkBinding extends AbstractBinding<Object> {
 	@Override
 	public Room joinRoom(RoomConfiguration configuration) {
 		logger.debug("Joining room " + configuration.getName());
-		room = new SparkRoom(this,listeners);
+		Room room = new SparkRoom(this,listeners);
+		roomMap.put(configuration.getName(),room);
 		room.join(configuration);
 		return room;
 	}
@@ -45,6 +48,6 @@ public class SparkBinding extends AbstractBinding<Object> {
 
 	@Override
 	public Room getRoom(String roomName) {
-		return room;
+		return roomMap.get(roomName);
 	}
 }
