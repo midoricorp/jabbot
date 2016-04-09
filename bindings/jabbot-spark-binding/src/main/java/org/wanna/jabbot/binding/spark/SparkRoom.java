@@ -46,35 +46,39 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 			
 			while (true) {
 				String nextId = null;
-				Iterator<com.ciscospark.Message> msgs = spark.messages()
-					.queryParam("roomId", room.getId())
-					.queryParam("max", "20")	
+				try {
+					Iterator<com.ciscospark.Message> msgs = spark.messages()
+						.queryParam("roomId", room.getId())
+						.queryParam("max", "20")	
 
-					.iterate();
-				while(msgs.hasNext()) {
-					com.ciscospark.Message imsg = msgs.next();
+						.iterate();
+					while(msgs.hasNext()) {
+						com.ciscospark.Message imsg = msgs.next();
 
-					if (lastId == null) {
-						nextId = imsg.getId();
-						break;
+						if (lastId == null) {
+							nextId = imsg.getId();
+							break;
+						}
+
+						if (nextId == null) {
+							nextId = imsg.getId();
+						}
+
+						if (lastId.equals(imsg.getId())) {
+							//caugh up
+							break;
+						}
+
+						System.err.println(imsg.getPersonEmail() + ": " + imsg.getText());
+						msgList.push(imsg);
 					}
 
-					if (nextId == null) {
-						nextId = imsg.getId();
-					}
+					lastId = nextId;
 
-					if (lastId.equals(imsg.getId())) {
-						//caugh up
-						break;
-					}
-
-					System.err.println(imsg.getPersonEmail() + ": " + imsg.getText());
-					msgList.push(imsg);
+					if (!msgList.empty()) break;
+				} catch (com.ciscospark.SparkException e) {
+					e.printStackTrace();
 				}
-
-				lastId = nextId;
-
-				if (!msgList.empty()) break;
 				try {
 					Thread.sleep(5000);
 				} catch(Exception e) {}
