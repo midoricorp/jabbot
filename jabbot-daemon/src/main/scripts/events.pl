@@ -6,7 +6,7 @@
 
 use strict;
 use LWP::UserAgent;
-+use utf8;
+use utf8;
 use URI::Encode qw(uri_encode uri_decode);
 use JSON::XS;
 use POSIX qw( strftime );

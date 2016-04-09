@@ -48,7 +48,8 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 				String nextId = null;
 				Iterator<com.ciscospark.Message> msgs = spark.messages()
 					.queryParam("roomId", room.getId())
-					.queryParam("max", "5")	
+					.queryParam("max", "20")	
+
 					.iterate();
 				while(msgs.hasNext()) {
 					com.ciscospark.Message imsg = msgs.next();
@@ -75,7 +76,7 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 
 				if (!msgList.empty()) break;
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(5000);
 				} catch(Exception e) {}
 			}
 
