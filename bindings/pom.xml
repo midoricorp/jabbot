@@ -17,6 +17,7 @@
         <module>jabbot-xmpp-binding</module>
         <module>jabbot-irc-binding</module>
         <module>jabbot-cli-binding</module>
+        <module>jabbot-spark-binding</module>
     </modules>
 
     <dependencies>
