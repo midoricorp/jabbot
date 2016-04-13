@@ -189,6 +189,7 @@ sub makeCommands {
 			my %command;
 			$command{"name"} = $command_name;
 			$command{"className"} = $extension->{'className'};
+			$command{"type"} = "command";
 
 			if (defined $extension->{'configuration'}) {
 				if ($extension->{'immutable'}) {

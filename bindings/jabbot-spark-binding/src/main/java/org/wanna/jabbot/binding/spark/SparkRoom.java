@@ -5,9 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
-import org.wanna.jabbot.command.messaging.Message;
-import org.wanna.jabbot.command.messaging.DefaultMessage;
-import org.wanna.jabbot.command.messaging.body.BodyPart;
+import org.wanna.jabbot.binding.messaging.DefaultResource;
+import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.DefaultBindingMessage;
+import org.wanna.jabbot.binding.messaging.body.BodyPart;
+import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -88,8 +90,12 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 			while(!msgList.empty()) {
 				com.ciscospark.Message msg = msgList.pop();
 				for (BindingListener listener : listeners) {
-				    Message message = new DefaultMessage(msg.getText(),msg.getPersonEmail(),this.getRoomName());
-				    listener.onMessage((SparkBinding)connection,message);
+				    DefaultBindingMessage message = new DefaultBindingMessage();
+				    message.addBody(new TextBodyPart(msg.getText()));
+				    message.setSender(new DefaultResource(this.getRoomName(),msg.getPersonEmail()));
+				    message.setDestination(new DefaultResource(this.getRoomName(),null));
+				    message.setRoomName(this.getRoomName());
+				    listener.onMessage(message);
 				}
 			}
 		}
