@@ -1,4 +1,4 @@
-{"name":"propaganda","type":"command","className":"org.wanna.jabbot.extensions.propaganda.PropagandaCommand",
+{"name":"propaganda","className":"org.wanna.jabbot.extensions.propaganda.PropagandaCommand",
     "configuration":{
 	":{guy1}":"Kim Il Sung",
 	":{guy2}":"Kim Jong Il",
