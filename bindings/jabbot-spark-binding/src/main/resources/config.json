@@ -2,5 +2,9 @@
 	"className":"org.wanna.jabbot.binding.spark.SparkBinding",
 	"name": "SPARK",
         "url":"https://api.ciscospark.com/v1",
-	"port":443
+	"port":443,
+	"parameters":{
+		"use_webhook":true,
+		"webhook_url":""
+	}
 }
