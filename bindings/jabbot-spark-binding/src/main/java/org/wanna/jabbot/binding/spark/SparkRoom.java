@@ -135,13 +135,6 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 		if (!useWebhook) {
 			new Thread(this).start();
 		} else {
-			// first cleanup old hooks
-			Iterator<com.ciscospark.Webhook> webhooks = spark.webhooks().iterate();
-			while(webhooks.hasNext()) {
-				com.ciscospark.Webhook hk  = webhooks.next();
-				logger.info("deleting webhook " + hk.getName() + " id: " + hk.getId());
-				spark.webhooks().path("/"+hk.getId()).delete();
-			}
 			com.ciscospark.Webhook hook = new com.ciscospark.Webhook();
 			hook.setName("midori hook");
 			hook.setTargetUrl(URI.create(webhookUrl));
@@ -154,8 +147,13 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 			servlet.addListener( new com.ciscospark.WebhookEventListener() {
 					public void onEvent(com.ciscospark.WebhookEvent event) {
 							if (event.getData().getRoomId().equals(room.getId())) {
-								logger.info("Getting full message for " + event.getData().getId());
-								com.ciscospark.Message msg = spark.messages().path("/"+event.getData().getId()).get();
+								com.ciscospark.Message msg = event.getData();
+								if(msg.getText() == null) {
+									logger.info("Getting full message for " + event.getData().getId());
+									msg = spark.messages().path("/"+event.getData().getId()).get();
+								} else {
+									logger.info("Message already in webhook, delivering");
+								}
 								dispatchMessage(msg);
 							}
 					}

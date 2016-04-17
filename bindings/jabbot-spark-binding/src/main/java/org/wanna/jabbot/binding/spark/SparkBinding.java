@@ -8,6 +8,7 @@ import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import java.net.URI;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -48,18 +49,28 @@ public class SparkBinding extends AbstractBinding<Object> {
 			.baseUrl(URI.create(configuration.getUrl()))
 			.accessToken(configuration.getPassword())
 			.build();
-		Server server = new Server(8080);
-		ServletHandler context = new ServletHandler();
-		server.setHandler(context);
+		if(useWebhook) {
+			Server server = new Server(8080);
+			ServletHandler context = new ServletHandler();
+			server.setHandler(context);
 
-		sparkServlet = new com.ciscospark.SparkServlet();
-		context.addServletWithMapping(new ServletHolder(sparkServlet), "/*");
+			sparkServlet = new com.ciscospark.SparkServlet();
+			context.addServletWithMapping(new ServletHolder(sparkServlet), "/*");
 
-		try {
-			server.start();
-		} catch (Exception e) {
-			logger.error("Unable to start server: ", e);
-			return false;
+			try {
+				server.start();
+			} catch (Exception e) {
+				logger.error("Unable to start server: ", e);
+				return false;
+			}
+
+			// first cleanup old hooks
+			Iterator<com.ciscospark.Webhook> webhooks = spark.webhooks().iterate();
+			while(webhooks.hasNext()) {
+				com.ciscospark.Webhook hk  = webhooks.next();
+				logger.info("deleting webhook " + hk.getName() + " id: " + hk.getId());
+				spark.webhooks().path("/"+hk.getId()).delete();
+			}
 		}
 		return true;
 	}
