@@ -85,8 +85,8 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 					lastId = nextId;
 
 					if (!msgList.empty()) break;
-				} catch (com.ciscospark.SparkException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					logger.error("Error in message handling!" , e);
 				}
 				try {
 					Thread.sleep(5000);
