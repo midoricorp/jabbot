@@ -48,7 +48,7 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 	@Override
 	public void run()
 	{
-		System.out.println("SPARK Room started");
+		logger.info("SPARK Room started");
 		String lastId = null;
 		while (true) {
 			Stack<com.ciscospark.Message> msgList = new Stack<com.ciscospark.Message>();
@@ -78,7 +78,7 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 							break;
 						}
 
-						System.err.println(imsg.getPersonEmail() + ": " + imsg.getText());
+						logger.info("Message Received (" + imsg.getPersonEmail() + ") " + imsg.getText());
 						msgList.push(imsg);
 					}
 
@@ -117,7 +117,7 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 		Iterator<com.ciscospark.Room> rooms = spark.rooms().iterate();
 		while(rooms.hasNext()) {
 			com.ciscospark.Room rm = rooms.next();
-			System.err.println("comparing room " + rm.getTitle() 
+			logger.debug("comparing room " + rm.getTitle() 
 					+ " to " + configuration.getName());
 			if(rm.getTitle().equals(configuration.getName())) {
 				room = rm;
@@ -126,11 +126,11 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 		}
 
 		if (room == null) {
-			System.err.println("Room " + configuration.getName() + " not found. Creating!");
+			logger.info("Room " + configuration.getName() + " not found. Creating!");
 			room = new com.ciscospark.Room();
 			room.setTitle(configuration.getName());
 			room = spark.rooms().post(room);
-			System.err.println("Room created id: " + room.getId());
+			logger.info("Room created id: " + room.getId());
 		}
 		if (!useWebhook) {
 			new Thread(this).start();
@@ -139,7 +139,7 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 			Iterator<com.ciscospark.Webhook> webhooks = spark.webhooks().iterate();
 			while(webhooks.hasNext()) {
 				com.ciscospark.Webhook hk  = webhooks.next();
-				System.err.println("deleting webhook " + hk.getName() + " id: " + hk.getId());
+				logger.info("deleting webhook " + hk.getName() + " id: " + hk.getId());
 				spark.webhooks().path("/"+hk.getId()).delete();
 			}
 			com.ciscospark.Webhook hook = new com.ciscospark.Webhook();
@@ -149,12 +149,12 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 			hook.setEvent("created");
 			hook.setFilter("roomId=" + room.getId());
 			spark.webhooks().post(hook);
-			System.err.println("created webhook " + hook.getName() + " id: " + hook.getId());
+			logger.info("created webhook " + hook.getName() + " id: " + hook.getId());
 
 			servlet.addListener( new com.ciscospark.WebhookEventListener() {
 					public void onEvent(com.ciscospark.WebhookEvent event) {
 							if (event.getData().getRoomId().equals(room.getId())) {
-								System.err.println("Getting full message!");
+								logger.info("Getting full message for " + event.getData().getId());
 								com.ciscospark.Message msg = spark.messages().path("/"+event.getData().getId()).get();
 								dispatchMessage(msg);
 							}
