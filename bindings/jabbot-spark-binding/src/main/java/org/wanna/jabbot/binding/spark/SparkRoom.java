@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 import java.util.Stack;
+import java.net.URI;
 
 /**
  * @author tsearle <tsearle>
@@ -29,19 +30,25 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 	private final List<BindingListener> listeners;
 	private com.ciscospark.Room room;
 	private com.ciscospark.Spark spark;
+	private com.ciscospark.SparkServlet servlet;
+	private boolean useWebhook;
+	private String webhookUrl;
 
 
 	public SparkRoom(SparkBinding connection,List<BindingListener> listeners) {
 		super(connection);
 		this.listeners = (listeners==null?new ArrayList<BindingListener>() : listeners);
 		spark = connection.spark;
+		servlet = connection.sparkServlet;
+		useWebhook = connection.useWebhook;
+		webhookUrl = connection.webhookUrl;
 
 	}
 
 	@Override
 	public void run()
 	{
-		System.out.println("SPARK Room started");
+		logger.info("SPARK Room started");
 		String lastId = null;
 		while (true) {
 			Stack<com.ciscospark.Message> msgList = new Stack<com.ciscospark.Message>();
@@ -71,15 +78,15 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 							break;
 						}
 
-						System.err.println(imsg.getPersonEmail() + ": " + imsg.getText());
+						logger.info("Message Received (" + imsg.getPersonEmail() + ") " + imsg.getText());
 						msgList.push(imsg);
 					}
 
 					lastId = nextId;
 
 					if (!msgList.empty()) break;
-				} catch (com.ciscospark.SparkException e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					logger.error("Error in message handling!" , e);
 				}
 				try {
 					Thread.sleep(5000);
@@ -89,14 +96,7 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 
 			while(!msgList.empty()) {
 				com.ciscospark.Message msg = msgList.pop();
-				for (BindingListener listener : listeners) {
-				    DefaultBindingMessage message = new DefaultBindingMessage();
-				    message.addBody(new TextBodyPart(msg.getText()));
-				    message.setSender(new DefaultResource(this.getRoomName(),msg.getPersonEmail()));
-				    message.setDestination(new DefaultResource(this.getRoomName(),null));
-				    message.setRoomName(this.getRoomName());
-				    listener.onMessage(message);
-				}
+				dispatchMessage(msg);
 			}
 		}
 	}
@@ -117,7 +117,7 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 		Iterator<com.ciscospark.Room> rooms = spark.rooms().iterate();
 		while(rooms.hasNext()) {
 			com.ciscospark.Room rm = rooms.next();
-			System.err.println("comparing room " + rm.getTitle() 
+			logger.debug("comparing room " + rm.getTitle() 
 					+ " to " + configuration.getName());
 			if(rm.getTitle().equals(configuration.getName())) {
 				room = rm;
@@ -126,14 +126,54 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 		}
 
 		if (room == null) {
-			System.err.println("Room " + configuration.getName() + " not found. Creating!");
+			logger.info("Room " + configuration.getName() + " not found. Creating!");
 			room = new com.ciscospark.Room();
 			room.setTitle(configuration.getName());
 			room = spark.rooms().post(room);
-			System.err.println("Room created id: " + room.getId());
+			logger.info("Room created id: " + room.getId());
 		}
-		new Thread(this).start();
+		if (!useWebhook) {
+			new Thread(this).start();
+		} else {
+			com.ciscospark.Webhook hook = new com.ciscospark.Webhook();
+			hook.setName("midori hook");
+			hook.setTargetUrl(URI.create(webhookUrl));
+			hook.setResource("messages");
+			hook.setEvent("created");
+			hook.setFilter("roomId=" + room.getId());
+			spark.webhooks().post(hook);
+			logger.info("created webhook " + hook.getName() + " id: " + hook.getId());
+
+			servlet.addListener( new com.ciscospark.WebhookEventListener() {
+					public void onEvent(com.ciscospark.WebhookEvent event) {
+							if (event.getData().getRoomId().equals(room.getId())) {
+								com.ciscospark.Message msg = event.getData();
+								if(msg.getText() == null) {
+									logger.info("Getting full message for " + event.getData().getId());
+									msg = spark.messages().path("/"+event.getData().getId()).get();
+								} else {
+									logger.info("Message already in webhook, delivering");
+								}
+								dispatchMessage(msg);
+							}
+					}
+				});
+		}
+
+			
+
 		return true;
+	}
+
+	private void dispatchMessage(com.ciscospark.Message msg) {
+		for (BindingListener listener : listeners) {
+		    DefaultBindingMessage message = new DefaultBindingMessage();
+		    message.addBody(new TextBodyPart(msg.getText()));
+		    message.setSender(new DefaultResource(this.getRoomName(),msg.getPersonEmail()));
+		    message.setDestination(new DefaultResource(this.getRoomName(),null));
+		    message.setRoomName(this.getRoomName());
+		    listener.onMessage(message);
+		}
 	}
 
 	@Override
