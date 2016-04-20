@@ -35,4 +35,11 @@ public class JabbotCommandFactory implements CommandFactory {
 		logger.debug("registering command {} with class {}",commandName,command.getClass());
 		registry.put(commandName, command);
 	}
+
+	@Override
+	public void deregister(String commandName) {
+		logger.debug("deregistering command {}",commandName);
+		Command c = registry.remove(commandName);
+		logger.debug("deregistering command {} with class {}",commandName, c==null?"(null)":c.getClass());
+	}
 }

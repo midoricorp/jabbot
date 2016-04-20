@@ -10,4 +10,5 @@ public interface CommandFactory {
 	Command create(String commandName) throws CommandNotFoundException;
 	Map<String,Command> getAvailableCommands();
 	void register(String commandName,Command command);
+	void deregister(String commandName);
 }
