@@ -1,7 +1,10 @@
-{"name":"script","className":"org.wanna.jabbot.extensions.script.ScriptCommand",
-	"configuration":{
-		"loop_limit":"100",
-		"buffer_limit":"1000"
-	}
-}
+[
+	{"name":"script","className":"org.wanna.jabbot.extensions.script.ScriptCommand",
+		"configuration":{
+			"loop_limit":"100",
+			"buffer_limit":"1000"
+		}
+	},
+	{"name":"delete","className":"org.wanna.jabbot.extensions.script.DeleteCommand"}
+]
 
