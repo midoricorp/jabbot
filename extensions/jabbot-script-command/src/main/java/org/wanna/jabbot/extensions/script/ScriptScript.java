@@ -9,7 +9,10 @@ import org.wanna.jabbot.command.parser.ArgsParser;
 import org.wanna.jabbot.command.parser.QuotedStringArgParser;
 import com.sipstacks.script.ScriptParseException;
 import com.sipstacks.script.OutputStream;
+import com.sipstacks.script.Function;
 import java.util.List;
+import java.util.ArrayList;
+import java.lang.StringBuffer;
 
 /**
  * @author tsearle <tsearle>
@@ -17,11 +20,11 @@ import java.util.List;
  */
 public class ScriptScript implements Command {
 
-	com.sipstacks.script.Command scriptCmd;
+	com.sipstacks.script.Statement scriptCmd;
 	String name;
 	String author;
 
-	public ScriptScript(String name, com.sipstacks.script.Command scriptCmd, String author) {
+	public ScriptScript(String name, com.sipstacks.script.Statement scriptCmd, String author) {
 		this.name = name;
 		this.scriptCmd = scriptCmd;
 		this.author = author;
@@ -42,11 +45,30 @@ public class ScriptScript implements Command {
 	 */
 	public String getDescription() { return null;}
 
+	static void getFunctions(com.sipstacks.script.Statement cmd, StringBuffer sb) {
+		List<Function> funcs = new ArrayList<Function>();
+		cmd.getFunctions(funcs);
+		for(Function func : funcs) {
+			getFunctions(func.getStatement(),sb);
+			if (!(func.getStatement() instanceof com.sipstacks.script.ExternalFunction)) {
+				sb.append("local sub ");
+				sb.append(func.getName());
+				sb.append(func.getStatement().dump());
+			}
+		}
+	}	
+
 	/**
 	 * Returns the command help
 	 * @return String help message
 	 */
-	public String getHelpMessage() { return "Midori Script command written by " + author + "\n" + "sub " + name + " \n" + scriptCmd.dump() ;}
+	public String getHelpMessage() { 
+		StringBuffer sb = new StringBuffer();
+		sb.append("Midori Script command written by " + author + "\n");
+		getFunctions(scriptCmd, sb);
+		sb.append("sub " + name + " \n" + scriptCmd.dump());
+		return sb.toString();
+	}
 
 	public Message process(CommandMessage message) {
 		String argsString = message.getBody();

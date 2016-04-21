@@ -4,8 +4,11 @@ import com.sipstacks.script.ExternalFunction;
 import com.sipstacks.script.Script;
 import com.sipstacks.script.ScriptParseException;
 import com.sipstacks.script.FunctionListener;
+import com.sipstacks.script.Function;
 import com.sipstacks.script.OutputStream;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.messaging.DefaultResource;
 import org.wanna.jabbot.binding.messaging.Message;
 import org.wanna.jabbot.binding.messaging.body.*;
@@ -18,7 +21,7 @@ import org.wanna.jabbot.command.parser.ArgsParser;
 import org.wanna.jabbot.command.parser.NullArgParser;
 import org.wanna.jabbot.command.parser.QuotedStringArgDeparser;
 
-import java.io.StringReader;
+import java.io.*;
 import java.util.Map;
 import java.util.List;
 
@@ -27,14 +30,17 @@ import java.util.List;
  * @since 2015-02-21
  */
 public class ScriptCommand extends AbstractCommandAdapter  implements CommandFactoryAware {
+	final Logger logger = LoggerFactory.getLogger(ScriptCommand.class);
 	private CommandFactory commandFactory;
 	private int loopLimit = -1;
 	private int bufferLimit = -1;
+	private String scriptDir;
 
 	private class ScriptFunctionListener implements FunctionListener {
 		String author;
+		boolean startup;
 
-		public void addFunction(String name, com.sipstacks.script.Command cmd) {
+		public void addFunction(String name, com.sipstacks.script.Statement cmd) {
 
 			Map<String,Command> cmds = commandFactory.getAvailableCommands();
 
@@ -47,10 +53,28 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 
 			ScriptScript ss = new ScriptScript(name, cmd, author);
 			commandFactory.register(name,ss);
+
+			if (!startup) {
+				PrintWriter out = null;
+				try {
+					StringBuffer sb = new StringBuffer();
+					out = new PrintWriter(scriptDir + File.separator + name + ".ss");
+					ScriptScript.getFunctions(cmd, sb);
+					sb.append("sub " + name + " \n" + cmd.dump());
+					out.write(sb.toString());
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} finally {
+					if (out != null) {
+						out.close();
+					}
+				}
+			}
 		}
 
-		public ScriptFunctionListener init(String author) {
+		public ScriptFunctionListener init(String author, boolean startup) {
 			this.author = author;
+			this.startup = startup;
 			return this;
 		}
 	}
@@ -69,6 +93,24 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 		if (configuration.containsKey("buffer_limit")) {
 			bufferLimit = Integer.parseInt(configuration.get("buffer_limit").toString());
 		}
+		if (configuration.containsKey("script_dir")) {
+			scriptDir = configuration.get("script_dir").toString();
+			File files = new File(scriptDir);
+			if (!files.exists()) {
+				files.mkdirs();
+			}
+
+			File[] listOfFiles = files.listFiles();
+			for (File f : listOfFiles) {
+				try {
+					Script s = new Script(new FileReader(f));
+					s.addFunctionListener(new ScriptFunctionListener().init("Loaded from Disk", true));
+					s.run();
+				} catch (Exception e) {
+					logger.error("Error loading script", e);
+				}
+			}
+		}
 	}
 
         @Override
@@ -85,7 +127,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			s.setLoopLimit(loopLimit);
 		}
 
-		s.addFunctionListener(new ScriptFunctionListener().init(message.getSender().getAddress()));
+		s.addFunctionListener(new ScriptFunctionListener().init(message.getSender().getAddress(), false));
 
 		for(Command command : commandFactory.getAvailableCommands().values()){
 			// don't add yourself to limit recursion
@@ -93,36 +135,42 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 				continue;
 			}
 
-			s.addExternalFunction(command.getCommandName(), new ExternalFunction() {
-					
-				private Command cmd;
-				private String sender;
-				public ExternalFunction init(Command command, String sender) {
-					cmd = command;
-					this.sender = sender;
-					return this;
-				}
+			if (command instanceof ScriptScript) {
+				ScriptScript ss = (ScriptScript)command;
+				s.addScriptFunction(ss.name, ss.scriptCmd);
+			} else {
 
-				public String run(List<String> args) {
-					DefaultCommandMessage msg = new DefaultCommandMessage();
-					if (args.size() > 0) {
-						msg.setBody(QuotedStringArgDeparser.deparse(args));
-					} else {
-						msg.setBody("");
+				s.addExternalFunction(command.getCommandName(), new ExternalFunction() {
+						
+					private Command cmd;
+					private String sender;
+					public ExternalFunction init(Command command, String sender) {
+						cmd = command;
+						this.sender = sender;
+						return this;
 					}
 
-					msg.setSender(new DefaultResource(sender,null));
-					Message result = cmd.process(msg);
-					return result.getBody();
-				}
+					public String run(List<String> args) {
+						DefaultCommandMessage msg = new DefaultCommandMessage();
+						if (args.size() > 0) {
+							msg.setBody(QuotedStringArgDeparser.deparse(args));
+						} else {
+							msg.setBody("");
+						}
 
-				public void reset() {
-					if (cmd instanceof ScriptScript) {
-						((ScriptScript)cmd).reset();
+						msg.setSender(new DefaultResource(sender,null));
+						Message result = cmd.process(msg);
+						return result.getBody();
 					}
-				}
 
-			}.init(command, message.getSender().getAddress()));
+					public void reset() {
+						if (cmd instanceof ScriptScript) {
+							((ScriptScript)cmd).reset();
+						}
+					}
+
+				}.init(command, message.getSender().getAddress()));
+			}
 		}
 
 
