@@ -21,6 +21,7 @@ set -e
 case "$1" in
     configure)
 		chown -R nobody:nogroup /var/log/jabbot
+		chown -R nobody:nogroup /var/lib/jabbot
 		chmod a+x /usr/share/jabbot/bin/genconf.pl
 		/usr/share/jabbot/bin/genconf.pl --basedir=/etc/jabbot
 		chown -R nobody:nogroup /etc/jabbot/jabbot.json
