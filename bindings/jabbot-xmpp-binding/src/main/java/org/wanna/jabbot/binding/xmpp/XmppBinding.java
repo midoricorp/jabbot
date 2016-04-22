@@ -61,13 +61,17 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 
 	@Override
 	public boolean connect(BindingConfiguration configuration) {
-		connection = new XMPPTCPConnection(newConnectionConfiguration(configuration));
+
+		connection = new XMPPTCPConnection(newConnectionConfiguration(getConfiguration()));
         privilegeMapper = new PrivilegeMapper(connection);
 		try {
 			connection.connect();
 			connection.login();
 			PingManager.getInstanceFor(connection).setPingInterval(pingInterval);
-			this.initListeners(configuration.getCommandPrefix(),connection);
+			this.initListeners(getConfiguration().getCommandPrefix(),connection);
+			for (RoomConfiguration roomConfiguration : getConfiguration().getRooms()) {
+				joinRoom(roomConfiguration);
+			}
 			return connection.isConnected();
 		} catch (XMPPException | SmackException | IOException e) {
 			logger.error("error while connecting",e);
@@ -108,7 +112,7 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 
 	@Override
 	public boolean isConnected() {
-		return connection.isConnected();
+		return (connection == null ? false :connection.isConnected());
 	}
 
 	private XMPPTCPConnectionConfiguration newConnectionConfiguration(final BindingConfiguration configuration){

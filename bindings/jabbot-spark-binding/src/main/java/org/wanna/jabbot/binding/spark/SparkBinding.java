@@ -10,9 +10,6 @@ import java.net.URI;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -28,6 +25,7 @@ public class SparkBinding extends AbstractBinding<Object> {
 	boolean useWebhook = false;
 	String webhookUrl = "";
 	com.ciscospark.SparkServlet sparkServlet = null;
+	private boolean connected;
 
 	public SparkBinding(BindingConfiguration configuration) {
 		super(configuration);
@@ -46,8 +44,8 @@ public class SparkBinding extends AbstractBinding<Object> {
 	@Override
 	public boolean connect(BindingConfiguration configuration) {
 		spark = com.ciscospark.Spark.builder()
-			.baseUrl(URI.create(configuration.getUrl()))
-			.accessToken(configuration.getPassword())
+			.baseUrl(URI.create(getConfiguration().getUrl()))
+			.accessToken(getConfiguration().getPassword())
 			.build();
 		if(useWebhook) {
 			Server server = new Server(8080);
@@ -71,6 +69,13 @@ public class SparkBinding extends AbstractBinding<Object> {
 				logger.info("deleting webhook " + hk.getName() + " id: " + hk.getId());
 				spark.webhooks().path("/"+hk.getId()).delete();
 			}
+
+			for (RoomConfiguration roomConfiguration : getConfiguration().getRooms()) {
+				joinRoom(roomConfiguration);
+			}
+			connected = true;
+		}else{
+			connected = true;
 		}
 		return true;
 	}
@@ -86,7 +91,11 @@ public class SparkBinding extends AbstractBinding<Object> {
 
 	@Override
 	public boolean isConnected() {
-		return true;
+		if(useWebhook){
+			return false;
+		}else{
+			return connected;
+		}
 	}
 
 	@Override

@@ -26,6 +26,7 @@ public class IrcBinding extends AbstractBinding<IRCApi> {
 	private final Logger logger = LoggerFactory.getLogger(IrcBinding.class);
 
 	private Map<String,Room> rooms = new HashMap<>();
+	private IIRCState state;
 
 	public IrcBinding(BindingConfiguration configuration) {
 		super(configuration);
@@ -33,21 +34,14 @@ public class IrcBinding extends AbstractBinding<IRCApi> {
 
 	@Override
 	public boolean connect(BindingConfiguration configuration) {
-		connection = new IRCApiImpl(false);
+		connection = new IRCApiImpl(true);
 		IrcMessageListener listener = new IrcMessageListener(listeners);
 		connection.addListener(listener);
 
 		ConnectionCallback connectionCallback = new ConnectionCallback();
-		IServerParameters parameters = getServerParameters(configuration);
+		IServerParameters parameters = getServerParameters(getConfiguration());
 		connection.connect(parameters, connectionCallback );
 
-		while(!connectionCallback.isConnected()){
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				return false;
-			}
-		}
 		return true;
 	}
 
@@ -91,27 +85,33 @@ public class IrcBinding extends AbstractBinding<IRCApi> {
 	}
 
 	class ConnectionCallback implements Callback<IIRCState>{
-		private boolean connected = false;
-
 		@Override
 		public void onSuccess(IIRCState aObject) {
 			logger.info("[IRC] connection established on {}",aObject.getServer().getHostname());
-			connected = aObject.isConnected();
+			state = aObject;
+			for (RoomConfiguration roomConfiguration : getConfiguration().getRooms()) {
+				joinRoom(roomConfiguration);
+			}
 		}
 
 		@Override
 		public void onFailure(Exception aExc) {
 
 		}
-
-		public boolean isConnected() {
-			return connected;
-		}
 	}
 
 	@Override
 	public boolean isConnected() {
-		return true;
+		if(state == null){
+			return false;
+		}
+		//TODO : this is a way to work around the fact that IRCState object don't get refreshed
+		try {
+			connection.rawMessage("PING " + getConfiguration().getUsername());
+			return true;
+		}catch (Exception e){
+			return false;
+		}
 	}
 
 	@Override

@@ -11,7 +11,13 @@ import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.config.JabbotConfiguration;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -22,23 +28,32 @@ public class Jabbot {
 
 	private JabbotConfiguration configuration;
 	private BindingFactory bindingFactory;
+	private ExecutorService executorService = Executors.newFixedThreadPool(1);
+	private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+
+	private List<Binding> bindings = new ArrayList<>();
 
 	public Jabbot( JabbotConfiguration configuration ) {
 		this.configuration = configuration;
 		this.bindingFactory = newConnectionFactory(configuration.getBindings());
+		scheduledExecutorService.scheduleAtFixedRate(new BindingMonitor(), 10L,10L, TimeUnit.SECONDS);
 	}
 
 	public boolean connect(){
-		for (BindingConfiguration connectionConfiguration : configuration.getServerList()) {
-			Binding conn;
+		for (final BindingConfiguration connectionConfiguration : configuration.getServerList()) {
+			final Binding conn;
 			try {
 				conn = bindingFactory.create(connectionConfiguration);
 				CommandManager.getInstanceFor(conn).initializeFromConfigSet(connectionConfiguration.getExtensions());
                 conn.registerListener(new JabbotBindingListener(conn,connectionConfiguration.getCommandPrefix()));
-				conn.connect(connectionConfiguration);
+				bindings.add(conn);
+
+				//conn.connect(connectionConfiguration);
+				/*
 				for (RoomConfiguration roomConfiguration : connectionConfiguration.getRooms()) {
 					conn.joinRoom(roomConfiguration);
 				}
+*/
 				if(conn.isConnected()){
 					logger.debug("connection established to {} as {}",connectionConfiguration.getUrl(),connectionConfiguration.getUsername());
 				}
@@ -70,5 +85,36 @@ public class Jabbot {
 			}
 		}
 		return factory;
+	}
+
+	private class BindingMonitor implements Runnable{
+
+		@Override
+		public void run() {
+			logger.debug("checking binding health");
+			for (final Binding binding : bindings) {
+				try{
+					if(!binding.isConnected()){
+						logger.info("binding {} is disconnected. starting...",binding);
+						executorService.submit(new Runnable() {
+							@Override
+							public void run() {
+								try {
+									binding.connect(null);
+								}catch (Exception e){
+									logger.error("cannot start binding {}",binding,e);
+								}
+							}
+						});
+					}else{
+						logger.debug("binding {} is connected",binding);
+					}
+
+				}catch (Throwable t){
+					logger.error("unable to check {} health",binding,t);
+				}
+			}
+			logger.debug("health check done");
+		}
 	}
 }

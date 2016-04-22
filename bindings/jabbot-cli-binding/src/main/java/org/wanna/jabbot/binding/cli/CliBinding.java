@@ -14,6 +14,7 @@ import org.wanna.jabbot.binding.config.RoomConfiguration;
 public class CliBinding extends AbstractBinding<Object> {
 	private final Logger logger = LoggerFactory.getLogger(CliBinding.class);
 	private Room room;
+	private boolean connected;
 
 	public CliBinding(BindingConfiguration configuration) {
 		super(configuration);
@@ -21,7 +22,11 @@ public class CliBinding extends AbstractBinding<Object> {
 
 	@Override
 	public boolean connect(BindingConfiguration configuration) {
-		return true;
+		for (RoomConfiguration roomConfiguration : configuration.getRooms()) {
+			joinRoom(roomConfiguration);
+		}
+		connected = true;
+		return connected;
 	}
 
 	@Override
@@ -34,7 +39,7 @@ public class CliBinding extends AbstractBinding<Object> {
 
 	@Override
 	public boolean isConnected() {
-		return true;
+		return connected;
 	}
 
 	@Override
