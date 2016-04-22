@@ -91,7 +91,7 @@ public class Jabbot {
 
 		@Override
 		public void run() {
-			logger.debug("checking binding health");
+			logger.trace("checking binding health");
 			for (final Binding binding : bindings) {
 				try{
 					if(!binding.isConnected()){
@@ -107,14 +107,14 @@ public class Jabbot {
 							}
 						});
 					}else{
-						logger.debug("binding {} is connected",binding);
+						logger.trace("binding {} is connected",binding);
 					}
 
 				}catch (Throwable t){
 					logger.error("unable to check {} health",binding,t);
 				}
 			}
-			logger.debug("health check done");
+			logger.trace("health check done");
 		}
 	}
 }

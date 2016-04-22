@@ -70,12 +70,14 @@ public class SparkBinding extends AbstractBinding<Object> {
 				spark.webhooks().path("/"+hk.getId()).delete();
 			}
 
-			for (RoomConfiguration roomConfiguration : getConfiguration().getRooms()) {
-				joinRoom(roomConfiguration);
-			}
+
 			connected = true;
 		}else{
 			connected = true;
+		}
+
+		for (RoomConfiguration roomConfiguration : getConfiguration().getRooms()) {
+			joinRoom(roomConfiguration);
 		}
 		return true;
 	}
