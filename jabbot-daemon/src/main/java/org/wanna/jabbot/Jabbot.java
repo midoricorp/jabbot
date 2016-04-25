@@ -28,15 +28,14 @@ public class Jabbot {
 
 	private JabbotConfiguration configuration;
 	private BindingFactory bindingFactory;
-	private ExecutorService executorService = Executors.newFixedThreadPool(1);
-	private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+	private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
 
 	private List<Binding> bindings = new ArrayList<>();
 
 	public Jabbot( JabbotConfiguration configuration ) {
 		this.configuration = configuration;
 		this.bindingFactory = newConnectionFactory(configuration.getBindings());
-		scheduledExecutorService.scheduleAtFixedRate(new BindingMonitor(), 10L,10L, TimeUnit.SECONDS);
+		scheduledExecutorService.scheduleAtFixedRate(new BindingMonitor(), 5L,60L, TimeUnit.SECONDS);
 	}
 
 	public boolean connect(){
@@ -47,13 +46,6 @@ public class Jabbot {
 				CommandManager.getInstanceFor(conn).initializeFromConfigSet(connectionConfiguration.getExtensions());
                 conn.registerListener(new JabbotBindingListener(conn,connectionConfiguration.getCommandPrefix()));
 				bindings.add(conn);
-
-				//conn.connect(connectionConfiguration);
-				/*
-				for (RoomConfiguration roomConfiguration : connectionConfiguration.getRooms()) {
-					conn.joinRoom(roomConfiguration);
-				}
-*/
 				if(conn.isConnected()){
 					logger.debug("connection established to {} as {}",connectionConfiguration.getUrl(),connectionConfiguration.getUsername());
 				}
@@ -96,12 +88,12 @@ public class Jabbot {
 				try{
 					if(!binding.isConnected()){
 						logger.info("binding {} is disconnected. starting...",binding);
-						executorService.submit(new Runnable() {
+						scheduledExecutorService.submit(new Runnable() {
 							@Override
 							public void run() {
 								try {
 									binding.connect(null);
-								}catch (Exception e){
+								}catch (Throwable e){
 									logger.error("cannot start binding {}",binding,e);
 								}
 							}

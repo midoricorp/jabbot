@@ -95,8 +95,12 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 
 
 			while(!msgList.empty()) {
-				com.ciscospark.Message msg = msgList.pop();
-				dispatchMessage(msg);
+				try {
+					com.ciscospark.Message msg = msgList.pop();
+					dispatchMessage(msg);
+				}catch(Exception e){
+					logger.error("error dispatching message {}",msgList,e);
+				}
 			}
 		}
 	}
