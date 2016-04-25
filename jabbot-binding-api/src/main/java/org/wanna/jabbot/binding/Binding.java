@@ -13,10 +13,9 @@ import org.wanna.jabbot.binding.messaging.Message;
 public interface Binding<T> {
 	/**
 	 * Create a connection to the messaging service
-	 * @param configuration The configuration for the connection;
 	 * @return true if connection is properly established.
 	 */
-	boolean connect(BindingConfiguration configuration);
+	boolean connect();
 
 	/**
 	 * Check if a connection to an instant messaging service is properly established.
@@ -47,4 +46,6 @@ public interface Binding<T> {
      * @return connection
      */
     T getConnection();
+
+	BindingConfiguration getConfiguration();
 }

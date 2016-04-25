@@ -92,7 +92,7 @@ public class Jabbot {
 							@Override
 							public void run() {
 								try {
-									binding.connect(null);
+									binding.connect();
 								}catch (Throwable e){
 									logger.error("cannot start binding {}",binding,e);
 								}

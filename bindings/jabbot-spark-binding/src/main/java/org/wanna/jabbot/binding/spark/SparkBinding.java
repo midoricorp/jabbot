@@ -42,7 +42,7 @@ public class SparkBinding extends AbstractBinding<Object> {
 	}
 
 	@Override
-	public boolean connect(BindingConfiguration configuration) {
+	public boolean connect() {
 		spark = com.ciscospark.Spark.builder()
 			.baseUrl(URI.create(getConfiguration().getUrl()))
 			.accessToken(getConfiguration().getPassword())

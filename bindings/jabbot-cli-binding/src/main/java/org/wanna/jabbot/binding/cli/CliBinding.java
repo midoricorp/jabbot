@@ -21,8 +21,8 @@ public class CliBinding extends AbstractBinding<Object> {
 	}
 
 	@Override
-	public boolean connect(BindingConfiguration configuration) {
-		for (RoomConfiguration roomConfiguration : configuration.getRooms()) {
+	public boolean connect() {
+		for (RoomConfiguration roomConfiguration : getConfiguration().getRooms()) {
 			joinRoom(roomConfiguration);
 		}
 		connected = true;

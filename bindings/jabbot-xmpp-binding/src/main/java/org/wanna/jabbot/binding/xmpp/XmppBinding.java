@@ -60,8 +60,7 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 	}
 
 	@Override
-	public boolean connect(BindingConfiguration configuration) {
-
+	public boolean connect() {
 		connection = new XMPPTCPConnection(newConnectionConfiguration(getConfiguration()));
         privilegeMapper = new PrivilegeMapper(connection);
 		try {
