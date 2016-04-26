@@ -93,9 +93,9 @@ public class SparkBinding extends AbstractBinding<Object> {
 
 	@Override
 	public boolean isConnected() {
-		if(useWebhook){
-			return false;
-		}else{
+		if(useWebhook) {
+			return true;
+		} else {
 			return connected;
 		}
 	}
