@@ -1,6 +1,6 @@
 package org.wanna.jabbot.extensions.script;
 
-import com.sipstacks.script.ExternalFunction;
+import com.sipstacks.script.ExternalCommand;
 import com.sipstacks.script.Script;
 import com.sipstacks.script.ScriptParseException;
 import com.sipstacks.script.FunctionListener;
@@ -137,14 +137,14 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 
 			if (command instanceof ScriptScript) {
 				ScriptScript ss = (ScriptScript)command;
-				s.addScriptFunction(ss.name, ss.scriptCmd);
+				s.addStatementFunction(ss.name, ss.scriptCmd);
 			} else {
 
-				s.addExternalFunction(command.getCommandName(), new ExternalFunction() {
+				s.addStatementFunction(command.getCommandName(), new ExternalCommand() {
 						
 					private Command cmd;
 					private String sender;
-					public ExternalFunction init(Command command, String sender) {
+					public ExternalCommand init(Command command, String sender) {
 						cmd = command;
 						this.sender = sender;
 						return this;
