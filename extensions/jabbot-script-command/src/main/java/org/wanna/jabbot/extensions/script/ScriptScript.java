@@ -10,6 +10,7 @@ import org.wanna.jabbot.command.parser.QuotedStringArgParser;
 import com.sipstacks.script.ScriptParseException;
 import com.sipstacks.script.OutputStream;
 import com.sipstacks.script.Function;
+import com.sipstacks.script.StatementFunction;
 import java.util.List;
 import java.util.ArrayList;
 import java.lang.StringBuffer;
@@ -49,11 +50,14 @@ public class ScriptScript implements Command {
 		List<Function> funcs = new ArrayList<Function>();
 		cmd.getFunctions(funcs);
 		for(Function func : funcs) {
-			getFunctions(func.getStatement(),sb);
-			if (!(func.getStatement() instanceof com.sipstacks.script.ExternalFunction)) {
-				sb.append("local sub ");
-				sb.append(func.getName());
-				sb.append(func.getStatement().dump());
+			if(func instanceof StatementFunction) {
+				StatementFunction stmtFunc = (StatementFunction)func;
+				getFunctions(stmtFunc.getStatement(),sb);
+				if (!(stmtFunc.getStatement() instanceof com.sipstacks.script.ExternalCommand)) {
+					sb.append("local sub ");
+					sb.append(stmtFunc.getName());
+					sb.append(stmtFunc.getStatement().dump());
+				}
 			}
 		}
 	}	
