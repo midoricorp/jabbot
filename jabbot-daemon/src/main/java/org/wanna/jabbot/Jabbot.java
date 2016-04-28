@@ -5,19 +5,22 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingCreationException;
 import org.wanna.jabbot.binding.BindingFactory;
+import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.BindingDefinition;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
+import org.wanna.jabbot.binding.event.BindingEvent;
+import org.wanna.jabbot.binding.event.ConnectionRequestEvent;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.config.JabbotConfiguration;
+import org.wanna.jabbot.handlers.EventHandler;
+import org.wanna.jabbot.handlers.EventHandlerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Queue;
+import java.util.concurrent.*;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -31,20 +34,25 @@ public class Jabbot {
 	private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
 
 	private List<Binding> bindings = new ArrayList<>();
+	private Queue<BindingEvent> eventQueue;
 
 	public Jabbot( JabbotConfiguration configuration ) {
+		eventQueue = new ConcurrentLinkedQueue<>();
 		this.configuration = configuration;
 		this.bindingFactory = newConnectionFactory(configuration.getBindings());
-		scheduledExecutorService.scheduleAtFixedRate(new BindingMonitor(), 5L,60L, TimeUnit.SECONDS);
+		scheduledExecutorService.scheduleAtFixedRate(new BindingMonitor(bindings,eventQueue), 5L,60L, TimeUnit.SECONDS);
+		scheduledExecutorService.scheduleAtFixedRate(new EventQueueProcessor(eventQueue),5L,1L,TimeUnit.SECONDS);
 	}
 
 	public boolean connect(){
+		BindingListener listener = new JabbotBindingListener(eventQueue);
 		for (final BindingConfiguration connectionConfiguration : configuration.getServerList()) {
 			final Binding conn;
 			try {
 				conn = bindingFactory.create(connectionConfiguration);
 				CommandManager.getInstanceFor(conn).initializeFromConfigSet(connectionConfiguration.getExtensions());
-                conn.registerListener(new JabbotBindingListener(conn,connectionConfiguration.getCommandPrefix()));
+                conn.registerListener(listener);
+				conn.registerListener(new LoggingEventListener());
 				bindings.add(conn);
 				if(conn.isConnected()){
 					logger.debug("connection established to {} as {}",connectionConfiguration.getUrl(),connectionConfiguration.getUsername());
@@ -79,34 +87,4 @@ public class Jabbot {
 		return factory;
 	}
 
-	private class BindingMonitor implements Runnable{
-
-		@Override
-		public void run() {
-			logger.trace("checking binding health");
-			for (final Binding binding : bindings) {
-				try{
-					if(!binding.isConnected()){
-						logger.info("binding {} is disconnected. starting...",binding);
-						scheduledExecutorService.submit(new Runnable() {
-							@Override
-							public void run() {
-								try {
-									binding.connect();
-								}catch (Throwable e){
-									logger.error("cannot start binding {}",binding,e);
-								}
-							}
-						});
-					}else{
-						logger.trace("binding {} is connected",binding);
-					}
-
-				}catch (Throwable t){
-					logger.error("unable to check {} health",binding,t);
-				}
-			}
-			logger.trace("health check done");
-		}
-	}
 }

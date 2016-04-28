@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
+import org.wanna.jabbot.binding.event.MessageEvent;
 import org.wanna.jabbot.binding.messaging.DefaultResource;
 import org.wanna.jabbot.binding.messaging.Message;
 import org.wanna.jabbot.binding.DefaultBindingMessage;
@@ -24,7 +25,7 @@ import java.net.URI;
  * @author tsearle <tsearle>
  * @since 2016-03-08
  */
-public class SparkRoom extends AbstractRoom<Object> implements Runnable {
+public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 	private final static Logger logger = LoggerFactory.getLogger(SparkRoom.class);
 	private RoomConfiguration configuration;
 	private final List<BindingListener> listeners;
@@ -176,7 +177,7 @@ public class SparkRoom extends AbstractRoom<Object> implements Runnable {
 		    message.setSender(new DefaultResource(this.getRoomName(),msg.getPersonEmail()));
 		    message.setDestination(new DefaultResource(this.getRoomName(),null));
 		    message.setRoomName(this.getRoomName());
-		    listener.onMessage(message);
+		    listener.eventReceived(new MessageEvent(this.connection,message));
 		}
 	}
 

@@ -1,6 +1,7 @@
 package org.wanna.jabbot.binding;
 
 
+import org.wanna.jabbot.binding.event.BindingEvent;
 import org.wanna.jabbot.binding.messaging.Message;
 
 /**
@@ -8,5 +9,5 @@ import org.wanna.jabbot.binding.messaging.Message;
  * @since 2015-02-20
  */
 public interface BindingListener {
-	void onMessage(Message message);
+	void eventReceived(BindingEvent event);
 }

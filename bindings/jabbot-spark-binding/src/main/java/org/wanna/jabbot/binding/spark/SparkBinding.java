@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.wanna.jabbot.binding.event.ConnectedEvent;
 
 /**
  * @author tsearle <tsearle>
@@ -76,10 +77,11 @@ public class SparkBinding extends AbstractBinding<Object> {
 			connected = true;
 		}
 
-		for (RoomConfiguration roomConfiguration : getConfiguration().getRooms()) {
-			joinRoom(roomConfiguration);
+		if(connected == true){
+			super.dispatchEvent(new ConnectedEvent(this));
 		}
-		return true;
+
+		return connected;
 	}
 
 	@Override

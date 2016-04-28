@@ -3,6 +3,7 @@ package org.wanna.jabbot.binding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
+import org.wanna.jabbot.binding.event.BindingEvent;
 import org.wanna.jabbot.binding.messaging.Message;
 import org.wanna.jabbot.binding.messaging.body.BodyPart;
 import org.wanna.jabbot.binding.messaging.body.BodyPartValidator;
@@ -87,4 +88,10 @@ public abstract class AbstractBinding<T> implements Binding<T>{
         }
         return response;
     }
+
+	public void dispatchEvent(BindingEvent event){
+		for (BindingListener listener : listeners) {
+			listener.eventReceived(event);
+		}
+	}
 }

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.DefaultBindingMessage;
+import org.wanna.jabbot.binding.event.MessageEvent;
 import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
 
 import java.util.ArrayList;
@@ -19,9 +20,11 @@ import java.util.List;
 public class IrcMessageListener extends VariousMessageListenerAdapter{
 	final Logger logger = LoggerFactory.getLogger(IrcMessageListener.class);
 	private final List<BindingListener> listeners;
+	private final IrcBinding binding;
 
-	public IrcMessageListener(List<BindingListener> listeners) {
-		this.listeners =(listeners == null ? new ArrayList<BindingListener>() : listeners);
+	public IrcMessageListener(IrcBinding binding,List<BindingListener> listeners) {
+			this.binding = binding;
+			this.listeners =(listeners == null ? new ArrayList<BindingListener>() : listeners);
 	}
 
 	@Override
@@ -36,7 +39,7 @@ public class IrcMessageListener extends VariousMessageListenerAdapter{
         message.setDestination(new IrcResource(roomName,null));
         message.setRoomName(roomName);
         for (BindingListener listener : listeners) {
-			listener.onMessage(message);
+			listener.eventReceived(new MessageEvent(binding,message));
 		}
 		super.onChannelMessage(aMsg);
 	}

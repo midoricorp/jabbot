@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
+import org.wanna.jabbot.binding.event.RoomJoinedEvent;
 import org.wanna.jabbot.binding.messaging.Message;
 
 import java.util.Date;
@@ -51,6 +52,7 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 				history.setSince(new Date());
 				muc.join(nickname,null,history,connection.getConnection().getPacketReplyTimeout());
 				logger.info("[XMPP] joining room {}",configuration.getName());
+				connection.dispatchEvent(new RoomJoinedEvent(connection,this));
 				return true;
 			}catch (XMPPException.XMPPErrorException e){
 				logger.error("error condition",e.getXMPPError().getCondition());

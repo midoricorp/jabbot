@@ -6,6 +6,7 @@ import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.DefaultBindingMessage;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
+import org.wanna.jabbot.binding.event.MessageEvent;
 import org.wanna.jabbot.binding.messaging.DefaultResource;
 import org.wanna.jabbot.binding.messaging.Message;
 import org.wanna.jabbot.binding.messaging.body.BodyPart;
@@ -21,15 +22,13 @@ import java.util.List;
  * @author vmorsiani <vmorsiani>
  * @since 2014-08-14
  */
-public class CliRoom extends AbstractRoom<Object> implements Runnable {
+public class CliRoom extends AbstractRoom<CliBinding> implements Runnable {
 	private final static Logger logger = LoggerFactory.getLogger(CliRoom.class);
 	private RoomConfiguration configuration;
-	private final List<BindingListener> listeners;
 
 
-	public CliRoom(CliBinding connection,List<BindingListener> listeners) {
+	public CliRoom(CliBinding connection) {
 		super(connection);
-		this.listeners = (listeners==null?new ArrayList<BindingListener>() : listeners);
 
 	}
 
@@ -58,17 +57,13 @@ public class CliRoom extends AbstractRoom<Object> implements Runnable {
 					}
 				}
 
+				DefaultBindingMessage message = new DefaultBindingMessage();
+				message.addBody(new TextBodyPart(line));
+				message.setSender(new DefaultResource(this.getRoomName(),"cli"));
+				message.setDestination(new DefaultResource("jabbot",null));
+				message.setRoomName(this.getRoomName());
 
-				for (BindingListener listener : listeners) {
-					//BindingMessage message = new BindingMessage(this.getRoomName(),"cli",line);
-                    //Message message = new DefaultCommandMessage(line,"cli","jabbot",this.getRoomName());
-                    DefaultBindingMessage message = new DefaultBindingMessage();
-                    message.addBody(new TextBodyPart(line));
-                    message.setSender(new DefaultResource(this.getRoomName(),"cli"));
-                    message.setDestination(new DefaultResource("jabbot",null));
-                    message.setRoomName(this.getRoomName());
-                    listener.onMessage(message);
-				}
+				super.connection.dispatchEvent(new MessageEvent(super.connection,message));
 			} catch (IOException e) {
 				logger.error("IO Error reading sdtin, dying");
 				return;

@@ -6,6 +6,7 @@ import org.wanna.jabbot.binding.AbstractBinding;
 import org.wanna.jabbot.binding.Room;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
+import org.wanna.jabbot.binding.event.ConnectedEvent;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -22,9 +23,7 @@ public class CliBinding extends AbstractBinding<Object> {
 
 	@Override
 	public boolean connect() {
-		for (RoomConfiguration roomConfiguration : getConfiguration().getRooms()) {
-			joinRoom(roomConfiguration);
-		}
+		super.dispatchEvent(new ConnectedEvent(this));
 		connected = true;
 		return connected;
 	}
@@ -32,7 +31,7 @@ public class CliBinding extends AbstractBinding<Object> {
 	@Override
 	public Room joinRoom(RoomConfiguration configuration) {
 		logger.debug("Joining room " + configuration.getName());
-		room = new CliRoom(this,listeners);
+		room = new CliRoom(this);
 		room.join(configuration);
 		return room;
 	}

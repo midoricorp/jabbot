@@ -5,7 +5,9 @@ import org.jivesoftware.smack.StanzaListener;
 import org.jivesoftware.smack.packet.Stanza;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingListener;
+import org.wanna.jabbot.binding.event.MessageEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +19,10 @@ import java.util.List;
 public class XmppMessageListener implements StanzaListener{
 	final Logger logger = LoggerFactory.getLogger(XmppMessageListener.class);
 	private List<BindingListener> listeners = new ArrayList<>();
+	private final Binding binding;
 
-	public XmppMessageListener(List<BindingListener> listeners) {
+	public XmppMessageListener(XmppBinding binding,List<BindingListener> listeners) {
+		this.binding = binding;
 		this.listeners = (listeners==null?new ArrayList<BindingListener>() : listeners);
 	}
 
@@ -28,7 +32,7 @@ public class XmppMessageListener implements StanzaListener{
 			org.jivesoftware.smack.packet.Message message = (org.jivesoftware.smack.packet.Message)packet;
             final XmppMessage m = MessageHelper.createRequestMessage(message);
             for (BindingListener listener : listeners) {
-                listener.onMessage(m);
+                listener.eventReceived(new MessageEvent(binding,m));
             }
 		}
 	}

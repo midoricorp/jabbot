@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.*;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
+import org.wanna.jabbot.binding.event.ConnectedEvent;
 import org.wanna.jabbot.binding.messaging.Resource;
 import org.wanna.jabbot.binding.messaging.body.BodyPart;
 import org.wanna.jabbot.binding.messaging.body.BodyPartValidator;
@@ -68,9 +69,7 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 			connection.login();
 			PingManager.getInstanceFor(connection).setPingInterval(pingInterval);
 			this.initListeners(getConfiguration().getCommandPrefix(),connection);
-			for (RoomConfiguration roomConfiguration : getConfiguration().getRooms()) {
-				joinRoom(roomConfiguration);
-			}
+			super.dispatchEvent(new ConnectedEvent(this));
 			return connection.isConnected();
 		} catch (XMPPException | SmackException | IOException e) {
 			logger.error("error while connecting",e);
@@ -105,7 +104,7 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 				}
 		);
 
-		XmppMessageListener commandListener = new XmppMessageListener(listeners);
+		XmppMessageListener commandListener = new XmppMessageListener(this,listeners);
 		connection.addAsyncStanzaListener(commandListener,filter);
 	}
 

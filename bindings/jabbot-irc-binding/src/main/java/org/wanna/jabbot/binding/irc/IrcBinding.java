@@ -9,9 +9,11 @@ import com.ircclouds.irc.api.state.IIRCState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractBinding;
+import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.Room;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
+import org.wanna.jabbot.binding.event.ConnectedEvent;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -35,10 +37,10 @@ public class IrcBinding extends AbstractBinding<IRCApi> {
 	@Override
 	public boolean connect() {
 		connection = new IRCApiImpl(true);
-		IrcMessageListener listener = new IrcMessageListener(listeners);
+		IrcMessageListener listener = new IrcMessageListener(this,listeners);
 		connection.addListener(listener);
 
-		ConnectionCallback connectionCallback = new ConnectionCallback();
+		ConnectionCallback connectionCallback = new ConnectionCallback(this);
 		IServerParameters parameters = getServerParameters(getConfiguration());
 		connection.connect(parameters, connectionCallback );
 
@@ -85,13 +87,16 @@ public class IrcBinding extends AbstractBinding<IRCApi> {
 	}
 
 	class ConnectionCallback implements Callback<IIRCState>{
+		private IrcBinding binding;
+
+		public ConnectionCallback(IrcBinding binding) {
+			this.binding = binding;
+		}
+
 		@Override
 		public void onSuccess(IIRCState aObject) {
-			logger.info("[IRC] connection established on {}",aObject.getServer().getHostname());
 			state = aObject;
-			for (RoomConfiguration roomConfiguration : getConfiguration().getRooms()) {
-				joinRoom(roomConfiguration);
-			}
+			binding.dispatchEvent(new ConnectedEvent(binding));
 		}
 
 		@Override
