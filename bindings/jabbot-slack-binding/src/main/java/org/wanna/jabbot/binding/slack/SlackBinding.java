@@ -15,7 +15,11 @@ import org.wanna.jabbot.binding.Room;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.binding.event.ConnectedEvent;
+import com.ning.http.client.ws.WebSocket;
 
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.Hashtable;
 
 /**
@@ -28,6 +32,7 @@ public class SlackBinding extends AbstractBinding<Object> {
 	private Hashtable<String,SlackRoom> roomMap = null;
 	SlackRealTimeMessagingClient rtmClient;
 	SlackWebApiClient webApiClient;
+	long pingId = 0;
 
 	public SlackBinding(BindingConfiguration configuration) {
 		super(configuration);
@@ -85,6 +90,16 @@ public class SlackBinding extends AbstractBinding<Object> {
 
 	@Override
 	public boolean isConnected() {
+		if (rtmClient != null) {
+			try {
+				Field f = rtmClient.getClass().getDeclaredField("webSocket");
+				f.setAccessible(true);
+				WebSocket ws = (WebSocket)f.get(rtmClient);
+				ws.sendMessage(("{id=" + (++pingId) + ", type=\"ping\", ts="+Long.toString((new Date()).getTime()) +" }"));
+			} catch (NoSuchFieldException|IllegalAccessException e) {
+				logger.error("Unable to access websocket",e);
+			}
+		}
 		return connected;
 	}
 
