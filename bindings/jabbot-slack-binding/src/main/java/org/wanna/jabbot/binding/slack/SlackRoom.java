@@ -40,6 +40,10 @@ public class SlackRoom extends AbstractRoom<SlackBinding>  {
 
 
 	public void dispatchMessage(flowctrl.integration.slack.type.Message slackMsg) {
+		if(slackMsg.getUser() == null) {
+			logger.error("Message missing user!" + slackMsg.toString());
+			return;
+		}
 		User user = connection.webApiClient.getUserInfo(slackMsg.getUser());
 		for (BindingListener listener : listeners) {
 			DefaultBindingMessage message = new DefaultBindingMessage();
