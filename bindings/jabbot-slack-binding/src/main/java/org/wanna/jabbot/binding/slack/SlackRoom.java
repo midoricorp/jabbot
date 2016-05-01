@@ -91,7 +91,14 @@ public class SlackRoom extends AbstractRoom<SlackBinding>  {
 				String body = message.getBody();
 				body = body.replaceAll("&", "&amp;");
 				body = body.replaceAll("<", "&lt;");
-				body = body.replaceAll(">", "&gt;");;
+				body = body.replaceAll(">", "&gt;");
+
+				// repair special link types
+				body = body.replaceAll("&lt;@([|0-9A-Za-z]+)&gt;", "<@$1>");
+				body = body.replaceAll("&lt;#([|0-9A-Za-z]+)&gt;", "<#$1>");
+
+				logger.info("Sending message: " + body);
+
 				cpmm.setText(body);
 			}
 		}
