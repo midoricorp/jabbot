@@ -28,6 +28,11 @@
             <artifactId>httpclient</artifactId>
             <version>4.3.6</version>
         </dependency>
+        <dependency>
+            <groupId>com.sipstacks.xhtml-convert</groupId>
+            <artifactId>xhtml-convert</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
