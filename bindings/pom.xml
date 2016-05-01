@@ -18,6 +18,7 @@
         <module>jabbot-irc-binding</module>
         <module>jabbot-cli-binding</module>
         <module>jabbot-spark-binding</module>
+        <module>jabbot-slack-binding</module>
     </modules>
 
     <dependencies>
