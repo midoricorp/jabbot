@@ -103,7 +103,7 @@ public class SlackRoom extends AbstractRoom<SlackBinding>  {
 			}
 		}
 		cpmm.setUsername(configuration.getNickname());
-		cpmm.setAs_user(false);
+		cpmm.setAs_user(true);
 
 		logger.info("Sending message:" + cpmm.toString());
 		connection.webApiClient.postMessage(cpmm);
