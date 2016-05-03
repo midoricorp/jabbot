@@ -19,7 +19,7 @@ our $from = $ENV{'JABBOT_FROM'};
 sub filter
 {
 	my $message = shift();
-	my @banlist = ("shit", "cum", "pussy", "dick", "vagina", "penis", "feces", "tits", "shat", "anus", "cock", "fecal", "excrement", "ejaculat", "orgasm");
+	my @banlist = ("shit", "cum", "pussy", "dick", "vagina", "penis", "feces", "tits", "shat", "anus", "cock", "fecal", "excrement", "ejaculat", "orgasm", "twat");
 
 	foreach my $ban_word (@banlist) {
 		if ($message =~ /$ban_word/iu) {
