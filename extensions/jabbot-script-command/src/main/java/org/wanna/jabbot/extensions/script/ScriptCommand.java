@@ -104,7 +104,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			for (File f : listOfFiles) {
 				try {
 					Script s = new Script(new FileReader(f));
-					s.addFunctionListener(new ScriptFunctionListener().init("Loaded from Disk", true));
+					preloadFunctions(s, "Loaded from Disk", true);
 					s.run();
 				} catch (Exception e) {
 					logger.error("Error loading script", e);
@@ -113,10 +113,10 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 		}
 	}
 
-        @Override
-        public ArgsParser getArgsParser() {
-                return new NullArgParser();
-        }
+	@Override
+	public ArgsParser getArgsParser() {
+		return new NullArgParser();
+	}
 
 	@Override
 	public Message process(CommandMessage message) {
@@ -127,51 +127,8 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			s.setLoopLimit(loopLimit);
 		}
 
-		s.addFunctionListener(new ScriptFunctionListener().init(message.getSender().getAddress(), false));
-
-		for(Command command : commandFactory.getAvailableCommands().values()){
-			// don't add yourself to limit recursion
-			if (command.getCommandName().equals(getCommandName())) {
-				continue;
-			}
-
-			if (command instanceof ScriptScript) {
-				ScriptScript ss = (ScriptScript)command;
-				s.addStatementFunction(ss.name, ss.scriptCmd);
-			} else {
-
-				s.addStatementFunction(command.getCommandName(), new ExternalCommand() {
-						
-					private Command cmd;
-					private String sender;
-					public ExternalCommand init(Command command, String sender) {
-						cmd = command;
-						this.sender = sender;
-						return this;
-					}
-
-					public String run(List<String> args) {
-						DefaultCommandMessage msg = new DefaultCommandMessage();
-						if (args.size() > 0) {
-							msg.setBody(QuotedStringArgDeparser.deparse(args));
-						} else {
-							msg.setBody("");
-						}
-
-						msg.setSender(new DefaultResource(sender,null));
-						Message result = cmd.process(msg);
-						return result.getBody();
-					}
-
-					public void reset() {
-						if (cmd instanceof ScriptScript) {
-							((ScriptScript)cmd).reset();
-						}
-					}
-
-				}.init(command, message.getSender().getAddress()));
-			}
-		}
+		String address = message.getSender().getAddress();
+		preloadFunctions(s, address, false);
 
 
 
@@ -224,7 +181,55 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 		return result;
 	}
 
-        @Override
+	private void preloadFunctions(Script s, String address, boolean startup) {
+		s.addFunctionListener(new ScriptFunctionListener().init(address, startup));
+
+		for(Command command : commandFactory.getAvailableCommands().values()){
+			// don't add yourself to limit recursion
+			if (command.getCommandName().equals(getCommandName())) {
+				continue;
+			}
+
+			if (command instanceof ScriptScript) {
+				ScriptScript ss = (ScriptScript)command;
+				s.addStatementFunction(ss.name, ss.scriptCmd);
+			} else {
+
+				s.addStatementFunction(command.getCommandName(), new ExternalCommand() {
+
+					private Command cmd;
+					private String sender;
+					public ExternalCommand init(Command command, String sender) {
+						cmd = command;
+						this.sender = sender;
+						return this;
+					}
+
+					public String run(List<String> args) {
+						DefaultCommandMessage msg = new DefaultCommandMessage();
+						if (args.size() > 0) {
+							msg.setBody(QuotedStringArgDeparser.deparse(args));
+						} else {
+							msg.setBody("");
+						}
+
+						msg.setSender(new DefaultResource(sender,null));
+						Message result = cmd.process(msg);
+						return result.getBody();
+					}
+
+					public void reset() {
+						if (cmd instanceof ScriptScript) {
+							((ScriptScript)cmd).reset();
+						}
+					}
+
+				}.init(command, address));
+			}
+		}
+	}
+
+	@Override
         public void setCommandFactory(CommandFactory commandFactory) {
                 this.commandFactory = commandFactory;
         }
