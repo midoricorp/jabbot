@@ -26,7 +26,7 @@ public class QuotedStringArgParser implements ArgsParser {
 					}
 				}
 				// if in a quoted string, token ends with endquote
-				if (argLine.charAt(end) == '"') {
+				if (argLine.charAt(end) == '"' || argLine.charAt(end) == '“' || argLine.charAt(end) == '”') {
 					String token = argLine.substring(start+1,end);
 					// unescape at this point
 					token = token.replace("\\\"", "\"");
@@ -44,7 +44,7 @@ public class QuotedStringArgParser implements ArgsParser {
 					inToken = true;
 					start = end;
 
-					if (argLine.charAt(end) == '"') {
+					if (argLine.charAt(end) == '"' || argLine.charAt(end) == '“' || argLine.charAt(end) == '”') {
 						// woo this token is quoted
 						// special rules apply!
 						inQuote = true;
