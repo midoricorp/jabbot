@@ -8,6 +8,7 @@ import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
 import org.wanna.jabbot.command.parser.ArgsParser;
 import org.wanna.jabbot.command.parser.QuotedStringArgParser;
 import com.sipstacks.script.ScriptParseException;
+import com.sipstacks.script.ScriptFlowException;
 import com.sipstacks.script.OutputStream;
 import com.sipstacks.script.Function;
 import com.sipstacks.script.StatementFunction;
@@ -78,11 +79,11 @@ public class ScriptScript implements Command {
 		String argsString = message.getBody();
 
 		List<String> args = getArgsParser().parse(argsString);
-		OutputStream response;
+		OutputStream response = new OutputStream();
 
 		try {
-			response = scriptCmd.exec(args);
-		} catch (ScriptParseException e) {
+			scriptCmd.exec(response,args);
+		} catch (ScriptParseException | ScriptFlowException e) {
 			DefaultCommandMessage result = new DefaultCommandMessage();
 			result.setBody(e.getMessage());
 			return result;
