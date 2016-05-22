@@ -1,28 +1,26 @@
 package org.wanna.jabbot.binding.event;
 
 import org.wanna.jabbot.binding.Binding;
-import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.RxMessage;
+import org.wanna.jabbot.binding.messaging.Resource;
 
 /**
  * @author Vincent Morsiani [vmorsiani@voxbone.com]
  * @since 2016-03-03
  */
-public class MessageEvent implements BindingEvent<Message>{
-	private Message message;
-	private Binding binding;
+public class MessageEvent extends AbstractBindingEvent<RxMessage>{
+	private Resource source;
 
-	public MessageEvent(Binding binding, Message message) {
-		this.binding = binding;
-		this.message = message;
+	public MessageEvent(Binding binding, RxMessage message) {
+		super(binding,message);
 	}
 
-	@Override
-	public Message getPayload() {
-		return message;
+	public MessageEvent(Binding binding, RxMessage message, Resource source) {
+		super(binding,message);
+		this.source = source;
 	}
 
-	@Override
-	public Binding getBinding() {
-		return binding;
+	public Resource getSource() {
+		return source;
 	}
 }

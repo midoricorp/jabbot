@@ -15,6 +15,8 @@ import org.wanna.jabbot.binding.Room;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.binding.event.ConnectedEvent;
+import org.wanna.jabbot.binding.messaging.TxMessage;
+
 import java.util.Hashtable;
 
 /**
@@ -92,4 +94,5 @@ public class SlackBinding extends AbstractBinding<Object> {
 	public Room getRoom(String roomName) {
 		return roomMap.get(roomName);
 	}
+
 }

@@ -4,13 +4,11 @@ import com.sipstacks.script.ExternalCommand;
 import com.sipstacks.script.Script;
 import com.sipstacks.script.ScriptParseException;
 import com.sipstacks.script.FunctionListener;
-import com.sipstacks.script.Function;
 import com.sipstacks.script.OutputStream;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.binding.messaging.DefaultResource;
-import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.*;
 import org.wanna.jabbot.binding.messaging.body.*;
 import org.wanna.jabbot.command.*;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
@@ -119,8 +117,8 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 	}
 
 	@Override
-	public Message process(CommandMessage message) {
-		String script = message.getBody();
+	public MessageContent process(CommandMessage message) {
+		String script = message.getArgsLine();
 
 		Script s = new Script(new StringReader(script));
 		if (loopLimit > 0) {
@@ -133,7 +131,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 
 
 		OutputStream response = null;
-		DefaultCommandMessage result = new DefaultCommandMessage();
+		MessageContent result = new DefaultMessageContent();
 
 		try {
 			response = s.run();
@@ -142,9 +140,9 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 
 			if (bufferLimit > 0 && txt.length() > bufferLimit) {
 				txt = txt.substring(0, bufferLimit);
-				txt += "\n*Message Truncated*";
+				txt += "\n*MessageContent Truncated*";
 			}
-			result.setBody(txt);
+			result.addBody(new TextBodyPart(txt));
 			// can't safely truncate xhtml, so discard if too long
 			if (bufferLimit > 0 && html.length() > bufferLimit) {
 				html = "";
@@ -173,8 +171,8 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			}
 
 		} catch (ScriptParseException spe) {
-			result = new DefaultCommandMessage();
-			result.setBody(spe.getMessage());
+			result = new DefaultMessageContent();
+			result.addBody(new TextBodyPart(spe.getMessage()));
 			return result;
 		}
 		
@@ -206,15 +204,17 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 					}
 
 					public String run(List<String> args) {
-						DefaultCommandMessage msg = new DefaultCommandMessage();
-						if (args.size() > 0) {
-							msg.setBody(QuotedStringArgDeparser.deparse(args));
-						} else {
-							msg.setBody("");
-						}
+						MessageContent content;
 
-						msg.setSender(new DefaultResource(sender,null));
-						Message result = cmd.process(msg);
+						String argsLine;
+						if (args.size() > 0) {
+							argsLine = QuotedStringArgDeparser.deparse(args);
+						} else {
+							argsLine = "";
+						}
+						Resource resource = new DefaultResource(sender,null);
+						CommandMessage msg = new DefaultCommandMessage(resource,argsLine);
+						MessageContent result = cmd.process(msg);
 						return result.getBody();
 					}
 

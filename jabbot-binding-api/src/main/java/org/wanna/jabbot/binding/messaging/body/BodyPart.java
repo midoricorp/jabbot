@@ -1,8 +1,10 @@
 package org.wanna.jabbot.binding.messaging.body;
 
+import org.wanna.jabbot.binding.messaging.MessageContent;
+
 /**
- * BodyPart is a class which is part of a Message.
- * A Message body can be composed of one or many BodyPart.
+ * BodyPart is a class which is part of a MessageContent.
+ * A MessageContent body can be composed of one or many BodyPart.
  * Each BodyPart representing a variant of the message.
  * For example a message could contains a raw text message as a BodyPart
  * but also present a second BodyPart which is the XHTML representation of the text
@@ -10,7 +12,7 @@ package org.wanna.jabbot.binding.messaging.body;
  * A BodyPart is formed of a String representing the content
  * and a Type representing it's type (xhtml, text, ...)
  *
- * @see {@link org.wanna.jabbot.binding.messaging.Message}
+ * @see {@link MessageContent}
  *
  * @author Vincent Morsiani
  * @since 2015-07-14

@@ -10,7 +10,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
+import org.wanna.jabbot.binding.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
@@ -39,14 +40,13 @@ public class QuoteCommand extends AbstractCommandAdapter{
 	}
 
 	@Override
-	public Message process(CommandMessage message) {
+	public MessageContent process(CommandMessage message) {
 		String response = query(null);
 		if(response != null){
 			try {
 				Result result = mapper.readValue(response,Result.class);
-				DefaultCommandMessage commandMessage = new DefaultCommandMessage();
-				commandMessage.setBody(result.getQuote());
-				return commandMessage;
+				MessageContent content = new DefaultMessageContent(result.getQuote());
+				return content;
 			} catch (IOException e) {
 				logger.error("error parsing json string {}",response,e);
 			}

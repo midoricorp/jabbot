@@ -6,15 +6,8 @@ import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.binding.event.MessageEvent;
-import org.wanna.jabbot.binding.messaging.DefaultResource;
-import org.wanna.jabbot.binding.messaging.Message;
-import org.wanna.jabbot.binding.DefaultBindingMessage;
-import org.wanna.jabbot.binding.messaging.body.BodyPart;
-import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
+import org.wanna.jabbot.binding.messaging.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
@@ -79,7 +72,7 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 							break;
 						}
 
-						logger.info("Message Received (" + imsg.getPersonEmail() + ") " + imsg.getText());
+						logger.info("MessageContent Received (" + imsg.getPersonEmail() + ") " + imsg.getText());
 						msgList.push(imsg);
 					}
 
@@ -104,15 +97,6 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 				}
 			}
 		}
-	}
-
-	@Override
-	public boolean sendMessage(Message message) {
-		com.ciscospark.Message msg = new com.ciscospark.Message();
-		msg.setRoomId(room.getId());
-		msg.setText(message.getBody());
-		spark.messages().post(msg);
-		return true;
 	}
 
 	@Override
@@ -157,32 +141,35 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 									logger.info("Getting full message for " + event.getData().getId());
 									msg = spark.messages().path("/"+event.getData().getId()).get();
 								} else {
-									logger.info("Message already in webhook, delivering");
+									logger.info("MessageContent already in webhook, delivering");
 								}
 								dispatchMessage(msg);
 							}
 					}
 				});
 		}
-
-			
-
 		return true;
 	}
 
 	private void dispatchMessage(com.ciscospark.Message msg) {
 		for (BindingListener listener : listeners) {
-		    DefaultBindingMessage message = new DefaultBindingMessage();
-		    message.addBody(new TextBodyPart(msg.getText()));
-		    message.setSender(new DefaultResource(this.getRoomName(),msg.getPersonEmail()));
-		    message.setDestination(new DefaultResource(this.getRoomName(),null));
-		    message.setRoomName(this.getRoomName());
-		    listener.eventReceived(new MessageEvent(this.connection,message));
+			RxMessage request = new DefaultRxMessage(new DefaultMessageContent(msg.getText()),
+					new DefaultResource(this.getRoomName(),msg.getPersonEmail()));
+		    listener.eventReceived(new MessageEvent(this.connection,request));
 		}
 	}
 
 	@Override
 	public String getRoomName() {
 		return configuration.getName();
+	}
+
+	@Override
+	public boolean sendMessage(TxMessage response) {
+		com.ciscospark.Message msg = new com.ciscospark.Message();
+		msg.setRoomId(room.getId());
+		msg.setText(response.getMessageContent().getBody());
+		spark.messages().post(msg);
+		return true;
 	}
 }

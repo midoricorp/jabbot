@@ -1,6 +1,6 @@
 package org.wanna.jabbot.command.messaging;
 
-import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.MessageContent;
 
 /**
  * A MessageSender is a class which enables a command to autonomously send message.
@@ -9,14 +9,14 @@ import org.wanna.jabbot.binding.messaging.Message;
  *
  * @author vmorsiani <vmorsiani>
  * @since 2015-02-24
- * @see org.wanna.jabbot.binding.messaging.Message
+ * @see MessageContent
  * @see org.wanna.jabbot.command.Command
  */
 public interface MessageSender {
 	/**
-	 * Send a message
+	 * Send a messageContent
      *
-     * @param message the Message to send
+     * @param messageContent the MessageContent to send
 	 */
-	void sendMessage(Message message);
+	void sendMessage(MessageContent messageContent);
 }

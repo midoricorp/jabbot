@@ -14,7 +14,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
+import org.wanna.jabbot.binding.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
@@ -53,12 +54,10 @@ public class IssueViewer extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public Message process(CommandMessage message) {
-		List<String> args =  getArgsParser().parse(message.getBody());
-		DefaultCommandMessage result = new DefaultCommandMessage();
+	public MessageContent process(CommandMessage message) {
+		List<String> args =  getArgsParser().parse(message.getArgsLine());
 		if( args == null || args.isEmpty() ){
-			result.setBody("invalid parameter");
-			return result;
+			return new DefaultMessageContent("invalid parameter");
 		}
 
 		StringBuilder sb = new StringBuilder();
@@ -89,8 +88,7 @@ public class IssueViewer extends AbstractCommandAdapter {
 				return null;
 			}
 		}
-		result.setBody(sb.toString());
-		return result;
+		return new DefaultMessageContent(sb.toString());
 	}
 
 	private void initCredentials(){

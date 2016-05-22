@@ -3,20 +3,14 @@ package org.wanna.jabbot.binding.cli;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractRoom;
-import org.wanna.jabbot.binding.BindingListener;
-import org.wanna.jabbot.binding.DefaultBindingMessage;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.binding.event.MessageEvent;
-import org.wanna.jabbot.binding.messaging.DefaultResource;
-import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.*;
 import org.wanna.jabbot.binding.messaging.body.BodyPart;
-import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -57,13 +51,8 @@ public class CliRoom extends AbstractRoom<CliBinding> implements Runnable {
 					}
 				}
 
-				DefaultBindingMessage message = new DefaultBindingMessage();
-				message.addBody(new TextBodyPart(line));
-				message.setSender(new DefaultResource(this.getRoomName(),"cli"));
-				message.setDestination(new DefaultResource("jabbot",null));
-				message.setRoomName(this.getRoomName());
-
-				super.connection.dispatchEvent(new MessageEvent(super.connection,message));
+				RxMessage rxMessage = new DefaultRxMessage(new DefaultMessageContent(line), new DefaultResource("jabbot",null));
+				super.connection.dispatchEvent(new MessageEvent(super.connection, rxMessage));
 			} catch (IOException e) {
 				logger.error("IO Error reading sdtin, dying");
 				return;
@@ -72,11 +61,11 @@ public class CliRoom extends AbstractRoom<CliBinding> implements Runnable {
 	}
 
 	@Override
-	public boolean sendMessage(Message message) {
-        for (BodyPart bodyPart : message.getBodies()) {
-            System.out.println("received message with body type: "+bodyPart.getType());
-            System.out.println(bodyPart.getText());
-        }
+	public boolean sendMessage(TxMessage response) {
+		for (BodyPart bodyPart : response.getMessageContent().getBodies()) {
+			System.out.println("received message with body type: "+bodyPart.getType());
+			System.out.println(bodyPart.getText());
+		}
 		return true;
 	}
 

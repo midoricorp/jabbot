@@ -1,6 +1,7 @@
 package org.wanna.jabbot.extensions.script;
 
-import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
+import org.wanna.jabbot.binding.messaging.MessageContent;
 import org.wanna.jabbot.binding.messaging.body.XhtmlBodyPart;
 import org.wanna.jabbot.command.*;
 import org.wanna.jabbot.command.messaging.CommandMessage;
@@ -75,27 +76,21 @@ public class ScriptScript implements Command {
 		return sb.toString();
 	}
 
-	public Message process(CommandMessage message) {
-		String argsString = message.getBody();
-
-		List<String> args = getArgsParser().parse(argsString);
+	public MessageContent process(CommandMessage message) {
+		List<String> args = getArgsParser().parse(message.getArgsLine());
 		OutputStream response = new OutputStream();
 
 		try {
 			scriptCmd.exec(response,args);
 		} catch (ScriptParseException | ScriptFlowException e) {
-			DefaultCommandMessage result = new DefaultCommandMessage();
-			result.setBody(e.getMessage());
-			return result;
-
+			return new DefaultMessageContent(e.getMessage());
 		}
 
-		DefaultCommandMessage result = new DefaultCommandMessage();
-		result.setBody(response.getText());
+		MessageContent messageContent = new DefaultMessageContent(response.getText());
 		if (response.getHtml().length() > 0) {
-			result.addBody(new XhtmlBodyPart(response.getHtml()));
+			messageContent.addBody(new XhtmlBodyPart(response.getHtml()));
 		}
-		return result;
+		return messageContent;
 	}
 
 	public void reset() {

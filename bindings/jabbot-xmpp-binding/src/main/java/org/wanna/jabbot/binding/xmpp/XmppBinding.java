@@ -13,8 +13,10 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Stanza;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+import org.jivesoftware.smack.util.XmlStringBuilder;
 import org.jivesoftware.smackx.ping.PingManager;
 import org.jivesoftware.smackx.receipts.DeliveryReceipt;
+import org.jivesoftware.smackx.xhtmlim.packet.XHTMLExtension;
 import org.jxmpp.util.XmppStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +24,10 @@ import org.wanna.jabbot.binding.*;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.binding.event.ConnectedEvent;
+import org.wanna.jabbot.binding.messaging.MessageContent;
 import org.wanna.jabbot.binding.messaging.Resource;
+import org.wanna.jabbot.binding.messaging.TxMessage;
 import org.wanna.jabbot.binding.messaging.body.BodyPart;
-import org.wanna.jabbot.binding.messaging.body.BodyPartValidator;
-import org.wanna.jabbot.binding.messaging.body.BodyPartValidatorFactory;
-import org.wanna.jabbot.binding.messaging.body.InvalidBodyPartException;
 import org.wanna.jabbot.binding.privilege.Privilege;
 import org.wanna.jabbot.binding.privilege.PrivilegeGranter;
 import org.wanna.jabbot.binding.privilege.PrivilegedAction;
@@ -142,60 +143,6 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 	}
 
     @Override
-    public void sendMessage(BindingMessage message) {
-        if(! (message instanceof XmppMessage)) return;
-
-        if(message.getDestination().getType().equals(Resource.Type.ROOM)){
-            Room room = getRoom(message.getDestination().getAddress());
-            if(room != null){
-                room.sendMessage(message);
-            }
-        }else{
-            Chat chat = ChatManager.getInstanceFor(connection).getThreadChat(((XmppMessage)message).getThread());
-            if(chat == null){
-                logger.trace("chat was null, creating a new chat instance");
-
-                chat = ChatManager.getInstanceFor(connection).createChat(message.getDestination().getAddress(),((XmppMessage)message).getThread(),null);
-            }else{
-                logger.trace("an existing chat was found for thread id {}", ((XmppMessage) message).getThread());
-            }
-            try {
-                Message msg = MessageHelper.createResponseMessage(((XmppMessage)message));
-                msg.addExtension(new DeliveryReceipt(((XmppMessage)message).getId()));
-                chat.sendMessage(msg);
-            } catch (SmackException.NotConnectedException e) {
-                logger.warn("Trying to send a message on XMPP binding while connection is closed",e);
-            }
-        }
-    }
-
-    @Override
-    public org.wanna.jabbot.binding.messaging.Message createResponseMessage(BindingMessage source, org.wanna.jabbot.binding.messaging.Message eventResponse) {
-        if(!(source instanceof XmppMessage)) return null;
-        XmppMessage response = new XmppMessage();
-        response.setId(((XmppMessage)source).getId());
-        response.setSender(source.getDestination());
-        response.setDestination(source.getSender());
-        response.setRoomName(source.getRoomName());
-        response.setThread(((XmppMessage)source).getThread());
-
-        for (BodyPart body : eventResponse.getBodies()) {
-            BodyPartValidator validator = BodyPartValidatorFactory.getInstance().create(body.getType());
-            try {
-                //If a validator exists for that body type, validate the message
-                if(validator != null){
-                    validator.validate(body);
-                }
-                response.addBody(body);
-            } catch (InvalidBodyPartException e) {
-                logger.info("discarding XhtmlBodyPart as it's content is declared invalid: {}"
-                        ,(e.getInvalidBodyPart()==null?"NULL":e.getInvalidBodyPart().getText()));
-            }
-        }
-        return response;
-    }
-
-    @Override
     public boolean canExecute(Resource resource, Resource target, PrivilegedAction action) {
         Privilege resourcePrivilege = privilegeMapper.getResourcePrivileges(resource,target);
         logger.debug("resource privilege: {} required privilege {}",resourcePrivilege,action.getRequiredPrivilege());
@@ -204,4 +151,32 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
         logger.debug("privilege check status: {} and thus is allowed: {}",i, allowed);
         return allowed;
     }
+
+	@Override
+	public void sendMessage(TxMessage message) {
+		if(message.getDestination().getType().equals(Resource.Type.ROOM)){
+			Room room = getRoom(message.getDestination().getAddress());
+			if(room != null) {
+				room.sendMessage(message);
+			}
+		}else{
+			XmppRxMessage origin = (XmppRxMessage)message.getRequest();
+			Chat chat = ChatManager.getInstanceFor(connection).getThreadChat(origin.getThread());
+			if(chat == null){
+				logger.trace("chat was null, creating a new chat instance");
+
+				chat = ChatManager.getInstanceFor(connection).createChat(message.getDestination().getAddress(),origin.getThread(),null);
+			}else{
+				logger.trace("an existing chat was found for thread id {}", (origin.getThread()));
+			}
+			try {
+				Message msg = MessageHelper.createXmppMessage(message);
+				msg.addExtension(new DeliveryReceipt(origin.getId()));
+				chat.sendMessage(msg);
+			} catch (SmackException.NotConnectedException e) {
+				logger.warn("Trying to send a message on XMPP binding while connection is closed",e);
+			}
+
+		}
+	}
 }

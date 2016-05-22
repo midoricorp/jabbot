@@ -1,6 +1,7 @@
 package org.wanna.jabbot.extensions.script;
 
-import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
+import org.wanna.jabbot.binding.messaging.MessageContent;
 import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.Command;
@@ -26,23 +27,21 @@ public class DeleteCommand  extends AbstractCommandAdapter implements CommandFac
     }
 
     @Override
-    public Message process(CommandMessage message) {
-        String scriptName = message.getBody().trim();
+    public MessageContent process(CommandMessage message) {
+        String scriptName = message.getArgsLine().trim();
         Map<String,Command> cmds = commandFactory.getAvailableCommands();
 
         Command oldCmd = cmds.get(scriptName);
 
         if (oldCmd == null) {
             // don't nuke core commands!
-            Message msg = new DefaultCommandMessage();
-            msg.addBody(new TextBodyPart("Delete: Command '" + scriptName + "' not found!"));
+            MessageContent msg = new DefaultMessageContent("Delete: Command '" + scriptName + "' not found!");
             return msg;
         }
 
         if (!(oldCmd instanceof ScriptScript)) {
             // don't nuke core commands!
-            Message msg = new DefaultCommandMessage();
-            msg.addBody(new TextBodyPart("Cannot remove non-script command '" + scriptName + "'"));
+            MessageContent msg = new DefaultMessageContent("Cannot remove non-script command '" + scriptName + "'");
             return msg;
         }
 
@@ -51,8 +50,7 @@ public class DeleteCommand  extends AbstractCommandAdapter implements CommandFac
         File f = new File(scriptDir + File.separator + scriptName + ".ss");
         f.delete();
 
-        Message msg = new DefaultCommandMessage();
-        msg.addBody(new TextBodyPart("Script '" + scriptName + "' has been removed"));
+        MessageContent msg = new DefaultMessageContent("Script '" + scriptName + "' has been removed");
         return msg;
     }
 

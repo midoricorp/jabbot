@@ -3,15 +3,19 @@ package org.wanna.jabbot.binding.xmpp;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.XMPPError;
+import org.jivesoftware.smack.util.XmlStringBuilder;
 import org.jivesoftware.smackx.muc.DiscussionHistory;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
+import org.jivesoftware.smackx.xhtmlim.packet.XHTMLExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.binding.event.RoomJoinedEvent;
-import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.MessageContent;
+import org.wanna.jabbot.binding.messaging.TxMessage;
+import org.wanna.jabbot.binding.messaging.body.BodyPart;
 
 import java.util.Date;
 
@@ -28,15 +32,14 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 		super(connection);
 	}
 
-	public boolean sendMessage(final Message message) {
+	public boolean sendMessage(final TxMessage response){
+		org.jivesoftware.smack.packet.Message xmpp = MessageHelper.createXmppMessage(response);
 		try {
-            org.jivesoftware.smack.packet.Message xmppMessage = MessageHelper.createResponseMessage((XmppMessage)message);
-			muc.sendMessage(xmppMessage);
+			muc.sendMessage(xmpp);
 			return true;
 		} catch (SmackException.NotConnectedException e) {
-			logger.error("error while sending message",e);
+			return false;
 		}
-		return false;
 	}
 
 	@Override

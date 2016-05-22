@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.event.BindingEvent;
 import org.wanna.jabbot.binding.event.ConnectionRequestEvent;
+import org.wanna.jabbot.event.EventDispatcher;
 
 import java.util.List;
 import java.util.Queue;
@@ -15,12 +16,12 @@ import java.util.Queue;
  */
 public class BindingMonitor implements Runnable{
 	private final Logger logger = LoggerFactory.getLogger(BindingMonitor.class);
-	private final Queue<BindingEvent> queue;
+	private final EventDispatcher dispatcher;
 	private final List<Binding> bindings;
 
-	public BindingMonitor(List<Binding> bindings,Queue<BindingEvent> queue) {
+	public BindingMonitor(List<Binding> bindings, EventDispatcher dispatcher) {
 		this.bindings = bindings;
-		this.queue = queue;
+		this.dispatcher = dispatcher;
 	}
 
 	@Override
@@ -30,7 +31,7 @@ public class BindingMonitor implements Runnable{
 			try{
 				if(!binding.isConnected()){
 					logger.info("binding {} is disconnected. queueing for connection...",binding);
-					queue.offer(new ConnectionRequestEvent(binding));
+					dispatcher.dispatch(new ConnectionRequestEvent(binding));
 				}else{
 					logger.trace("binding {} is connected",binding);
 				}

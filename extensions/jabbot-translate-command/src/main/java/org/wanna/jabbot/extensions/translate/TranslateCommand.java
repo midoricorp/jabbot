@@ -12,6 +12,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
+import org.wanna.jabbot.binding.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
@@ -47,33 +49,28 @@ public class TranslateCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public DefaultCommandMessage process(CommandMessage message) {
-		List<String> args = getArgsParser().parse(message.getBody());
+	public MessageContent process(CommandMessage message) {
+		List<String> args = getArgsParser().parse(message.getArgsLine());
 		String options = null;
 		if(args != null && args.size() >= 3){
 			try {
 				options = "langpair="+ URLEncoder.encode(args.get(0)+ "|"+ args.get(1),"UTF-8");
 				options+="&q="+ URLEncoder.encode(StringUtils.join(args.subList(2,args.size()), " "),"UTF-8");
 			} catch (UnsupportedEncodingException e) {
-				logger.error("An error occured while encoding param {}",message.getBody(),e);
+				logger.error("An error occured while encoding param {}",message.getArgsLine(),e);
 			}
 			try {
 				String response = query(options);
 				Result parsed = mapper.readValue(response,Result.class);
 				if(parsed.getResponseData() != null){
 					String translation = StringEscapeUtils.unescapeHtml4(parsed.getResponseData().getTranslatedText());
-					DefaultCommandMessage result = new DefaultCommandMessage();
-					result.setBody(translation);
-					return result;
+					return new DefaultMessageContent(translation);
 				}
 			} catch (IOException e) {
 				logger.error("error querying translation service",e);
 			}
 		}
-
-		DefaultCommandMessage result = new DefaultCommandMessage();
-		result.setBody("Insufficent Arguments: <src_lang> <dst_lang> <message>");
-		return result;
+		return new DefaultMessageContent("Insufficent Arguments: <src_lang> <dst_lang> <message>");
 	}
 
 	private String query(String option) throws IOException {

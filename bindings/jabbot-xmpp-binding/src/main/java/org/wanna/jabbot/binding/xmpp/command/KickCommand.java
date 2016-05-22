@@ -4,7 +4,8 @@ import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
-import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
+import org.wanna.jabbot.binding.messaging.MessageContent;
 import org.wanna.jabbot.binding.privilege.Privilege;
 import org.wanna.jabbot.binding.privilege.PrivilegedAction;
 import org.wanna.jabbot.command.config.CommandConfig;
@@ -39,23 +40,24 @@ public class KickCommand extends XmppCommand implements PrivilegedAction{
     }
 
     @Override
-    public Message process(CommandMessage message) {
-        List<String> args = getArgsParser().parse(message.getBody());
+    public MessageContent process(CommandMessage message) {
+        List<String> args = getArgsParser().parse(message.getArgsLine());
+        String text;
         if(args.size() < 1){
-            return new DefaultCommandMessage("Who should I kick?");
+            text ="Who should I kick?";
         }
 
         MultiUserChat chatroom = MultiUserChatManager.getInstanceFor(binding.getConnection()).getMultiUserChat(message.getSender().getAddress());
 
         try {
             chatroom.kickParticipant(args.get(0),"no reason");
-            return new DefaultCommandMessage("job done!");
+            text="job done!";
         } catch (XMPPException.XMPPErrorException e){
-            return new DefaultCommandMessage("could not kick: "+e.getMessage());
+            text= "could not kick: "+e.getMessage();
         } catch(SmackException.NoResponseException | SmackException.NotConnectedException e) {
-            return new DefaultCommandMessage("unexpected error occured");
+            text="unexpected error occured";
         }
-
+        return new DefaultMessageContent(text);
     }
 
     @Override

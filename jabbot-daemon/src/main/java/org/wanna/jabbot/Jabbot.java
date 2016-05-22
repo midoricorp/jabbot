@@ -8,18 +8,14 @@ import org.wanna.jabbot.binding.BindingFactory;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.BindingDefinition;
-import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.binding.event.BindingEvent;
-import org.wanna.jabbot.binding.event.ConnectionRequestEvent;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.config.JabbotConfiguration;
-import org.wanna.jabbot.handlers.EventHandler;
-import org.wanna.jabbot.handlers.EventHandlerFactory;
+import org.wanna.jabbot.event.EventDispatcher;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.*;
 
 /**
@@ -34,18 +30,29 @@ public class Jabbot {
 	private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
 
 	private List<Binding> bindings = new ArrayList<>();
-	private Queue<BindingEvent> eventQueue;
+	private BlockingQueue<BindingEvent> incomingQueue;
+	private BlockingQueue<BindingEvent> outgoingQueue;
+	private EventDispatcher incomingDispatcher,outgoingDispatcher;
+	private EventQueueProcessor incomingProcessor, outgoingProcessor;
 
 	public Jabbot( JabbotConfiguration configuration ) {
-		eventQueue = new ConcurrentLinkedQueue<>();
+		this.incomingQueue = new LinkedBlockingDeque<>();
+		this.outgoingQueue = new LinkedBlockingDeque<>();
+		this.incomingDispatcher = new EventDispatcher(incomingQueue);
+		this.outgoingDispatcher = new EventDispatcher(outgoingQueue);
 		this.configuration = configuration;
 		this.bindingFactory = newConnectionFactory(configuration.getBindings());
-		scheduledExecutorService.scheduleAtFixedRate(new BindingMonitor(bindings,eventQueue), 5L,60L, TimeUnit.SECONDS);
-		scheduledExecutorService.scheduleAtFixedRate(new EventQueueProcessor(eventQueue),5L,1L,TimeUnit.SECONDS);
+
+		this.incomingProcessor = new EventQueueProcessor(incomingQueue,outgoingDispatcher);
+		this.outgoingProcessor = new EventQueueProcessor(outgoingQueue,incomingDispatcher);
 	}
 
 	public boolean connect(){
-		BindingListener listener = new JabbotBindingListener(eventQueue);
+		scheduledExecutorService.scheduleAtFixedRate(new BindingMonitor(bindings,outgoingDispatcher), 5L,60L, TimeUnit.SECONDS);
+		scheduledExecutorService.schedule(incomingProcessor,5L,TimeUnit.SECONDS);
+		scheduledExecutorService.schedule(outgoingProcessor,5L,TimeUnit.SECONDS);
+
+		BindingListener listener = new JabbotBindingListener(incomingQueue);
 		for (final BindingConfiguration connectionConfiguration : configuration.getServerList()) {
 			final Binding conn;
 			try {
@@ -65,6 +72,8 @@ public class Jabbot {
 	}
 
 	public void disconnect(){
+		incomingProcessor.stop();
+		outgoingProcessor.stop();
 	}
 
 	private BindingFactory newConnectionFactory(Collection<BindingDefinition> bindings){

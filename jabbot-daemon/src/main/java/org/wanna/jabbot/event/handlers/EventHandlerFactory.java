@@ -1,9 +1,6 @@
-package org.wanna.jabbot.handlers;
+package org.wanna.jabbot.event.handlers;
 
-import org.wanna.jabbot.binding.event.BindingEvent;
-import org.wanna.jabbot.binding.event.ConnectedEvent;
-import org.wanna.jabbot.binding.event.ConnectionRequestEvent;
-import org.wanna.jabbot.binding.event.MessageEvent;
+import org.wanna.jabbot.binding.event.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,9 +17,11 @@ public class EventHandlerFactory {
 	private EventHandlerFactory(){
 		registry = new HashMap<>();
 
-		register(ConnectedEvent.class, new ConnectecEventHandler());
+		register(ConnectedEvent.class, new ConnectedEventHandler());
 		register(MessageEvent.class, new MessageEventHandler());
 		register(ConnectionRequestEvent.class,new ConnectionRequestEventHandler());
+		register(JoinRoomEvent.class,new JoinRoomEventHandler());
+		register(OutgoingMessageEvent.class, new OutgoingMessageEventHandler());
 	}
 
 	public static EventHandlerFactory getInstance(){

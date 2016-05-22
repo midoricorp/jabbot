@@ -4,13 +4,13 @@ import org.wanna.jabbot.binding.messaging.body.BodyPart;
 import java.util.Collection;
 
 /**
- * Represents a Message which can be received or sent by the core.
+ * Represents a MessageContent which can be received or sent by the core.
  * Messages are dispatched from binding to commands on the incoming message flow
  * and are then returned by Command themselves and dispatched back to the binding.
  * <p/>
- * A Message will always contains information about:
+ * A MessageContent will always contains information about:
  * <ul>
- *     <li>The Message sender</li>
+ *     <li>The MessageContent sender</li>
  *     <li>The various BodyPart which compose the message</li>
  * </ul>
  *
@@ -18,7 +18,7 @@ import java.util.Collection;
  * @author vmorsiani <vmorsiani>
  * @since 2015-03-06
  */
-public interface Message {
+public interface MessageContent {
     /**
      * Raw text representation of the message body.
      * Is equivalent to getBody("TEXT")
@@ -28,7 +28,7 @@ public interface Message {
     String getBody();
 
     /**
-     * Retrieves the BodyPart of a given type from the Message
+     * Retrieves the BodyPart of a given type from the MessageContent
      * If no matching BodyPart is found, a NULL value will be returned
      *
      * @param type type of BodyPart to retrieve
@@ -37,7 +37,7 @@ public interface Message {
 	BodyPart getBody(BodyPart.Type type);
 
     /**
-     * Retrieves ALL the BodyPart which compose a Message
+     * Retrieves ALL the BodyPart which compose a MessageContent
      *
      * @return Collection of BodyPart
      */
@@ -48,10 +48,4 @@ public interface Message {
      * @param body BodyPart to be added
      */
     void addBody(BodyPart body);
-
-    /**
-     * Retrieves the resource which sent the Message
-     * @return sender resource
-     */
-    Resource getSender();
 }

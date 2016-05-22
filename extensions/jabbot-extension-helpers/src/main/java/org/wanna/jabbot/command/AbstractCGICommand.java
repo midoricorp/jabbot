@@ -2,6 +2,9 @@ package org.wanna.jabbot.command;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
+import org.wanna.jabbot.binding.messaging.MessageContent;
+import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
@@ -25,9 +28,9 @@ public abstract class AbstractCGICommand extends AbstractCommandAdapter {
 	public abstract String getScriptName();
 
 	@Override
-	public final DefaultCommandMessage process(CommandMessage message) {
+	public final MessageContent process(CommandMessage message) {
 		String[] envp = { "JABBOT_ACTION=run", "JABBOT_COMMAND=" + getCommandName(), "JABBOT_FROM=" + message.getSender() };
-		List<String> argList =  super.getArgsParser().parse(message.getBody());
+		List<String> argList =  super.getArgsParser().parse(message.getArgsLine());
 		String script = getFilePath(getScriptName());
 		if(script == null){
 			return null;
@@ -37,7 +40,7 @@ public abstract class AbstractCGICommand extends AbstractCommandAdapter {
 		String[] command = argList.toArray(new String[argList.size()]);
 
 		String response = exec(command, envp);
-		return new DefaultCommandMessage(response);
+		return new DefaultMessageContent(response);
 	}
 
 

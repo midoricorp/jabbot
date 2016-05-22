@@ -2,16 +2,12 @@ package org.wanna.jabbot;
 
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingAware;
-import org.wanna.jabbot.binding.BindingMessage;
 import org.wanna.jabbot.binding.config.ExtensionConfiguration;
-import org.wanna.jabbot.binding.messaging.Message;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.behavior.Configurable;
 import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.command.messaging.MessageSender;
-import org.wanna.jabbot.command.messaging.MessageSenderAware;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
@@ -69,18 +65,18 @@ public class CommandManager {
                 if (command instanceof Configurable) {
                     ((Configurable) command).configure(commandConfig.getConfiguration());
                 }
-
+/*
                 if (command instanceof MessageSenderAware) {
                     ((MessageSenderAware) command).setMessageSender(
                             new MessageSender() {
                                 @Override
-                                public void sendMessage(Message message) {
-                                    binding.sendMessage((BindingMessage) message);
+                                public void sendMessage(MessageContent message) {
+                                    binding.sendMessage((BindingMessageContent) message);
                                 }
                             }
                     );
                 }
-
+*/
                 if( command instanceof BindingAware){
                     ((BindingAware)command).setBinding(binding);
                 }

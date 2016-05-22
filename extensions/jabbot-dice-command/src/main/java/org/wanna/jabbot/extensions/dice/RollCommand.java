@@ -2,7 +2,8 @@ package org.wanna.jabbot.extensions.dice;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
+import org.wanna.jabbot.binding.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
@@ -25,9 +26,8 @@ public class RollCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public Message process(CommandMessage message) {
-		List<String> args =  getArgsParser().parse(message.getBody());
-		DefaultCommandMessage result = new DefaultCommandMessage();
+	public MessageContent process(CommandMessage message) {
+		List<String> args =  getArgsParser().parse(message.getArgsLine());
 		//Set default values
 		int amount = 1;
 		int value = 6;
@@ -43,25 +43,21 @@ public class RollCommand extends AbstractCommandAdapter {
 			}
 		}catch(NumberFormatException e){
 			logger.debug("invalid parameter",e);
-			result.setBody("Invalid parameters");
-			return result;
+			return new DefaultMessageContent("Invalid parameters");
 		}
 
 		if(value <= 0 ){
 			logger.debug("illegal dice value: {}",value);
-			result.setBody("invalid dice value: " + value);
-			return result;
+			return new DefaultMessageContent("invalid dice value: " + value);
 		}
 
 		if(amount <= 0){
-			result.setBody("You need to roll at least 1 dice");
-			return result;
+			return new DefaultMessageContent("You need to roll at least 1 dice");
 
 		}
 
 		if(amount > 5 ){
-			result.setBody("You cannot roll more than 5 dices");
-			return result;
+			return new DefaultMessageContent("You cannot roll more than 5 dices");
 		}
 
 		String resultString = "";
@@ -77,8 +73,7 @@ public class RollCommand extends AbstractCommandAdapter {
 
 		String player = message.getSender().getName();
 		String response = String.format("%s rolled %s dice of %s for a total of %s\n:details: %s",player,amount,value,total,resultString);
-		result.setBody(response);
-		return result;
+		return new DefaultMessageContent(response);
 	}
 
 	private int pick(int max){

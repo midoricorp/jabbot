@@ -1,6 +1,7 @@
 package org.wanna.jabbot.extensions.call;
 
-import org.wanna.jabbot.binding.messaging.Message;
+import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
+import org.wanna.jabbot.binding.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
@@ -23,22 +24,20 @@ public class CallCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public Message process(CommandMessage message) {
-		DefaultCommandMessage result = new DefaultCommandMessage();
+	public MessageContent process(CommandMessage message) {
 		if(baseUrl == null){
-			result.setBody("Call command not configured: missing base_url");
+			return new DefaultMessageContent("Call command not configured: missing base_url");
 		}
-		List<String> args =  getArgsParser().parse(message.getBody());
+		List<String> args =  getArgsParser().parse(message.getArgsLine());
+		String response;
 		if(args.size() > 0){
 			String callee = args.get(0);
-			String response = String.format("Call %s at %s/%s",callee, baseUrl, callee);
-			result.setBody(response);
+			response = String.format("Call %s at %s/%s",callee, baseUrl, callee);
 		}
 		else{
-			String response = String.format(missingUserMessage);
-			result.setBody(response);
+			response = String.format(missingUserMessage);
 		}
-		return result;
+		return new DefaultMessageContent(response);
 	}
 
 	@Override

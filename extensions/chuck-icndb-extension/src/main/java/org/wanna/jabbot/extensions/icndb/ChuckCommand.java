@@ -11,6 +11,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
+import org.wanna.jabbot.binding.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
@@ -38,8 +40,8 @@ public class ChuckCommand extends AbstractCommandAdapter {
 	}
 
 	@Override
-	public DefaultCommandMessage process(CommandMessage message) {
-		List<String> args = getArgsParser().parse(message.getBody());
+	public MessageContent process(CommandMessage message) {
+		List<String> args = getArgsParser().parse(message.getArgsLine());
 		String options = null;
 		if(args != null && args.size() > 0){
 			try {
@@ -50,7 +52,7 @@ public class ChuckCommand extends AbstractCommandAdapter {
 					options+="&lastName="+ URLEncoder.encode(REMOVE_ME,"UTF-8");
 				}
 			} catch (UnsupportedEncodingException e) {
-				logger.error("An error occured while encoding param {}",message.getBody(),e);
+				logger.error("An error occured while encoding param {}",message.getArgsLine(),e);
 			}
 		}
 		try {
@@ -64,9 +66,7 @@ public class ChuckCommand extends AbstractCommandAdapter {
 				// make sure to remove any that didn't have a leading space too
 				joke = joke.replace(REMOVE_ME, "");
 
-				DefaultCommandMessage result = new DefaultCommandMessage();
-				result.setBody(joke);
-				return result;
+				return new DefaultMessageContent(joke);
 			}
 		} catch (IOException e) {
 			logger.error("error querying icndb",e);

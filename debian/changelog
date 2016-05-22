@@ -1,10 +1,10 @@
 jabbot (0.4) UNRELEASED; urgency=medium
   
   [ Vincent Morsiani ] 
-  * added multi body part support for jabbot message 
+  * added multi body part support for jabbot messageContent
   * added body part validation mechanism 
   * private messaging support
-  * message interface refactoring
+  * messageContent interface refactoring
   * refactored commands to abstract it as extension
   * extension-api now depends on binding-api instead of the other way around
 

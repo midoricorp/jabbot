@@ -3,38 +3,64 @@ package org.wanna.jabbot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.event.BindingEvent;
-import org.wanna.jabbot.handlers.EventHandler;
-import org.wanna.jabbot.handlers.EventHandlerFactory;
+import org.wanna.jabbot.event.EventDispatcher;
+import org.wanna.jabbot.event.handlers.EventHandler;
+import org.wanna.jabbot.event.handlers.EventHandlerFactory;
 
 import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
+ * Task to load BindingEvent from a queue and process them.
+ * The class will create an EventHandler instance using the EventHandlerFactory
+ * and then invoke {@link EventHandler#process(BindingEvent, EventDispatcher)}
+ *
  * @author Vincent Morsiani [vmorsiani@voxbone.com]
  * @since 2016-03-03
  */
 public class EventQueueProcessor implements Runnable{
 	private final Logger logger = LoggerFactory.getLogger(EventQueueProcessor.class);
-	private final Queue<BindingEvent> queue;
-
-	public EventQueueProcessor(Queue<BindingEvent> queue) {
+	private final BlockingQueue<BindingEvent> queue;
+	private final EventDispatcher dispatcher;
+	private boolean running = false;
+	/**
+	 * Constructor
+	 * @param queue Queue from which events will be consume
+	 * @param dispatcher Event dispatcher facility
+	 */
+	public EventQueueProcessor(BlockingQueue<BindingEvent> queue, EventDispatcher dispatcher) {
 		this.queue = queue;
+		this.dispatcher = dispatcher;
 	}
 
 	@Override
 	public void run() {
-		BindingEvent event = queue.poll();
-		if(event == null) return;
-		logger.debug("loaded {} from event queue", event);
-		EventHandler handler = EventHandlerFactory.getInstance().create(event.getClass());
-		if(handler != null){
+		running = true;
+		while (running) {
 			try {
-				handler.process(event);
-			}catch (Exception e){
-				logger.error("failed to process {}",event,e);
+				BindingEvent event = queue.take();
+				logger.debug("loaded {} from event queue", event);
+				EventHandler handler = EventHandlerFactory.getInstance().create(event.getClass());
+				if (handler != null) {
+					try {
+						boolean status = handler.process(event, dispatcher);
+						logger.debug("event {} processed: {}", event, status);
+					} catch (Exception e) {
+						logger.error("failed to process {}", event, e);
+					}
+				} else {
+					logger.warn("no handler found for {}", event);
+				}
+
+			} catch (InterruptedException e) {
+				logger.error("interrupted",e);
 			}
-		}else{
-			logger.warn("no handler found for {}",event);
 		}
+	}
+
+	public void stop(){
+		running = false;
 	}
 }
 

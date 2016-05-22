@@ -1,14 +1,17 @@
 package org.wanna.jabbot.binding.irc;
 
+import com.ircclouds.irc.api.domain.messages.ChannelActionMsg;
 import com.ircclouds.irc.api.domain.messages.ChannelPrivMsg;
-import com.ircclouds.irc.api.domain.messages.ErrorMessage;
+import com.ircclouds.irc.api.domain.messages.UserActionMsg;
 import com.ircclouds.irc.api.listeners.VariousMessageListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.BindingListener;
-import org.wanna.jabbot.binding.DefaultBindingMessage;
 import org.wanna.jabbot.binding.event.MessageEvent;
-import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
+import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
+import org.wanna.jabbot.binding.messaging.DefaultRxMessage;
+import org.wanna.jabbot.binding.messaging.DefaultResource;
+import org.wanna.jabbot.binding.messaging.RxMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,17 +32,12 @@ public class IrcMessageListener extends VariousMessageListenerAdapter{
 
 	@Override
 	public void onChannelMessage(ChannelPrivMsg aMsg) {
-
 		logger.debug("received {} on {}",aMsg.getText(),aMsg.getChannelName());
 		String sender = aMsg.getSource().getNick();
 		String roomName = aMsg.getChannelName();
-        DefaultBindingMessage message = new DefaultBindingMessage();
-        message.addBody(new TextBodyPart(aMsg.getText()));
-        message.setSender(new IrcResource(sender,null));
-        message.setDestination(new IrcResource(roomName,null));
-        message.setRoomName(roomName);
+		RxMessage request = new DefaultRxMessage(new DefaultMessageContent(aMsg.getText()),new DefaultResource(roomName,sender));
         for (BindingListener listener : listeners) {
-			listener.eventReceived(new MessageEvent(binding,message));
+			listener.eventReceived(new MessageEvent(binding,request));
 		}
 		super.onChannelMessage(aMsg);
 	}

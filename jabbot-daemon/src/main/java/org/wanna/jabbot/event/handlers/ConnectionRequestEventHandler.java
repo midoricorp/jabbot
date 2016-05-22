@@ -1,7 +1,9 @@
-package org.wanna.jabbot.handlers;
+package org.wanna.jabbot.event.handlers;
 
 import org.wanna.jabbot.binding.Binding;
+import org.wanna.jabbot.binding.event.BindingEvent;
 import org.wanna.jabbot.binding.event.ConnectionRequestEvent;
+import org.wanna.jabbot.event.EventDispatcher;
 
 /**
  * @author Vincent Morsiani [vmorsiani@voxbone.com]
@@ -9,9 +11,9 @@ import org.wanna.jabbot.binding.event.ConnectionRequestEvent;
  */
 public class ConnectionRequestEventHandler implements EventHandler<ConnectionRequestEvent>{
 	@Override
-	public void process(ConnectionRequestEvent event) {
+	public boolean process(ConnectionRequestEvent event, EventDispatcher dispatcher) {
 		final Binding binding = event.getBinding();
-		if(binding == null) return;
-		binding.connect();
+		if(binding == null) return false;
+		return binding.connect();
 	}
 }

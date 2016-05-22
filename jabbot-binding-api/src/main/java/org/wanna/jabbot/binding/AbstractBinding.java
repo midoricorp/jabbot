@@ -4,11 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.event.BindingEvent;
-import org.wanna.jabbot.binding.messaging.Message;
-import org.wanna.jabbot.binding.messaging.body.BodyPart;
-import org.wanna.jabbot.binding.messaging.body.BodyPartValidator;
-import org.wanna.jabbot.binding.messaging.body.BodyPartValidatorFactory;
-import org.wanna.jabbot.binding.messaging.body.InvalidBodyPartException;
+import org.wanna.jabbot.binding.messaging.Resource;
+import org.wanna.jabbot.binding.messaging.TxMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,40 +51,14 @@ public abstract class AbstractBinding<T> implements Binding<T>{
 		listeners.add(listener);
 	}
 
-	@Override
-	public void sendMessage(BindingMessage message) {
-		Room room = this.getRoom(message.getRoomName());
-        room.sendMessage(message);
+	public void sendMessage(TxMessage response){
+		if(response.getDestination().getType().equals(Resource.Type.ROOM)){
+			Room room = this.getRoom(response.getDestination().getAddress());
+			if(room != null){
+				room.sendMessage(response);
+			}
+		}
 	}
-
-    /**
-     * Updates the initial message with the command result
-     *
-     * @param message the message to be updated
-     * @param commandResult the command result
-     * @return updated message
-     */
-    @SuppressWarnings("unchecked")
-    public Message createResponseMessage(final BindingMessage message, final Message commandResult){
-        DefaultBindingMessage response = new DefaultBindingMessage();
-        response.setDestination(message.getSender());
-        response.setSender(message.getDestination());
-        response.setRoomName(message.getRoomName());
-        for (BodyPart body : commandResult.getBodies()) {
-            BodyPartValidator validator = BodyPartValidatorFactory.getInstance().create(body.getType());
-            try {
-                //If a validator exists for that body type, validate the message
-                if(validator != null){
-                    validator.validate(body);
-                }
-                response.addBody(body);
-            } catch (InvalidBodyPartException e) {
-                logger.info("discarding XhtmlBodyPart as it's content is declared invalid: {}"
-                        ,(e.getInvalidBodyPart()==null?"NULL":e.getInvalidBodyPart().getText()));
-            }
-        }
-        return response;
-    }
 
 	public void dispatchEvent(BindingEvent event){
 		for (BindingListener listener : listeners) {
