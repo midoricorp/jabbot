@@ -38,11 +38,18 @@ public class SlackRoom extends AbstractRoom<SlackBinding>  {
 
 
 	public void dispatchMessage(flowctrl.integration.slack.type.Message slackMsg) {
-		if(slackMsg.getUser() == null) {
+		String username = slackMsg.getUsername();
+
+		if(username == null && slackMsg.getUser() == null) {
 			logger.error("MessageContent missing user!" + slackMsg.toString());
 			return;
 		}
-		User user = connection.webApiClient.getUserInfo(slackMsg.getUser());
+
+		if(username == null) {
+			User user = connection.webApiClient.getUserInfo(slackMsg.getUser());
+			username = user.getName();
+		}
+
 		String slackMsgText = slackMsg.getText();
 		slackMsgText = slackMsgText.replaceAll("<(http[^\">]*)>", "$1");
 		slackMsgText = slackMsgText.replace("&gt;", ">");
@@ -51,7 +58,7 @@ public class SlackRoom extends AbstractRoom<SlackBinding>  {
 
 
 		for (BindingListener listener : listeners) {
-			RxMessage request = new DefaultRxMessage(new DefaultMessageContent(slackMsgText), new DefaultResource(this.getRoomName(),user.getName()));
+			RxMessage request = new DefaultRxMessage(new DefaultMessageContent(slackMsgText), new DefaultResource(this.getRoomName(),username));
 			listener.eventReceived(new MessageEvent(this.connection, request));
 		}
 
