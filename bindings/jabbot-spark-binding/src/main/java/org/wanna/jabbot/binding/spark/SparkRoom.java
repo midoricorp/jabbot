@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.Stack;
 import java.net.URI;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author tsearle <tsearle>
@@ -27,6 +29,7 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 	private com.ciscospark.SparkServlet servlet;
 	private boolean useWebhook;
 	private String webhookUrl;
+	private Pattern urlPattern = Pattern.compile("((http|https):[^\\s]+\\.(doc|docx|ppt|pptx|pdf|jpg|jpeg|png|gif|bmp))");
 
 
 	public SparkRoom(SparkBinding connection,List<BindingListener> listeners) {
@@ -169,6 +172,10 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 		com.ciscospark.Message msg = new com.ciscospark.Message();
 		msg.setRoomId(room.getId());
 		msg.setText(response.getMessageContent().getBody());
+		Matcher m = urlPattern.matcher(response.getMessageContent().getBody());
+		if (m.find()) {
+			msg.setFile(m.group(0));
+		}
 		spark.messages().post(msg);
 		return true;
 	}
