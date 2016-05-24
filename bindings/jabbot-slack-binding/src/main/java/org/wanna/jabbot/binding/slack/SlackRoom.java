@@ -2,7 +2,7 @@ package org.wanna.jabbot.binding.slack;
 
 import com.sipstacks.xhml.XHtmlConvertException;
 import flowctrl.integration.slack.type.Attachment;
-import flowctrl.integration.slack.type.Channel;
+import flowctrl.integration.slack.type.Group;
 import flowctrl.integration.slack.type.User;
 import flowctrl.integration.slack.webapi.method.chats.ChatPostMessageMethod;
 import org.slf4j.Logger;
@@ -112,11 +112,11 @@ public class SlackRoom extends AbstractRoom<SlackBinding>  {
 	public boolean join(final RoomConfiguration configuration) {
 		this.configuration = configuration;
 
-		List<Channel> channels = connection.webApiClient.getChannelList();
-		for (Channel channel : channels) {
-			logger.info("Comparing " + channel.getName() + " to " + configuration.getName());
-			if(channel.getName().equals(configuration.getName())) {
-				channelId  = channel.getId();
+		List<Group> groups = connection.webApiClient.getGroupList();
+		for (Group group : groups) {
+			logger.info("Comparing " + group.getName() + " to " + configuration.getName());
+			if(group.getName().equals(configuration.getName())) {
+				channelId  = group.getId();
 			}
 		}
 
