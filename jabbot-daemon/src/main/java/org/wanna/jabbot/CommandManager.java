@@ -1,5 +1,7 @@
 package org.wanna.jabbot;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingAware;
 import org.wanna.jabbot.binding.config.ExtensionConfiguration;
@@ -19,6 +21,7 @@ import java.util.WeakHashMap;
  * @since 2015-08-24
  */
 public class CommandManager {
+    private final static Logger logger = LoggerFactory.getLogger(CommandManager.class);
     private static final Map<Binding,CommandManager> instances = new WeakHashMap<>();
     private CommandFactory commandFactory;
     private Binding binding;
@@ -65,24 +68,14 @@ public class CommandManager {
                 if (command instanceof Configurable) {
                     ((Configurable) command).configure(commandConfig.getConfiguration());
                 }
-/*
-                if (command instanceof MessageSenderAware) {
-                    ((MessageSenderAware) command).setMessageSender(
-                            new MessageSender() {
-                                @Override
-                                public void sendMessage(MessageContent message) {
-                                    binding.sendMessage((BindingMessageContent) message);
-                                }
-                            }
-                    );
-                }
-*/
+
                 if( command instanceof BindingAware){
                     ((BindingAware)command).setBinding(binding);
                 }
                 commandFactory.register(commandConfig.getName(), command);
+                logger.info("registered command {} with alias '{}' in {}",command,commandConfig.getName(),binding);
             } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
-                //Ignore this exception, command won't be registered
+                logger.warn("failed to register command with config {}",commandConfig,e);
             }
         }
     }

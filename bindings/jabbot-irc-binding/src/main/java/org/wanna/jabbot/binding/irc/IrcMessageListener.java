@@ -1,8 +1,6 @@
 package org.wanna.jabbot.binding.irc;
 
-import com.ircclouds.irc.api.domain.messages.ChannelActionMsg;
 import com.ircclouds.irc.api.domain.messages.ChannelPrivMsg;
-import com.ircclouds.irc.api.domain.messages.UserActionMsg;
 import com.ircclouds.irc.api.listeners.VariousMessageListenerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

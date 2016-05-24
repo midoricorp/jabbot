@@ -52,18 +52,18 @@ public class Jabbot {
 		scheduledExecutorService.schedule(incomingProcessor,5L,TimeUnit.SECONDS);
 		scheduledExecutorService.schedule(outgoingProcessor,5L,TimeUnit.SECONDS);
 
-		BindingListener listener = new JabbotBindingListener(incomingQueue);
 		for (final BindingConfiguration connectionConfiguration : configuration.getServerList()) {
 			final Binding conn;
 			try {
 				conn = bindingFactory.create(connectionConfiguration);
 				CommandManager.getInstanceFor(conn).initializeFromConfigSet(connectionConfiguration.getExtensions());
-                conn.registerListener(listener);
-				conn.registerListener(new LoggingEventListener());
+                conn.registerListener(new BindingListener() {
+					@Override
+					public void eventReceived(BindingEvent event) {
+						incomingQueue.offer(event);
+					}
+				});
 				bindings.add(conn);
-				if(conn.isConnected()){
-					logger.debug("connection established to {} as {}",connectionConfiguration.getUrl(),connectionConfiguration.getUsername());
-				}
 			} catch (BindingCreationException e) {
 				logger.error("failed to create binding for {}",connectionConfiguration.getType(),e);
 			}
@@ -87,8 +87,9 @@ public class Jabbot {
 				Class clazz = Class.<Command>forName(String.valueOf(binding.getClassName()));
                 @SuppressWarnings("unchecked")
 				Class<? extends Binding> connectionClass = (Class<? extends Binding>)clazz;
-				logger.info("registering {} binding with class {}",binding.getName(),binding.getClassName());
+
 				factory.register(binding.getName(),connectionClass);
+				logger.info("registered binding {} with alias '{}'",connectionClass,binding.getName());
 			} catch (ClassNotFoundException e) {
 				logger.error("unable to register {} binding with class {}",binding.getName(),binding.getClassName());
 			}

@@ -4,10 +4,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.util.XmlStringBuilder;
 import org.jivesoftware.smackx.xhtmlim.packet.XHTMLExtension;
 import org.jxmpp.util.XmppStringUtils;
-import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
-import org.wanna.jabbot.binding.messaging.MessageContent;
-import org.wanna.jabbot.binding.messaging.Resource;
-import org.wanna.jabbot.binding.messaging.TxMessage;
+import org.wanna.jabbot.binding.messaging.*;
 import org.wanna.jabbot.binding.messaging.body.BodyPart;
 
 /**
@@ -65,13 +62,13 @@ public final class MessageHelper {
 
         if(xmppMessage.getType().equals(org.jivesoftware.smack.packet.Message.Type.groupchat)){
             resource =
-                    new XmppResource(
+                    new DefaultResource(
                             XmppStringUtils.parseBareJid(xmppMessage.getFrom()),
                             XmppStringUtils.parseResource(xmppMessage.getFrom()),
                             Resource.Type.ROOM
                     );
         }else{
-            resource = new XmppResource(xmppMessage.getFrom(),xmppMessage.getFrom(), Resource.Type.USER);
+            resource = new DefaultResource(xmppMessage.getFrom(),xmppMessage.getFrom(), Resource.Type.USER);
         }
 
         XmppRxMessage msg = new XmppRxMessage(resource,content);

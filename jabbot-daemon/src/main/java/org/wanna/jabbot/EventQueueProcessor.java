@@ -45,7 +45,7 @@ public class EventQueueProcessor implements Runnable{
 				if (handler != null) {
 					try {
 						boolean status = handler.process(event, dispatcher);
-						logger.debug("event {} processed: {}", event, status);
+						logger.info("event {} processed: {}", event, status);
 					} catch (Exception e) {
 						logger.error("failed to process {}", event, e);
 					}

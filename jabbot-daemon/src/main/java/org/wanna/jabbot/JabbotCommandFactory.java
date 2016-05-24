@@ -14,7 +14,6 @@ import java.util.TreeMap;
  * @since 2014-05-31
  */
 public class JabbotCommandFactory implements CommandFactory {
-	final Logger logger = LoggerFactory.getLogger(JabbotCommandFactory.class);
 
 	public Command create(String commandName) throws CommandNotFoundException {
 		Command command = registry.get(commandName);
@@ -32,14 +31,11 @@ public class JabbotCommandFactory implements CommandFactory {
 	private Map<String,Command> registry = new TreeMap<>();
 	@Override
 	public void register(String commandName, Command command) {
-		logger.debug("registering command {} with class {}",commandName,command.getClass());
 		registry.put(commandName, command);
 	}
 
 	@Override
 	public void deregister(String commandName) {
-		logger.debug("deregistering command {}",commandName);
 		Command c = registry.remove(commandName);
-		logger.debug("deregistering command {} with class {}",commandName, c==null?"(null)":c.getClass());
 	}
 }

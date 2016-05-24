@@ -28,8 +28,4 @@ public class DefaultCommandParser implements CommandParser {
 
 		return new CommandParsingResult(command,argString);
 	}
-
-	public String getCommandPrefix() {
-		return commandPrefix;
-	}
 }
