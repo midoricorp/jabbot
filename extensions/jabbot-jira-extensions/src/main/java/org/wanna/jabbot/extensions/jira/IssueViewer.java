@@ -14,12 +14,11 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.messaging.DefaultMessageContent;
-import org.wanna.jabbot.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
-import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.jira.binding.Issue;
+import org.wanna.jabbot.messaging.DefaultMessageContent;
+import org.wanna.jabbot.messaging.MessageContent;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,8 +37,8 @@ public class IssueViewer extends AbstractCommandAdapter {
 	private UsernamePasswordCredentials credentials;
 	private final DefaultHttpClient httpclient = new DefaultHttpClient();
 
-	public IssueViewer(CommandConfig configuration) {
-		super(configuration);
+	public IssueViewer(String commandName) {
+		super(commandName);
 		mapper = new ObjectMapper(); //TODO can reuse, share globally
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 

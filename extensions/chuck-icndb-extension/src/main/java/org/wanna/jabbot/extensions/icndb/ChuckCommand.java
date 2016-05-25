@@ -11,12 +11,11 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.messaging.DefaultMessageContent;
-import org.wanna.jabbot.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
-import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.icndb.binding.Result;
+import org.wanna.jabbot.messaging.DefaultMessageContent;
+import org.wanna.jabbot.messaging.MessageContent;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -33,8 +32,8 @@ public class ChuckCommand extends AbstractCommandAdapter {
 
 	private static final String REMOVE_ME = ":{REMOVE_ME}";
 
-	public ChuckCommand(CommandConfig configuration) {
-		super(configuration);
+	public ChuckCommand(String commandName) {
+		super(commandName);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
 

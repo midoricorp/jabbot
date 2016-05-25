@@ -1,20 +1,16 @@
 package org.wanna.jabbot.extensions.script;
 
-import org.wanna.jabbot.messaging.DefaultMessageContent;
-import org.wanna.jabbot.messaging.MessageContent;
-import org.wanna.jabbot.messaging.body.XhtmlBodyPart;
-import org.wanna.jabbot.command.*;
+import com.sipstacks.script.*;
+import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.command.parser.ArgsParser;
 import org.wanna.jabbot.command.parser.QuotedStringArgParser;
-import com.sipstacks.script.ScriptParseException;
-import com.sipstacks.script.ScriptFlowException;
-import com.sipstacks.script.OutputStream;
-import com.sipstacks.script.Function;
-import com.sipstacks.script.StatementFunction;
-import java.util.List;
+import org.wanna.jabbot.messaging.DefaultMessageContent;
+import org.wanna.jabbot.messaging.MessageContent;
+import org.wanna.jabbot.messaging.body.XhtmlBodyPart;
+
 import java.util.ArrayList;
-import java.lang.StringBuffer;
+import java.util.List;
 
 /**
  * @author tsearle <tsearle>

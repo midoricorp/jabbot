@@ -1,10 +1,9 @@
 package org.wanna.jabbot.extensions.propaganda;
 
-import org.wanna.jabbot.messaging.DefaultMessageContent;
-import org.wanna.jabbot.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
-import org.wanna.jabbot.command.config.CommandConfig;
+import org.wanna.jabbot.messaging.DefaultMessageContent;
+import org.wanna.jabbot.messaging.MessageContent;
 
 import java.io.InputStream;
 import java.util.*;
@@ -18,8 +17,8 @@ public class PropagandaCommand extends AbstractCommandAdapter {
 	private HashMap<String,String> replace = null;
 	private Random rand = null;
 
-	public PropagandaCommand(CommandConfig configuration) {
-		super(configuration);
+	public PropagandaCommand(String commandName) {
+		super(commandName);
 		rand = new Random();
 		quotes = new ArrayList<String>();
 		replace = new HashMap<String,String>();

@@ -1,7 +1,6 @@
 package org.wanna.jabbot.extensions.cgi;
 
 import org.wanna.jabbot.command.AbstractCGICommand;
-import org.wanna.jabbot.command.config.CommandConfig;
 
 import java.util.Map;
 
@@ -12,8 +11,8 @@ import java.util.Map;
 public class CGICommand extends AbstractCGICommand {
 	private String script = null;
 
-	public CGICommand(CommandConfig configuration) {
-		super(configuration);
+	public CGICommand(String commandName) {
+		super(commandName);
 	}
 
 	@Override

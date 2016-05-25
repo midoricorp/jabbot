@@ -1,13 +1,12 @@
 package org.wanna.jabbot.extensions.script;
 
-import org.wanna.jabbot.messaging.DefaultMessageContent;
-import org.wanna.jabbot.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
-import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.command.messaging.CommandMessage;
+import org.wanna.jabbot.messaging.DefaultMessageContent;
+import org.wanna.jabbot.messaging.MessageContent;
 
 import java.io.File;
 import java.util.Map;
@@ -20,8 +19,8 @@ public class DeleteCommand  extends AbstractCommandAdapter implements CommandFac
     private CommandFactory commandFactory;
     private String scriptDir;
 
-    public DeleteCommand(CommandConfig configuration) {
-        super(configuration);
+    public DeleteCommand(String commandName) {
+        super(commandName);
     }
 
     @Override

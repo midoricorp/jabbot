@@ -2,11 +2,10 @@ package org.wanna.jabbot.extensions.dice;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.messaging.DefaultMessageContent;
-import org.wanna.jabbot.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
-import org.wanna.jabbot.command.config.CommandConfig;
+import org.wanna.jabbot.messaging.DefaultMessageContent;
+import org.wanna.jabbot.messaging.MessageContent;
 
 import java.util.List;
 import java.util.Random;
@@ -20,8 +19,8 @@ public class RollCommand extends AbstractCommandAdapter {
 
 	private final Random randomizer = new Random(System.currentTimeMillis());
 
-	public RollCommand(CommandConfig configuration) {
-		super(configuration);
+	public RollCommand(String commandName) {
+		super(commandName);
 	}
 
 	@Override

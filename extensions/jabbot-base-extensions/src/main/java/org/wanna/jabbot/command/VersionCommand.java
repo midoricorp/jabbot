@@ -1,9 +1,8 @@
 package org.wanna.jabbot.command;
 
+import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.messaging.DefaultMessageContent;
 import org.wanna.jabbot.messaging.MessageContent;
-import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.command.messaging.CommandMessage;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
@@ -14,8 +13,8 @@ import java.lang.management.OperatingSystemMXBean;
  */
 public class VersionCommand extends AbstractCommandAdapter {
 
-	public VersionCommand(CommandConfig configuration) {
-		super(configuration);
+	public VersionCommand(String commandName) {
+		super(commandName);
 	}
 
 	@Override

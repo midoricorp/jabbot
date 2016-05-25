@@ -1,9 +1,8 @@
 package org.wanna.jabbot.command;
 
+import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.messaging.DefaultMessageContent;
 import org.wanna.jabbot.messaging.MessageContent;
-import org.wanna.jabbot.command.config.CommandConfig;
-import org.wanna.jabbot.command.messaging.CommandMessage;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -14,8 +13,8 @@ import java.lang.management.RuntimeMXBean;
  */
 public class UptimeCommand extends AbstractCommandAdapter {
 
-	public UptimeCommand(CommandConfig config){
-		super(config);
+	public UptimeCommand(String commandName){
+		super(commandName);
 	}
 
 	@Override

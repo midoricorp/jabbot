@@ -4,7 +4,6 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingAware;
 import org.wanna.jabbot.command.Command;
-import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.command.parser.ArgsParser;
 import org.wanna.jabbot.command.parser.QuotedStringArgParser;
 
@@ -14,10 +13,10 @@ import org.wanna.jabbot.command.parser.QuotedStringArgParser;
  */
 public abstract class XmppCommand implements Command, BindingAware{
     protected Binding<XMPPConnection> binding;
-    private CommandConfig config;
+    private final String commandName;
 
-    protected XmppCommand(CommandConfig config) {
-        this.config = config;
+    protected XmppCommand(String commandName) {
+        this.commandName = commandName;
     }
 
     @Override

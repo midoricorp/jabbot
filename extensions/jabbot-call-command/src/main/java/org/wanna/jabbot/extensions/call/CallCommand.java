@@ -1,10 +1,9 @@
 package org.wanna.jabbot.extensions.call;
 
-import org.wanna.jabbot.messaging.DefaultMessageContent;
-import org.wanna.jabbot.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
-import org.wanna.jabbot.command.config.CommandConfig;
+import org.wanna.jabbot.messaging.DefaultMessageContent;
+import org.wanna.jabbot.messaging.MessageContent;
 
 import java.util.List;
 import java.util.Map;
@@ -18,8 +17,8 @@ public class CallCommand extends AbstractCommandAdapter {
 	private String baseUrl = null;
 	private String missingUserMessage = "please add someone to call, you idiot";
 
-	public CallCommand(CommandConfig configuration) {
-		super(configuration);
+	public CallCommand(String commandName) {
+		super(commandName);
 	}
 
 	@Override

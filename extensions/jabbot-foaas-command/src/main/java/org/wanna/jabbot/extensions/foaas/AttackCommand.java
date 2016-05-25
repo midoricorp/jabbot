@@ -17,13 +17,12 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.messaging.DefaultMessageContent;
-import org.wanna.jabbot.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
-import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.foaas.binding.Field;
 import org.wanna.jabbot.extensions.foaas.binding.Operation;
+import org.wanna.jabbot.messaging.DefaultMessageContent;
+import org.wanna.jabbot.messaging.MessageContent;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -37,8 +36,8 @@ public class AttackCommand extends AbstractCommandAdapter {
 	private final Random randomizer = new Random();
 	private Map<Integer,List<Operation>> operationsMap = new HashMap<>();
 
-	public AttackCommand(CommandConfig configuration) {
-		super(configuration);
+	public AttackCommand(String commandName) {
+		super(commandName);
 		initializeOperations();
 	}
 

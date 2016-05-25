@@ -8,7 +8,6 @@ import org.wanna.jabbot.messaging.DefaultMessageContent;
 import org.wanna.jabbot.messaging.MessageContent;
 import org.wanna.jabbot.binding.privilege.Privilege;
 import org.wanna.jabbot.binding.privilege.PrivilegedAction;
-import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.command.messaging.CommandMessage;
 
 import java.util.List;
@@ -19,8 +18,8 @@ import java.util.List;
  */
 public class KickCommand extends XmppCommand implements PrivilegedAction{
 
-    public KickCommand(CommandConfig config) {
-        super(config);
+    public KickCommand(String commandName) {
+        super(commandName);
     }
 
     @Override

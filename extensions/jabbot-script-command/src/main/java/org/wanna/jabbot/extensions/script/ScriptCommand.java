@@ -1,16 +1,14 @@
 package org.wanna.jabbot.extensions.script;
 
-import com.sipstacks.script.ExternalCommand;
-import com.sipstacks.script.Script;
-import com.sipstacks.script.ScriptParseException;
-import com.sipstacks.script.FunctionListener;
+import com.sipstacks.script.*;
 import com.sipstacks.script.OutputStream;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.command.*;
+import org.wanna.jabbot.command.AbstractCommandAdapter;
+import org.wanna.jabbot.command.Command;
+import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
-import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
 import org.wanna.jabbot.command.parser.ArgsParser;
@@ -23,8 +21,8 @@ import org.wanna.jabbot.messaging.Resource;
 import org.wanna.jabbot.messaging.body.*;
 
 import java.io.*;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author tsearle 
@@ -80,8 +78,8 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 		}
 	}
 
-	public ScriptCommand(CommandConfig configuration) {
-		super(configuration);
+	public ScriptCommand(String commandName) {
+		super(commandName);
 	}
 
 	@Override

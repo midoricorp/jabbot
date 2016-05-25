@@ -1,5 +1,4 @@
 package org.wanna.jabbot.extensions.translate.binding;
-import java.util.List;
 
 /**
  * @author tsearle <tsearle>

@@ -1,6 +1,6 @@
 package org.wanna.jabbot.command.parser;
 
-import  java.util.List;
+import java.util.List;
 
 /**
  * pretty much all commands use Quoted String for arg parsing

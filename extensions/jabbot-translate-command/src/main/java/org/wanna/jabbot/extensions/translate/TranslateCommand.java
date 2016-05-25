@@ -12,12 +12,11 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.messaging.DefaultMessageContent;
-import org.wanna.jabbot.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
-import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.extensions.translate.binding.Result;
+import org.wanna.jabbot.messaging.DefaultMessageContent;
+import org.wanna.jabbot.messaging.MessageContent;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -32,8 +31,8 @@ public class TranslateCommand extends AbstractCommandAdapter {
 	final Logger logger = LoggerFactory.getLogger(TranslateCommand.class);
 	final ObjectMapper mapper = new ObjectMapper();
 
-	public TranslateCommand(CommandConfig configuration) {
-		super(configuration);
+	public TranslateCommand(String commandName) {
+		super(commandName);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
 

@@ -9,7 +9,6 @@ import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.behavior.Configurable;
-import org.wanna.jabbot.command.config.CommandConfig;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
@@ -51,22 +50,17 @@ public class CommandManager {
 
     /**
      * Initialize a CommandFactory of a specific binding with a list of defined Commands.
-     * Commands are created using the provided CommandConfig and configured upon creation.
+     * Commands are created using the provided ExtensionConfiguration and configured upon creation.
      *
      * @param configSet set of command configuration used for initializing the CommandFactory
      */
     public void initializeFromConfigSet(Set<ExtensionConfiguration> configSet) {
         for (ExtensionConfiguration configuration : configSet) {
             try {
-                CommandConfig commandConfig = new CommandConfig();
-                commandConfig.setName(configuration.getName());
-                commandConfig.setClassName(configuration.getClassName());
-                commandConfig.setConfiguration(configuration.getConfiguration());
-                commandConfig.setHelpMessage(null);
 
                 @SuppressWarnings("unchecked")
                 Class<Command> commandClass = (Class<Command>) Class.forName(configuration.getClassName());
-                Command command = commandClass.getDeclaredConstructor(CommandConfig.class).newInstance(commandConfig);
+                Command command = commandClass.getDeclaredConstructor(String.class).newInstance(configuration.getName());
                 if (command instanceof CommandFactoryAware) {
                     ((CommandFactoryAware) command).setCommandFactory(commandFactory);
                 }
