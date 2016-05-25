@@ -6,14 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sipstacks.xhml.Slack;
 import com.sipstacks.xhml.XHTMLObject;
 import com.sipstacks.xhml.XHtmlConvertException;
-import flowctrl.integration.slack.SlackClientFactory;
-import flowctrl.integration.slack.rtm.Event;
-import flowctrl.integration.slack.rtm.EventListener;
-import flowctrl.integration.slack.rtm.SlackRealTimeMessagingClient;
-import flowctrl.integration.slack.type.Attachment;
-import flowctrl.integration.slack.type.User;
-import flowctrl.integration.slack.webapi.SlackWebApiClient;
-import flowctrl.integration.slack.webapi.method.chats.ChatPostMessageMethod;
+import allbegray.slack.SlackClientFactory;
+import allbegray.slack.rtm.Event;
+import allbegray.slack.rtm.EventListener;
+import allbegray.slack.rtm.SlackRealTimeMessagingClient;
+import allbegray.slack.type.Attachment;
+import allbegray.slack.type.User;
+import allbegray.slack.webapi.SlackWebApiClient;
+import allbegray.slack.webapi.method.chats.ChatPostMessageMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractBinding;
@@ -60,7 +60,7 @@ public class SlackBinding extends AbstractBinding<Object> {
 				try {
 					String json = mapper.writeValueAsString(jsonNode);
 					logger.debug("json payload: "+json);
-					flowctrl.integration.slack.type.Message slackMsg = mapper.treeToValue(jsonNode,flowctrl.integration.slack.type.Message.class);
+					allbegray.slack.type.Message slackMsg = mapper.treeToValue(jsonNode,allbegray.slack.type.Message.class);
 
 					logger.info("Got a message: " + slackMsg.getText());
 					String channelId = jsonNode.get("channel").asText();
@@ -135,7 +135,7 @@ public class SlackBinding extends AbstractBinding<Object> {
 		webApiClient.postMessage(cpmm);
 	}
 
-	private void dispatchMessage(String channel, flowctrl.integration.slack.type.Message slackMsg) {
+	private void dispatchMessage(String channel, allbegray.slack.type.Message slackMsg) {
 		String username = slackMsg.getUsername();
 
 		if(username == null && slackMsg.getUser() == null) {

@@ -27,9 +27,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.flowctrl</groupId>
+            <groupId>com.github.midoricorp</groupId>
             <artifactId>slack-api</artifactId>
-            <version>v1.1.0.RELEASE</version>
+            <version>master-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>com.sipstacks.xhtml-convert</groupId>
             <artifactId>xhtml-convert</artifactId>
-            <version>0.2</version>
+            <version>0.3-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
