@@ -7,9 +7,7 @@ import org.wanna.jabbot.event.EventDispatcher;
 import org.wanna.jabbot.event.handlers.EventHandler;
 import org.wanna.jabbot.event.handlers.EventHandlerFactory;
 
-import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Task to load BindingEvent from a queue and process them.
@@ -19,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author Vincent Morsiani [vmorsiani@voxbone.com]
  * @since 2016-03-03
  */
-public class EventQueueProcessor implements Runnable{
+public class EventQueueProcessor extends Thread{
 	private final Logger logger = LoggerFactory.getLogger(EventQueueProcessor.class);
 	private final BlockingQueue<BindingEvent> queue;
 	private final EventDispatcher dispatcher;
@@ -29,7 +27,8 @@ public class EventQueueProcessor implements Runnable{
 	 * @param queue Queue from which events will be consume
 	 * @param dispatcher Event dispatcher facility
 	 */
-	public EventQueueProcessor(BlockingQueue<BindingEvent> queue, EventDispatcher dispatcher) {
+	public EventQueueProcessor(BlockingQueue<BindingEvent> queue, EventDispatcher dispatcher, String threadName) {
+		super(threadName);
 		this.queue = queue;
 		this.dispatcher = dispatcher;
 	}
@@ -59,8 +58,14 @@ public class EventQueueProcessor implements Runnable{
 		}
 	}
 
-	public void stop(){
+	public void halt(){
 		running = false;
+		this.interrupt();
+		try {
+			this.join();
+		} catch (InterruptedException e) {
+			logger.error("could not join {}",this.getName(),e);
+		}
 	}
 }
 

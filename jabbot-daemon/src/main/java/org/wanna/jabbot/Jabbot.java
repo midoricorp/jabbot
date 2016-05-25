@@ -24,7 +24,7 @@ import java.util.concurrent.*;
  * @since 2014-05-30
  */
 public class Jabbot {
-	final Logger logger = LoggerFactory.getLogger(Jabbot.class);
+	private final Logger logger = LoggerFactory.getLogger(Jabbot.class);
 
 	private JabbotConfiguration configuration;
 	private BindingFactory bindingFactory;
@@ -44,16 +44,16 @@ public class Jabbot {
 		this.configuration = configuration;
 		this.bindingFactory = newConnectionFactory(configuration.getBindings());
 
-		this.incomingProcessor = new EventQueueProcessor(incomingQueue,outgoingDispatcher);
-		this.outgoingProcessor = new EventQueueProcessor(outgoingQueue,incomingDispatcher);
-
+		incomingProcessor = new EventQueueProcessor(incomingQueue,outgoingDispatcher,"Incoming Event Processor");
+		outgoingProcessor = new EventQueueProcessor(outgoingQueue,incomingDispatcher,"Outgoing Event Processor");
 		this.registerEventHandlers();
 	}
 
 	public boolean connect(){
+		incomingProcessor.start();
+		outgoingProcessor.start();
+
 		scheduledExecutorService.scheduleAtFixedRate(new BindingMonitor(bindings,outgoingDispatcher), 5L,60L, TimeUnit.SECONDS);
-		scheduledExecutorService.schedule(incomingProcessor,5L,TimeUnit.SECONDS);
-		scheduledExecutorService.schedule(outgoingProcessor,5L,TimeUnit.SECONDS);
 
 		for (final BindingConfiguration connectionConfiguration : configuration.getServerList()) {
 			final Binding conn;
@@ -75,8 +75,8 @@ public class Jabbot {
 	}
 
 	public void disconnect(){
-		incomingProcessor.stop();
-		outgoingProcessor.stop();
+		incomingProcessor.halt();
+		outgoingProcessor.halt();
 	}
 
 	private BindingFactory newConnectionFactory(Collection<ExtensionConfiguration> bindings){
@@ -107,7 +107,6 @@ public class Jabbot {
 		factory.register(ConnectionRequestEvent.class,new ConnectionRequestEventHandler());
 		factory.register(JoinRoomEvent.class,new JoinRoomEventHandler());
 		factory.register(OutgoingMessageEvent.class, new OutgoingMessageEventHandler());
-
 	}
 
 }
