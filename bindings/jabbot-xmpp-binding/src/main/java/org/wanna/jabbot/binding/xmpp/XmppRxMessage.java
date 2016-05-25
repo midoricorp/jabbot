@@ -1,9 +1,9 @@
 package org.wanna.jabbot.binding.xmpp;
 
-import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
-import org.wanna.jabbot.binding.messaging.MessageContent;
-import org.wanna.jabbot.binding.messaging.Resource;
-import org.wanna.jabbot.binding.messaging.RxMessage;
+import org.wanna.jabbot.messaging.DefaultMessageContent;
+import org.wanna.jabbot.messaging.MessageContent;
+import org.wanna.jabbot.messaging.Resource;
+import org.wanna.jabbot.messaging.RxMessage;
 
 /**
  * @author Vincent Morsiani [vmorsiani@voxbone.com]

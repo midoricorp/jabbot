@@ -4,13 +4,12 @@ import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
-import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
-import org.wanna.jabbot.binding.messaging.MessageContent;
+import org.wanna.jabbot.messaging.DefaultMessageContent;
+import org.wanna.jabbot.messaging.MessageContent;
 import org.wanna.jabbot.binding.privilege.Privilege;
 import org.wanna.jabbot.binding.privilege.PrivilegedAction;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.command.messaging.CommandMessage;
-import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
 
 import java.util.List;
 

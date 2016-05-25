@@ -1,6 +1,6 @@
-package org.wanna.jabbot.binding.messaging.body;
+package org.wanna.jabbot.messaging.body;
 
-import org.wanna.jabbot.binding.messaging.MessageContent;
+import org.wanna.jabbot.messaging.MessageContent;
 
 /**
  * BodyPart is a class which is part of a MessageContent.

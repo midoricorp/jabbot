@@ -2,7 +2,7 @@ package org.wanna.jabbot.binding;
 
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
-import org.wanna.jabbot.binding.messaging.TxMessage;
+import org.wanna.jabbot.messaging.TxMessage;
 
 /**
  * A Binding represent an implementation of a Chat protocol such like XMPP, IRC, etc.

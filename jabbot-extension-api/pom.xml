@@ -20,7 +20,7 @@
         </dependency>
         <dependency>
             <groupId>org.wanna.jabbot</groupId>
-            <artifactId>jabbot-binding-api</artifactId>
+            <artifactId>jabbot-messaging-api</artifactId>
             <version>0.4-SNAPSHOT</version>
         </dependency>
     </dependencies>

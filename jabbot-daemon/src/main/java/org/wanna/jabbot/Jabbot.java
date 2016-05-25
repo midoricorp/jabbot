@@ -7,7 +7,7 @@ import org.wanna.jabbot.binding.BindingCreationException;
 import org.wanna.jabbot.binding.BindingFactory;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
-import org.wanna.jabbot.binding.config.BindingDefinition;
+import org.wanna.jabbot.binding.config.ExtensionConfiguration;
 import org.wanna.jabbot.binding.event.*;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.config.JabbotConfiguration;
@@ -79,13 +79,13 @@ public class Jabbot {
 		outgoingProcessor.stop();
 	}
 
-	private BindingFactory newConnectionFactory(Collection<BindingDefinition> bindings){
+	private BindingFactory newConnectionFactory(Collection<ExtensionConfiguration> bindings){
 		BindingFactory factory =  new JabbotBindingFactory();
 		if(bindings == null){
 			return factory;
 		}
 
-		for (BindingDefinition binding : bindings) {
+		for (ExtensionConfiguration binding : bindings) {
 			try {
 				Class clazz = Class.<Command>forName(String.valueOf(binding.getClassName()));
                 @SuppressWarnings("unchecked")

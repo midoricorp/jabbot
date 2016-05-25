@@ -1,7 +1,7 @@
 package org.wanna.jabbot.binding;
 
 import org.wanna.jabbot.binding.config.RoomConfiguration;
-import org.wanna.jabbot.binding.messaging.TxMessage;
+import org.wanna.jabbot.messaging.TxMessage;
 
 /**
  * This is the actual representation of a binding chatroom

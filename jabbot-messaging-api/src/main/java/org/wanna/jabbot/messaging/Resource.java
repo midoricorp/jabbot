@@ -1,4 +1,4 @@
-package org.wanna.jabbot.binding.messaging;
+package org.wanna.jabbot.messaging;
 
 /**
  * A resource represent an entity which could either be a message sender or a messagage sender.

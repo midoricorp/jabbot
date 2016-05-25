@@ -1,4 +1,4 @@
-package org.wanna.jabbot.binding.messaging.body;
+package org.wanna.jabbot.messaging.body;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;

@@ -1,4 +1,4 @@
-package org.wanna.jabbot.binding.messaging;
+package org.wanna.jabbot.messaging;
 
 /**
  * TxMessage are message which are passed from the Core to a binding so that binding can submit it to the protocol

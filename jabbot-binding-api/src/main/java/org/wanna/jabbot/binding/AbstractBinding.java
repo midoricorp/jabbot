@@ -4,8 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.event.BindingEvent;
-import org.wanna.jabbot.binding.messaging.Resource;
-import org.wanna.jabbot.binding.messaging.TxMessage;
+import org.wanna.jabbot.messaging.Resource;
+import org.wanna.jabbot.messaging.TxMessage;
 
 import java.util.ArrayList;
 import java.util.List;

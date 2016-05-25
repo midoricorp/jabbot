@@ -2,12 +2,10 @@ package org.wanna.jabbot.command;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
-import org.wanna.jabbot.binding.messaging.MessageContent;
-import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
+import org.wanna.jabbot.messaging.DefaultMessageContent;
+import org.wanna.jabbot.messaging.MessageContent;
 import org.wanna.jabbot.command.config.CommandConfig;
 import org.wanna.jabbot.command.messaging.CommandMessage;
-import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

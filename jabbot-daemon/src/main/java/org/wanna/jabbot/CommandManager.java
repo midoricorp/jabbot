@@ -56,26 +56,32 @@ public class CommandManager {
      * @param configSet set of command configuration used for initializing the CommandFactory
      */
     public void initializeFromConfigSet(Set<ExtensionConfiguration> configSet) {
-        for (ExtensionConfiguration commandConfig : configSet) {
+        for (ExtensionConfiguration configuration : configSet) {
             try {
+                CommandConfig commandConfig = new CommandConfig();
+                commandConfig.setName(configuration.getName());
+                commandConfig.setClassName(configuration.getClassName());
+                commandConfig.setConfiguration(configuration.getConfiguration());
+                commandConfig.setHelpMessage(null);
+
                 @SuppressWarnings("unchecked")
-                Class<Command> commandClass = (Class<Command>) Class.forName(commandConfig.getClassName());
+                Class<Command> commandClass = (Class<Command>) Class.forName(configuration.getClassName());
                 Command command = commandClass.getDeclaredConstructor(CommandConfig.class).newInstance(commandConfig);
                 if (command instanceof CommandFactoryAware) {
                     ((CommandFactoryAware) command).setCommandFactory(commandFactory);
                 }
 
                 if (command instanceof Configurable) {
-                    ((Configurable) command).configure(commandConfig.getConfiguration());
+                    ((Configurable) command).configure(configuration.getConfiguration());
                 }
 
                 if( command instanceof BindingAware){
                     ((BindingAware)command).setBinding(binding);
                 }
-                commandFactory.register(commandConfig.getName(), command);
-                logger.info("registered command {} with alias '{}' in {}",command,commandConfig.getName(),binding);
+                commandFactory.register(configuration.getName(), command);
+                logger.info("registered command {} with alias '{}' in {}",command,configuration.getName(),binding);
             } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
-                logger.warn("failed to register command with config {}",commandConfig,e);
+                logger.warn("failed to register command with config {}",configuration,e);
             }
         }
     }

@@ -23,8 +23,8 @@ import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.binding.event.ConnectedEvent;
 import org.wanna.jabbot.binding.event.MessageEvent;
-import org.wanna.jabbot.binding.messaging.*;
-import org.wanna.jabbot.binding.messaging.body.BodyPart;
+import org.wanna.jabbot.messaging.*;
+import org.wanna.jabbot.messaging.body.BodyPart;
 
 import java.util.List;
 

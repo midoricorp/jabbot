@@ -2,15 +2,12 @@ package org.wanna.jabbot.binding.xmpp;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.StanzaListener;
-import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Stanza;
-import org.jxmpp.util.XmppStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.event.MessageEvent;
-import org.wanna.jabbot.binding.messaging.*;
 
 import java.util.ArrayList;
 import java.util.List;
