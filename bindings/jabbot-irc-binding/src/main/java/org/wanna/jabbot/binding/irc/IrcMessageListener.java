@@ -6,10 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.event.MessageEvent;
-import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
-import org.wanna.jabbot.binding.messaging.DefaultRxMessage;
-import org.wanna.jabbot.binding.messaging.DefaultResource;
-import org.wanna.jabbot.binding.messaging.RxMessage;
+import org.wanna.jabbot.messaging.DefaultMessageContent;
+import org.wanna.jabbot.messaging.DefaultRxMessage;
+import org.wanna.jabbot.messaging.DefaultResource;
+import org.wanna.jabbot.messaging.RxMessage;
 
 import java.util.ArrayList;
 import java.util.List;

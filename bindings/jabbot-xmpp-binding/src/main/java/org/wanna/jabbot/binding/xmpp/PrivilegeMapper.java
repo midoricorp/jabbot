@@ -4,7 +4,7 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
 import org.jivesoftware.smackx.muc.Occupant;
-import org.wanna.jabbot.binding.messaging.Resource;
+import org.wanna.jabbot.messaging.Resource;
 import org.wanna.jabbot.binding.privilege.Privilege;
 
 /**

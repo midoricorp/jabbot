@@ -1,8 +1,8 @@
 package org.wanna.jabbot.binding.event;
 
 import org.wanna.jabbot.binding.Binding;
-import org.wanna.jabbot.binding.messaging.RxMessage;
-import org.wanna.jabbot.binding.messaging.Resource;
+import org.wanna.jabbot.messaging.RxMessage;
+import org.wanna.jabbot.messaging.Resource;
 
 /**
  * @author Vincent Morsiani [vmorsiani@voxbone.com]

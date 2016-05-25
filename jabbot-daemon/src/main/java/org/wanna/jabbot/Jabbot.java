@@ -7,11 +7,12 @@ import org.wanna.jabbot.binding.BindingCreationException;
 import org.wanna.jabbot.binding.BindingFactory;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
-import org.wanna.jabbot.binding.config.BindingDefinition;
-import org.wanna.jabbot.binding.event.BindingEvent;
+import org.wanna.jabbot.binding.config.ExtensionConfiguration;
+import org.wanna.jabbot.binding.event.*;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.config.JabbotConfiguration;
 import org.wanna.jabbot.event.EventDispatcher;
+import org.wanna.jabbot.event.handlers.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,6 +46,8 @@ public class Jabbot {
 
 		this.incomingProcessor = new EventQueueProcessor(incomingQueue,outgoingDispatcher);
 		this.outgoingProcessor = new EventQueueProcessor(outgoingQueue,incomingDispatcher);
+
+		this.registerEventHandlers();
 	}
 
 	public boolean connect(){
@@ -76,13 +79,13 @@ public class Jabbot {
 		outgoingProcessor.stop();
 	}
 
-	private BindingFactory newConnectionFactory(Collection<BindingDefinition> bindings){
+	private BindingFactory newConnectionFactory(Collection<ExtensionConfiguration> bindings){
 		BindingFactory factory =  new JabbotBindingFactory();
 		if(bindings == null){
 			return factory;
 		}
 
-		for (BindingDefinition binding : bindings) {
+		for (ExtensionConfiguration binding : bindings) {
 			try {
 				Class clazz = Class.<Command>forName(String.valueOf(binding.getClassName()));
                 @SuppressWarnings("unchecked")
@@ -95,6 +98,16 @@ public class Jabbot {
 			}
 		}
 		return factory;
+	}
+
+	private void registerEventHandlers(){
+		EventHandlerFactory factory = EventHandlerFactory.getInstance();
+		factory.register(ConnectedEvent.class, new ConnectedEventHandler());
+		factory.register(MessageEvent.class, new MessageEventHandler());
+		factory.register(ConnectionRequestEvent.class,new ConnectionRequestEventHandler());
+		factory.register(JoinRoomEvent.class,new JoinRoomEventHandler());
+		factory.register(OutgoingMessageEvent.class, new OutgoingMessageEventHandler());
+
 	}
 
 }

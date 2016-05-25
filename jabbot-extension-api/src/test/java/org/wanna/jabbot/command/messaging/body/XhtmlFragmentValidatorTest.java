@@ -2,10 +2,10 @@ package org.wanna.jabbot.command.messaging.body;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.wanna.jabbot.binding.messaging.body.BodyPartValidator;
-import org.wanna.jabbot.binding.messaging.body.InvalidBodyPartException;
-import org.wanna.jabbot.binding.messaging.body.XhtmlBodyPart;
-import org.wanna.jabbot.binding.messaging.body.XhtmlFragmentValidator;
+import org.wanna.jabbot.messaging.body.BodyPartValidator;
+import org.wanna.jabbot.messaging.body.InvalidBodyPartException;
+import org.wanna.jabbot.messaging.body.XhtmlBodyPart;
+import org.wanna.jabbot.messaging.body.XhtmlFragmentValidator;
 import org.xml.sax.SAXParseException;
 
 import static org.hamcrest.CoreMatchers.*;

@@ -1,7 +1,7 @@
 package org.wanna.jabbot.config;
 
 import org.wanna.jabbot.binding.config.BindingConfiguration;
-import org.wanna.jabbot.binding.config.BindingDefinition;
+import org.wanna.jabbot.binding.config.ExtensionConfiguration;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @since 2014-08-09
  */
 public class JabbotConfiguration {
-	private List<BindingDefinition> bindings;
+	private List<ExtensionConfiguration> bindings;
 	private List<BindingConfiguration> serverList;
 
 	public List<BindingConfiguration> getServerList() {
@@ -20,11 +20,11 @@ public class JabbotConfiguration {
 		this.serverList = serverList;
 	}
 
-	public List<BindingDefinition> getBindings() {
+	public List<ExtensionConfiguration> getBindings() {
 		return bindings;
 	}
 
-	public void setBindings(List<BindingDefinition> bindings) {
+	public void setBindings(List<ExtensionConfiguration> bindings) {
 		this.bindings = bindings;
 	}
 }

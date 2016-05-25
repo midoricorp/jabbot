@@ -1,4 +1,4 @@
-package org.wanna.jabbot.binding.messaging;
+package org.wanna.jabbot.messaging;
 
 /**
  * RXMessages are message which are received from a Binding and then passed onto Jabbot core for futher processing

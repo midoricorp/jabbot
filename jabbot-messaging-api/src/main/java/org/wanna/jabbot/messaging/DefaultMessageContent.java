@@ -1,7 +1,7 @@
-package org.wanna.jabbot.binding.messaging;
+package org.wanna.jabbot.messaging;
 
-import org.wanna.jabbot.binding.messaging.body.BodyPart;
-import org.wanna.jabbot.binding.messaging.body.TextBodyPart;
+import org.wanna.jabbot.messaging.body.BodyPart;
+import org.wanna.jabbot.messaging.body.TextBodyPart;
 
 import java.util.Collection;
 import java.util.HashMap;

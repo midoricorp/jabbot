@@ -1,4 +1,4 @@
-package org.wanna.jabbot.binding.messaging;
+package org.wanna.jabbot.messaging;
 
 /**
  * @author Vincent Morsiani [vmorsiani@voxbone.com]

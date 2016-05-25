@@ -1,21 +1,18 @@
 package org.wanna.jabbot.binding.xmpp;
 
 import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.XMPPError;
-import org.jivesoftware.smack.util.XmlStringBuilder;
 import org.jivesoftware.smackx.muc.DiscussionHistory;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
-import org.jivesoftware.smackx.xhtmlim.packet.XHTMLExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.binding.event.RoomJoinedEvent;
-import org.wanna.jabbot.binding.messaging.MessageContent;
-import org.wanna.jabbot.binding.messaging.TxMessage;
-import org.wanna.jabbot.binding.messaging.body.BodyPart;
+import org.wanna.jabbot.messaging.TxMessage;
 
 import java.util.Date;
 
@@ -27,9 +24,11 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 	public final Logger logger = LoggerFactory.getLogger(XmppRoom.class);
 	private MultiUserChat muc;
 	private RoomConfiguration configuration;
+	private XMPPConnection xmppConnection;
 
-	public XmppRoom(XmppBinding connection) {
+	public XmppRoom(XmppBinding connection, XMPPConnection xmppConnection) {
 		super(connection);
+		this.xmppConnection = xmppConnection;
 	}
 
 	public boolean sendMessage(final TxMessage response){
@@ -46,14 +45,14 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 	public boolean join(RoomConfiguration configuration) {
 		final int nickChangeAttempts = 5;
 		this.configuration = configuration;
-		muc = MultiUserChatManager.getInstanceFor(connection.getConnection()).getMultiUserChat(configuration.getName());
+		muc = MultiUserChatManager.getInstanceFor(xmppConnection).getMultiUserChat(configuration.getName());
 		String nickname = configuration.getNickname();
 		int i = 0;
 		while(i<nickChangeAttempts){
 			try{
 				DiscussionHistory history = new DiscussionHistory();
 				history.setSince(new Date());
-				muc.join(nickname,null,history,connection.getConnection().getPacketReplyTimeout());
+				muc.join(nickname,null,history,xmppConnection.getPacketReplyTimeout());
 				logger.info("[XMPP] joining room {}",configuration.getName());
 				connection.dispatchEvent(new RoomJoinedEvent(connection,this));
 				return true;

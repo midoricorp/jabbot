@@ -1,7 +1,7 @@
 package org.wanna.jabbot.event.handlers;
 
 import org.wanna.jabbot.binding.event.OutgoingMessageEvent;
-import org.wanna.jabbot.binding.messaging.TxMessage;
+import org.wanna.jabbot.messaging.TxMessage;
 import org.wanna.jabbot.event.EventDispatcher;
 
 /**

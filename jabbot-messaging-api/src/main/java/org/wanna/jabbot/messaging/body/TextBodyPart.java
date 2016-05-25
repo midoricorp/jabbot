@@ -1,4 +1,4 @@
-package org.wanna.jabbot.binding.messaging.body;
+package org.wanna.jabbot.messaging.body;
 
 /**
  * This is the Raw Text implementation of BodyPart

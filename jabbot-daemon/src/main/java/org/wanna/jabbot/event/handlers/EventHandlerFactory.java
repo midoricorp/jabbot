@@ -16,12 +16,6 @@ public class EventHandlerFactory {
 
 	private EventHandlerFactory(){
 		registry = new HashMap<>();
-
-		register(ConnectedEvent.class, new ConnectedEventHandler());
-		register(MessageEvent.class, new MessageEventHandler());
-		register(ConnectionRequestEvent.class,new ConnectionRequestEventHandler());
-		register(JoinRoomEvent.class,new JoinRoomEventHandler());
-		register(OutgoingMessageEvent.class, new OutgoingMessageEventHandler());
 	}
 
 	public static EventHandlerFactory getInstance(){

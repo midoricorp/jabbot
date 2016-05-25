@@ -1,4 +1,4 @@
-package org.wanna.jabbot.binding.messaging.body;
+package org.wanna.jabbot.messaging.body;
 
 /**
  * This is the XHTML implementation of BodyPart

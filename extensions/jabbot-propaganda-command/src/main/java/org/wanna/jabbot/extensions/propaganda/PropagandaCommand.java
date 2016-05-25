@@ -1,10 +1,9 @@
 package org.wanna.jabbot.extensions.propaganda;
 
-import org.wanna.jabbot.binding.messaging.DefaultMessageContent;
-import org.wanna.jabbot.binding.messaging.MessageContent;
+import org.wanna.jabbot.messaging.DefaultMessageContent;
+import org.wanna.jabbot.messaging.MessageContent;
 import org.wanna.jabbot.command.AbstractCommandAdapter;
 import org.wanna.jabbot.command.messaging.CommandMessage;
-import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
 import org.wanna.jabbot.command.config.CommandConfig;
 
 import java.io.InputStream;

@@ -8,7 +8,6 @@ import org.apache.commons.daemon.DaemonInitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
-import org.wanna.jabbot.config.ExtensionConfigurationModule;
 import org.wanna.jabbot.config.JabbotConfiguration;
 
 import java.io.IOException;
@@ -57,7 +56,6 @@ public class Launcher implements Daemon{
 
 	private JabbotConfiguration newConfiguration(InputStream is){
 		ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new ExtensionConfigurationModule());
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		try {
 			return mapper.readValue(is,JabbotConfiguration.class);

@@ -49,7 +49,7 @@ public class IrcBinding extends AbstractBinding<IRCApi> {
 
 	@Override
 	public Room joinRoom(RoomConfiguration configuration) {
-		Room room = new IrcRoom(this);
+		Room room = new IrcRoom(this,connection);
 		room.join(configuration);
 		rooms.put("#" + room.getRoomName(), room);
 

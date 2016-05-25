@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractRoom;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.binding.event.MessageEvent;
-import org.wanna.jabbot.binding.messaging.*;
-import org.wanna.jabbot.binding.messaging.body.BodyPart;
+import org.wanna.jabbot.messaging.*;
+import org.wanna.jabbot.messaging.body.BodyPart;
 
 import java.io.BufferedReader;
 import java.io.IOException;

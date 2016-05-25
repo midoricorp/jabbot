@@ -1,4 +1,4 @@
-package org.wanna.jabbot.binding.messaging.body;
+package org.wanna.jabbot.messaging.body;
 
 /**
  * Exception which is raised during the validation phase of a BodyPart

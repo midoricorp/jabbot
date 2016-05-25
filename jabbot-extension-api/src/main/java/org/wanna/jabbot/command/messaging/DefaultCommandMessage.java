@@ -1,6 +1,6 @@
 package org.wanna.jabbot.command.messaging;
 
-import org.wanna.jabbot.binding.messaging.Resource;
+import org.wanna.jabbot.messaging.Resource;
 
 /**
  * @author vmorsiani <vmorsiani>

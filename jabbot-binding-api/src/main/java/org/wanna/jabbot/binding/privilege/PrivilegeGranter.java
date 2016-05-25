@@ -1,11 +1,11 @@
 package org.wanna.jabbot.binding.privilege;
 
-import org.wanna.jabbot.binding.messaging.Resource;
+import org.wanna.jabbot.messaging.Resource;
 
 /**
  * Interface which should be implemented by any class which is allowed to check a resource privilege
  *
- * @see {@link org.wanna.jabbot.binding.messaging.Resource}
+ * @see {@link Resource}
  * @author Vincent Morsiani [vmorsiani@voxbone.com]
  * @since 2015-09-04
  */
