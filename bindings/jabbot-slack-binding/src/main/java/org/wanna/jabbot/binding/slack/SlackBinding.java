@@ -85,6 +85,9 @@ public class SlackBinding extends AbstractBinding<Object> {
 
 	@Override
 	public boolean isConnected() {
+		if (connected) {
+			connected = rtmClient.ping();
+		}
 		return connected;
 	}
 

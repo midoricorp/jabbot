@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.github.midoricorp</groupId>
             <artifactId>slack-api</artifactId>
-            <version>master-SNAPSHOT</version>
+            <version>00a6ad21e621167b474462606ba4abf95008017b</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
