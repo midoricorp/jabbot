@@ -41,8 +41,10 @@ public interface Binding<T> {
 
     /**
      * Retrieves the connection
+	 * Usage of this method is strongly discouraged as it will disappear in later version of the api.
      * @return connection
      */
+	@Deprecated
     T getConnection();
 
 	BindingConfiguration getConfiguration();

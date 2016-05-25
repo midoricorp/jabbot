@@ -19,14 +19,15 @@ import java.util.StringTokenizer;
 public class IrcRoom extends AbstractRoom<IrcBinding> {
 	private final static Logger logger = LoggerFactory.getLogger(IrcRoom.class);
 	private RoomConfiguration configuration;
+	private IRCApi ircApi;
 
-	public IrcRoom(IrcBinding connection) {
+	public IrcRoom(IrcBinding connection, IRCApi ircApi) {
 		super(connection);
+		this.ircApi = ircApi;
 	}
 
 	@Override
 	public boolean sendMessage(TxMessage response) {
-		IRCApi ircApi = connection.getConnection();
 		StringTokenizer tokenizer  = new StringTokenizer(response.getMessageContent().getBody(),"\n");
 		while (tokenizer.hasMoreElements()){
 			ircApi.message("#"+configuration.getName(),tokenizer.nextToken());
@@ -37,7 +38,6 @@ public class IrcRoom extends AbstractRoom<IrcBinding> {
 	@Override
 	public boolean join(final RoomConfiguration configuration) {
 		this.configuration = configuration;
-		IRCApi ircApi = connection.getConnection();
 		ircApi.joinChannel(configuration.getName(), new Callback<IRCChannel>() {
 			@Override
 			public void onSuccess(IRCChannel ircChannel) {

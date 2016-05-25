@@ -80,7 +80,7 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 
 	@Override
 	public Room joinRoom(RoomConfiguration configuration) {
-		Room room = new XmppRoom(this);
+		Room room = new XmppRoom(this,connection);
 		room.join(configuration);
 		rooms.put(configuration.getName(),room);
 
