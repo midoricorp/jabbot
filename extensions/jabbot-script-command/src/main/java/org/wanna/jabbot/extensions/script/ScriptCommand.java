@@ -190,8 +190,12 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			}
 
 			if (command instanceof ScriptScript) {
-				ScriptScript ss = (ScriptScript)command;
-				s.addStatementFunction(ss.name, ss.scriptCmd);
+				// on startup scripts can conflict with variables
+				// dependencies already included in file
+				if (!startup) {
+					ScriptScript ss = (ScriptScript) command;
+					s.addStatementFunction(ss.name, ss.scriptCmd);
+				}
 			} else {
 
 				s.addStatementFunction(command.getCommandName(), new ExternalCommand() {
