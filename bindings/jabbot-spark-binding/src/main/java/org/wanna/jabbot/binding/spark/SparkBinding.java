@@ -14,6 +14,7 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.wanna.jabbot.binding.event.ConnectedEvent;
+import org.wanna.jabbot.messaging.TxMessage;
 
 /**
  * @author tsearle <tsearle>
@@ -21,16 +22,17 @@ import org.wanna.jabbot.binding.event.ConnectedEvent;
  */
 public class SparkBinding extends AbstractBinding<Object> {
 	private final Logger logger = LoggerFactory.getLogger(SparkBinding.class);
-	private Hashtable<String,Room> roomMap = null;
+	private Hashtable<String,SparkRoom> roomMap = null;
 	com.ciscospark.Spark spark = null;
 	boolean useWebhook = false;
 	String webhookUrl = "";
 	com.ciscospark.SparkServlet sparkServlet = null;
 	private boolean connected;
+	RoomPoller poller;
 
 	public SparkBinding(BindingConfiguration configuration) {
 		super(configuration);
-		roomMap = new Hashtable<String,Room>();
+		roomMap = new Hashtable<String,SparkRoom>();
 
 		if (configuration.getParameters() != null) {
 			if (configuration.getParameters().containsKey("use_webhook")) {
@@ -71,11 +73,23 @@ public class SparkBinding extends AbstractBinding<Object> {
 				spark.webhooks().path("/"+hk.getId()).delete();
 			}
 
+			Iterator<com.ciscospark.Room> rooms = spark.rooms().iterate();
+
+			while (rooms.hasNext()) {
+				com.ciscospark.Room room = rooms.next();
+				SparkRoom sr = new SparkRoom(this,listeners);
+				if(sr.create(room)) {
+					roomMap.put(room.getId(),sr);
+				}
+			}
 
 			connected = true;
 		}else{
 			connected = true;
 		}
+
+		poller = new RoomPoller();
+		poller.start();
 
 		if(connected == true){
 			super.dispatchEvent(new ConnectedEvent(this));
@@ -85,12 +99,18 @@ public class SparkBinding extends AbstractBinding<Object> {
 	}
 
 	@Override
+	public void sendMessage(TxMessage response) {
+		String id = response.getDestination().getAddress();
+		SparkRoom sr = roomMap.get(id);
+		if(sr != null) {
+			sr.sendMessage(response);
+		}
+
+	}
+
+	@Override
 	public Room joinRoom(RoomConfiguration configuration) {
-		logger.debug("Joining room " + configuration.getName());
-		Room room = new SparkRoom(this,listeners);
-		roomMap.put(configuration.getName(),room);
-		room.join(configuration);
-		return room;
+		return null;
 	}
 
 	@Override
@@ -104,6 +124,37 @@ public class SparkBinding extends AbstractBinding<Object> {
 
 	@Override
 	public Room getRoom(String roomName) {
-		return roomMap.get(roomName);
+		return null;
+	}
+
+	private class RoomPoller extends Thread {
+		public RoomPoller() {
+			super("Spark Room Poller");
+		}
+
+		@Override
+		public void run() {
+
+			while (true) {
+				try {
+					Thread.sleep(60000);
+				} catch (InterruptedException e) {
+				}
+				Iterator<com.ciscospark.Room> rooms = spark.rooms().iterate();
+
+				while (rooms.hasNext()) {
+					com.ciscospark.Room room = rooms.next();
+					if (roomMap.get(room.getId()) == null) {
+						SparkRoom sr = new SparkRoom(SparkBinding.this, listeners);
+						if (sr.create(room)) {
+							roomMap.put(room.getId(), sr);
+							sr.sendMessage("^_^");
+						}
+					}
+				}
+			}
+
+
+		}
 	}
 }

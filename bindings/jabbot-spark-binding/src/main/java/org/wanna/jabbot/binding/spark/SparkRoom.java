@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  */
 public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 	private final static Logger logger = LoggerFactory.getLogger(SparkRoom.class);
-	private RoomConfiguration configuration;
+//	private RoomConfiguration configuration;
 	private final List<BindingListener> listeners;
 	private com.ciscospark.Room room;
 	private com.ciscospark.Spark spark;
@@ -102,28 +102,19 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 		}
 	}
 
-	@Override
-	public boolean join(final RoomConfiguration configuration) {
-		this.configuration = configuration;
 
-		Iterator<com.ciscospark.Room> rooms = spark.rooms().iterate();
-		while(rooms.hasNext()) {
-			com.ciscospark.Room rm = rooms.next();
-			logger.debug("comparing room " + rm.getTitle() 
-					+ " to " + configuration.getName());
-			if(rm.getTitle().equals(configuration.getName())) {
-				room = rm;
-				break;
-			}
-		}
-
+	public boolean create(String roomId) {
+		com.ciscospark.Room room  = spark.rooms().path("/"+roomId).get();
 		if (room == null) {
-			logger.info("Room " + configuration.getName() + " not found. Creating!");
-			room = new com.ciscospark.Room();
-			room.setTitle(configuration.getName());
-			room = spark.rooms().post(room);
-			logger.info("Room created id: " + room.getId());
+			return false;
 		}
+		return create(room);
+	}
+
+	public boolean create(com.ciscospark.Room room) {
+
+		this.room = room;
+
 		if (!useWebhook) {
 			new Thread(this).start();
 		} else {
@@ -133,23 +124,23 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 			hook.setResource("messages");
 			hook.setEvent("created");
 			hook.setFilter("roomId=" + room.getId());
-			spark.webhooks().post(hook);
-			logger.info("created webhook " + hook.getName() + " id: " + hook.getId());
-
+			hook = spark.webhooks().post(hook);
+			logger.info("created webhook " + hook.getName() + " id: " + hook.getId() + " for room: " + room.getTitle());
+			final String roomId = room.getId();
 			servlet.addListener( new com.ciscospark.WebhookEventListener() {
-					public void onEvent(com.ciscospark.WebhookEvent event) {
-							if (event.getData().getRoomId().equals(room.getId())) {
-								com.ciscospark.Message msg = event.getData();
-								if(msg.getText() == null) {
-									logger.info("Getting full message for " + event.getData().getId());
-									msg = spark.messages().path("/"+event.getData().getId()).get();
-								} else {
-									logger.info("MessageContent already in webhook, delivering");
-								}
-								dispatchMessage(msg);
-							}
+				public void onEvent(com.ciscospark.WebhookEvent event) {
+					com.ciscospark.Message msg = event.getData();
+					if(event.getData().getRoomId().equals(roomId)) {
+						if (msg.getText() == null) {
+							logger.info("Getting full message for " + event.getData().getId());
+							msg = spark.messages().path("/" + event.getData().getId()).get();
+						} else {
+							logger.info("MessageContent already in webhook, delivering");
+						}
+						dispatchMessage(msg);
 					}
-				});
+				}
+			});
 		}
 		return true;
 	}
@@ -157,26 +148,35 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 	private void dispatchMessage(com.ciscospark.Message msg) {
 		for (BindingListener listener : listeners) {
 			RxMessage request = new DefaultRxMessage(new DefaultMessageContent(msg.getText()),
-					new DefaultResource(this.getRoomName(),msg.getPersonEmail()));
+					new DefaultResource(room.getId(),msg.getPersonEmail()));
 		    listener.eventReceived(new MessageEvent(this.connection,request));
 		}
 	}
 
-	@Override
-	public String getRoomName() {
-		return configuration.getName();
+	public boolean sendMessage(TxMessage response) {
+		String body = response.getMessageContent().getBody();
+		sendMessage(body);
+		return true;
 	}
 
-	@Override
-	public boolean sendMessage(TxMessage response) {
+	public void sendMessage(String body) {
 		com.ciscospark.Message msg = new com.ciscospark.Message();
 		msg.setRoomId(room.getId());
-		msg.setText(response.getMessageContent().getBody());
-		Matcher m = urlPattern.matcher(response.getMessageContent().getBody());
+		msg.setText(body);
+		Matcher m = urlPattern.matcher(body);
 		if (m.find()) {
 			msg.setFile(m.group(0));
 		}
 		spark.messages().post(msg);
-		return true;
+	}
+
+	@Override
+	public boolean join(RoomConfiguration configuration) {
+		return false;
+	}
+
+	@Override
+	public String getRoomName() {
+		return room.getTitle();
 	}
 }
