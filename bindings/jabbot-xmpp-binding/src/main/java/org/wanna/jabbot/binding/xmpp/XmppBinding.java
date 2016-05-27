@@ -13,6 +13,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Stanza;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+import org.jivesoftware.smackx.muc.MultiUserChatManager;
 import org.jivesoftware.smackx.ping.PingManager;
 import org.jivesoftware.smackx.receipts.DeliveryReceipt;
 import org.jxmpp.util.XmppStringUtils;
@@ -103,6 +104,7 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 
 		XmppMessageListener commandListener = new XmppMessageListener(this,listeners);
 		connection.addAsyncStanzaListener(commandListener,filter);
+		MultiUserChatManager.getInstanceFor(connection).addInvitationListener(new InvitationListener(this,listeners));
 	}
 
 	@Override
