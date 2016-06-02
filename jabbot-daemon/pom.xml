@@ -19,86 +19,20 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.5.3</version>
         </dependency>
-        <!-- Load Bindings dependencies -->
+
         <dependency>
-            <groupId>org.wanna.jabbot.bindings</groupId>
-            <artifactId>jabbot-xmpp-binding</artifactId>
+            <groupId>org.wanna.jabbot</groupId>
+            <artifactId>jabbot-binding-api</artifactId>
             <version>0.4-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.wanna.jabbot.bindings</groupId>
-            <artifactId>jabbot-irc-binding</artifactId>
+            <groupId>org.wanna.jabbot</groupId>
+            <artifactId>jabbot-extension-api</artifactId>
             <version>0.4-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.wanna.jabbot.bindings</groupId>
-            <artifactId>jabbot-cli-binding</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wanna.jabbot.bindings</groupId>
-            <artifactId>jabbot-spark-binding</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wanna.jabbot.bindings</groupId>
-            <artifactId>jabbot-slack-binding</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
-        <!-- Load Extensions dependencies -->
-        <dependency>
-            <groupId>org.wanna.jabbot.extensions</groupId>
-            <artifactId>jabbot-base-extensions</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wanna.jabbot.extensions</groupId>
-            <artifactId>jabbot-quote-command</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wanna.jabbot.extensions</groupId>
-            <artifactId>jabbot-foaas-command</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wanna.jabbot.extensions</groupId>
-            <artifactId>jabbot-jira-extensions</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wanna.jabbot.extensions</groupId>
-            <artifactId>jabbot-dice-command</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wanna.jabbot.extensions</groupId>
-            <artifactId>chuck-icndb-extension</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wanna.jabbot.extensions</groupId>
-            <artifactId>jabbot-call-command</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wanna.jabbot.extensions</groupId>
-            <artifactId>jabbot-propaganda-command</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wanna.jabbot.extensions</groupId>
-            <artifactId>jabbot-translate-command</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wanna.jabbot.extensions</groupId>
-            <artifactId>jabbot-cgi-command</artifactId>
-            <version>0.4-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.wanna.jabbot.extensions</groupId>
-            <artifactId>jabbot-script-command</artifactId>
+            <groupId>org.wanna.jabbot</groupId>
+            <artifactId>jabbot-messaging-api</artifactId>
             <version>0.4-SNAPSHOT</version>
         </dependency>
         <!-- Logging -->
@@ -157,13 +91,98 @@
                                 <id>make-assembly</id>
                                 <phase>install</phase>
                                 <goals>
-                                    <goal>attached</goal>
+                                    <goal>single</goal>
                                 </goals>
                             </execution>
                         </executions>
                     </plugin>
                 </plugins>
             </build>
+            <dependencies>
+                <!-- Load Extensions dependencies -->
+
+                <dependency>
+                    <groupId>org.wanna.jabbot.extensions</groupId>
+                    <artifactId>jabbot-base-extensions</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wanna.jabbot.extensions</groupId>
+                    <artifactId>jabbot-quote-command</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wanna.jabbot.extensions</groupId>
+                    <artifactId>jabbot-foaas-command</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wanna.jabbot.extensions</groupId>
+                    <artifactId>jabbot-jira-extensions</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wanna.jabbot.extensions</groupId>
+                    <artifactId>jabbot-dice-command</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wanna.jabbot.extensions</groupId>
+                    <artifactId>chuck-icndb-extension</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wanna.jabbot.extensions</groupId>
+                    <artifactId>jabbot-call-command</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wanna.jabbot.extensions</groupId>
+                    <artifactId>jabbot-propaganda-command</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wanna.jabbot.extensions</groupId>
+                    <artifactId>jabbot-translate-command</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wanna.jabbot.extensions</groupId>
+                    <artifactId>jabbot-cgi-command</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wanna.jabbot.extensions</groupId>
+                    <artifactId>jabbot-script-command</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <!-- Load Bindings dependencies -->
+                <dependency>
+                    <groupId>org.wanna.jabbot.bindings</groupId>
+                    <artifactId>jabbot-xmpp-binding</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wanna.jabbot.bindings</groupId>
+                    <artifactId>jabbot-irc-binding</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wanna.jabbot.bindings</groupId>
+                    <artifactId>jabbot-cli-binding</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wanna.jabbot.bindings</groupId>
+                    <artifactId>jabbot-spark-binding</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.wanna.jabbot.bindings</groupId>
+                    <artifactId>jabbot-slack-binding</artifactId>
+                    <version>0.4-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 

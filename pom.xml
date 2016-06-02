@@ -9,10 +9,12 @@
     <modules>
         <module>jabbot-messaging-api</module>
         <module>jabbot-extension-api</module>
+        <module>extensions/jabbot-extension-helpers</module>
         <module>extensions</module>
         <module>jabbot-binding-api</module>
         <module>bindings</module>
         <module>jabbot-daemon</module>
+        <module>extension-assembly</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -42,6 +44,35 @@
     </dependencyManagement>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.wanna.jabbot</groupId>
+                            <artifactId>extension-assembly</artifactId>
+                            <version>0.4-SNAPSHOT</version>
+                        </dependency>
+                    </dependencies>
+                    <executions>
+                        <execution>
+                            <id>extension-packaging</id>
+                            <goals>
+                                <goal>single</goal>
+                            </goals>
+                            <phase>package</phase>
+                            <configuration>
+                                <appendAssemblyId>false</appendAssemblyId>
+                                <descriptorRefs>
+                                    <descriptorRef>extension-packaging</descriptorRef>
+                                </descriptorRefs>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

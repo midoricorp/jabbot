@@ -1,1 +1,3 @@
-{"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"}
+[
+  {"name":"dice","className":"org.wanna.jabbot.extensions.dice.RollCommand"}
+]

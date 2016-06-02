@@ -1,27 +1,7 @@
 {
-    "bindings":[
-        {   "name":"XMPP",
-            "className":"org.wanna.jabbot.binding.xmpp.XmppBinding"
-        },
-        {
-            "name":"IRC",
-            "className":"org.wanna.jabbot.binding.irc.IrcBinding"
-        },
-        {
-            "name":"CLI",
-            "className":"org.wanna.jabbot.binding.cli.CliBinding"
-        },
-        {
-            "className" : "org.wanna.jabbot.binding.spark.SparkBinding",
-            "name" : "SPARK"
-        },
-        {
-            "name":"SLACK",
-            "className":"org.wanna.jabbot.binding.slack.SlackBinding"
-        }
-    ],
+  	"extensionsFolder":"/var/lib/jabbot/extensions",
     "serverList":[
-        {   "type" : "XMPP",
+        {   "type" : "org.wanna.jabbot.binding.xmpp.XmppBinding",
             "url":"localhost",
             "serverName":"localhost",
             "port":5222,
@@ -40,6 +20,7 @@
             "extensions":[
                 {"name":"help","type":"command","className":"org.wanna.jabbot.command.HelpCommand"},
                 {"name":"uptime","type":"command","className":"org.wanna.jabbot.command.UptimeCommand"},
+                {"name":"chuck", "type":"command","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
                 {"name": "script","type":"command","className": "org.wanna.jabbot.extensions.script.ScriptCommand",
                     "configuration": {
                         "loop_limit": "100",

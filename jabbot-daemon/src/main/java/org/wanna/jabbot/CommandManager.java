@@ -9,8 +9,8 @@ import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.behavior.Configurable;
+import org.wanna.jabbot.extension.ExtensionLoader;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -55,12 +55,10 @@ public class CommandManager {
      * @param configSet set of command configuration used for initializing the CommandFactory
      */
     public void initializeFromConfigSet(Set<ExtensionConfiguration> configSet) {
+        ExtensionLoader loader = ExtensionLoader.getInstance();
         for (ExtensionConfiguration configuration : configSet) {
-            try {
-
-                @SuppressWarnings("unchecked")
-                Class<Command> commandClass = (Class<Command>) Class.forName(configuration.getClassName());
-                Command command = commandClass.getDeclaredConstructor(String.class).newInstance(configuration.getName());
+            Command command = loader.getExtension(configuration.getClassName(),Command.class,configuration.getName());
+            if(command != null) {
                 if (command instanceof CommandFactoryAware) {
                     ((CommandFactoryAware) command).setCommandFactory(commandFactory);
                 }
@@ -69,13 +67,11 @@ public class CommandManager {
                     ((Configurable) command).configure(configuration.getConfiguration());
                 }
 
-                if( command instanceof BindingAware){
-                    ((BindingAware)command).setBinding(binding);
+                if (command instanceof BindingAware) {
+                    ((BindingAware) command).setBinding(binding);
                 }
                 commandFactory.register(configuration.getName(), command);
-                logger.info("registered command {} with alias '{}' in {}",command,configuration.getName(),binding);
-            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
-                logger.warn("failed to register command with config {}",configuration,e);
+                logger.info("registered command {} with alias '{}' in {}", command, configuration.getName(), binding);
             }
         }
     }

@@ -10,8 +10,17 @@ import java.util.List;
  * @since 2014-08-09
  */
 public class JabbotConfiguration {
+	private String extensionsFolder;
 	private List<ExtensionConfiguration> bindings;
 	private List<BindingConfiguration> serverList;
+
+	public String getExtensionsFolder() {
+		return extensionsFolder;
+	}
+
+	public void setExtensionsFolder(String extensionsFolder) {
+		this.extensionsFolder = extensionsFolder;
+	}
 
 	public List<BindingConfiguration> getServerList() {
 		return serverList;

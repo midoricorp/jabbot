@@ -1,6 +1,7 @@
-{
+[{
 	"className":"org.wanna.jabbot.binding.cli.CliBinding",
 	"name": "CLI",
         "url":"localhost",
 	"port":0
-}
+}]
+
