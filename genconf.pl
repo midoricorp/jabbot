@@ -209,14 +209,10 @@ sub makeCommands {
 
 sub makeServer {
 	my @serverKeys = ('url', 'serverName', 'port', 'username', 'password', 'identifier', "commandPrefix", "debug");
-
 	my $serverConfig = { 'debug' => JSON::XS::false, "commandPrefix"=>"!" };
-
 	my $type = shift;
-
-	$serverConfig->{'type'} = $type;
-
 	my $binding;
+
 	foreach $b (@binding_templates) {
 		if ($b->{'name'} eq $type) {
 			$binding = $b;
@@ -228,7 +224,8 @@ sub makeServer {
 		print "\nBinding $type not found!\n";
 		return;
 	}
-
+	
+	$serverConfig->{'type'} = $binding->{'className'};
 	foreach my $key (@serverKeys) {
 		if (defined $binding->{$key}) {
 			$serverConfig->{$key} = $binding->{$key};
@@ -284,8 +281,14 @@ foreach my $binding (@binding_files) {
 	open FILE, "<$binding";
 	my @data = <FILE>;
 	close FILE;
-	push @binding_templates, decode_json(join("", @data));
-
+        my $json =(decode_json(join("", @data)));
+        if( ref($json) eq 'ARRAY'){
+            foreach my $element (@$json){
+                push @binding_templates, $element
+            }
+        }else{
+            push @binding_templates, $json;
+        }
 }
 
 my @extension_files = glob("$basedir/extensions/*/src/main/resources/config.json");
@@ -311,7 +314,6 @@ foreach my $extension (@extension_files) {
 
 $saved_values = new Config::Simple(syntax=>'ini');
 $saved_values->read("$basedir/saved_values.ini");
-makeBindings();
 makeServerList();
 $saved_values->save();
 
