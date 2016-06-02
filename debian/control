@@ -18,3 +18,75 @@ Depends: ${misc:Depends},
 Description: Midori is a multi-protocol bot that can be easily
  Extended with plugins and is highly scriptable.
 
+Package: jabbot-xmpp-binding
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: XMPP binding for jabbot
+
+Package: jabbot-spark-binding
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: Cisco SPARK binding for jabbot
+
+Package: jabbot-irc-binding
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: IRC binding for jabbot
+
+Package: jabbot-cli-binding
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: CLI binding for jabbot
+
+Package: jabbot-slack-binding
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: SLACK binding for jabbot
+
+Package: jabbot-chuck-icndb-command
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: icndb.com command for jabbot
+
+Package: jabbot-base-command
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: base command set for jabbot such like help, uptime, version
+
+Package: jabbot-foaas-command
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: foaas.com command for jabbot
+
+Package: jabbot-script-command
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: jabbot scripting commands
+
+Package: jabbot-jira-command
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: jira commands for jabbot
+
+Package: jabbot-translate-command
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: translate commands for jabbot
+
+Package: jabbot-propaganda-command
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: propaganda command for jabbot
+
+Package: jabbot-dice-command
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: dice command for jabbot
+
+Package: jabbot-cgi-command
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: cgi integration command for jabbot
+
+
+

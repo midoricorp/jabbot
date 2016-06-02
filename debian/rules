@@ -32,6 +32,11 @@ build-indep-stamp:
 	tar -xvzf $(CURDIR)/jabbot-daemon/target/jabbot-daemon-$(version).tar.gz -C $(CURDIR)/build/
 	mv $(CURDIR)/build/jabbot-daemon-$(version) $(CURDIR)/build/jabbot-daemon
 	chmod -x $(CURDIR)/build/jabbot-daemon/lib/*.jar
+
+	mkdir -p $(CURDIR)/build/extensions
+	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec tar -xzf {} -C $(CURDIR)/build/extensions  \;
+	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec tar -xzf {} -C $(CURDIR)/build/extensions  \;
+
 	mvn clean
 
 	touch $@

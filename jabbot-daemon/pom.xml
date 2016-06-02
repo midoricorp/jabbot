@@ -98,9 +98,11 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>all</id>
             <dependencies>
                 <!-- Load Extensions dependencies -->
-
                 <dependency>
                     <groupId>org.wanna.jabbot.extensions</groupId>
                     <artifactId>jabbot-base-extensions</artifactId>

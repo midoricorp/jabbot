@@ -30,6 +30,7 @@
             <groupId>org.wanna.jabbot</groupId>
             <artifactId>jabbot-binding-api</artifactId>
             <version>0.4-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

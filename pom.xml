@@ -64,6 +64,7 @@
                             <phase>package</phase>
                             <configuration>
                                 <appendAssemblyId>false</appendAssemblyId>
+                                <finalName>${project.artifactId}</finalName>
                                 <descriptorRefs>
                                     <descriptorRef>extension-packaging</descriptorRef>
                                 </descriptorRefs>
