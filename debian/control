@@ -1,7 +1,7 @@
 Source: jabbot
 Priority: optional
 Maintainer: Torrey Searle <tsearle@gmail.com>
-Build-Depends: debhelper (>> 7), javahelper, maven2, libxml-xpath-perl
+Build-Depends: debhelper (>> 7), javahelper, maven, libxml-xpath-perl
 Build-Depends-Indep: default-jdk
 Standards-Version: 3.8.0
 Section: contrib/comm

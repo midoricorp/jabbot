@@ -25,17 +25,20 @@ build-arch-stamp:
 build-indep: build-indep-stamp
 build-indep-stamp:
 	dh_testdir
+	dh_prep
+	dh_installdirs
 
 	# Build the package
 	mvn clean install -Pstandalone
 	mkdir $(CURDIR)/build
-	tar -xvzf $(CURDIR)/jabbot-daemon/target/jabbot-daemon-$(version).tar.gz -C $(CURDIR)/build/
+	tar -xvzf $(CURDIR)/jabbot-daemon/target/jabbot-daemon-$(version)-standalone.tar.gz -C $(CURDIR)/build/
 	mv $(CURDIR)/build/jabbot-daemon-$(version) $(CURDIR)/build/jabbot-daemon
 	chmod -x $(CURDIR)/build/jabbot-daemon/lib/*.jar
 
-	mkdir -p $(CURDIR)/build/extensions
-	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec tar -xzf {} -C $(CURDIR)/build/extensions  \;
-	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec tar -xzf {} -C $(CURDIR)/build/extensions  \;
+	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'mkdir -p "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
+	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'tar -xvzf {} -C  "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
+	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec bash -c 'mkdir -p "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
+	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec bash -c 'tar -xvzf {} -C  "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
 
 	mvn clean
 
@@ -53,10 +56,9 @@ clean:
 install-indep: build-indep
 	dh_testdir
 	dh_testroot
-	dh_prep
-	dh_installdirs
 	
 	#  mvn install
+
 
 binary-arch: build-arch
 	# Java packages are arch: all, nothing to do here
