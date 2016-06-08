@@ -31,7 +31,7 @@ build-indep-stamp:
 	# Build the package
 	@$(MVN) install -Pstandalone
 	mkdir $(CURDIR)/build
-	tar -xvzf $(CURDIR)/jabbot-daemon/target/jabbot-daemon-$(version)-standalone.tar.gz -C $(CURDIR)/build/
+	tar -xvzf $(CURDIR)/jabbot-daemon/target/jabbot-daemon-$(version).tar.gz -C $(CURDIR)/build/
 	mv $(CURDIR)/build/jabbot-daemon-$(version) $(CURDIR)/build/jabbot-daemon
 	chmod -x $(CURDIR)/build/jabbot-daemon/lib/*.jar
 
