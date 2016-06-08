@@ -3,6 +3,7 @@
 	"name": "SPARK",
         "url":"https://api.ciscospark.com/v1",
 	"port":443,
+	"type":"binding",
 	"parameters":{
 		"use_webhook":true,
 		"webhook_url":""

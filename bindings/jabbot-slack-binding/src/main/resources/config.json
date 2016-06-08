@@ -2,5 +2,6 @@
 	"className":"org.wanna.jabbot.binding.slack.SlackBinding",
 	"name": "SLACK",
         "url":"localhost",
-	"port":0
+	"port":0,
+	"type":"binding"
 }

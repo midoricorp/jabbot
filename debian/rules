@@ -61,12 +61,12 @@ install-indep: build-indep
 	dh_install jabbot-daemon/src/main/scripts/config.json etc/jabbot/jabbot-daemon/src/main/scripts/
 
 #things for extensions
-	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'mkdir -p "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
-	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'tar -xvzf {} -C  "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
+	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'mkdir -p "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/jabbot/extensions"' \;
+	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'tar -xvzf {} -C  "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/jabbot/extensions"' \;
 
 #things for bindings
-	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec bash -c 'mkdir -p "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
-	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec bash -c 'tar -xvzf {} -C  "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
+	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec bash -c 'mkdir -p "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/jabbot/extensions"' \;
+	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec bash -c 'tar -xvzf {} -C  "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/jabbot/extensions"' \;
 
 
 
