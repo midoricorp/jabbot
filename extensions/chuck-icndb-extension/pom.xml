@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>chuck-icndb-extension</artifactId>
+    <artifactId>jabbot-chuck-icndb-command</artifactId>
     <version>0.4-SNAPSHOT</version>
 
     <dependencies>

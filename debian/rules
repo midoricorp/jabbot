@@ -30,10 +30,6 @@ build-indep-stamp:
 
 	# Build the package
 	@$(MVN) install -Pstandalone
-	mkdir $(CURDIR)/build
-	tar -xvzf $(CURDIR)/jabbot-daemon/target/jabbot-daemon-$(version).tar.gz -C $(CURDIR)/build/
-	mv $(CURDIR)/build/jabbot-daemon-$(version) $(CURDIR)/build/jabbot-daemon
-	chmod -x $(CURDIR)/build/jabbot-daemon/lib/*.jar
 
 	touch $@
 
@@ -56,13 +52,22 @@ install-indep: build-indep
 	dh_prep
 	dh_installdirs
 
+#things to put in the main packages
+	mkdir $(CURDIR)/build
+	tar -xvzf $(CURDIR)/jabbot-daemon/target/jabbot-daemon-$(version).tar.gz -C $(CURDIR)/build/
+	mv $(CURDIR)/build/jabbot-daemon-$(version) $(CURDIR)/build/jabbot-daemon
+	chmod -x $(CURDIR)/build/jabbot-daemon/lib/*.jar
+
+	dh_install jabbot-daemon/src/main/scripts/config.json etc/jabbot/jabbot-daemon/src/main/scripts/
+
+#things for extensions
 	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'mkdir -p "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
 	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'tar -xvzf {} -C  "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
+
+#things for bindings
 	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec bash -c 'mkdir -p "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
 	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec bash -c 'tar -xvzf {} -C  "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
 
-	
-	#  mvn install
 
 
 binary-arch: build-arch
@@ -77,9 +82,6 @@ binary-indep: build-indep install-indep
 	#jh_installjavadoc -i
 	dh_installexamples
 	dh_install
-	dh_install jabbot-daemon/src/main/scripts/config.json etc/jabbot/jabbot-daemon/src/main/scripts/
-	find extensions/ -name config.json -printf "dh_install %h/%f etc/jabbot/%h\n"|bash -C
-	find bindings/ -name config.json -printf "dh_install %h/%f etc/jabbot/%h\n"|bash -C
 	dh_installinit
 	dh_installman
 	dh_lintian

@@ -7,7 +7,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>jabbot-base-extensions</artifactId>
+    <artifactId>jabbot-base-command</artifactId>
 
     <dependencies>
         <dependency>
