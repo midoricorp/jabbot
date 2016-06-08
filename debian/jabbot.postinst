@@ -23,16 +23,21 @@ case "$1" in
 		chown -R nobody:nogroup /var/log/jabbot
 		chown -R nobody:nogroup /var/lib/jabbot
 		chmod a+x /usr/share/jabbot/bin/genconf.pl
-		/usr/share/jabbot/bin/genconf.pl --basedir=/var/lib/jabbot/extensions
-		chown -R nobody:nogroup /etc/jabbot/jabbot.json
+		if [ "$(find /var/lib/jabbot/extensions/ -name config.json)" ]; then
+			echo extensions dir: "$(find /var/lib/jabbot/extensions/ -name config.json)"
+			/usr/share/jabbot/bin/genconf.pl --basedir=/var/lib/jabbot/extensions
+		fi
+		if [ -f /var/lib/jabbot/extensions/jabbot.json ]; then
+			chown -R nobody:nogroup /var/lib/jabbot/extensions/jabbot.json
+		fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
     ;;
     triggered)
-		chmod a+x /usr/share/jabbot/bin/genconf.pl
 		/usr/share/jabbot/bin/genconf.pl --basedir=/var/lib/jabbot/extensions
-		chown -R nobody:nogroup /etc/jabbot/jabbot.json
+		chown -R nobody:nogroup /var/lib/jabbot/extensions/jabbot.json
+		invoke-rc.d jabbot restart
     ;;
 
     *)

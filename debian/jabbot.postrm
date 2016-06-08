@@ -22,6 +22,8 @@ set -e
 case "$1" in
 	purge)
 		rm -rf /etc/jabbot
+		rm -f /var/lib/jabbot/extensions/saved_values.ini
+		rm -f /var/lib/jabbot/extensions/jabbot.json
 	;;
 
     remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)

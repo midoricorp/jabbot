@@ -278,7 +278,7 @@ my @binding_files = glob("$basedir/bindings/*/src/main/resources/config.json"); 
 my @extension_files = glob("$basedir/extensions/*/src/main/resources/config.json"); # non deb installs
 push @extension_files, "$basedir/jabbot-daemon/src/main/scripts/config.json";
 
-my @unknown_files = glob("$basedir/extensions/*/config.json"); #deb installs
+my @unknown_files = glob("$basedir/*/config.json"); #deb installs
 
 foreach my $unknown (@unknown_files) {
 	print "loading plugin file $unknown\n";
@@ -321,7 +321,11 @@ foreach my $binding (@binding_files) {
 
 foreach my $extension (@extension_files) {
 	print "loading extension file $extension\n";
-	open FILE, "<$extension";
+	my $res = open FILE, "<$extension";
+	if (!$res) {
+		print "extension file $extension not found!\n";
+		next;
+	}
 	my @data = <FILE>;
 	close FILE;
 	my $json = (decode_json(join("", @data)));
