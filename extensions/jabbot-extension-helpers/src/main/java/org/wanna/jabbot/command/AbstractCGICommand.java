@@ -7,8 +7,8 @@ import org.wanna.jabbot.messaging.DefaultMessageContent;
 import org.wanna.jabbot.messaging.MessageContent;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -28,12 +28,15 @@ public abstract class AbstractCGICommand extends AbstractCommandAdapter {
 	public final MessageContent process(CommandMessage message) {
 		String[] envp = { "JABBOT_ACTION=run", "JABBOT_COMMAND=" + getCommandName(), "JABBOT_FROM=" + message.getSender() };
 		List<String> argList =  super.getArgsParser().parse(message.getArgsLine());
-		String script = getFilePath(getScriptName());
-		if(script == null){
+
+		File script = new File(getScriptName());
+		if(!script.exists() || !script.isFile() || !script.canRead()){
+			logger.warn("could not execute {}",getScriptName());
 			return null;
 		}
+
 		//add script to run as arg0
-		argList.add(0, script);
+		argList.add(0, script.getPath());
 		String[] command = argList.toArray(new String[argList.size()]);
 
 		String response = exec(command, envp);
@@ -43,25 +46,17 @@ public abstract class AbstractCGICommand extends AbstractCommandAdapter {
 
 	@Override
 	public final String getHelpMessage() {
-		String script = getFilePath(getScriptName());
-		if(script == null){
+		File script = new File(getScriptName());
+		if(!script.exists() || !script.isFile() || !script.canRead()){
+			logger.warn("could not execute {}",getScriptName());
 			return null;
 		}
-		String[] command = { script };
+
+		String[] command = { script.getPath() };
 		String[] envp = { "JABBOT_ACTION=help", "JABBOT_COMMAND=" + getCommandName() };
 
 
 		return exec(command, envp);
-	}
-
-	private String getFilePath(String scriptName){
-		URL url = ClassLoader.getSystemResource(scriptName);
-		if(url == null){
-			logger.warn("unable to find {} in classpath",scriptName);
-			return null;
-		}else{
-			return url.getFile();
-		}
 	}
 
 	private String exec(String[] command, String[] envp) {
