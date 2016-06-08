@@ -15,6 +15,8 @@
 
 version=`xpath -q -e "/project/version/text()" $(CURDIR)/pom.xml`
 
+MVN = mvn -q -Dmaven.test.skip=true -Duser.home="$(HOME)" -s"$(HOME)/.m2/settings.xml"
+
 
 build: build-arch-stamp build-indep-stamp
 build-arch: build-arch-stamp
@@ -25,22 +27,13 @@ build-arch-stamp:
 build-indep: build-indep-stamp
 build-indep-stamp:
 	dh_testdir
-	dh_prep
-	dh_installdirs
 
 	# Build the package
-	mvn clean install -Pstandalone
+	@$(MVN) install -Pstandalone
 	mkdir $(CURDIR)/build
 	tar -xvzf $(CURDIR)/jabbot-daemon/target/jabbot-daemon-$(version)-standalone.tar.gz -C $(CURDIR)/build/
 	mv $(CURDIR)/build/jabbot-daemon-$(version) $(CURDIR)/build/jabbot-daemon
 	chmod -x $(CURDIR)/build/jabbot-daemon/lib/*.jar
-
-	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'mkdir -p "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
-	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'tar -xvzf {} -C  "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
-	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec bash -c 'mkdir -p "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
-	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec bash -c 'tar -xvzf {} -C  "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
-
-	mvn clean
 
 	touch $@
 
@@ -48,7 +41,11 @@ clean:
 	dh_testdir
 	dh_testroot
 
+	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'rm -rf  "$(CURDIR)/debian/$$(basename {} .tar.gz)"' \;
+	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec bash -c 'rm -rf  "$(CURDIR)/debian/$$(basename {} .tar.gz)"' \;
+
 	rm -rf $(CURDIR)/build
+	@$(MVN) clean
 
 	dh_clean
 	rm -f build-arch-stamp build-indep-stamp
@@ -56,6 +53,14 @@ clean:
 install-indep: build-indep
 	dh_testdir
 	dh_testroot
+	dh_prep
+	dh_installdirs
+
+	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'mkdir -p "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
+	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'tar -xvzf {} -C  "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
+	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec bash -c 'mkdir -p "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
+	find $(CURDIR)/bindings/ -name '*.tar.gz' -type f -exec bash -c 'tar -xvzf {} -C  "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/extensions"' \;
+
 	
 	#  mvn install
 
