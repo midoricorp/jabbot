@@ -6,7 +6,7 @@
 
 JABBOT_MAIN="org.wanna.jabbot.Launcher"
 JABBOT_LOGS="/var/log/jabbot/"
-J_CLASSPATH="/usr/share/jabbot/*:/var/lib/jabbot/extensions/:/usr/share/jabbot/bin/"
+J_CLASSPATH="/usr/share/jabbot/*:/etc/jabbot/:/usr/share/jabbot/bin/"
 
 PIDFILE="/var/run/jabbot/jabbot.pid"
 

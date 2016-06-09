@@ -29,6 +29,7 @@ case "$1" in
 		fi
 		if [ -f /var/lib/jabbot/extensions/jabbot.json ]; then
 			chown -R nobody:nogroup /var/lib/jabbot/extensions/jabbot.json
+			mv /var/lib/jabbot/extensions/jabbot.json /etc/jabbot/
 		fi
     ;;
 
@@ -37,6 +38,7 @@ case "$1" in
     triggered)
 		/usr/share/jabbot/bin/genconf.pl --basedir=/var/lib/jabbot/extensions
 		chown -R nobody:nogroup /var/lib/jabbot/extensions/jabbot.json
+		mv /var/lib/jabbot/extensions/jabbot.json /etc/jabbot/
 		invoke-rc.d jabbot restart
     ;;
 
