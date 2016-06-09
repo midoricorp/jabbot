@@ -1,3 +1,4 @@
 var/log/jabbot
 var/lib/jabbot
 var/lib/jabbot/extensions
+var/lib/jabbot/scripts

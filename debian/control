@@ -88,5 +88,9 @@ Architecture: all
 Depends: ${misc:Depends},jabbot
 Description: cgi integration command for jabbot
 
+Package: jabbot-cgi-scripts
+Architecture: all
+Depends: ${misc:Depends},jabbot-cgi-command
+Description: base scripts using jabbot-cgi
 
 

@@ -276,9 +276,9 @@ GetOptions("basedir=s", \$basedir) or die("Error in command line!");
 
 my @binding_files = glob("$basedir/bindings/*/src/main/resources/config.json"); #non deb installs
 my @extension_files = glob("$basedir/extensions/*/src/main/resources/config.json"); # non deb installs
-push @extension_files, "$basedir/jabbot-daemon/src/main/scripts/config.json";
+push @extension_files, glob("$basedir/scripts/*.json"); # cgi scripts
 
-my @unknown_files = glob("$basedir/*/config.json"); #deb installs
+my @unknown_files = glob("$basedir/extensions/*/config.json"); #deb installs
 
 foreach my $unknown (@unknown_files) {
 	print "loading plugin file $unknown\n";
@@ -346,7 +346,7 @@ $saved_values->read("$basedir/saved_values.ini");
 makeServerList();
 $saved_values->save();
 
-$conf->{'extensionsFolder'} = $basedir;
+$conf->{'extensionsFolder'} = "$basedir/extensions";
 
 open FILE, ">$basedir/jabbot.json";
 print FILE JSON::XS->new->utf8(1)->pretty(1)->encode($conf);

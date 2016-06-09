@@ -1,0 +1,8 @@
+[
+	{"name":"urban","className":"org.wanna.jabbot.extensions.cgi.CGICommand",
+		"immutable":true,
+                    "configuration":{
+                        "script":"urbandict.pl"
+                    }
+        }
+]

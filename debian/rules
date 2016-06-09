@@ -58,8 +58,6 @@ install-indep: build-indep
 	mv $(CURDIR)/build/jabbot-daemon-$(version) $(CURDIR)/build/jabbot-daemon
 	chmod -x $(CURDIR)/build/jabbot-daemon/lib/*.jar
 
-	dh_install jabbot-daemon/src/main/scripts/config.json etc/jabbot/jabbot-daemon/src/main/scripts/
-
 #things for extensions
 	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'mkdir -p "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/jabbot/extensions"' \;
 	find $(CURDIR)/extensions/ -name '*.tar.gz' -type f -exec bash -c 'tar -xvzf {} -C  "$(CURDIR)/debian/$$(basename {} .tar.gz)/var/lib/jabbot/extensions"' \;

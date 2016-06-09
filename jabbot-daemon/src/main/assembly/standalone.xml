@@ -37,14 +37,6 @@
                 <exclude>*</exclude>
             </excludes>
         </fileSet>
-        <fileSet>
-            <directory>src/main/scripts</directory>
-            <outputDirectory>/extension-scripts</outputDirectory>
-            <directoryMode>0755</directoryMode>
-            <includes>
-                <include>**/*</include>
-            </includes>
-        </fileSet>
     </fileSets>
 
     <dependencySets>

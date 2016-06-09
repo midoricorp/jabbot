@@ -20,26 +20,11 @@ set -e
 
 case "$1" in
     configure)
-		chown -R nobody:nogroup /var/log/jabbot
-		chown -R nobody:nogroup /var/lib/jabbot
-		chmod a+x /usr/share/jabbot/bin/genconf.pl
-		if [ "$(find /var/lib/jabbot/ -name config.json)" ]; then
-			echo extensions dir: "$(find /var/lib/jabbot/extensions/ -name config.json)"
-			/usr/share/jabbot/bin/genconf.pl --basedir=/var/lib/jabbot
-		fi
-		if [ -f /var/lib/jabbot/jabbot.json ]; then
-			chown -R nobody:nogroup /var/lib/jabbot/jabbot.json
-			mv /var/lib/jabbot/jabbot.json /etc/jabbot/
-		fi
+	chmod -R 0755 /var/lib/jabbot/scripts
+	chown -R nobody:nogroup /var/lib/jabbot/scripts
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
-    ;;
-    triggered)
-		/usr/share/jabbot/bin/genconf.pl --basedir=/var/lib/jabbot
-		chown -R nobody:nogroup /var/lib/jabbot/jabbot.json
-		mv /var/lib/jabbot/jabbot.json /etc/jabbot/
-		invoke-rc.d jabbot restart
     ;;
 
     *)

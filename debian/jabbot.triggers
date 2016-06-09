@@ -1,1 +1,2 @@
 interest /var/lib/jabbot/extensions
+interest /var/lib/jabbot/scripts
