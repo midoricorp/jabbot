@@ -346,6 +346,8 @@ $saved_values->read("$basedir/saved_values.ini");
 makeServerList();
 $saved_values->save();
 
+$conf->{'extensionsFolder'} = $basedir;
+
 open FILE, ">$basedir/jabbot.json";
 print FILE JSON::XS->new->utf8(1)->pretty(1)->encode($conf);
 close FILE;
