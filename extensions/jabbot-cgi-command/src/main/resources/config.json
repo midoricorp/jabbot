@@ -1,1 +1,4 @@
-[{"name":"cgi","className":"org.wanna.jabbot.extensions.cgi.CGICommand"}]
+[
+  {"name":"file_cgi","className":"org.wanna.jabbot.extensions.cgi.FileCGICommand"},
+  {"name":"class_cgi","className":"org.wanna.jabbot.extensions.cgi.ClassPathCGICommand"}
+]

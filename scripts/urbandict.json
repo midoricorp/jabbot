@@ -1,5 +1,5 @@
 [
-	{"name":"urban","className":"org.wanna.jabbot.extensions.cgi.CGICommand",
+	{"name":"urban","className":"org.wanna.jabbot.extensions.cgi.ClassPathCGICommand",
 		"immutable":true,
                     "configuration":{
                         "script":"urbandict.pl"

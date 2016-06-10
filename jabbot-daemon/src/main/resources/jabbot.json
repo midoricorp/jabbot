@@ -31,7 +31,7 @@
                     "configuration" : {
                         "script" : "/var/lib/jabbot/data/cgi/urbandict.pl"
                     },
-                    "className" : "org.wanna.jabbot.extensions.cgi.CGICommand",
+                    "className" : "org.wanna.jabbot.extensions.cgi.FileCGICommand",
                     "type" : "command",
                     "name" : "urban"
                 }

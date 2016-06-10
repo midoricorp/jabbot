@@ -7,9 +7,9 @@ import org.wanna.jabbot.messaging.DefaultMessageContent;
 import org.wanna.jabbot.messaging.MessageContent;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -17,26 +17,25 @@ import java.util.List;
  */
 public abstract class AbstractCGICommand extends AbstractCommandAdapter {
 	private final Logger logger = LoggerFactory.getLogger(AbstractCGICommand.class);
-
+	private String script;
 	protected AbstractCGICommand(String commandName) {
 		super(commandName);
 	}
 
-	public abstract String getScriptName();
+	public abstract String getScriptPath(String script);
 
 	@Override
 	public final MessageContent process(CommandMessage message) {
 		String[] envp = { "JABBOT_ACTION=run", "JABBOT_COMMAND=" + getCommandName(), "JABBOT_FROM=" + message.getSender() };
 		List<String> argList =  super.getArgsParser().parse(message.getArgsLine());
 
-		File script = new File(getScriptName());
-		if(!script.exists() || !script.isFile() || !script.canRead()){
-			logger.warn("could not execute {}",getScriptName());
+		String path = getScriptPath(script);
+		if(path == null){
 			return null;
 		}
 
 		//add script to run as arg0
-		argList.add(0, script.getPath());
+		argList.add(0, path);
 		String[] command = argList.toArray(new String[argList.size()]);
 
 		String response = exec(command, envp);
@@ -46,13 +45,12 @@ public abstract class AbstractCGICommand extends AbstractCommandAdapter {
 
 	@Override
 	public final String getHelpMessage() {
-		File script = new File(getScriptName());
-		if(!script.exists() || !script.isFile() || !script.canRead()){
-			logger.warn("could not execute {}",getScriptName());
+		String path = getScriptPath(script);
+		if(path == null){
 			return null;
 		}
 
-		String[] command = { script.getPath() };
+		String[] command = { path };
 		String[] envp = { "JABBOT_ACTION=help", "JABBOT_COMMAND=" + getCommandName() };
 
 
@@ -73,9 +71,15 @@ public abstract class AbstractCGICommand extends AbstractCommandAdapter {
 			}
 
 		} catch (Exception e) {
-			logger.error("error executing {}",getScriptName(),e);
+			logger.error("error executing {}", script,e);
 		}
 
 		return output.toString();
+	}
+
+	@Override
+	public void configure(Map<String, Object> configuration) {
+		if (configuration == null ) return;
+		script = configuration.get("script").toString();
 	}
 }
