@@ -183,6 +183,10 @@ sub makeCommands {
 	my @commands;
 	foreach my $extension (@extension_templates) {
 		my $command_name = $extension->{'name'};
+		my $hidden = $extension->{'hidden'};
+		if ($hidden) {
+			next;
+		}
 		my $use_command = ask({question=>"Add command '$command_name' to $type", values=>["Y", "N"], default=>"Y", save_key=>"binding.$type.command.$command_name.enable"});
 
 		if (uc($use_command) eq "Y") {
