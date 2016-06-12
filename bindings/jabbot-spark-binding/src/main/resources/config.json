@@ -1,4 +1,4 @@
-{
+[{
 	"className":"org.wanna.jabbot.binding.spark.SparkBinding",
 	"name": "SPARK",
         "url":"https://api.ciscospark.com/v1",
@@ -8,4 +8,4 @@
 		"use_webhook":true,
 		"webhook_url":""
 	}
-}
+}]

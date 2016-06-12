@@ -1,6 +1,6 @@
-{
+[{
 	"className":"org.wanna.jabbot.binding.irc.IrcBinding",
 	"name": "IRC",
         "port":6667,
 	"type":"binding"
-}
+}]
