@@ -10,18 +10,18 @@ Jabbot consists of 3 projects:
 3. **jabbot-daemon** which is the actual Bot daemon
 
 **Bindings** can be written using jabbot-binding api and are currently stored under the
-[bindings](https://github.com/vmorsiani/jabbot/tree/master/bindings) directory.
+[bindings](https://github.com/midoricorp/jabbot/tree/master/bindings) directory.
 
-**Extensions** can be written using jabbot-extension-api and are currently stored under the [extensions](https://github.com/vmorsiani/jabbot/tree/master/extensions) directory.
+**Extensions** can be written using jabbot-extension-api and are currently stored under the [extensions](https://github.com/midoricopr/jabbot/tree/master/extensions) directory.
 
 ## Quickstart
 Assuming you have git, java 7, jsvc and maven2 installed
 
 **Build it**
 ```bash
-host$ git clone https://github.com/vmorsiani/jabbot.git
+host$ git clone https://github.com/midoricorp/jabbot.git
 host$ cd jabbot/
-host$ mvn clean install -Pstandalone
+host$ mvn clean install -Pstandalone,all
 host$ cd jabbot-daemon/target/
 host$ tar -xzf jabbot-daemon-<version>.tar.gz
 host$ cd ../../
