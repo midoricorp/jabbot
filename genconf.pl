@@ -200,7 +200,7 @@ sub makeCommands {
 					$command{"configuration"} = $extension->{'configuration'};
 				} else {
 					my $configuration = $extension->{'configuration'};
-					foreach my $conf (keys $configuration) {
+					foreach my $conf (keys %$configuration) {
 						$command{"configuration"}{$conf} = ask({question=>"value for '$conf' for $command_name command of $type", default=>$configuration->{$conf}, save_key=>"binding.$type.command.$command_name.$conf"});
 					}
 				}
@@ -245,7 +245,7 @@ sub makeServer {
 	my $parm_map;
 
 	if ($parameters) {
-		foreach my $key (keys $parameters) {
+		foreach my $key (keys %$parameters) {
 			my $value = ask({question=>"$type value for $key", default=>$parameters->{$key}, save_key=>"binding.$type.$key"});
 			$parm_map->{$key} = $value;
 		}
