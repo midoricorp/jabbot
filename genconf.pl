@@ -275,8 +275,9 @@ sub makeServerList {
 # MAIN
 
 my $basedir = ".";
+my $confdir = ".";
 
-GetOptions("basedir=s", \$basedir) or die("Error in command line!");
+GetOptions("basedir=s"=> \$basedir, "confdir=s"=>\$confdir) or die("Error in command line!");
 
 my @binding_files = glob("$basedir/bindings/*/src/main/resources/config.json"); #non deb installs
 my @extension_files = glob("$basedir/extensions/*/src/main/resources/config.json"); # non deb installs
@@ -346,14 +347,14 @@ foreach my $extension (@extension_files) {
 
 
 $saved_values = new Config::Simple(syntax=>'ini');
-$saved_values->read("$basedir/saved_values.ini");
+$saved_values->read("$confdir/saved_values.ini");
 makeServerList();
 $saved_values->save();
 
 $conf->{'extensionsFolder'} = "$basedir/extensions";
 
-open FILE, ">$basedir/jabbot.json";
+open FILE, ">$confdir/jabbot.json";
 print FILE JSON::XS->new->utf8(1)->pretty(1)->encode($conf);
 close FILE;
 
-print "$basedir/jabbot.json witten\n";
+print "$confdir/jabbot.json witten\n";

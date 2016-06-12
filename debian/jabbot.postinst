@@ -25,20 +25,18 @@ case "$1" in
 		chmod a+x /usr/share/jabbot/bin/genconf.pl
 		if [ "$(find /var/lib/jabbot/ -name config.json)" ]; then
 			echo extensions dir: "$(find /var/lib/jabbot/extensions/ -name config.json)"
-			/usr/share/jabbot/bin/genconf.pl --basedir=/var/lib/jabbot
+			/usr/share/jabbot/bin/genconf.pl --basedir=/var/lib/jabbot --confdir=/etc/jabbot
 		fi
-		if [ -f /var/lib/jabbot/jabbot.json ]; then
-			chown -R nobody:nogroup /var/lib/jabbot/jabbot.json
-			mv /var/lib/jabbot/jabbot.json /etc/jabbot/
+		if [ -f /etc/jabbot/jabbot.json ]; then
+			chown -R nobody:nogroup /etc/jabbot/jabbot.json
 		fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
     ;;
     triggered)
-		/usr/share/jabbot/bin/genconf.pl --basedir=/var/lib/jabbot
-		chown -R nobody:nogroup /var/lib/jabbot/jabbot.json
-		mv /var/lib/jabbot/jabbot.json /etc/jabbot/
+		/usr/share/jabbot/bin/genconf.pl --basedir=/var/lib/jabbot --confdir=/etc/jabbot
+		chown -R nobody:nogroup /etc/jabbot/jabbot.json
 		invoke-rc.d jabbot restart
     ;;
 
