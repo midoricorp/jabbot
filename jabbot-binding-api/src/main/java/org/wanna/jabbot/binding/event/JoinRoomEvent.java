@@ -4,6 +4,8 @@ import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 
 /**
+ * Event to request a binding to join a room
+ *
  * @author Vincent Morsiani [vmorsiani@voxbone.com]
  * @since 2016-03-03
  */

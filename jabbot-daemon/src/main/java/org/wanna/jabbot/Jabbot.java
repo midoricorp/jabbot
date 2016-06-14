@@ -89,6 +89,7 @@ public class Jabbot {
 		factory.register(JoinRoomEvent.class,new JoinRoomEventHandler());
 		factory.register(OutgoingMessageEvent.class, new OutgoingMessageEventHandler());
 		factory.register(RoomInviteEvent.class, new RoomInviteHandler());
+		factory.register(DisconnectedEvent.class,new DisconnectedEventHandler());
 	}
 
 }

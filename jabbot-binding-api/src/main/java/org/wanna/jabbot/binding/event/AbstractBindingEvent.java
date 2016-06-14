@@ -3,6 +3,9 @@ package org.wanna.jabbot.binding.event;
 import org.wanna.jabbot.binding.Binding;
 
 /**
+ * Adapter class for BindingEvent
+ *
+ * @see {@link BindingEvent}
  * @author Vincent Morsiani [vmorsiani@voxbone.com]
  * @since 2016-03-03
  */

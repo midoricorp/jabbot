@@ -6,6 +6,8 @@ import org.wanna.jabbot.messaging.Resource;
 import org.wanna.jabbot.messaging.TxMessage;
 
 /**
+ * Event to notify a binding to send a message
+ *
  * @author Vincent Morsiani [vmorsiani@voxbone.com]
  * @since 2016-03-03
  */

@@ -5,6 +5,8 @@ import org.wanna.jabbot.messaging.RxMessage;
 import org.wanna.jabbot.messaging.Resource;
 
 /**
+ * Event to notify that a binding received a message
+ *
  * @author Vincent Morsiani [vmorsiani@voxbone.com]
  * @since 2016-03-03
  */
