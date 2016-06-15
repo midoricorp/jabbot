@@ -18,6 +18,27 @@ Depends: ${misc:Depends},
 Description: Midori is a multi-protocol bot that can be easily
  Extended with plugins and is highly scriptable.
 
+Package: jabbot-full
+Architecture: all
+Depends: jabbot,
+         jabbot-xmpp-binding,
+	 jabbot-spark-binding,
+	 jabbot-irc-binding,
+	 jabbot-slack-binding,
+	 jabbot-chuck-icndb-command,
+	 jabbot-base-command,
+	 jabbot-foaas-command,
+	 jabbot-script-command,
+	 jabbot-jira-command,
+	 jabbot-translate-command,
+	 jabbot-propaganda-command,
+	 jabbot-dice-command,
+	 jabbot-cgi-command,
+	 jabbot-cgi-scripts
+Description: Virtual package to install jabbot with all of its plugins
+ in an easy way
+
+
 Package: jabbot-xmpp-binding
 Architecture: all
 Depends: ${misc:Depends},jabbot
