@@ -3,12 +3,12 @@
     <parent>
         <artifactId>jabbot-extensions-master</artifactId>
         <groupId>org.wanna.jabbot.extensions</groupId>
-        <version>0.4</version>
+        <version>0.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jabbot-call-command</artifactId>
-    <version>0.4</version>
+    <version>0.5-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
