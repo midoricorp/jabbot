@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.wanna.jabbot</groupId>
         <artifactId>jabbot-master</artifactId>
-        <version>0.4-SNAPSHOT</version>
+        <version>0.4</version>
     </parent>
 
     <groupId>org.wanna.jabbot.bindings</groupId>
     <artifactId>jabbot-bindings-master</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.4</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.wanna.jabbot</groupId>
             <artifactId>jabbot-binding-api</artifactId>
-            <version>0.4-SNAPSHOT</version>
+            <version>0.4</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

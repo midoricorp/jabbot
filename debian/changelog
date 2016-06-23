@@ -1,4 +1,4 @@
-jabbot (0.4) UNRELEASED; urgency=medium
+jabbot (0.4) unstable; urgency=medium
   
   [ Vincent Morsiani ] 
   * added multi body part support for jabbot messageContent
@@ -6,9 +6,16 @@ jabbot (0.4) UNRELEASED; urgency=medium
   * private messaging support
   * messageContent interface refactoring
   * refactored commands to abstract it as extension
-  * extension-api now depends on binding-api instead of the other way around
+  * Added cicso Spark support (https://www.ciscospark.com/)
+  * Added Slack support (https://slack.com/)
+  * each jabbot module can now be built as a debian package
+  * Resource mechanism to address messages to a Room or a User
+  * jabbot-messaging-api : extracted common classes to a separate module
+  * Binding Monitoring: core now detect when a binding is disconnected and reconnects it.
+  * Xmpp Binding now validate XHTML prior to send a message.
+  * Switched communication between core & binding to an asynchronous event mechanism
 
- -- Vincent Morsiani <vmorsiani@gmail.com>  Fri, 24 Jul 2015 21:40:42 +0200
+ -- Vincent Morsiani <vmorsiani@gmail.com>  Thu, 23 Jun 2016 14:41:46 +0200
 
 jabbot (0.3) unstable; urgency=medium
 
