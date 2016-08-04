@@ -7,6 +7,7 @@ import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.binding.event.MessageEvent;
 import org.wanna.jabbot.messaging.*;
+import org.wanna.jabbot.messaging.body.BodyPart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -155,17 +156,26 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 
 	public boolean sendMessage(TxMessage response) {
 		String body = response.getMessageContent().getBody();
-		sendMessage(body);
+		BodyPart html = response.getMessageContent().getBody(BodyPart.Type.XHTML);
+		if (html == null) {
+			sendMessage(body, null);
+		} else {
+			sendMessage(body, html.getText());
+		}
 		return true;
 	}
 
-	public void sendMessage(String body) {
+	public void sendMessage(String body, String html) {
 		com.ciscospark.Message msg = new com.ciscospark.Message();
 		msg.setRoomId(room.getId());
 		msg.setText(body);
 		Matcher m = urlPattern.matcher(body);
 		if (m.find()) {
 			msg.setFile(m.group(0));
+		}
+
+		if (html != null) {
+			msg.setHtml(html);
 		}
 		spark.messages().post(msg);
 	}
