@@ -175,6 +175,7 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 		}
 
 		if (html != null) {
+			html = html.replace("\n","");
 			msg.setHtml(html);
 		}
 		spark.messages().post(msg);
