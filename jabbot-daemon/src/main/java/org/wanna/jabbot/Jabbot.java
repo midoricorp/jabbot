@@ -12,9 +12,8 @@ import org.wanna.jabbot.event.handlers.*;
 import org.wanna.jabbot.extension.ExtensionLoader;
 import org.wanna.jabbot.extension.ExtensionScanner;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.*;
 
 /**
@@ -22,11 +21,12 @@ import java.util.concurrent.*;
  * @since 2014-05-30
  */
 public class Jabbot {
-	private final Logger logger = LoggerFactory.getLogger(Jabbot.class);
+	//private final Logger logger = LoggerFactory.getLogger(Jabbot.class);
 
 	private JabbotConfiguration configuration;
 	private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
-	private List<Binding> bindings = new ArrayList<>();
+	//private List<Binding> bindings = new ArrayList<>();
+	private Map<String,Binding> bindingMap = new HashMap<>();
 	private final BlockingQueue<BindingEvent> incomingQueue, outgoingQueue;
 	private EventDispatcher incomingDispatcher,outgoingDispatcher;
 	private EventQueueProcessor incomingProcessor, outgoingProcessor;
@@ -52,7 +52,7 @@ public class Jabbot {
 		incomingProcessor.start();
 		outgoingProcessor.start();
 
-		scheduledExecutorService.scheduleAtFixedRate(new BindingMonitor(bindings,outgoingDispatcher), 5L,60L, TimeUnit.SECONDS);
+		scheduledExecutorService.scheduleAtFixedRate(new BindingMonitor(bindingMap.values(),outgoingDispatcher), 5L,60L, TimeUnit.SECONDS);
 		ExtensionLoader loader = ExtensionLoader.getInstance();
 		for (final BindingConfiguration connectionConfiguration : configuration.getServerList()) {
 			final Binding conn;
@@ -65,7 +65,8 @@ public class Jabbot {
 						incomingQueue.offer(event);
 					}
 				});
-				bindings.add(conn);
+				//bindings.add(conn);
+				bindingMap.put(connectionConfiguration.getId(), conn);
 			}
 		}
 		return true;
@@ -84,7 +85,7 @@ public class Jabbot {
 	private void registerEventHandlers(){
 		EventHandlerFactory factory = EventHandlerFactory.getInstance();
 		factory.register(ConnectedEvent.class, new ConnectedEventHandler());
-		factory.register(MessageEvent.class, new MessageEventHandler());
+		factory.register(MessageEvent.class, new MessageEventHandler(bindingMap));
 		factory.register(ConnectionRequestEvent.class,new ConnectionRequestEventHandler());
 		factory.register(JoinRoomEvent.class,new JoinRoomEventHandler());
 		factory.register(OutgoingMessageEvent.class, new OutgoingMessageEventHandler());

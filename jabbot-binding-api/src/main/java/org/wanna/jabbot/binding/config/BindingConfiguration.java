@@ -12,6 +12,7 @@ import java.util.Set;
  * @since 2014-08-09
  */
 public class BindingConfiguration {
+	private String id;
 	private String type;
 	private String url,serverName;
 	private String username, password,identifier;
@@ -22,6 +23,14 @@ public class BindingConfiguration {
 	private Map<String,Object> parameters;
 	private boolean debug;
     private String preferredMessageStyle = "TEXT";
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getType() {
 		return type;

@@ -19,9 +19,7 @@
         <module>jabbot-cgi-command</module>
         <module>jabbot-script-command</module>
         <module>jabbot-translate-command</module>
-        <!--
-        <module>thread-demo-command</module>
-        -->
+		<module>jabbot-say-extension</module>
     </modules>
 
     <parent>

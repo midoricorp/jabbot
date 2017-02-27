@@ -19,7 +19,7 @@ import java.util.List;
  * @since 2014-08-08
  */
 public abstract class AbstractBinding<T> implements Binding<T>{
-	private final Logger logger = LoggerFactory.getLogger(AbstractBinding.class);
+	private static final Logger logger = LoggerFactory.getLogger(AbstractBinding.class);
 	protected T connection;
 	private BindingConfiguration configuration;
 	protected List<BindingListener> listeners = new ArrayList<>();
@@ -64,5 +64,9 @@ public abstract class AbstractBinding<T> implements Binding<T>{
 		for (BindingListener listener : listeners) {
 			listener.eventReceived(event);
 		}
+	}
+
+	public String toString(){
+		return String.format("%s{id: %s}", this.getClass().getSimpleName(),configuration.getId());
 	}
 }
