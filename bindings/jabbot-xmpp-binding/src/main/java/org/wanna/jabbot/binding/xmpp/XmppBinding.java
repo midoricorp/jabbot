@@ -59,7 +59,7 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 	}
 
 	@Override
-	public boolean connect() {
+	public boolean connect(){
 		connection = new XMPPTCPConnection(newConnectionConfiguration(getConfiguration()));
         privilegeMapper = new PrivilegeMapper(connection);
 		try {
@@ -70,9 +70,8 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 			super.dispatchEvent(new ConnectedEvent(this));
 			return connection.isConnected();
 		} catch (XMPPException | SmackException | IOException e) {
-			logger.error("error while connecting",e);
+			throw new ConnectionException(e);
 		}
-		return false;
 	}
 
 	@Override

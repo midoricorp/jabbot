@@ -21,7 +21,7 @@ import java.util.concurrent.*;
  * @since 2014-05-30
  */
 public class Jabbot {
-	//private final Logger logger = LoggerFactory.getLogger(Jabbot.class);
+	private final Logger logger = LoggerFactory.getLogger(Jabbot.class);
 
 	private JabbotConfiguration configuration;
 	private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
@@ -55,17 +55,15 @@ public class Jabbot {
 		scheduledExecutorService.scheduleAtFixedRate(new BindingMonitor(bindingMap.values(),outgoingDispatcher), 5L,60L, TimeUnit.SECONDS);
 		ExtensionLoader loader = ExtensionLoader.getInstance();
 		for (final BindingConfiguration connectionConfiguration : configuration.getServerList()) {
+			logger.info("{} - initializing with type {}", connectionConfiguration.getId(),connectionConfiguration.getType());
 			final Binding conn;
 			conn = loader.getExtension(connectionConfiguration.getType(),Binding.class,connectionConfiguration);
 			if(conn != null) {
+				logger.info("{} - initializing commands", conn.getIdentifier());
 				CommandManager.getInstanceFor(conn).initializeFromConfigSet(connectionConfiguration.getExtensions());
-				conn.registerListener(new BindingListener() {
-					@Override
-					public void eventReceived(BindingEvent event) {
-						incomingQueue.offer(event);
-					}
-				});
-				//bindings.add(conn);
+				logger.info("{} - initializing listener",conn.getIdentifier());
+				conn.registerListener(new JabbotBindingListener(incomingQueue));
+				logger.info("{} - initialization completed",conn.getIdentifier());
 				bindingMap.put(connectionConfiguration.getId(), conn);
 			}
 		}

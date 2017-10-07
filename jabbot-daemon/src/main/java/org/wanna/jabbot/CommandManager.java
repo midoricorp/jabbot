@@ -71,7 +71,7 @@ public class CommandManager {
                     ((BindingAware) command).setBinding(binding);
                 }
                 commandFactory.register(configuration.getName(), command);
-                logger.info("registered command {} with alias '{}' in {}", command, configuration.getName(), binding);
+                logger.info("{} - registered command {}", binding.getIdentifier(),command);
             }
         }
     }

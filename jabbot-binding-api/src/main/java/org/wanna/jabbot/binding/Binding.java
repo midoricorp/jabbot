@@ -14,8 +14,9 @@ public interface Binding<T> {
 	/**
 	 * Create a connection to the messaging service
 	 * @return true if connection is properly established.
+	 * @throws ConnectionException when the binding fails to connect to the server
 	 */
-	boolean connect();
+	boolean connect() throws ConnectionException;
 
 	/**
 	 * Check if a connection to an instant messaging service is properly established.
@@ -48,4 +49,6 @@ public interface Binding<T> {
     T getConnection();
 
 	BindingConfiguration getConfiguration();
+
+	String getIdentifier();
 }

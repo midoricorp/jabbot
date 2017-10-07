@@ -28,10 +28,10 @@ class BindingMonitor implements Runnable{
 		for (final Binding binding : bindings) {
 			try{
 				if(!binding.isConnected()){
-					logger.info("binding {} is disconnected. queueing for connection...",binding);
+					logger.info("{} - binding is disconnected. queueing for connection...",binding.getIdentifier());
 					dispatcher.dispatch(new ConnectionRequestEvent(binding));
 				}else{
-					logger.trace("binding {} is connected",binding);
+					logger.trace("{} is connected",binding.getIdentifier());
 				}
 
 			}catch (Throwable t){

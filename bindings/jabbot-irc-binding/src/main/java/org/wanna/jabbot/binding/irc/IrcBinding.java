@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractBinding;
 import org.wanna.jabbot.binding.Binding;
+import org.wanna.jabbot.binding.ConnectionException;
 import org.wanna.jabbot.binding.Room;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
@@ -101,7 +102,7 @@ public class IrcBinding extends AbstractBinding<IRCApi> {
 
 		@Override
 		public void onFailure(Exception aExc) {
-
+			throw new ConnectionException(aExc);
 		}
 	}
 

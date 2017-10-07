@@ -66,4 +66,11 @@ public abstract class AbstractCommandAdapter implements Command, Configurable {
 	public void configure(Map<String,Object> configMap){
 
 	}
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName()+"{" +
+				"commandName='" + commandName + '\'' +
+				'}';
+	}
 }

@@ -39,17 +39,17 @@ public class EventQueueProcessor extends Thread{
 		while (running) {
 			try {
 				BindingEvent event = queue.take();
-				logger.debug("loaded {} from event queue", event);
+				logger.debug("{} - loaded {} from event queue", event.getBinding().getIdentifier(),event);
 				EventHandler handler = EventHandlerFactory.getInstance().create(event.getClass());
 				if (handler != null) {
 					try {
 						boolean status = handler.process(event, dispatcher);
-						logger.info("event {} processed: {}", event, status);
+						logger.info("{} - event {} processed: {}",event.getBinding().getIdentifier(), event, status);
 					} catch (Exception e) {
-						logger.error("failed to process {}", event, e);
+						logger.error("{} - failed to process {}: {}",event.getBinding().getIdentifier(), event, e);
 					}
 				} else {
-					logger.warn("no handler found for {}", event);
+					logger.warn("{} - no handler found for {}", event.getBinding().getIdentifier(),event);
 				}
 
 			} catch (InterruptedException e) {

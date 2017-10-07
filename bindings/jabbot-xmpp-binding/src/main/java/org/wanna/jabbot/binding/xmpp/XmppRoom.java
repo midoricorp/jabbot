@@ -53,19 +53,19 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 				DiscussionHistory history = new DiscussionHistory();
 				history.setSince(new Date());
 				muc.join(nickname,null,history,xmppConnection.getPacketReplyTimeout());
-				logger.info("[XMPP] joining room {}",configuration.getName());
+				logger.info("{} - joining room {}",getConnection().getIdentifier(),configuration.getName());
 				connection.dispatchEvent(new RoomJoinedEvent(connection,this));
 				return true;
 			}catch (XMPPException.XMPPErrorException e){
-				logger.error("error condition",e.getXMPPError().getCondition());
+				logger.error("{} - error condition",getConnection().getIdentifier(),e.getXMPPError().getCondition());
 				if(e.getXMPPError().getCondition().equals(XMPPError.Condition.conflict)){
-					logger.debug("nickname already taken.. changing");
+					logger.debug("{} - nickname already taken.. changing",getConnection().getIdentifier());
 					nickname+=i;
 					i++;
 					configuration.setNickname(nickname);
 				}
 			} catch ( SmackException e) {
-				logger.error("error while joining room", e);
+				logger.error("{} - error while joining room", getConnection().getIdentifier(),e);
 				return false;
 			}
 		}

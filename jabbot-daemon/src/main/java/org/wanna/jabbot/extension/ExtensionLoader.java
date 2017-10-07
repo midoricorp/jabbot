@@ -76,7 +76,7 @@ public class ExtensionLoader {
 
 	private Class getExtensionClass(String className){
 		if(!registry.containsKey(className)){
-			LOG.warn("no plugin found for {}, trying to resolve using jabbot classloader",className);
+			LOG.debug("no plugin found for {}, trying to resolve using jabbot classloader",className);
 			try {
 				return Class.forName(className, true, ClassLoader.getSystemClassLoader());
 			} catch (ClassNotFoundException e) {
