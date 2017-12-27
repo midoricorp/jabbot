@@ -75,6 +75,12 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 	}
 
 	@Override
+	public boolean disconnect() {
+		connection.disconnect();
+		return true;
+	}
+
+	@Override
 	public Room joinRoom(RoomConfiguration configuration) {
 		Room room = new XmppRoom(this,connection);
 		room.join(configuration);

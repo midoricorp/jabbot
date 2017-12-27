@@ -18,6 +18,7 @@ public interface Binding<T> {
 	 */
 	boolean connect() throws ConnectionException;
 
+	boolean disconnect();
 	/**
 	 * Check if a connection to an instant messaging service is properly established.
 	 *

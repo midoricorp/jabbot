@@ -79,6 +79,13 @@ public class SlackBinding extends AbstractBinding<Object> {
 	}
 
 	@Override
+	public boolean disconnect() {
+		rtmClient.close();
+		webApiClient.shutdown();
+		return true;
+	}
+
+	@Override
 	public Room joinRoom(RoomConfiguration configuration) {
 		return null;
 	}

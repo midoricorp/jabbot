@@ -49,6 +49,12 @@ public class IrcBinding extends AbstractBinding<IRCApi> {
 	}
 
 	@Override
+	public boolean disconnect() {
+		connection.disconnect();
+		return true;
+	}
+
+	@Override
 	public Room joinRoom(RoomConfiguration configuration) {
 		Room room = new IrcRoom(this,connection);
 		room.join(configuration);

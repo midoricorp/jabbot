@@ -99,6 +99,13 @@ public class SparkBinding extends AbstractBinding<Object> {
 	}
 
 	@Override
+	public boolean disconnect() {
+		poller.abort();
+		poller.interrupt();
+		return true;
+	}
+
+	@Override
 	public void sendMessage(TxMessage response) {
 		String id = response.getDestination().getAddress();
 		SparkRoom sr = roomMap.get(id);
@@ -128,17 +135,19 @@ public class SparkBinding extends AbstractBinding<Object> {
 	}
 
 	private class RoomPoller extends Thread {
-		public RoomPoller() {
+		private boolean running;
+		RoomPoller() {
 			super("Spark Room Poller");
 		}
 
 		@Override
 		public void run() {
-
-			while (true) {
+			running = true;
+			while (running) {
 				try {
 					Thread.sleep(60000);
 				} catch (InterruptedException e) {
+					running = false;
 				}
 				Iterator<com.ciscospark.Room> rooms = spark.rooms().iterate();
 
@@ -153,8 +162,10 @@ public class SparkBinding extends AbstractBinding<Object> {
 					}
 				}
 			}
+		}
 
-
+		public void abort(){
+			running = false;
 		}
 	}
 }

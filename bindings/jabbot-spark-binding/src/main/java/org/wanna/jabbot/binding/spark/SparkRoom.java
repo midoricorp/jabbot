@@ -30,6 +30,7 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 	private com.ciscospark.SparkServlet servlet;
 	private boolean useWebhook;
 	private String webhookUrl;
+	private boolean running;
 	private Pattern urlPattern = Pattern.compile("((http|https):[^\\s]+\\.(doc|docx|ppt|pptx|pdf|jpg|jpeg|png|gif|bmp))");
 
 
@@ -48,10 +49,10 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 	{
 		logger.info("SPARK Room started");
 		String lastId = null;
-		while (true) {
+		while (running) {
 			Stack<com.ciscospark.Message> msgList = new Stack<com.ciscospark.Message>();
 			
-			while (true) {
+			while (running) {
 				String nextId = null;
 				try {
 					Iterator<com.ciscospark.Message> msgs = spark.messages()
@@ -184,6 +185,11 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 	@Override
 	public boolean join(RoomConfiguration configuration) {
 		return false;
+	}
+
+	@Override
+	public void leave() {
+		running = false;
 	}
 
 	@Override

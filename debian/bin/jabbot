@@ -4,7 +4,7 @@
 # Script main
 ###
 
-JABBOT_MAIN="org.wanna.jabbot.Launcher"
+JABBOT_MAIN="org.wanna.jabbot.Jabbot"
 JABBOT_LOGS="/var/log/jabbot/"
 J_CLASSPATH="/usr/share/jabbot/*:/etc/jabbot/:/var/lib/jabbot/scripts/"
 

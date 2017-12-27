@@ -88,15 +88,19 @@ public class ExtensionLoader {
 	}
 
 	private ClassLoader createPluginClassLoader(File libFolder){
+		LOG.debug("creating classloader for {}",libFolder.getPath());
 		List<URL> urls = new ArrayList<>();
 		if(libFolder.exists() && libFolder.isDirectory()){
 			File[] files = libFolder.listFiles();
 			if(files == null){
+				LOG.debug("no libraries found to load in classpath");
 				return null;
 			}
+			LOG.debug("found {} librarie(s) to load in classpath",files.length);
 			for (File file : files) {
 				try {
 					urls.add(file.toURI().toURL());
+					LOG.trace("adding {} to classloader",file.getName());
 				} catch (MalformedURLException e) {
 					LOG.warn("unable to add {} to classpath", file.getPath());
 				}

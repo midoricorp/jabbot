@@ -3,6 +3,7 @@ package org.wanna.jabbot.config;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.ExtensionConfiguration;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -11,8 +12,8 @@ import java.util.List;
  */
 public class JabbotConfiguration {
 	private String extensionsFolder;
-	private List<ExtensionConfiguration> bindings;
-	private List<BindingConfiguration> serverList;
+	private Collection<ExtensionConfiguration> bindings;
+	private Collection<BindingConfiguration> serverList;
 
 	public String getExtensionsFolder() {
 		return extensionsFolder;
@@ -22,14 +23,14 @@ public class JabbotConfiguration {
 		this.extensionsFolder = extensionsFolder;
 	}
 
-	public List<BindingConfiguration> getServerList() {
+	public Collection<BindingConfiguration> getServerList() {
 		return serverList;
 	}
-	public void setServerList(List<BindingConfiguration> serverList) {
+	public void setServerList(Collection<BindingConfiguration> serverList) {
 		this.serverList = serverList;
 	}
 
-	public List<ExtensionConfiguration> getBindings() {
+	public Collection<ExtensionConfiguration> getBindings() {
 		return bindings;
 	}
 

@@ -12,7 +12,6 @@ import org.wanna.jabbot.command.behavior.Configurable;
 import org.wanna.jabbot.extension.ExtensionLoader;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.WeakHashMap;
 
 /**
@@ -20,60 +19,71 @@ import java.util.WeakHashMap;
  * @since 2015-08-24
  */
 public class CommandManager {
-    private final static Logger logger = LoggerFactory.getLogger(CommandManager.class);
-    private static final Map<Binding,CommandManager> instances = new WeakHashMap<>();
-    private CommandFactory commandFactory;
-    private Binding binding;
+	private final static Logger logger = LoggerFactory.getLogger(CommandManager.class);
+	private static final Map<Binding,CommandManager> instances = new WeakHashMap<>();
+	private CommandFactory commandFactory;
+	private Binding binding;
 
-    public CommandManager(Binding binding) {
-        this.binding = binding;
-        commandFactory = new JabbotCommandFactory();
-    }
+	private CommandManager(Binding binding) {
+		this.binding = binding;
+		commandFactory = new JabbotCommandFactory();
+	}
 
-    public static CommandManager getInstanceFor(Binding binding){
-        if(!instances.containsKey(binding)){
-            CommandManager manager = new CommandManager(binding);
-            instances.put(binding,manager);
-            return manager;
-        }
-        return instances.get(binding);
-    }
+	public static CommandManager register(Binding binding){
+		if(!instances.containsKey(binding)){
+			CommandManager manager = new CommandManager(binding);
+			instances.put(binding,manager);
+			return manager;
+		}
+		return instances.get(binding);
+	}
 
-    /**
-     * Retrieve the command factory associated to a given binding
-     *
-     * @return Command factory
-     */
-    public CommandFactory getCommandFactory(){
-        return commandFactory;
-    }
+	public static void remove(Binding binding){
+		instances.remove(binding);
+	}
 
-    /**
-     * Initialize a CommandFactory of a specific binding with a list of defined Commands.
-     * Commands are created using the provided ExtensionConfiguration and configured upon creation.
-     *
-     * @param configSet set of command configuration used for initializing the CommandFactory
-     */
-    public void initializeFromConfigSet(Set<ExtensionConfiguration> configSet) {
-        ExtensionLoader loader = ExtensionLoader.getInstance();
-        for (ExtensionConfiguration configuration : configSet) {
-            Command command = loader.getExtension(configuration.getClassName(),Command.class,configuration.getName());
-            if(command != null) {
-                if (command instanceof CommandFactoryAware) {
-                    ((CommandFactoryAware) command).setCommandFactory(commandFactory);
-                }
+	/**
+	 * Retrieve the command factory associated to a given binding
+	 *
+	 * @return Command factory
+	 */
+	public CommandFactory getCommandFactory(){
+		return commandFactory;
+	}
 
-                if (command instanceof Configurable) {
-                    ((Configurable) command).configure(configuration.getConfiguration());
-                }
+	/**
+	 * Removes a command from the CommandFactory
+	 *
+	 * @param name command name
+	 */
+	public void remove(String name){
+		commandFactory.deregister(name);
+	}
 
-                if (command instanceof BindingAware) {
-                    ((BindingAware) command).setBinding(binding);
-                }
-                commandFactory.register(configuration.getName(), command);
-                logger.info("{} - registered command {}", binding.getIdentifier(),command);
-            }
-        }
-    }
+	/**
+	 * Create a new Command instance from an ExtensionConfiguration and add it to the CommandFactory
+	 * @param configuration Extension configuration
+	 *
+	 * @return created command
+	 */
+	public Command add(ExtensionConfiguration configuration){
+		Command command = ExtensionLoader.getInstance().getExtension(configuration.getClassName(),Command.class,configuration.getName());
+		if(command != null) {
+			if (command instanceof CommandFactoryAware) {
+				((CommandFactoryAware) command).setCommandFactory(commandFactory);
+			}
+
+			if (command instanceof Configurable) {
+				((Configurable) command).configure(configuration.getConfiguration());
+			}
+
+			if (command instanceof BindingAware) {
+				((BindingAware) command).setBinding(binding);
+			}
+			commandFactory.register(configuration.getName(), command);
+			logger.info("registered command {} with alias '{}' in {}", command, configuration.getName(), binding);
+		}
+		return  command;
+	}
 }
 

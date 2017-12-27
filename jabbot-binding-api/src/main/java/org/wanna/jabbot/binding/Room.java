@@ -22,6 +22,8 @@ public interface Room{
 	 */
 	boolean join(final RoomConfiguration configuration);
 
+	void leave();
+
     /**
      * Retrieves the name of the room
      * @return room name

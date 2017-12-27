@@ -73,6 +73,15 @@ public class XmppRoom extends AbstractRoom<XmppBinding> {
 	}
 
 	@Override
+	public void leave() {
+		try {
+			muc.leave();
+		} catch (SmackException.NotConnectedException e) {
+			logger.warn("could not leave room {}",configuration.getName(),e);
+		}
+	}
+
+	@Override
 	public String getRoomName() {
 		return configuration.getName();
 	}

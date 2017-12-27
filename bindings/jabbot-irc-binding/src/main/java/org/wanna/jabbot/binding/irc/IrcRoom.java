@@ -52,6 +52,11 @@ public class IrcRoom extends AbstractRoom<IrcBinding> {
 	}
 
 	@Override
+	public void leave() {
+		ircApi.leaveChannel(configuration.getName());
+	}
+
+	@Override
 	public String getRoomName() {
 		return configuration.getName();
 	}

@@ -19,7 +19,7 @@ import java.io.InputStreamReader;
 public class CliRoom extends AbstractRoom<CliBinding> implements Runnable {
 	private final static Logger logger = LoggerFactory.getLogger(CliRoom.class);
 	private RoomConfiguration configuration;
-
+	private boolean running;
 
 	public CliRoom(CliBinding connection) {
 		super(connection);
@@ -29,9 +29,10 @@ public class CliRoom extends AbstractRoom<CliBinding> implements Runnable {
 	@Override
 	public void run()
 	{
+		running = true;
 		System.out.println("CLI Room started");
 		BufferedReader buffer=new BufferedReader(new InputStreamReader(System.in));
-		while (true) {
+		while (running) {
 			try {
 				String line="";
 				
@@ -74,6 +75,11 @@ public class CliRoom extends AbstractRoom<CliBinding> implements Runnable {
 		this.configuration = configuration;
 		new Thread(this).start();
 		return true;
+	}
+
+	@Override
+	public void leave() {
+		running = false;
 	}
 
 	@Override

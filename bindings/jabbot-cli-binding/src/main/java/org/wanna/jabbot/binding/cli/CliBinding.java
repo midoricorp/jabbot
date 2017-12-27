@@ -29,6 +29,12 @@ public class CliBinding extends AbstractBinding<Object> {
 	}
 
 	@Override
+	public boolean disconnect() {
+
+		return true;
+	}
+
+	@Override
 	public Room joinRoom(RoomConfiguration configuration) {
 		logger.debug("Joining room " + configuration.getName());
 		room = new CliRoom(this);
