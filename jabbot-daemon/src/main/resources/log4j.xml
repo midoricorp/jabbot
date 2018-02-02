@@ -20,10 +20,6 @@
         <level value="INFO"/>
     </logger>
 
-    <logger name="org.wanna.jabbot.event">
-        <level value="WARN"/>
-    </logger>
-
     <root>
         <priority value ="WARN" />
         <appender-ref ref="console" />

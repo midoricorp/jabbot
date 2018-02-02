@@ -1,5 +1,6 @@
 package org.wanna.jabbot.event;
 
+import jersey.repackaged.com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.event.BindingEvent;
@@ -24,7 +25,7 @@ public class EventQueueProcessor extends Thread{
 	private final BlockingQueue<BindingEvent> queue;
 	private final EventDispatcher dispatcher;
 	private boolean running = false;
-	private ExecutorService executorService = Executors.newFixedThreadPool(5);
+	private ExecutorService executorService;
 
 	/**
 	 * Constructor
@@ -32,9 +33,13 @@ public class EventQueueProcessor extends Thread{
 	 * @param dispatcher Event dispatcher facility
 	 */
 	EventQueueProcessor(BlockingQueue<BindingEvent> queue, EventDispatcher dispatcher, String threadName) {
+
 		super(threadName);
 		this.queue = queue;
 		this.dispatcher = dispatcher;
+		executorService = Executors.newFixedThreadPool(5,
+				new ThreadFactoryBuilder().setNameFormat(threadName+"-%d").setDaemon(true).build()
+		);
 	}
 
 	@Override

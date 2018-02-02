@@ -31,7 +31,7 @@ public abstract class AbstractBindingEvent<T> implements BindingEvent<T>{
 	@Override
 	public String toString() {
 		final StringBuffer sb = new StringBuffer(this.getClass().getSimpleName()+"{");
-		sb.append(", payload=").append(payload);
+		sb.append("payload=").append(payload);
 		sb.append('}');
 		return sb.toString();
 	}

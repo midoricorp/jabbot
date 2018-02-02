@@ -17,6 +17,8 @@ import org.wanna.jabbot.command.messaging.DefaultCommandMessage;
 import org.wanna.jabbot.command.parser.CommandParser;
 import org.wanna.jabbot.command.parser.CommandParsingResult;
 import org.wanna.jabbot.event.EventDispatcher;
+import org.wanna.jabbot.statistics.CommandStats;
+import org.wanna.jabbot.statistics.StatisticsManager;
 
 /**
  * @author Vincent Morsiani [vmorsiani@voxbone.com]
@@ -42,11 +44,17 @@ public class MessageEventHandler implements EventHandler<MessageEvent>{
 		CommandParsingResult result = commandParser.parse(messageContent.getBody());
 
 		try {
-			Command command = CommandManager.register(binding).getCommandFactory().create(result.getCommandName());
+			Command command = CommandManager.getInstance(binding).get(result.getCommandName());
 			DefaultCommandMessage commandMessage = new DefaultCommandMessage(request.getSender(),result.getRawArgsLine());
+			CommandStats stats = StatisticsManager.getInstance(binding).getCommandStats(result.getCommandName());
+			if(stats != null){
+				stats.increment(request.getSender().getName());
+			}else{
+				logger.warn("{} - no stats object found for command {}",binding.getIdentifier(),command.getCommandName());
+			}
 			MessageContent commandResult = command.process(commandMessage);
 			if(commandResult == null){
-				logger.warn("Aborting due to undefined command result for command {}",command.getClass());
+				logger.warn("{} - Aborting due to undefined command result for command {}",binding.getIdentifier(),command.getClass());
 				return false;
 			}
 
@@ -56,7 +64,7 @@ public class MessageEventHandler implements EventHandler<MessageEvent>{
 				return true;
 			}
 		} catch (CommandNotFoundException e) {
-			logger.debug("command not found: '{}'", e.getCommandName());
+			logger.debug("{} - command not found: '{}'", binding.getIdentifier(),e.getCommandName());
 			return false;
 		}
 		return true;

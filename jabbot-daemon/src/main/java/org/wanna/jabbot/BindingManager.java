@@ -1,5 +1,7 @@
 package org.wanna.jabbot;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
@@ -8,6 +10,8 @@ import org.wanna.jabbot.binding.event.BindingEvent;
 import org.wanna.jabbot.binding.event.DisconnectionRequestEvent;
 import org.wanna.jabbot.event.EventManager;
 import org.wanna.jabbot.extension.ExtensionLoader;
+import org.wanna.jabbot.statistics.StatisticsManager;
+import org.wanna.jabbot.web.services.Status;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -21,12 +25,16 @@ public class BindingManager {
 	private static final Map<String,BindingManager> managers = new HashMap<>();
 	private BindingConfiguration configuration;
 	private CommandManager commandManager;
+	private StatisticsManager statisticsManager;
 	private Binding binding;
+	private final static Logger logger = LoggerFactory.getLogger(BindingManager.class);
+	private Status bindingStatus;
 
 	public static  BindingManager register(BindingConfiguration configuration){
 		if(managers.containsKey(configuration.getId())){
 			return managers.get(configuration.getId());
 		}else{
+			logger.info("{} - registering new binding with class {}",configuration.getId(),configuration.getType());
 			BindingManager manager = new BindingManager(configuration);
 			managers.put(configuration.getId(),manager);
 			return manager;
@@ -57,7 +65,10 @@ public class BindingManager {
 	private BindingManager(BindingConfiguration configuration){
 		this.configuration = configuration;
 		this.binding = createBinding(configuration);
-		this.commandManager = CommandManager.register(binding);
+		this.commandManager = CommandManager.getInstance(binding);
+		this.statisticsManager = StatisticsManager.getInstance(binding);
+		this.bindingStatus = new Status();
+		bindingStatus.setId(configuration.getId());
 		for (ExtensionConfiguration extensionConfiguration : configuration.getExtensions()) {
 			commandManager.add(extensionConfiguration);
 		}
@@ -68,13 +79,7 @@ public class BindingManager {
 		final Binding conn;
 		conn = loader.getExtension(configuration.getType(), Binding.class, configuration);
 		if (conn != null) {
-			conn.registerListener(new BindingListener() {
-				@Override
-				public void eventReceived(BindingEvent event) {
-					EventManager.getInstance().getIncomingDispatcher().dispatch(event);
-				}
-			});
-
+			conn.registerListener(event -> EventManager.getInstance().getIncomingDispatcher().dispatch(event));
 		}
 		return conn;
 	}
@@ -87,8 +92,16 @@ public class BindingManager {
 		return commandManager;
 	}
 
+	public StatisticsManager getStatisticsManager() {
+		return statisticsManager;
+	}
+
 	public BindingConfiguration getConfiguration() {
 		return configuration;
+	}
+
+	public Status getStatus() {
+		return bindingStatus;
 	}
 
 	@Override

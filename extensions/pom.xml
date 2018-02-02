@@ -20,7 +20,8 @@
         <module>jabbot-script-command</module>
         <module>jabbot-translate-command</module>
 		<module>jabbot-say-extension</module>
-    </modules>
+		<module>dialogflow-exntension</module>
+	</modules>
 
     <parent>
         <groupId>org.wanna.jabbot</groupId>

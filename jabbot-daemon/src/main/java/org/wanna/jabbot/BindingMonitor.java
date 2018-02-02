@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.event.ConnectionRequestEvent;
 import org.wanna.jabbot.binding.event.DisconnectionRequestEvent;
 import org.wanna.jabbot.event.EventManager;
+import org.wanna.jabbot.web.services.Status;
 
 import java.util.Collection;
 
@@ -16,7 +17,7 @@ public class BindingMonitor implements Runnable{
 	private final Logger logger = LoggerFactory.getLogger(BindingMonitor.class);
 	private final Collection<BindingManager> bindings;
 
-	public BindingMonitor(Collection<BindingManager> bindings) {
+	BindingMonitor(Collection<BindingManager> bindings) {
 		this.bindings = bindings;
 	}
 
@@ -26,14 +27,15 @@ public class BindingMonitor implements Runnable{
 		for (final BindingManager manager : bindings) {
 			try{
 				if(!manager.getBinding().isConnected()){
-					logger.info("binding {} is disconnected. queueing for connection...",manager);
+					logger.info("{} - binding is disconnected. queueing for connection...",manager.getBinding().getIdentifier());
 					EventManager.getInstance().getOutgoingDispatcher().dispatch(new DisconnectionRequestEvent(manager.getBinding()));
 					EventManager.getInstance().getOutgoingDispatcher().dispatch(new ConnectionRequestEvent(manager.getBinding()));
 				}else{
-					logger.trace("binding {} is connected",manager);
+					logger.trace("{} - binding is connected",manager.getBinding().getIdentifier());
+					manager.getStatus().setStatus(Status.StatusType.CONNECTED);
 				}
 			}catch (Throwable t){
-				logger.error("unable to check {} health",manager,t);
+				logger.error("{} - unable to check health",manager.getBinding().getIdentifier(),t);
 			}
 		}
 		logger.trace("health check done");

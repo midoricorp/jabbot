@@ -7,9 +7,11 @@ import org.wanna.jabbot.binding.BindingAware;
 import org.wanna.jabbot.binding.config.ExtensionConfiguration;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandFactory;
+import org.wanna.jabbot.command.CommandNotFoundException;
 import org.wanna.jabbot.command.behavior.CommandFactoryAware;
 import org.wanna.jabbot.command.behavior.Configurable;
 import org.wanna.jabbot.extension.ExtensionLoader;
+import org.wanna.jabbot.statistics.StatisticsManager;
 
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -26,10 +28,10 @@ public class CommandManager {
 
 	private CommandManager(Binding binding) {
 		this.binding = binding;
-		commandFactory = new JabbotCommandFactory();
+		commandFactory = new JabbotCommandFactory(binding);
 	}
 
-	public static CommandManager register(Binding binding){
+	public static CommandManager getInstance(Binding binding){
 		if(!instances.containsKey(binding)){
 			CommandManager manager = new CommandManager(binding);
 			instances.put(binding,manager);
@@ -42,13 +44,8 @@ public class CommandManager {
 		instances.remove(binding);
 	}
 
-	/**
-	 * Retrieve the command factory associated to a given binding
-	 *
-	 * @return Command factory
-	 */
-	public CommandFactory getCommandFactory(){
-		return commandFactory;
+	public Command get(String name) throws CommandNotFoundException{
+		return commandFactory.create(name);
 	}
 
 	/**
@@ -81,7 +78,8 @@ public class CommandManager {
 				((BindingAware) command).setBinding(binding);
 			}
 			commandFactory.register(configuration.getName(), command);
-			logger.info("registered command {} with alias '{}' in {}", command, configuration.getName(), binding);
+
+			logger.info("{} - registered command {} with alias '{}'", binding.getIdentifier(),command, configuration.getName());
 		}
 		return  command;
 	}
