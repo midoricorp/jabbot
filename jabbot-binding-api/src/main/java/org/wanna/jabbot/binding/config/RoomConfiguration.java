@@ -22,4 +22,10 @@ public class RoomConfiguration{
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
+
+	@Override
+	public String toString() {
+		return "RoomConfiguration{" +
+				"name=" + name +'}';
+	}
 }

@@ -19,4 +19,8 @@ public abstract class AbstractRoom<T> implements Room{
 		return connection;
 	}
 
+
+	public String toString(){
+		return String.format("%s{name=%s}", this.getClass().getSimpleName(),getRoomName());
+	}
 }

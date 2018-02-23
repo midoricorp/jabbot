@@ -1,6 +1,6 @@
 package org.wanna.jabbot.web.services;
 
-import org.wanna.jabbot.BindingManager;
+import org.wanna.jabbot.BindingContainer;
 import org.wanna.jabbot.statistics.CommandStats;
 
 import javax.ws.rs.GET;
@@ -10,15 +10,43 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Path("stats")
 @Produces(MediaType.APPLICATION_JSON)
 public class StatisticsService {
+
+	@GET
+	public Response status(){
+		final Collection<BindingContainer> managers = BindingContainer.getRegistry();
+		final Status[] statuses = new Status[managers.size()];
+		int i = 0;
+		for (BindingContainer manager : managers) {
+			Status status = manager.getStatus();
+			statuses[i] = status;
+			i++;
+		}
+		GenericEntity<List<Status>> entity = new GenericEntity<List<Status>>(Arrays.asList(statuses)){};
+		return Response.ok(entity).build();
+	}
+
+	@GET
+	@Path("/{binding}/")
+	public Response status(@PathParam("binding") String bindingIndentifier){
+		BindingContainer container = BindingContainer.getInstance(bindingIndentifier);
+		if( container == null ){
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+
+		return Response.ok(container.getStatus()).build();
+	}
+
 	@GET
 	@Path("/{binding}/commands")
 	public Response commandsUsage(@PathParam("binding") String bindingIdentifier){
-		BindingManager manager  = BindingManager.getInstance(bindingIdentifier);
+		BindingContainer manager  = BindingContainer.getInstance(bindingIdentifier);
 		if(manager == null){
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}else{

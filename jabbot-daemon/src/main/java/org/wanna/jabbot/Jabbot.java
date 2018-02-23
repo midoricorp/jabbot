@@ -60,7 +60,7 @@ public class Jabbot implements Daemon{
 		logger.info("# Registering configured bindings");
 		if(configuration.getServerList() != null) {
 			for (final BindingConfiguration connectionConfiguration : configuration.getServerList()) {
-				BindingManager.register(connectionConfiguration);
+				BindingContainer.create(connectionConfiguration);
 			}
 		}
 		logger.info("# Initializing Event handlers");
@@ -82,7 +82,7 @@ public class Jabbot implements Daemon{
 		logger.info("# Starting Binding monitoring");
 		final long delay = 60L;
 		final TimeUnit unit = TimeUnit.SECONDS;
-		scheduledExecutorService.scheduleAtFixedRate(new BindingMonitor(BindingManager.getManagers()),
+		scheduledExecutorService.scheduleAtFixedRate(new BindingMonitor(BindingContainer.getRegistry()),
 				0L,delay, TimeUnit.SECONDS);
 		logger.debug("Binding monitoring is scheduled to run every {} {}",delay,unit);
 

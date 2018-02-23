@@ -67,7 +67,7 @@ public abstract class AbstractBinding<T> implements Binding<T>{
 	}
 
 	public String toString(){
-		return String.format("%s{id: %s}", this.getClass().getSimpleName(),configuration.getId());
+		return String.format("%s{id=%s}", this.getClass().getSimpleName(),configuration.getId());
 	}
 
 	@Override

@@ -11,13 +11,14 @@ public class Status {
 	}
 
 	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	private String id;
+	private final String id;
 	private StatusType status;
 	private Date lastUpdated;
 	private Date lastConnectionAttempt;
 	private Date lastConnected;
 
-	public Status() {
+	public Status(String id) {
+		this.id = id;
 		this.status = StatusType.STOPPED;
 		this.lastUpdated = new Date();
 	}
@@ -25,11 +26,6 @@ public class Status {
 	public String getId() {
 		return id;
 	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
 
 	public StatusType getStatus() {
 		return status;

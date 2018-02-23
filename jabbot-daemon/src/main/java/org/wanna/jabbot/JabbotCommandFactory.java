@@ -16,7 +16,7 @@ import java.util.TreeMap;
 public class JabbotCommandFactory implements CommandFactory {
 	private Binding binding;
 
-	public JabbotCommandFactory(Binding binding) {
+	JabbotCommandFactory(Binding binding) {
 		this.binding = binding;
 	}
 
@@ -37,12 +37,12 @@ public class JabbotCommandFactory implements CommandFactory {
 	@Override
 	public void register(String commandName, Command command) {
 		registry.put(commandName, command);
-		StatisticsManager.getInstance(binding).registerCommandStats(commandName);
+		BindingContainer.getInstance(binding.getIdentifier()).getStatisticsManager().registerCommandStats(commandName);
 	}
 
 	@Override
 	public void deregister(String commandName) {
 		registry.remove(commandName);
-		StatisticsManager.getInstance(binding).removeCommandStats(commandName);
+		BindingContainer.getInstance(binding.getIdentifier()).getStatisticsManager().removeCommandStats(commandName);
 	}
 }

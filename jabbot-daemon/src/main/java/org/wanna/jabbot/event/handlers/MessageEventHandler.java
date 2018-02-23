@@ -2,7 +2,7 @@ package org.wanna.jabbot.event.handlers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wanna.jabbot.CommandManager;
+import org.wanna.jabbot.BindingContainer;
 import org.wanna.jabbot.DefaultCommandParser;
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.event.MessageEvent;
@@ -18,7 +18,6 @@ import org.wanna.jabbot.command.parser.CommandParser;
 import org.wanna.jabbot.command.parser.CommandParsingResult;
 import org.wanna.jabbot.event.EventDispatcher;
 import org.wanna.jabbot.statistics.CommandStats;
-import org.wanna.jabbot.statistics.StatisticsManager;
 
 /**
  * @author Vincent Morsiani [vmorsiani@voxbone.com]
@@ -44,9 +43,10 @@ public class MessageEventHandler implements EventHandler<MessageEvent>{
 		CommandParsingResult result = commandParser.parse(messageContent.getBody());
 
 		try {
-			Command command = CommandManager.getInstance(binding).get(result.getCommandName());
+			Command command = BindingContainer.getInstance(binding.getIdentifier()).getCommandFactory().create(result.getCommandName());
 			DefaultCommandMessage commandMessage = new DefaultCommandMessage(request.getSender(),result.getRawArgsLine());
-			CommandStats stats = StatisticsManager.getInstance(binding).getCommandStats(result.getCommandName());
+
+			CommandStats stats = BindingContainer.getInstance(binding.getIdentifier()).getStatisticsManager().getCommandStats(result.getCommandName());
 			if(stats != null){
 				stats.increment(request.getSender().getName());
 			}else{

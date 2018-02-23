@@ -1,6 +1,6 @@
 package org.wanna.jabbot.event.handlers;
 
-import org.wanna.jabbot.BindingManager;
+import org.wanna.jabbot.BindingContainer;
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.ConnectionException;
 import org.wanna.jabbot.binding.event.ConnectionRequestEvent;
@@ -16,11 +16,11 @@ public class ConnectionRequestEventHandler implements EventHandler<ConnectionReq
 	public boolean process(ConnectionRequestEvent event, EventDispatcher dispatcher) {
 		final Binding binding = event.getBinding();
 		if(binding == null) return false;
-		BindingManager.getInstance(binding.getIdentifier()).getStatus().setStatus(Status.StatusType.STARTED);
+		BindingContainer.getInstance(binding.getIdentifier()).getStatus().setStatus(Status.StatusType.STARTED);
 		try {
 			return binding.connect();
 		}catch(ConnectionException e){
-			BindingManager.getInstance(binding.getIdentifier()).getStatus().setStatus(Status.StatusType.STOPPED);
+			BindingContainer.getInstance(binding.getIdentifier()).getStatus().setStatus(Status.StatusType.STOPPED);
 			throw e;
 		}
 	}

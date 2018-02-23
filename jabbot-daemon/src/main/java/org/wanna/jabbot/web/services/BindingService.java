@@ -1,10 +1,9 @@
 package org.wanna.jabbot.web.services;
 
-import org.wanna.jabbot.BindingManager;
+import org.wanna.jabbot.BindingContainer;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.ExtensionConfiguration;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -27,9 +26,9 @@ public class BindingService {
 	@Path("/{id}")
 	@RolesAllowed({"admin"})
 	public Response remove(@PathParam("id") String identifier){
-		BindingManager manager = BindingManager.getInstance(identifier);
+		BindingContainer manager = BindingContainer.getInstance(identifier);
 		if(manager != null){
-			BindingManager.remove(identifier);
+			BindingContainer.remove(identifier);
 			return Response.ok().build();
 		}else{
 			return Response.status(Response.Status.NOT_FOUND).build();
@@ -39,7 +38,7 @@ public class BindingService {
 	@POST
 	@RolesAllowed({"admin"})
 	public Response create(BindingConfiguration configuration){
-		BindingManager.register(configuration);
+		BindingContainer.create(configuration);
 		return Response.ok().build();
 	}
 
@@ -47,23 +46,24 @@ public class BindingService {
 	@Path("/{id}/extensions")
 	@RolesAllowed({"admin"})
 	public Response getExtensions(@PathParam("id") String identifier){
-		BindingManager bindingManager = BindingManager.getInstance(identifier);
-		if(bindingManager == null){
+		BindingContainer bindingContainer = BindingContainer.getInstance(identifier);
+		if(bindingContainer == null){
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 		return Response.ok().build();
 	}
 
+
 	@PUT
 	@Path("/{id}/extensions")
 	@RolesAllowed({"admin"})
 	public Response addExtension(@PathParam("id") String identifier, ExtensionConfiguration extension){
-		BindingManager bindingManager = BindingManager.getInstance(identifier);
-		if(bindingManager == null){
+		BindingContainer bindingContainer = BindingContainer.getInstance(identifier);
+		if(bindingContainer == null){
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
-		bindingManager.getCommandManager().add(extension);
+		bindingContainer.addCommand(extension);
 		return Response.ok().build();
 	}
 }

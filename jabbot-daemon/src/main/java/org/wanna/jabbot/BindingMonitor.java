@@ -15,16 +15,16 @@ import java.util.Collection;
  */
 public class BindingMonitor implements Runnable{
 	private final Logger logger = LoggerFactory.getLogger(BindingMonitor.class);
-	private final Collection<BindingManager> bindings;
+	private final Collection<BindingContainer> bindings;
 
-	BindingMonitor(Collection<BindingManager> bindings) {
+	BindingMonitor(Collection<BindingContainer> bindings) {
 		this.bindings = bindings;
 	}
 
 	@Override
 	public void run() {
 		logger.trace("checking binding health");
-		for (final BindingManager manager : bindings) {
+		for (final BindingContainer manager : bindings) {
 			try{
 				if(!manager.getBinding().isConnected()){
 					logger.info("{} - binding is disconnected. queueing for connection...",manager.getBinding().getIdentifier());

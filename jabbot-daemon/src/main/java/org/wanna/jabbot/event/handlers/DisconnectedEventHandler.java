@@ -1,6 +1,6 @@
 package org.wanna.jabbot.event.handlers;
 
-import org.wanna.jabbot.BindingManager;
+import org.wanna.jabbot.BindingContainer;
 import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.event.ConnectionRequestEvent;
 import org.wanna.jabbot.binding.event.DisconnectedEvent;
@@ -19,7 +19,7 @@ public class DisconnectedEventHandler implements EventHandler<DisconnectedEvent>
 			return false;
 		}
 
-		BindingManager.getInstance(binding.getIdentifier()).getStatus().setStatus(Status.StatusType.STOPPED);
+		BindingContainer.getInstance(binding.getIdentifier()).getStatus().setStatus(Status.StatusType.STOPPED);
 		dispatcher.dispatch(new ConnectionRequestEvent(event.getBinding()));
 		return true;
 	}
