@@ -240,6 +240,7 @@ sub makeServer {
 		my $value = ask({question=>"$type value for $key", default=>$serverConfig->{$key}, save_key=>"binding.$type.$key"});
 		$serverConfig->{$key} = $value;
 	}
+	$serverConfig->{'id'} = $serverConfig->{'identifier'};
 	my $parameters = $binding->{'parameters'};
 
 	my $parm_map;
