@@ -1,9 +1,9 @@
-package org.wanna.jabbot.web.services;
+package org.wanna.jabbot;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Status {
+public class ConnectionInfo {
 	public enum StatusType {
 		STOPPED,
 		STARTED,
@@ -17,7 +17,7 @@ public class Status {
 	private Date lastConnectionAttempt;
 	private Date lastConnected;
 
-	public Status(String id) {
+	ConnectionInfo(String id) {
 		this.id = id;
 		this.status = StatusType.STOPPED;
 		this.lastUpdated = new Date();

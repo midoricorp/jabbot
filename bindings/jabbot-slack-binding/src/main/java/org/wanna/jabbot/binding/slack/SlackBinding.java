@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractBinding;
 import org.wanna.jabbot.binding.BindingListener;
+import org.wanna.jabbot.binding.ConnectionException;
 import org.wanna.jabbot.binding.Room;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
@@ -49,7 +50,7 @@ public class SlackBinding extends AbstractBinding<Object> {
 			rtmClient = SlackClientFactory.createSlackRealTimeMessagingClient(getConfiguration().getPassword());
 			webApiClient = SlackClientFactory.createWebApiClient(getConfiguration().getPassword());
 		} catch (Throwable e) {
-			logger.error("Unable to creat clients", e);
+			throw new ConnectionException(e);
 		}
 		logger.info("RTM Client created! connecting");
 		rtmClient.addListener(Event.MESSAGE, new EventListener() {
@@ -66,15 +67,19 @@ public class SlackBinding extends AbstractBinding<Object> {
 					String channelId = jsonNode.get("channel").asText();
 					dispatchMessage(channelId,slackMsg);
 				} catch (JsonProcessingException e) {
-					logger.error("Faled to parse message",e);
+					logger.error("Failed to parse message",e);
 				}
 			}
 		});
-		rtmClient.connect();
-		logger.info("RTP Connected");
 
-		connected = true;
-		super.dispatchEvent(new ConnectedEvent(this));
+		try {
+			rtmClient.connect();
+			logger.info("RTP Connected");
+			connected = true;
+			super.dispatchEvent(new ConnectedEvent(this));
+		}catch(Throwable e){
+			throw new ConnectionException(e);
+		}
 		return connected;
 	}
 

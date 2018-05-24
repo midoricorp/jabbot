@@ -7,7 +7,7 @@ import org.wanna.jabbot.binding.event.BindingEvent;
 import org.wanna.jabbot.binding.event.ConnectedEvent;
 import org.wanna.jabbot.binding.event.JoinRoomEvent;
 import org.wanna.jabbot.event.EventDispatcher;
-import org.wanna.jabbot.web.services.Status;
+import org.wanna.jabbot.ConnectionInfo;
 
 /**
  * @author Vincent Morsiani [vmorsiani@voxbone.com]
@@ -18,7 +18,7 @@ public class ConnectedEventHandler implements EventHandler<ConnectedEvent>{
 	public boolean process(ConnectedEvent event, EventDispatcher dispatcher) {
 		final Binding binding = event.getBinding();
 		if(binding == null) return false;
-		BindingContainer.getInstance(binding.getIdentifier()).getStatus().setStatus(Status.StatusType.CONNECTED);
+		BindingContainer.getInstance(binding.getIdentifier()).getConnectionInfo().setStatus(ConnectionInfo.StatusType.CONNECTED);
 		for (RoomConfiguration roomConfiguration : binding.getConfiguration().getRooms()) {
 			BindingEvent joinRequest = new JoinRoomEvent(binding,roomConfiguration);
 			dispatcher.dispatch(joinRequest);

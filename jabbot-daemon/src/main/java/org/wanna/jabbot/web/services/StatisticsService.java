@@ -1,6 +1,7 @@
 package org.wanna.jabbot.web.services;
 
 import org.wanna.jabbot.BindingContainer;
+import org.wanna.jabbot.ConnectionInfo;
 import org.wanna.jabbot.statistics.CommandStats;
 
 import javax.ws.rs.GET;
@@ -21,14 +22,14 @@ public class StatisticsService {
 	@GET
 	public Response status(){
 		final Collection<BindingContainer> managers = BindingContainer.getRegistry();
-		final Status[] statuses = new Status[managers.size()];
+		final ConnectionInfo[] statuses = new ConnectionInfo[managers.size()];
 		int i = 0;
 		for (BindingContainer manager : managers) {
-			Status status = manager.getStatus();
+			ConnectionInfo status = manager.getConnectionInfo();
 			statuses[i] = status;
 			i++;
 		}
-		GenericEntity<List<Status>> entity = new GenericEntity<List<Status>>(Arrays.asList(statuses)){};
+		GenericEntity<List<ConnectionInfo>> entity = new GenericEntity<List<ConnectionInfo>>(Arrays.asList(statuses)){};
 		return Response.ok(entity).build();
 	}
 
@@ -40,7 +41,7 @@ public class StatisticsService {
 			return Response.status(Response.Status.NOT_FOUND).build();
 		}
 
-		return Response.ok(container.getStatus()).build();
+		return Response.ok(container.getConnectionInfo()).build();
 	}
 
 	@GET

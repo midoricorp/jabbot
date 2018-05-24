@@ -15,7 +15,6 @@ import org.wanna.jabbot.command.behavior.Configurable;
 import org.wanna.jabbot.event.EventManager;
 import org.wanna.jabbot.extension.ExtensionLoader;
 import org.wanna.jabbot.statistics.StatisticsManager;
-import org.wanna.jabbot.web.services.Status;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,7 +32,7 @@ public class BindingContainer {
 	private Binding binding;
 	private CommandFactory commandFactory;
 	private final static Logger logger = LoggerFactory.getLogger(BindingContainer.class);
-	private Status bindingStatus;
+	private ConnectionInfo connectionInfo;
 
 	/**
 	 * Create a new BindingContainer
@@ -76,7 +75,7 @@ public class BindingContainer {
 	private BindingContainer(BindingConfiguration configuration){
 		this.configuration = configuration;
 		this.statisticsManager = new StatisticsManager();
-		this.bindingStatus = new Status(configuration.getId());
+		this.connectionInfo = new ConnectionInfo(configuration.getId());
 		this.binding = createBinding(configuration);
 		this.commandFactory = new JabbotCommandFactory(binding);
 	}
@@ -137,8 +136,8 @@ public class BindingContainer {
 		return configuration;
 	}
 
-	public Status getStatus() {
-		return bindingStatus;
+	public ConnectionInfo getConnectionInfo() {
+		return connectionInfo;
 	}
 
 	@Override

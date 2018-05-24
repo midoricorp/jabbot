@@ -69,7 +69,7 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 			this.initListeners(getConfiguration().getCommandPrefix(),connection);
 			super.dispatchEvent(new ConnectedEvent(this));
 			return connection.isConnected();
-		} catch (XMPPException | SmackException | IOException e) {
+		} catch (Throwable e) {
 			throw new ConnectionException(e);
 		}
 	}
@@ -116,7 +116,7 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 
 	@Override
 	public boolean isConnected() {
-		return (connection == null ? false :connection.isConnected());
+		return (connection != null && connection.isConnected());
 	}
 
 	private XMPPTCPConnectionConfiguration newConnectionConfiguration(final BindingConfiguration configuration){
