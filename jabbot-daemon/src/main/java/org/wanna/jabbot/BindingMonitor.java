@@ -28,12 +28,12 @@ public class BindingMonitor implements Runnable{
 				if(!manager.getBinding().isConnected()){
 					switch(manager.getConnectionInfo().getStatus()){
 						case CONNECTED:{
-							logger.info("{} - binding is already connected");
+							logger.info("{} - binding is already connected",manager.getBinding().getIdentifier());
 							break;
 						}
 
 						case STARTED:{
-							logger.info("{} - is already starting.. waiting..");
+							logger.info("{} - is already starting.. waiting..",manager.getBinding().getIdentifier());
 							break;
 						}
 
