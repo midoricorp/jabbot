@@ -15,7 +15,7 @@
 
 version=`xpath -q -e "/project/version/text()" $(CURDIR)/pom.xml`
 
-MVN = mvn -q -Dmaven.test.skip=true -Duser.home="$(HOME)" -s"$(HOME)/.m2/settings.xml"
+MVN = mvn -q -Dmaven.test.skip=true
 
 
 build: build-arch-stamp build-indep-stamp
