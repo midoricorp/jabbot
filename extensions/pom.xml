@@ -20,7 +20,6 @@
         <module>jabbot-script-command</module>
         <module>jabbot-translate-command</module>
 		<module>jabbot-say-extension</module>
-		<module>dialogflow-exntension</module>
 	</modules>
 
     <parent>
