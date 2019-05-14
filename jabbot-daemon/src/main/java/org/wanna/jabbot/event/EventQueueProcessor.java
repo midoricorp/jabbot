@@ -82,7 +82,7 @@ public class EventQueueProcessor extends Thread{
 					logger.info("{} - processing {}",event.getBinding().getIdentifier(),event);
 					handler.process(event, dispatcher);
 				} catch (Exception e) {
-					logger.error("{} - failed to process {}: {}",event.getBinding().getIdentifier(), event, e);
+					logger.error("{} - failed to process {}",event.getBinding().getIdentifier(), event, e);
 				}
 			} else {
 				logger.warn("{} - no handler found for {}", event.getBinding().getIdentifier(),event);

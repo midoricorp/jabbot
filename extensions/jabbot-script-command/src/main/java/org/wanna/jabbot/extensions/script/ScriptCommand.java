@@ -34,9 +34,27 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 	private int loopLimit = -1;
 	private int bufferLimit = -1;
 	private String scriptDir;
+	private ThreadLocal<Resource> currentUser = new ThreadLocal<>();
+
+	private class DynamicResource implements Resource {
+
+		@Override
+		public String getAddress() {
+			return currentUser.get().getAddress();
+		}
+
+		@Override
+		public String getName() {
+			return currentUser.get().getName();
+		}
+
+		@Override
+		public Type getType() {
+			return currentUser.get().getType();
+		}
+	}
 
 	private class ScriptFunctionListener implements FunctionListener {
-		String author;
 		boolean startup;
 
 		public void addFunction(String name, com.sipstacks.script.Statement cmd) {
@@ -50,7 +68,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 				return;
 			}
 
-			ScriptScript ss = new ScriptScript(name, cmd, author);
+			ScriptScript ss = new ScriptScript(name, cmd, currentUser.get().getName());
 			commandFactory.register(name,ss);
 
 			if (!startup) {
@@ -71,8 +89,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			}
 		}
 
-		public ScriptFunctionListener init(String author, boolean startup) {
-			this.author = author;
+		public ScriptFunctionListener init(boolean startup) {
 			this.startup = startup;
 			return this;
 		}
@@ -85,7 +102,9 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 	@Override
 	public void configure(Map<String, Object> configuration) {
 		if (configuration == null ) return;
-		
+
+		currentUser.set(new DefaultResource("Loaded From Disk", "Loaded From Disk"));
+
 		if (configuration.containsKey("loop_limit")) {
 			loopLimit = Integer.parseInt(configuration.get("loop_limit").toString());
 		}
@@ -103,7 +122,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			for (File f : listOfFiles) {
 				try {
 					Script s = new Script(new FileReader(f));
-					preloadFunctions(s, "Loaded from Disk", true);
+					preloadFunctions(s, true);
 					s.run();
 				} catch (Exception e) {
 					logger.error("Error loading script", e);
@@ -121,13 +140,14 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 	public MessageContent process(CommandMessage message) {
 		String script = message.getArgsLine();
 
+		currentUser.set(message.getSender());
+
 		Script s = new Script(new StringReader(script));
 		if (loopLimit > 0) {
 			s.setLoopLimit(loopLimit);
 		}
 
-		String address = message.getSender().getAddress();
-		preloadFunctions(s, address, false);
+		preloadFunctions(s, false);
 
 
 
@@ -180,8 +200,8 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 		return result;
 	}
 
-	private void preloadFunctions(Script s, String address, boolean startup) {
-		s.addFunctionListener(new ScriptFunctionListener().init(address, startup));
+	private void preloadFunctions(Script s, boolean startup) {
+		s.addFunctionListener(new ScriptFunctionListener().init(startup));
 
 		for(Command command : commandFactory.getAvailableCommands().values()){
 			// don't add yourself to limit recursion
@@ -201,10 +221,8 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 				s.addStatementFunction(command.getCommandName(), new ExternalCommand() {
 
 					private Command cmd;
-					private String sender;
-					public ExternalCommand init(Command command, String sender) {
+					public ExternalCommand init(Command command) {
 						cmd = command;
-						this.sender = sender;
 						return this;
 					}
 
@@ -217,7 +235,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 						} else {
 							argsLine = "";
 						}
-						Resource resource = new DefaultResource(sender,null);
+						Resource resource = new DynamicResource();
 						CommandMessage msg = new DefaultCommandMessage(resource,argsLine);
 						MessageContent result = cmd.process(msg);
 						return result.getBody();
@@ -229,7 +247,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 						}
 					}
 
-				}.init(command, address));
+				}.init(command));
 			}
 		}
 	}
