@@ -21,11 +21,13 @@ public class ScriptScript implements Command {
 	com.sipstacks.script.Statement scriptCmd;
 	String name;
 	String author;
+	ScriptCommand parent;
 
-	public ScriptScript(String name, com.sipstacks.script.Statement scriptCmd, String author) {
+	public ScriptScript(String name, com.sipstacks.script.Statement scriptCmd, String author, ScriptCommand parent) {
 		this.name = name;
 		this.scriptCmd = scriptCmd;
 		this.author = author;
+		this.parent= parent;
 	}
 
         @Override
@@ -74,6 +76,7 @@ public class ScriptScript implements Command {
 	public MessageContent process(CommandMessage message) {
 		List<String> args = getArgsParser().parse(message.getArgsLine());
 		OutputStream response = new OutputStream();
+		parent.currentUser.set(message.getSender());
 
 		try {
 			scriptCmd.exec(response,args);
