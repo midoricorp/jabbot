@@ -100,8 +100,10 @@ public class SlackBinding extends AbstractBinding<Object> {
 	public boolean isConnected() {
 		if (connected) {
 			connected = rtmClient.ping();
-			rtmClient.close();
-			dispatchEvent(new DisconnectedEvent(this));
+			if (!connected) {
+				rtmClient.close();
+				dispatchEvent(new DisconnectedEvent(this));
+			}
 		}
 		return connected;
 	}
