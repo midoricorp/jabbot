@@ -34,7 +34,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 	private int loopLimit = -1;
 	private int bufferLimit = -1;
 	private String scriptDir;
-	private ThreadLocal<Resource> currentUser = new ThreadLocal<>();
+	public ThreadLocal<Resource> currentUser = new ThreadLocal<>();
 
 	private class DynamicResource implements Resource {
 
@@ -68,7 +68,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 				return;
 			}
 
-			ScriptScript ss = new ScriptScript(name, cmd, currentUser.get().getName());
+			ScriptScript ss = new ScriptScript(name, cmd, currentUser.get().getName(), ScriptCommand.this);
 			commandFactory.register(name,ss);
 
 			if (!startup) {
