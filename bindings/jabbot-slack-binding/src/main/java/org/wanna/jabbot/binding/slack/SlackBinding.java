@@ -23,6 +23,7 @@ import org.wanna.jabbot.binding.Room;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.binding.event.ConnectedEvent;
+import org.wanna.jabbot.binding.event.DisconnectedEvent;
 import org.wanna.jabbot.binding.event.MessageEvent;
 import org.wanna.jabbot.messaging.*;
 import org.wanna.jabbot.messaging.body.BodyPart;
@@ -99,6 +100,7 @@ public class SlackBinding extends AbstractBinding<Object> {
 	public boolean isConnected() {
 		if (connected) {
 			connected = rtmClient.ping();
+			dispatchEvent(new DisconnectedEvent(this));
 		}
 		return connected;
 	}
@@ -169,11 +171,10 @@ public class SlackBinding extends AbstractBinding<Object> {
 		slackMsgText = slackMsgText.replace("&lt;", "<");
 		slackMsgText = slackMsgText.replace("&amp;", "&");
 
+		RxMessage request = new DefaultRxMessage(new DefaultMessageContent(slackMsgText), new DefaultResource(channel,username));
+		MessageEvent messageEvent = new MessageEvent(this, request);
+		dispatchEvent(messageEvent);
 
-		for (BindingListener listener : listeners) {
-			RxMessage request = new DefaultRxMessage(new DefaultMessageContent(slackMsgText), new DefaultResource(channel,username));
-			listener.eventReceived(new MessageEvent(this, request));
-		}
 
 	}
 
