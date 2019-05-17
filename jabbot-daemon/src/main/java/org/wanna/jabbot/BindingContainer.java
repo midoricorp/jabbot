@@ -118,6 +118,12 @@ public class BindingContainer {
 		for (ExtensionConfiguration configuration : configurationSet) {
 			addCommand(configuration);
 		}
+
+		for (Command command : commandFactory.getAvailableCommands().values()) {
+			if (command instanceof CommandFactoryAware) {
+				((CommandFactoryAware) command).onCommandsLoaded();
+			}
+		}
 	}
 
 	public Binding getBinding() {

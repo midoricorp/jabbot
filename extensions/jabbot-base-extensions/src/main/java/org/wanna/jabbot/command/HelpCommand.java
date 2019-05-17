@@ -58,4 +58,9 @@ public class HelpCommand extends AbstractCommandAdapter implements CommandFactor
 	public void setCommandFactory(CommandFactory commandFactory) {
 		this.commandFactory = commandFactory;
 	}
+
+	@Override
+	public void onCommandsLoaded() {
+
+	}
 }

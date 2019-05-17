@@ -63,4 +63,9 @@ public class DeleteCommand  extends AbstractCommandAdapter implements CommandFac
     public void setCommandFactory(CommandFactory commandFactory) {
         this.commandFactory = commandFactory;
     }
+
+    @Override
+    public void onCommandsLoaded() {
+
+    }
 }

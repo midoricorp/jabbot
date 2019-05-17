@@ -16,4 +16,9 @@ public interface CommandFactoryAware {
 	 * @param commandFactory CommandFactory of the current binding
 	 */
 	void setCommandFactory(CommandFactory commandFactory);
+
+	/**
+	 * Invoked after all commands have been loaded in the command factory
+	 */
+	void onCommandsLoaded();
 }

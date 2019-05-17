@@ -113,21 +113,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 		}
 		if (configuration.containsKey("script_dir")) {
 			scriptDir = configuration.get("script_dir").toString();
-			File files = new File(scriptDir);
-			if (!files.exists()) {
-				files.mkdirs();
-			}
 
-			File[] listOfFiles = files.listFiles();
-			for (File f : listOfFiles) {
-				try {
-					Script s = new Script(new FileReader(f));
-					preloadFunctions(s, true);
-					s.run();
-				} catch (Exception e) {
-					logger.error("Error loading script", e);
-				}
-			}
 		}
 	}
 
@@ -256,6 +242,28 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
         public void setCommandFactory(CommandFactory commandFactory) {
                 this.commandFactory = commandFactory;
         }
+
+	@Override
+	public void onCommandsLoaded() {
+		if (scriptDir != null) {
+			File files = new File(scriptDir);
+			if (!files.exists()) {
+				files.mkdirs();
+			}
+
+			File[] listOfFiles = files.listFiles();
+			for (File f : listOfFiles) {
+				try {
+					Script s = new Script(new FileReader(f));
+					preloadFunctions(s, true);
+					s.run();
+				} catch (Exception e) {
+					logger.error("Error loading script", e);
+				}
+			}
+		}
+		
+	}
 
 
 }
