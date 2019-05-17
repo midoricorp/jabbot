@@ -119,13 +119,13 @@ public class BindingContainer {
 		List<CommandFactoryAware> commandAwareList = new ArrayList<CommandFactoryAware>();
 		for (Command command : commandFactory.getAvailableCommands().values()) {
 			if (command instanceof CommandFactoryAware) {
-				commandAwareList.add(((CommandFactoryAware) command))
+				commandAwareList.add(((CommandFactoryAware) command));
 			}
 		}
 
 		// now that we found the commands that need alerting, alert them
 		for (CommandFactoryAware command : commandAwareList) {
-			command.onCommandsLoaded();;
+			command.onCommandsLoaded();
 		}
 	}
 
