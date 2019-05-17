@@ -16,10 +16,7 @@ import org.wanna.jabbot.event.EventManager;
 import org.wanna.jabbot.extension.ExtensionLoader;
 import org.wanna.jabbot.statistics.StatisticsManager;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Vincent Morsiani [vmorsiani@voxbone.com]
@@ -119,10 +116,16 @@ public class BindingContainer {
 			addCommand(configuration);
 		}
 
+		List<CommandFactoryAware> commandAwareList = new ArrayList<CommandFactoryAware>();
 		for (Command command : commandFactory.getAvailableCommands().values()) {
 			if (command instanceof CommandFactoryAware) {
-				((CommandFactoryAware) command).onCommandsLoaded();
+				commandAwareList.add(((CommandFactoryAware) command))
 			}
+		}
+
+		// now that we found the commands that need alerting, alert them
+		for (CommandFactoryAware command : commandAwareList) {
+			command.onCommandsLoaded();;
 		}
 	}
 

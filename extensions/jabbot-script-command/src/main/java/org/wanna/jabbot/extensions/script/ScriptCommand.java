@@ -262,7 +262,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 				}
 			}
 		}
-		
+
 	}
 
 
