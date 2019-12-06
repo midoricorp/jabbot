@@ -1,1 +1,0 @@
-20 * * * *      nobody find /var/log/jabbot/ -type f -mtime +30 -exec rm {} \;
