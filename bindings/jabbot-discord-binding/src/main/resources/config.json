@@ -1,0 +1,7 @@
+[{
+	"className":"org.wanna.jabbot.binding.discord.DiscordBinding",
+	"name": "DISCORD",
+        "url":"localhost",
+	"port":0,
+	"type":"binding"
+}]

@@ -25,6 +25,7 @@ Depends: jabbot,
 	 jabbot-spark-binding,
 	 jabbot-irc-binding,
 	 jabbot-slack-binding,
+	 jabbot-discord-binding,
 	 jabbot-chuck-icndb-command,
 	 jabbot-base-command,
 	 jabbot-foaas-command,
@@ -63,6 +64,11 @@ Package: jabbot-slack-binding
 Architecture: all
 Depends: ${misc:Depends},jabbot
 Description: SLACK binding for jabbot
+
+Package: jabbot-discord-binding
+Architecture: all
+Depends: ${misc:Depends},jabbot
+Description: DISCORD binding for jabbot
 
 Package: jabbot-chuck-icndb-command
 Architecture: all
