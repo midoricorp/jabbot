@@ -11,7 +11,7 @@
 
     <properties>
         <jersey.version>2.25</jersey.version>
-        <jetty.version>	9.4.8.v20171121</jetty.version>
+        <jetty.version>9.4.27.v20200227</jetty.version>
         <jackson.version>2.8.4</jackson.version>
     </properties>
 
