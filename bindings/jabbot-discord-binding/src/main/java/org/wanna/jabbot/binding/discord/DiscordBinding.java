@@ -120,9 +120,15 @@ public class DiscordBinding extends AbstractBinding<Object> {
 
 	private void onMessage(MessageCreateEvent event) {
 		TextChannel channel = event.getChannel();
+		if(event.getMessage().getAuthor().isBotUser()) {
+			return;
+		}
 		String username = event.getMessage().getAuthor().getDisplayName();
 		String message = event.getMessage().getContent();
 
+		if(message.length() == 0) {
+			message = "^_^";
+		}
 		RxMessage request = new DefaultRxMessage(new DefaultMessageContent(message), new DiscordResource(channel, username));
 		MessageEvent messageEvent = new MessageEvent(this, request);
 		dispatchEvent(messageEvent);
