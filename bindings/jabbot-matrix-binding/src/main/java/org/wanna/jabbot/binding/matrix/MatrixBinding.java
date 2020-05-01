@@ -61,6 +61,7 @@ public class MatrixBinding extends AbstractBinding<Object> {
 				if (event.getContent().has("body")) {
 					String msg = RoomEvent.getBodyFromMessageEvent(event);
 					if (msg != null && msg.trim().length() > 0) {
+						logger.info("Matrix got a message: " + msg);
 						RxMessage request = new DefaultRxMessage(new DefaultMessageContent(msg), new DefaultResource(event.getRoom_id(), event.getSender()));
 						MessageEvent messageEvent = new MessageEvent(this, request);
 						dispatchEvent(messageEvent);
@@ -133,10 +134,13 @@ public class MatrixBinding extends AbstractBinding<Object> {
 		Resource resource = response.getRequest().getSender();
 
 		String message = messageContent.getBody(BodyPart.Type.TEXT).getText();
-		String formattedMessage = messageContent.getBody(BodyPart.Type.XHTML).getText();
-		logger.info("Sending message: " + message);
+		String formattedMessage = null;
+		if (messageContent.getBody(BodyPart.Type.XHTML) != null) {
+			formattedMessage = messageContent.getBody(BodyPart.Type.XHTML).getText();
+		}
+		logger.info("Sending message: " + message + "to room " + resource.getAddress());
 		try {
-			client.sendText(resource.getAddress(),message, true, formattedMessage, null);
+			client.sendText(resource.getAddress(),message, formattedMessage != null, formattedMessage, null);
 		} catch (IOException e) {
 			logger.error("unable to send matrix message", e);
 		}
