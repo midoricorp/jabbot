@@ -19,6 +19,9 @@
         <module>jabbot-cli-binding</module>
         <module>jabbot-spark-binding</module>
         <module>jabbot-slack-binding</module>
+        <module>jabbot-discord-binding</module>
+        <module>jabbot-matrix-binding</module>
+
     </modules>
 
     <dependencies>
