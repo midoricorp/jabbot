@@ -1,0 +1,7 @@
+[{
+	"className":"org.wanna.jabbot.binding.matrix.MatrixBinding",
+	"name": "MATRIX",
+        "url":"localhost",
+	"port":0,
+	"type":"binding"
+}]
