@@ -17,7 +17,6 @@ import allbegray.slack.webapi.method.chats.ChatPostMessageMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractBinding;
-import org.wanna.jabbot.binding.BindingListener;
 import org.wanna.jabbot.binding.ConnectionException;
 import org.wanna.jabbot.binding.Room;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
