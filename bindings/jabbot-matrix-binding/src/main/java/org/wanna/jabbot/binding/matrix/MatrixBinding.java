@@ -32,6 +32,7 @@ public class MatrixBinding extends AbstractBinding<Object> {
 	private Client client;
 	private String password;
 	private String url;
+	private String myUserId;
 
 	public MatrixBinding(BindingConfiguration configuration) {
 		super(configuration);
@@ -59,6 +60,10 @@ public class MatrixBinding extends AbstractBinding<Object> {
 				} catch (IOException e) {
 					logger.error("Unable to ack message", e);
 				}
+				if (event.getSender().equals(myUserId)) {
+					logger.info("Matrix: Ignoring message from myself!");
+					return;
+				}
 				if (event.getContent().has("body")) {
 					String msg = RoomEvent.getBodyFromMessageEvent(event);
 					if (msg != null && msg.trim().length() > 0) {
@@ -81,6 +86,7 @@ public class MatrixBinding extends AbstractBinding<Object> {
 				client.login(this.password, data -> {
 					if (data.isSuccess()) {
 						connected = true;
+						data.getUser_id();
 						client.registerRoomEventListener(roomEvents->{roomListener(roomEvents);});
 					} else {
 						connected = false;
@@ -135,7 +141,6 @@ public class MatrixBinding extends AbstractBinding<Object> {
 		Resource resource = response.getRequest().getSender();
 
 		String message = messageContent.getBody(BodyPart.Type.TEXT).getText();
-		message = EmojiUtils.emojify(message);
 		String formattedMessage = null;
 		if (messageContent.getBody(BodyPart.Type.XHTML) != null) {
 			formattedMessage = messageContent.getBody(BodyPart.Type.XHTML).getText();
