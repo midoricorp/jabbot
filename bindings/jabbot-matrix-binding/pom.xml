@@ -28,7 +28,12 @@
 			<artifactId>Matrix-ClientServer-API-java</artifactId>
 			<version>1.0</version>
 			<type>jar</type>
-		</dependency>
+        </dependency>
+        <dependency>
+            <groupId>com.kcthota</groupId>
+            <artifactId>emoji4j</artifactId>
+            <version>6.0</version>
+        </dependency>
     </dependencies>
 
 </project>

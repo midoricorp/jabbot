@@ -5,6 +5,7 @@ package org.wanna.jabbot.binding.matrix;
 
 import de.jojii.matrixclientserver.Bot.Client;
 import de.jojii.matrixclientserver.Bot.Events.RoomEvent;
+import emoji4j.EmojiUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -134,9 +135,11 @@ public class MatrixBinding extends AbstractBinding<Object> {
 		Resource resource = response.getRequest().getSender();
 
 		String message = messageContent.getBody(BodyPart.Type.TEXT).getText();
+		message = EmojiUtils.emojify(message);
 		String formattedMessage = null;
 		if (messageContent.getBody(BodyPart.Type.XHTML) != null) {
 			formattedMessage = messageContent.getBody(BodyPart.Type.XHTML).getText();
+			formattedMessage = EmojiUtils.htmlify(formattedMessage);
 		}
 		logger.info("Sending message: " + message + "to room " + resource.getAddress());
 		try {
