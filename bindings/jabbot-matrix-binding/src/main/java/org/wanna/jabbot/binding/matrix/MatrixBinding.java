@@ -86,7 +86,7 @@ public class MatrixBinding extends AbstractBinding<Object> {
 				client.login(this.password, data -> {
 					if (data.isSuccess()) {
 						connected = true;
-						data.getUser_id();
+						myUserId = data.getUser_id();
 						client.registerRoomEventListener(roomEvents->{roomListener(roomEvents);});
 					} else {
 						connected = false;
