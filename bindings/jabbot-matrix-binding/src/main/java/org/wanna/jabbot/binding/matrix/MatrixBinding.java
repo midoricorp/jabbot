@@ -3,9 +3,11 @@ package org.wanna.jabbot.binding.matrix;
 
 
 
+import com.sipstacks.xhml.Emojiify;
+import com.sipstacks.xhml.XHTMLObject;
+import com.sipstacks.xhml.XHtmlConvertException;
 import de.jojii.matrixclientserver.Bot.Client;
 import de.jojii.matrixclientserver.Bot.Events.RoomEvent;
-import emoji4j.EmojiUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +23,8 @@ import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.binding.event.MessageEvent;
 import org.wanna.jabbot.messaging.*;
 import org.wanna.jabbot.messaging.body.BodyPart;
+
+import javax.xml.transform.TransformerException;
 
 /**
  * @author vmorsiani <vmorsiani>
@@ -144,7 +148,13 @@ public class MatrixBinding extends AbstractBinding<Object> {
 		String formattedMessage = null;
 		if (messageContent.getBody(BodyPart.Type.XHTML) != null) {
 			formattedMessage = messageContent.getBody(BodyPart.Type.XHTML).getText();
-			formattedMessage = EmojiUtils.htmlify(formattedMessage);
+			XHTMLObject obj = new XHTMLObject();
+			try {
+				obj.parse(formattedMessage);
+				formattedMessage = Emojiify.convert(obj);
+			} catch (XHtmlConvertException | TransformerException e) {
+				logger.error("unable to parse xhtml", e);
+			}
 		}
 		logger.info("Sending message: " + message + "to room " + resource.getAddress());
 		try {
