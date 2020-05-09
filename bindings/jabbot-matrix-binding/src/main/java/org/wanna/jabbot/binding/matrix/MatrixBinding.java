@@ -88,7 +88,9 @@ public class MatrixBinding extends AbstractBinding<Object> {
 					} else {
 						connected = false;
 					}
-					client.notify();
+					synchronized (client) {
+						client.notify();
+					}
 				});
 				client.wait();
 			}
