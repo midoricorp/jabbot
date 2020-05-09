@@ -39,14 +39,20 @@ class HtmlReformat {
                         HttpURLConnection http = (HttpURLConnection) con;
                         http.setRequestMethod("GET");
                         http.connect();
-                        http.getInputStream();
 
-                        String newUrl;
                         synchronized (client) {
+                            logger.info("mapping " + url.getTextContent());
+                            logger.info("content-type: " +  http.getContentType());
+                            logger.info("content-length: " + http.getContentLength());
                             client.sendFile(http.getContentType(),http.getContentLength(),http.getInputStream(), result -> {
-                                String s = result.toString();
-                                if(s.startsWith("mxc")) {
-                                    url.setTextContent(s);
+                                try {
+                                    String s = result.toString();
+                                    logger.info("Result of upload: " + s);
+                                    if (s.startsWith("mxc")) {
+                                        url.setTextContent(s);
+                                    }
+                                } catch(Exception e) {
+                                    logger.error("Got an exception on image upload", e);
                                 }
                                 client.notify();
                             });
