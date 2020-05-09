@@ -40,29 +40,30 @@ class HtmlReformat {
                         HttpURLConnection http = (HttpURLConnection) con;
                         http.setRequestMethod("GET");
                         http.connect();
+			final Object syncSrc = new Object();
 
-                        synchronized (client) {
+                        synchronized (syncSrc) {
                             logger.info("mapping " + url.getTextContent());
                             logger.info("content-type: " +  http.getContentType());
                             logger.info("content-length: " + http.getContentLength());
-                            boolean finished = false;
                             client.sendFile(http.getContentType(),http.getContentLength(),http.getInputStream(), result -> {
                                 try {
                                     String s = result.toString();
                                     logger.info("Result of upload: " + s);
                                     if (s.startsWith("mxc")) {
                                         url.setTextContent(s);
+                                    	logger.info("Node updated");
                                     }
                                 } catch(Exception e) {
                                     logger.error("Got an exception on image upload", e);
                                 }
-                                client.notify();
-                                finished = true;
+				synchronized(syncSrc) {
+                                	syncSrc.notify();
+				}
+				logger.info("caller notified");
                             });
                             try {
-                                if (!finished) {
-                                    client.wait();
-                                }
+                                 syncSrc.wait();
                             } catch (InterruptedException e) {
                                 logger.error("Interruped on updating url", e);
                             }
