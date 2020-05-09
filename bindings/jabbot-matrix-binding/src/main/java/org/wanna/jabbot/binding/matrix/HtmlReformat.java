@@ -34,6 +34,7 @@ class HtmlReformat {
                 if(item.getNodeName().equalsIgnoreCase("img")){
                     Node url = item.getAttributes().getNamedItem("src");
                     if (url != null) {
+                        logger.info("found an img tag of " + url.getTextContent());
                         URL obj = new URL(url.getTextContent());
                         URLConnection con = obj.openConnection();
                         HttpURLConnection http = (HttpURLConnection) con;
@@ -44,6 +45,7 @@ class HtmlReformat {
                             logger.info("mapping " + url.getTextContent());
                             logger.info("content-type: " +  http.getContentType());
                             logger.info("content-length: " + http.getContentLength());
+                            boolean finished = false;
                             client.sendFile(http.getContentType(),http.getContentLength(),http.getInputStream(), result -> {
                                 try {
                                     String s = result.toString();
@@ -55,9 +57,12 @@ class HtmlReformat {
                                     logger.error("Got an exception on image upload", e);
                                 }
                                 client.notify();
+                                finished = true;
                             });
                             try {
-                                client.wait();
+                                if (!finished) {
+                                    client.wait();
+                                }
                             } catch (InterruptedException e) {
                                 logger.error("Interruped on updating url", e);
                             }
