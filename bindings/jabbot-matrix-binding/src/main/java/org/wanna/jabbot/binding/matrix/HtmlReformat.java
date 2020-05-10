@@ -6,6 +6,7 @@ import com.sipstacks.xhml.XHtmlConvertException;
 import de.jojii.matrixclientserver.Bot.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -15,6 +16,8 @@ import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 class HtmlReformat {
     private String formattedMessage;
@@ -25,6 +28,52 @@ class HtmlReformat {
     public HtmlReformat(Client client, String formattedMessage) {
         this.client = client;
         this.formattedMessage = formattedMessage;
+    }
+
+    private static String getStyleAttribute(String style, String attrib) {
+        String [] attribs = style.split(";");
+        for(String attr : attribs) {
+            System.err.println("Got attrib: " + attr);
+            Pattern pattern = Pattern.compile(attrib + ":\\s+([#0-9a-zA-Z]+)");
+            Matcher matcher = pattern.matcher(attr);
+            if (!matcher.matches()) {
+                continue;
+            }
+            return matcher.group(1);
+        }
+        return null;
+    }
+
+    private void updateTags(NodeList nodeList) {
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node item = nodeList.item(i);
+            if (item.getNodeType() != Node.TEXT_NODE) {
+                if (item.getNodeName().equalsIgnoreCase("span")) {
+
+                    Node styleNode = item.getAttributes().getNamedItem("style");
+                    if (styleNode != null) {
+                        String style = styleNode.getTextContent();
+                        String color = getStyleAttribute(style, "color");
+                        String bgcolor = getStyleAttribute(style, "background-color");
+                        if (color != null) {
+                            ((Element) item).setAttribute("data-mx-color", color);
+                        }
+                        if (bgcolor != null) {
+                            ((Element) item).setAttribute("data-mx-bg-color", color);
+                        }
+                    }
+
+                } else if (item.getNodeName().equalsIgnoreCase("font")) {
+                    Node color = item.getAttributes().getNamedItem("color");
+                    if(color != null) {
+                        ((Element) item).setAttribute("data-mx-color", color.getTextContent());
+                    }
+
+                }
+                NodeList childNodes = item.getChildNodes();
+                if(childNodes != null) updateTags(childNodes);
+            }
+        }
     }
 
     private void updateImages(NodeList nodeList) throws IOException {
@@ -83,6 +132,7 @@ class HtmlReformat {
         try {
             obj.parse(formattedMessage);
             updateImages(obj.objects);
+            updateTags(obj.objects);
             Emojiify.convert(obj);
             formattedMessage = obj.getString();
 
