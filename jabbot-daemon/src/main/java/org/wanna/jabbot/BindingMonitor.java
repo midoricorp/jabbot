@@ -16,7 +16,7 @@ public class BindingMonitor implements Runnable{
 	private final Logger logger = LoggerFactory.getLogger(BindingMonitor.class);
 	private final Collection<BindingContainer> bindings;
 
-	BindingMonitor(Collection<BindingContainer> bindings) {
+	public BindingMonitor(Collection<BindingContainer> bindings) {
 		this.bindings = bindings;
 	}
 
@@ -50,7 +50,7 @@ public class BindingMonitor implements Runnable{
 					manager.getConnectionInfo().setStatus(ConnectionInfo.StatusType.CONNECTED);
 				}
 			}catch (Throwable t){
-				logger.error("{} - unable to check health",manager.getBinding().getIdentifier(),t);
+				logger.error("unable to check {} health",manager,t);
 			}
 		}
 		logger.trace("health check done");

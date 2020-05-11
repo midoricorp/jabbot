@@ -1,50 +1,44 @@
 {
-	"webServer":{
-		"port":2222,
-		"users":[
-		  {"username":"user","password":"user123", "roles":["user"]},
-		  {"username":"admin","password":"admin123", "roles":["user","admin"]}
-		]
-	},
-	"extensionsFolder":"/var/lib/jabbot/extensions",
-	"serverList":[
-	  {
-		"port" : 5222,
-		"parameters" : {
-		  "allow_self_signed" : true,
-		  "ping_interval" : 600
-		},
-		"debug" : false,
-		"id": "xmpp-localhost",
-		"type" : "org.wanna.jabbot.binding.xmpp.XmppBinding",
-		"password" : "password",
-		"username" : "jabbot",
-		"rooms" : [
-		  {
-			"nickname" : "jabbot",
-			"name" : "jabbot-dev@conference.localhost"
-		  }
-		],
-		"url" : "localhost",
-		"serverName" : "localhost",
-		"extensions" : [
-		  {
-			"type" : "command",
-			"className" : "org.wanna.jabbot.command.HelpCommand",
-			"name" : "help"
-		  },         {
-			"configuration" : {
-			  "loop_limit" : 100,
-			  "script_dir" : "/tmp/jabbot/script/jabber.voxbone.com",
-			  "buffer_limit" : 1000
-			},
-			"className" : "org.wanna.jabbot.extensions.script.ScriptCommand",
-			"type" : "command",
-			"name" : "script"
-		  }
-		],
-		"commandPrefix" : "#",
-		"identifier" : "jabbot-test"
-	  }
-	]
+  	"extensionsFolder":"/var/lib/jabbot/extensions",
+    "serverList":[
+        {
+            "id": "xmpp-localhost",
+            "type" : "org.wanna.jabbot.binding.xmpp.XmppBinding",
+            "url":"localhost",
+            "serverName":"localhost",
+            "port":5222,
+            "username":"jabbot",
+            "password":"password",
+            "identifier":"jabbot",
+            "commandPrefix":"#",
+            "debug":false,
+            "parameters":{
+                "allow_self_signed":true,
+                "ping_interval":600
+            },
+            "rooms":[
+                {"name":"jabbot-dev@conference.localhost","nickname":"jabbot"}
+            ],
+            "extensions":[
+                {"name":"help","type":"command","className":"org.wanna.jabbot.command.HelpCommand"},
+                {"name":"say", "type":"command", "className":"org.wanna.jabbot.extensions.say.SayCommand"},
+                {"name":"uptime","type":"command","className":"org.wanna.jabbot.command.UptimeCommand"},
+                {"name":"chuck", "type":"command","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"},
+                {"name": "script","type":"command","className": "org.wanna.jabbot.extensions.script.ScriptCommand",
+                    "configuration": {
+                        "loop_limit": "100",
+                        "buffer_limit": "1000"
+                    }
+                },
+                {
+                    "configuration" : {
+                        "script" : "/var/lib/jabbot/data/cgi/urbandict.pl"
+                    },
+                    "className" : "org.wanna.jabbot.extensions.cgi.FileCGICommand",
+                    "type" : "command",
+                    "name" : "urban"
+                }
+            ]
+        }
+    ]
 }

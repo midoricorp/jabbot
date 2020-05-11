@@ -1,6 +1,5 @@
 package org.wanna.jabbot;
 
-import jersey.repackaged.com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.apache.commons.daemon.Daemon;
 import org.apache.commons.daemon.DaemonContext;
 import org.apache.commons.daemon.DaemonInitException;
@@ -14,7 +13,6 @@ import org.wanna.jabbot.config.JabbotConfiguration;
 import org.wanna.jabbot.event.EventManager;
 import org.wanna.jabbot.event.handlers.*;
 import org.wanna.jabbot.extension.ExtensionScanner;
-import org.wanna.jabbot.web.WebServer;
 
 import java.io.File;
 import java.util.concurrent.*;
@@ -26,11 +24,8 @@ import java.util.concurrent.*;
 public class Jabbot implements Daemon{
 	private final Logger logger = LoggerFactory.getLogger(Jabbot.class);
 	private final static String CONFIG_FILE = "jabbot.json";
-	private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
-		new ThreadFactoryBuilder().setNameFormat("binding monitoring - %d").setDaemon(true).build()
-	);
+	private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
 	private final EventManager eventManager;
-	private WebServer webServer;
 
 	public Jabbot(){
 		//Install slf4j bridge
@@ -65,12 +60,6 @@ public class Jabbot implements Daemon{
 		}
 		logger.info("# Initializing Event handlers");
 		this.registerEventHandlers();
-
-		if(configuration.getWebServer() != null) {
-			logger.info("# Initializing web container");
-			this.webServer = WebServer.initialize(configuration.getWebServer());
-		}
-
 		logger.info("### Initialization completed");
 	}
 
@@ -85,18 +74,10 @@ public class Jabbot implements Daemon{
 		scheduledExecutorService.scheduleAtFixedRate(new BindingMonitor(BindingContainer.getRegistry()),
 				0L,delay, TimeUnit.SECONDS);
 		logger.debug("Binding monitoring is scheduled to run every {} {}",delay,unit);
-
-		logger.info("# Starting embedded web server");
-		if(webServer != null){
-			webServer.start();
-		}
-
-		logger.info("### Startup completed");
 	}
 
 	@Override
 	public void stop(){
-		webServer.stop();
 		eventManager.stop();
 		scheduledExecutorService.shutdown();
 	}
@@ -115,11 +96,10 @@ public class Jabbot implements Daemon{
 		factory.register(RoomInviteEvent.class, new RoomInviteHandler());
 		factory.register(DisconnectionRequestEvent.class, new DisconnectionRequestEventHandler());
 		factory.register(DisconnectedEvent.class,new DisconnectedEventHandler());
-		factory.register(ServletRegistrationEvent.class, new ServletRegistrationEventHandler());
 	}
 
 	public static void main(String[] args) throws Exception{
-		final Jabbot jabbot = new Jabbot();
+		Jabbot jabbot = new Jabbot();
 		jabbot.init(null);
 		jabbot.start();
 		while (true) {

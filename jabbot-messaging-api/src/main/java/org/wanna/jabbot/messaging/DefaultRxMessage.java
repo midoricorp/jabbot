@@ -20,12 +20,4 @@ public class DefaultRxMessage implements RxMessage {
 	public Resource getSender() {
 		return sender;
 	}
-
-	@Override
-	public String toString() {
-		return this.getClass().getSimpleName()+"{" +
-				"messageContent=" + messageContent +
-				", sender=" + sender +
-				'}';
-	}
 }

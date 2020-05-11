@@ -1,6 +1,5 @@
 package org.wanna.jabbot.event.handlers;
 
-import org.wanna.jabbot.binding.Binding;
 import org.wanna.jabbot.binding.event.DisconnectionRequestEvent;
 import org.wanna.jabbot.event.EventDispatcher;
 
@@ -13,10 +12,7 @@ import org.wanna.jabbot.event.EventDispatcher;
 public class DisconnectionRequestEventHandler implements EventHandler<DisconnectionRequestEvent>{
 	@Override
 	public boolean process(DisconnectionRequestEvent event, EventDispatcher dispatcher) {
-		Binding binding = event.getBinding();
-		if(binding != null){
-			binding.disconnect();
-		}
+		event.getBinding().disconnect();
 		return true;
 	}
 }

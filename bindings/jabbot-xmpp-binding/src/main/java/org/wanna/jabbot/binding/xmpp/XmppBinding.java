@@ -76,9 +76,7 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 
 	@Override
 	public boolean disconnect() {
-		if(connection != null){
-			connection.disconnect();
-		}
+		connection.disconnect();
 		return true;
 	}
 

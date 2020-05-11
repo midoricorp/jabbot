@@ -1,10 +1,8 @@
 package org.wanna.jabbot.binding.spark;
 
-import com.ciscospark.SparkServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractBinding;
-import org.wanna.jabbot.binding.ServletConfiguration;
 import org.wanna.jabbot.binding.Room;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
@@ -12,8 +10,10 @@ import java.net.URI;
 import java.util.Hashtable;
 import java.util.Iterator;
 
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.wanna.jabbot.binding.event.ConnectedEvent;
-import org.wanna.jabbot.binding.event.ServletRegistrationEvent;
 import org.wanna.jabbot.messaging.TxMessage;
 
 /**
@@ -22,17 +22,17 @@ import org.wanna.jabbot.messaging.TxMessage;
  */
 public class SparkBinding extends AbstractBinding<Object> {
 	private final Logger logger = LoggerFactory.getLogger(SparkBinding.class);
-	private Hashtable<String,SparkRoom> roomMap;
+	private Hashtable<String,SparkRoom> roomMap = null;
 	com.ciscospark.Spark spark = null;
 	boolean useWebhook = false;
 	String webhookUrl = "";
 	com.ciscospark.SparkServlet sparkServlet = null;
 	private boolean connected;
-	private RoomPoller poller;
+	RoomPoller poller;
 
 	public SparkBinding(BindingConfiguration configuration) {
 		super(configuration);
-		roomMap = new Hashtable<>();
+		roomMap = new Hashtable<String,SparkRoom>();
 
 		if (configuration.getParameters() != null) {
 			if (configuration.getParameters().containsKey("use_webhook")) {
@@ -51,10 +51,19 @@ public class SparkBinding extends AbstractBinding<Object> {
 			.accessToken(getConfiguration().getPassword())
 			.build();
 		if(useWebhook) {
-			//Register the servlet to jabbot core
-			ServletConfiguration servletConfiguration = new ServletConfiguration(SparkServlet.class,"/*");
-			ServletRegistrationEvent servletRegistrationEvent = new ServletRegistrationEvent(this, servletConfiguration);
-			super.dispatchEvent(servletRegistrationEvent);
+			Server server = new Server(8080);
+			ServletHandler context = new ServletHandler();
+			server.setHandler(context);
+
+			sparkServlet = new com.ciscospark.SparkServlet();
+			context.addServletWithMapping(new ServletHolder(sparkServlet), "/*");
+
+			try {
+				server.start();
+			} catch (Exception e) {
+				logger.error("Unable to start server: ", e);
+				return false;
+			}
 
 			// first cleanup old hooks
 			Iterator<com.ciscospark.Webhook> webhooks = spark.webhooks().iterate();
@@ -82,7 +91,7 @@ public class SparkBinding extends AbstractBinding<Object> {
 		poller = new RoomPoller();
 		poller.start();
 
-		if(connected){
+		if(connected == true){
 			super.dispatchEvent(new ConnectedEvent(this));
 		}
 
@@ -155,7 +164,7 @@ public class SparkBinding extends AbstractBinding<Object> {
 			}
 		}
 
-		 void abort(){
+		public void abort(){
 			running = false;
 		}
 	}

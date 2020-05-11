@@ -1,10 +1,10 @@
 package org.wanna.jabbot;
 
-import org.wanna.jabbot.binding.Binding;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.CommandFactory;
 import org.wanna.jabbot.command.CommandNotFoundException;
-import org.wanna.jabbot.statistics.StatisticsManager;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -14,11 +14,6 @@ import java.util.TreeMap;
  * @since 2014-05-31
  */
 public class JabbotCommandFactory implements CommandFactory {
-	private Binding binding;
-
-	JabbotCommandFactory(Binding binding) {
-		this.binding = binding;
-	}
 
 	public Command create(String commandName) throws CommandNotFoundException {
 		Command command = registry.get(commandName);
@@ -37,12 +32,10 @@ public class JabbotCommandFactory implements CommandFactory {
 	@Override
 	public void register(String commandName, Command command) {
 		registry.put(commandName, command);
-		BindingContainer.getInstance(binding.getIdentifier()).getStatisticsManager().registerCommandStats(commandName);
 	}
 
 	@Override
 	public void deregister(String commandName) {
-		registry.remove(commandName);
-		BindingContainer.getInstance(binding.getIdentifier()).getStatisticsManager().removeCommandStats(commandName);
+		Command c = registry.remove(commandName);
 	}
 }
