@@ -43,7 +43,7 @@ host$ bin/jabbot.sh start
 Jabbot can be configured by editing the main config file jabbot.json under the conf/ directory.
 The config file consists in the following main areas
 
-####bindings####
+## bindings
 ```json
     "bindings":[
         {   "name":"XMPP",
@@ -56,7 +56,7 @@ Defines a list of available binding type such as xmpp, irc..
 * **name:** a unique identifier for this binding
 * **className:** the canonical name of the binding connection class
 
-####serverList####
+### serverList
 ```json
     "serverList":[
         {   "type" : "XMPP",
@@ -89,7 +89,7 @@ Defines a list of servers to which Jabbot will connect
 * **rooms:**  list of rooms to join on this connection
 * **commands:** list of commands available for this connection.
 
-####commands####
+### commands
 ```json
     "commands":[
         {"name":"jira","className":"org.wanna.jabbot.extensions.jira.IssueViewer",
