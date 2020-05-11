@@ -43,7 +43,7 @@ host$ bin/jabbot.sh start
 Jabbot can be configured by editing the main config file jabbot.json under the conf/ directory.
 The config file consists in the following main areas
 
-## bindings
+## Bindings
 ```json
     "bindings":[
         {   "name":"XMPP",
@@ -84,10 +84,51 @@ Defines a list of servers to which Jabbot will connect
 
 * **type:** the name of a binding
 * **url:** the url to which to connect
+* **identifier:** used to identify the connection, unless you are connecting to multiple servers of the same protocol, you can set it to the same value as "type"
 * **commandPrefix:** the command prefix used to trigger commands & action in a chatroom
 * **parameters**: a map of binding specific parameters
 * **rooms:**  list of rooms to join on this connection
 * **commands:** list of commands available for this connection.
+
+
+#### Per-Protocol Configuration Details
+##### IRC
+* **type:** IRC
+* **url:** hostname of the irc server
+* **port:** port of the irc server
+* **username:** the nick when connecting to irc
+* **password:** the nick to identify to NickServ with
+* **rooms:** This protocol supports joining rooms, so you can specify the number of rooms it should try to join and then their names. Example room name "#midori-dev"
+##### XMPP
+* **type:** XMPP
+* **url:** hostname of the XMPP server
+* **port:** port of the XMPP server
+* **username:** username of the XMPP account to use
+* **password:** password of the XMPP account to use
+* **rooms:** This protocol supports joining rooms, so you can specify the number of rooms it should try to join and then their names. Example room name "midori@chat.yax.im"
+* **parameters.allow_self_signed:** true/false allow connecting to servers with self-signed certificates
+* **parameters.ping_interval:** intervial keepalive pings are sent to the xmpp server
+##### Slack
+* **type:** SLACK
+* **url:** not used, just leave blank
+* **port:** not used, just leave blank
+* **username:** not used, just leave blank
+* **password:** the bot token this bot should use
+* **rooms:** not used, send an invite to get the bot to join the room
+##### Discord
+* **type:** DISCORD
+* **url:** not used, just leave blank
+* **port:** not used, just leave blank
+* **username:** not used, just leave blank
+* **password:** the bot token this bot should use
+* **rooms:** not used, send an invite to get the bot to join the room
+##### Matrix
+* **type:** MATRIX
+* **url:** http or https url of the matrix server to connect to
+* **port:** not used, just leave blank
+* **username:** not used, just leave blank
+* **password:** the bot token this bot should use
+* **rooms:** not used, send an invite to get the bot to join the room
 
 ### commands
 ```json
