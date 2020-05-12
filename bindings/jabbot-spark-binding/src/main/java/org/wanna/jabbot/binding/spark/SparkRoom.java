@@ -31,7 +31,7 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 	private boolean useWebhook;
 	private String webhookUrl;
 	private boolean running;
-	private Pattern urlPattern = Pattern.compile("((http|https):[^\\s]+\\.(doc|docx|ppt|pptx|pdf|jpg|jpeg|png|gif|bmp))");
+	private Pattern urlPattern = Pattern.compile("((http|https):[^\\\\s]+\\.(doc|docx|ppt|pptx|pdf|jpg|jpeg|png|gif|bmp))");
 
 
 	public SparkRoom(SparkBinding connection,List<BindingListener> listeners) {
