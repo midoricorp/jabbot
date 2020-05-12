@@ -73,7 +73,7 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 						}
 
 						if (lastId.equals(imsg.getId())) {
-							//caugh up
+							//caught up
 							break;
 						}
 
@@ -149,7 +149,12 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 
 	private void dispatchMessage(com.ciscospark.Message msg) {
 		for (BindingListener listener : listeners) {
-			RxMessage request = new DefaultRxMessage(new DefaultMessageContent(msg.getText()),
+			String text = msg.getText();
+			if (connection.me != null) {
+				text = text.replace(connection.me.getDisplayName(), "");
+			}
+			logger.info("Got a message of: " + text);
+			RxMessage request = new DefaultRxMessage(new DefaultMessageContent(text),
 					new DefaultResource(room.getId(),msg.getPersonEmail()));
 		    listener.eventReceived(new MessageEvent(this.connection,request));
 		}

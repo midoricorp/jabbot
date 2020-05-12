@@ -1,5 +1,6 @@
 package org.wanna.jabbot.binding.spark;
 
+import com.ciscospark.Person;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractBinding;
@@ -29,6 +30,7 @@ public class SparkBinding extends AbstractBinding<Object> {
 	com.ciscospark.SparkServlet sparkServlet = null;
 	private boolean connected;
 	RoomPoller poller;
+	Person me = null;
 
 	public SparkBinding(BindingConfiguration configuration) {
 		super(configuration);
@@ -82,6 +84,8 @@ public class SparkBinding extends AbstractBinding<Object> {
 					roomMap.put(room.getId(),sr);
 				}
 			}
+			me = spark.people().path("/me").get();
+			logger.info("I am " + me.getDisplayName() + " with address " + me.getEmails());
 
 			connected = true;
 		}else{
