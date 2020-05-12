@@ -151,7 +151,7 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 		for (BindingListener listener : listeners) {
 			String text = msg.getText();
 			if (connection.me != null) {
-				text = text.replace(connection.me.getDisplayName(), "");
+				text = text.replace(connection.me.getDisplayName(), "").trim();
 			}
 			logger.info("Got a message of: " + text);
 			RxMessage request = new DefaultRxMessage(new DefaultMessageContent(text),
@@ -184,6 +184,9 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 			html = html.replace("\n","");
 			msg.setHtml(html);
 		}
+		logger.info("Sending Message (file): " + msg.getFile());
+		logger.info("Sending Message (txt): " + msg.getText());
+		logger.info("Sending Message (html): " + msg.getHtml());
 		spark.messages().post(msg);
 	}
 
