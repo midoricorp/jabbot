@@ -27,7 +27,6 @@ public class BindingContainer {
 	private Binding binding;
 	private CommandFactory commandFactory;
 	private final static Logger logger = LoggerFactory.getLogger(BindingContainer.class);
-	private ConnectionInfo connectionInfo;
 
 	/**
 	 * Create a new BindingContainer
@@ -69,7 +68,6 @@ public class BindingContainer {
 
 	private BindingContainer(BindingConfiguration configuration){
 		this.configuration = configuration;
-		this.connectionInfo = new ConnectionInfo(configuration.getId());
 		this.binding = createBinding(configuration);
 		this.commandFactory = new JabbotCommandFactory();
 	}
@@ -136,10 +134,6 @@ public class BindingContainer {
 
 	public BindingConfiguration getConfiguration() {
 		return configuration;
-	}
-
-	public ConnectionInfo getConnectionInfo() {
-		return connectionInfo;
 	}
 
 	@Override

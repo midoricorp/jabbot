@@ -26,28 +26,11 @@ public class BindingMonitor implements Runnable{
 		for (final BindingContainer manager : bindings) {
 			try{
 				if(!manager.getBinding().isConnected()){
-					switch(manager.getConnectionInfo().getStatus()){
-						case CONNECTED:{
-							logger.info("{} - binding is already connected",manager.getBinding().getIdentifier());
-							break;
-						}
-
-						case STARTED:{
-							logger.info("{} - is already starting.. waiting..",manager.getBinding().getIdentifier());
-							break;
-						}
-
-						case STOPPED:
-						default:{
-							logger.info("{} - binding is disconnected. queueing for connection...",manager.getBinding().getIdentifier());
-							EventManager.getInstance().getOutgoingDispatcher().dispatch(new DisconnectionRequestEvent(manager.getBinding()));
-							EventManager.getInstance().getOutgoingDispatcher().dispatch(new ConnectionRequestEvent(manager.getBinding()));
-							break;
-						}
-					}
+					logger.trace("{} - binding is not connected, reconnecting",manager.getBinding().getIdentifier());
+					EventManager.getInstance().getOutgoingDispatcher().dispatch(new DisconnectionRequestEvent(manager.getBinding()));
+					EventManager.getInstance().getOutgoingDispatcher().dispatch(new ConnectionRequestEvent(manager.getBinding()));
 				}else{
 					logger.trace("{} - binding is connected",manager.getBinding().getIdentifier());
-					manager.getConnectionInfo().setStatus(ConnectionInfo.StatusType.CONNECTED);
 				}
 			}catch (Throwable t){
 				logger.error("unable to check {} health",manager,t);
