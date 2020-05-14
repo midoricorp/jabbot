@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+	<repositories>
+		<repository>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<id>bintray-tsearle-maven</id>
+			<name>bintray</name>
+			<url>http://dl.bintray.com/tsearle/maven</url>
+		</repository>
+	</repositories>
     <parent>
         <groupId>org.wanna.jabbot.bindings</groupId>
         <artifactId>jabbot-bindings-master</artifactId>
