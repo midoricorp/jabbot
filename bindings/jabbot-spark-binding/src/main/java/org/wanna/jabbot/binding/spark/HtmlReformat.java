@@ -17,13 +17,13 @@ class HtmlReformat {
     private String formattedMessage;
     private Person me;
 
-    private final Logger logger = LoggerFactory.getLogger(HtmlReformat.class);
+    private static final Logger logger = LoggerFactory.getLogger(HtmlReformat.class);
 
     public HtmlReformat(Person me, String formattedMessage) {
         this.me = me;
         this.formattedMessage = formattedMessage;
         this.formattedMessage = this.formattedMessage.replace("<br>","<br/>");
-        this.formattedMessage = this.formattedMessage.replaceAll("<img([^/>]*)>","<img$1/>");
+        this.formattedMessage = this.formattedMessage.replaceAll("<img([^>]*[^/])>","<img$1/>");
     }
 
     private void removeMention(NodeList nodeList) {
@@ -61,6 +61,39 @@ class HtmlReformat {
             logger.error("unable to parse xhtml", e);
         }
         return formattedMessage;
+    }
+
+    private static String findImage(NodeList nodeList) {
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node item = nodeList.item(i);
+            if (item.getNodeType() != Node.TEXT_NODE) {
+                if (item.getNodeName().equalsIgnoreCase("img")) {
+
+                    Node objectId = item.getAttributes().getNamedItem("src");
+                    if (objectId != null) {
+                        return objectId.getTextContent();
+                    }
+                }
+                NodeList childNodes = item.getChildNodes();
+                if (childNodes != null) {
+                    String result = findImage(childNodes);
+                    if (result != null) {
+                        return result;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    public static String findImage(String msg) {
+        XHTMLObject obj = new XHTMLObject();
+        try {
+            obj.parse(msg);
+            return findImage(obj.objects);
+        } catch (XHtmlConvertException e) {
+            logger.error("Unable to parse xhtml", e);
+        }
+        return null;
     }
 
     public String emojiify() {

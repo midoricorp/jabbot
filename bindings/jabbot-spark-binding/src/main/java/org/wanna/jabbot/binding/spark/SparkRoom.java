@@ -150,6 +150,7 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 	private void dispatchMessage(com.ciscospark.Message msg) {
 		if (connection.me != null && msg.getId().equals(connection.me.getId())) {
 			logger.info("Ignoring message from myself!");
+			return;
 		}
 		for (BindingListener listener : listeners) {
 			String html = msg.getHtml();
@@ -189,14 +190,20 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 		com.ciscospark.Message msg = new com.ciscospark.Message();
 		msg.setRoomId(room.getId());
 		msg.setText(body);
-		Matcher m = urlPattern.matcher(body);
-		if (m.find()) {
-			msg.setFile(m.group(0));
-		}
 
 		if (html != null) {
 			html = html.replace("\n","");
 			msg.setHtml(html);
+
+			String file = HtmlReformat.findImage(html);
+			if (file != null) {
+				msg.setFile(file);
+			}
+		} else {
+			Matcher m = urlPattern.matcher(body);
+			if (m.find()) {
+				msg.setFile(m.group(0));
+			}
 		}
 		logger.info("Sending Message (file): " + msg.getFile());
 		logger.info("Sending Message (txt): " + msg.getText());
