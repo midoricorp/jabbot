@@ -1,6 +1,7 @@
 package org.wanna.jabbot.binding.spark;
 
 import com.ciscospark.Person;
+import com.sipstacks.xhml.Emojiify;
 import com.sipstacks.xhml.XHTMLObject;
 import com.sipstacks.xhml.XHtmlConvertException;
 
@@ -52,6 +53,11 @@ class HtmlReformat {
             obj.parse(formattedMessage);
             if (me != null) {
                 removeMention(obj.objects);
+            }
+            try {
+                Emojiify.convert(obj);
+            } catch (TransformerException e) {
+                logger.error("Unable to emojiify", e);
             }
             formattedMessage = obj.toText().trim();
 
