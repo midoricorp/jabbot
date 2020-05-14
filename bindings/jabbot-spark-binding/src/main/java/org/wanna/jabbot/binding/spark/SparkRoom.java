@@ -149,9 +149,17 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 
 	private void dispatchMessage(com.ciscospark.Message msg) {
 		for (BindingListener listener : listeners) {
-			String text = msg.getText();
-			if (connection.me != null) {
-				text = text.replace(connection.me.getDisplayName(), "").trim();
+			String html = msg.getHtml();
+			String text = null;
+			if (html != null) {
+				logger.info("About reformat html: " + html);
+				HtmlReformat he = new HtmlReformat(connection.me, html);
+				text = he.invoke();
+			} else {
+				text = msg.getText();
+				if (connection.me != null) {
+					text = text.replace(connection.me.getDisplayName(), "").trim();
+				}
 			}
 			logger.info("Got a message of: " + text);
 			RxMessage request = new DefaultRxMessage(new DefaultMessageContent(text),

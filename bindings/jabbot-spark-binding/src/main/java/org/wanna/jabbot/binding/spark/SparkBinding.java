@@ -85,7 +85,7 @@ public class SparkBinding extends AbstractBinding<Object> {
 				}
 			}
 			me = spark.people().path("/me").get();
-			logger.info("I am " + me.getDisplayName() + " with address " + me.getEmails());
+			logger.info("I am " + me.getDisplayName() + " at " + me.getId());
 
 			connected = true;
 		}else{
