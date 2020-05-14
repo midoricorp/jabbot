@@ -180,7 +180,7 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 			String htmlTxt = html.getText();
 			HtmlReformat he = new HtmlReformat(connection.me, htmlTxt);
 			htmlTxt = he.emojiify();
-			sendMessage(body, html.getText());
+			sendMessage(body, htmlTxt);
 		}
 		return true;
 	}
