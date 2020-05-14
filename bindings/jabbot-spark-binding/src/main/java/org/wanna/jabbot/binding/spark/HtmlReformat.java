@@ -48,22 +48,31 @@ class HtmlReformat {
             }
         }
     }
-
-    public String invoke() {
+    public String removeMentions() {
         XHTMLObject obj = new XHTMLObject();
         try {
             obj.parse(formattedMessage);
             if (me != null) {
                 removeMention(obj.objects);
             }
-            try {
-                Emojiify.convert(obj);
-            } catch (TransformerException e) {
-                logger.error("Unable to emojiify", e);
-            }
             formattedMessage = obj.toText().trim();
 
         } catch (XHtmlConvertException e) {
+            logger.error("unable to parse xhtml", e);
+        }
+        return formattedMessage;
+    }
+
+    public String emojiify() {
+        XHTMLObject obj = new XHTMLObject();
+        try {
+            obj.parse(formattedMessage);
+
+            Emojiify.convert(obj);
+
+            formattedMessage = obj.getString().trim();
+
+        } catch (XHtmlConvertException | TransformerException e) {
             logger.error("unable to parse xhtml", e);
         }
         return formattedMessage;

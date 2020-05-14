@@ -148,13 +148,16 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 	}
 
 	private void dispatchMessage(com.ciscospark.Message msg) {
+		if (connection.me != null && msg.getId().equals(connection.me.getId())) {
+			logger.info("Ignoring message from myself!");
+		}
 		for (BindingListener listener : listeners) {
 			String html = msg.getHtml();
 			String text = null;
 			if (html != null) {
 				logger.info("About reformat html: " + html);
 				HtmlReformat he = new HtmlReformat(connection.me, html);
-				text = he.invoke();
+				text = he.removeMentions();
 			} else {
 				text = msg.getText();
 				if (connection.me != null) {
@@ -174,6 +177,9 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 		if (html == null) {
 			sendMessage(body, null);
 		} else {
+			String htmlTxt = html.getText();
+			HtmlReformat he = new HtmlReformat(connection.me, htmlTxt);
+			htmlTxt = he.emojiify();
 			sendMessage(body, html.getText());
 		}
 		return true;
