@@ -22,6 +22,8 @@ class HtmlReformat {
     public HtmlReformat(Person me, String formattedMessage) {
         this.me = me;
         this.formattedMessage = formattedMessage;
+        this.formattedMessage = this.formattedMessage.replace("<br>","</br>");
+        this.formattedMessage = this.formattedMessage.replaceAll("<img([^/>]*)>","<img$1/>");
     }
 
     private void removeMention(NodeList nodeList) {
