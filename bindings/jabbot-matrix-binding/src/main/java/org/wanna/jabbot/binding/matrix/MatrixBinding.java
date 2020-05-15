@@ -9,6 +9,8 @@ import de.jojii.matrixclientserver.Bot.Events.RoomEvent;
 import java.io.*;
 import java.util.List;
 
+import de.jojii.matrixclientserver.Callbacks.DataCallback;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractBinding;
@@ -133,6 +135,15 @@ public class MatrixBinding extends AbstractBinding<Object> {
 	public Room getRoom(String roomName) {
 		return null;
 	}
+	public void sendImage(String roomID, String message, String url, DataCallback response) throws IOException {
+
+		JSONObject data = new JSONObject();
+		data.put("msgtype", "m.image");
+		data.put("body", message);
+		data.put("url", url);
+		client.sendRoomEvent("m.room.message", roomID, data, response);
+	}
+
 
 	@Override
 	public void sendMessage(TxMessage response) {
@@ -141,13 +152,20 @@ public class MatrixBinding extends AbstractBinding<Object> {
 
 		String message = messageContent.getBody(BodyPart.Type.TEXT).getText();
 		String formattedMessage = null;
+		String img = null;
 		if (messageContent.getBody(BodyPart.Type.XHTML) != null) {
 			formattedMessage = messageContent.getBody(BodyPart.Type.XHTML).getText();
-			formattedMessage = new HtmlReformat(client, formattedMessage).invoke();
+			HtmlReformat he = new HtmlReformat(client, formattedMessage);
+			he.invoke();
+			img = he.findAndRemoveImage();
+			formattedMessage = he.getString().trim();
 		}
 		logger.info("Sending message: " + message + "to room " + resource.getAddress());
 		try {
-			client.sendText(resource.getAddress(),message, formattedMessage != null, formattedMessage, null);
+			client.sendText(resource.getAddress(),message, formattedMessage != null && formattedMessage.length() > 0, formattedMessage, null);
+			if(img != null) {
+				sendImage(resource.getAddress(),message,img,null);
+			}
 		} catch (IOException e) {
 			logger.error("unable to send matrix message", e);
 		}

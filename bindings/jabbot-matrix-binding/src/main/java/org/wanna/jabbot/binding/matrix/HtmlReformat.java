@@ -13,7 +13,6 @@ import org.w3c.dom.NodeList;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.regex.Matcher;
@@ -22,8 +21,9 @@ import java.util.regex.Pattern;
 class HtmlReformat {
     private String formattedMessage;
     private Client client;
+    XHTMLObject obj = new XHTMLObject();
 
-    private final Logger logger = LoggerFactory.getLogger(HtmlReformat.class);
+    private static final Logger logger = LoggerFactory.getLogger(HtmlReformat.class);
 
     public HtmlReformat(Client client, String formattedMessage) {
         this.client = client;
@@ -126,19 +126,52 @@ class HtmlReformat {
         }
 
     }
+    private String findRemoveImage(NodeList nodeList) {
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node item = nodeList.item(i);
+            if (item.getNodeType() != Node.TEXT_NODE) {
+                if (item.getNodeName().equalsIgnoreCase("img")) {
 
-    public String invoke() {
-        XHTMLObject obj = new XHTMLObject();
+                    Node objectId = item.getAttributes().getNamedItem("src");
+                    if (objectId != null) {
+                        item.getParentNode().removeChild(item);
+                        return objectId.getTextContent();
+                    }
+                }
+                NodeList childNodes = item.getChildNodes();
+                if (childNodes != null) {
+                    String result = findRemoveImage(childNodes);
+                    if (result != null) {
+                        return result;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    public String findAndRemoveImage() {
+        return findRemoveImage(obj.objects);
+    }
+    public String getString() {
+        String newMsg = null;
         try {
+            newMsg = obj.getString();
+        } catch(TransformerException e) {
+            logger.error("unable to generate xhtml", e);
+        }
+        return newMsg;
+    }
+
+    public void invoke() {
+        try {
+
             obj.parse(formattedMessage);
             updateImages(obj.objects);
             updateTags(obj.objects);
             Emojiify.convert(obj);
-            formattedMessage = obj.getString();
 
         } catch (IOException | XHtmlConvertException | TransformerException e) {
             logger.error("unable to parse xhtml", e);
         }
-        return formattedMessage;
     }
 }
