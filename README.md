@@ -129,9 +129,9 @@ Defines a list of servers to which Jabbot will connect
 * **username:** not used, just leave blank
 * **password:** the bot token this bot should use
 * **rooms:** not used, send an invite to get the bot to join the room
-##### SPARK (Webex Teams)
+##### Webex Teams (previously Cisco Spark)
 * **type:** SPARK
-* **url:** leave as default (https://api.ciscospark.com/v1
+* **url:** leave as default (https://webexapis.com/v1)
 * **port:** leave as default 443
 * **username:** not used
 * **password:** The BOT Token you want to use
