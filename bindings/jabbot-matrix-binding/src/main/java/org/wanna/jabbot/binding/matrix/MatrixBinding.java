@@ -162,7 +162,9 @@ public class MatrixBinding extends AbstractBinding<Object> {
 		}
 		logger.info("Sending message: " + message + "to room " + resource.getAddress());
 		try {
-			client.sendText(resource.getAddress(),message, formattedMessage != null && formattedMessage.length() > 0, formattedMessage, null);
+			if (formattedMessage == null || formattedMessage.length() != 0) {
+				client.sendText(resource.getAddress(), message, formattedMessage != null, formattedMessage, null);
+			}
 			if(img != null) {
 				sendImage(resource.getAddress(),message,img,null);
 			}
