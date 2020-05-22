@@ -10,7 +10,7 @@ J_CLASSPATH="/usr/share/jabbot/*:/etc/jabbot/:/var/lib/jabbot/scripts/"
 
 PIDFILE="/var/run/jabbot/jabbot.pid"
 
-EXEC="java -cp $J_CLASSPATH -Djabbot.logs_dir=$JABBOT_LOGS $JABBOT_MAIN"
+EXEC="java -Xmx32m -Xms32m -cp $J_CLASSPATH -Djabbot.logs_dir=$JABBOT_LOGS $JABBOT_MAIN"
 
 echo "starting Jabbot service.."
 RUNNING_PID=`cat $PIDFILE 2>/dev/null`
