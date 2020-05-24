@@ -1,7 +1,9 @@
 jabbot (0.5) UNRELEASED; urgency=medium
-
-  * 
-  * 
+ 
+  [ Torrey Searle ]
+  * added discord
+  * added matrix
+  * made SPARK compatible with the bot api
 
  -- Vincent Morsiani <vmorsiani@gmail.com>  Thu, 23 Jun 2016 15:33:31 +0200
 

@@ -13,6 +13,8 @@ Jabbot consists of 3 projects:
 [bindings](https://github.com/midoricorp/jabbot/tree/master/bindings) directory.
 
 **Extensions** can be written using jabbot-extension-api and are currently stored under the [extensions](https://github.com/midoricopr/jabbot/tree/master/extensions) directory.
+**CGI Extensions** can be written using in any language you want. Scripts and their json configuration are currently stored under the [scripts](https://github.com/midoricorp/jabbot/tree/master/scripts) directory.
+**Script Extensions** can also be written the in chat language. Declaring a sub will result in a new bot function being created. Any existing bot command (regardless of implementation) can be called as a function. See the project [Searle Script](https://github.com/midoricorp/script/) for information on the language syntax.
 
 ## Quickstart
 Assuming you have git, java 7, jsvc and maven2 installed
