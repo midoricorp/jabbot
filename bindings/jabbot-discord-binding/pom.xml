@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.wanna.jabbot.bindings</groupId>
         <artifactId>jabbot-bindings-master</artifactId>
-        <version>0.5</version>
+        <version>0.5-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>jabbot-discord-binding</artifactId>
-    <version>0.5</version>
+    <version>0.5-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
