@@ -109,6 +109,7 @@ public class SparkBinding extends AbstractBinding<Object> {
 			poller.interrupt();
 			poller = null;
 		}
+		connected = false;
 		return true;
 	}
 
