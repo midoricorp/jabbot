@@ -64,6 +64,7 @@ Defines a list of available binding type such as xmpp, irc..
 ```json
     "serverList":[
         {   "type" : "XMPP",
+            "identifier" : "XMPP",
             "url":"jabber.hostname.com",
             "serverName":"hostname.com",
             "port":5222,
