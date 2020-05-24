@@ -104,8 +104,11 @@ public class SparkBinding extends AbstractBinding<Object> {
 
 	@Override
 	public boolean disconnect() {
-		poller.abort();
-		poller.interrupt();
+		if (poller != null) {
+			poller.abort();
+			poller.interrupt();
+			poller = null;
+		}
 		return true;
 	}
 
