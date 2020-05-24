@@ -4,7 +4,7 @@
 
     <groupId>org.wanna.jabbot</groupId>
     <artifactId>jabbot-master</artifactId>
-    <version>0.6-SNAPSHOT</version>
+    <version>0.5-SNAPSHOT</version>
 
     <modules>
         <module>jabbot-messaging-api</module>
@@ -52,7 +52,7 @@
                         <dependency>
                             <groupId>org.wanna.jabbot</groupId>
                             <artifactId>extension-assembly</artifactId>
-                            <version>0.6-SNAPSHOT</version>
+                            <version>0.5-SNAPSHOT</version>
                         </dependency>
                     </dependencies>
                     <executions>

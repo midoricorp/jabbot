@@ -4,7 +4,7 @@
 
     <groupId>org.wanna.jabbot.extensions</groupId>
     <artifactId>jabbot-extensions-master</artifactId>
-    <version>0.6-SNAPSHOT</version>
+    <version>0.5-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -25,7 +25,7 @@
     <parent>
         <groupId>org.wanna.jabbot</groupId>
         <artifactId>jabbot-master</artifactId>
-        <version>0.6-SNAPSHOT</version>
+        <version>0.5-SNAPSHOT</version>
     </parent>
 
     <dependencyManagement>
@@ -33,7 +33,7 @@
             <dependency>
                 <groupId>org.wanna.jabbot.extensions</groupId>
                 <artifactId>jabbot-extension-helpers</artifactId>
-                <version>0.6-SNAPSHOT</version>
+                <version>0.5-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>org.wanna.jabbot</groupId>
             <artifactId>jabbot-extension-api</artifactId>
-            <version>0.6-SNAPSHOT</version>
+            <version>0.5-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
