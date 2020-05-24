@@ -22,9 +22,11 @@ Jabbot consists of 3 projects:
 Assuming you have git, java 7, jsvc and maven2 installed
 
 **Installing it via APT**
-echo "deb https://dl.bintray.com/midoricorp/deb unstable main" | sudo tee -a /etc/apt/sources.list
+```bash
+echo "deb [trusted=yes] https://dl.bintray.com/midoricorp/deb unstable main" | sudo tee -a /etc/apt/sources.list
 apt-get update
 apt-get install jabbot-full
+```
 
 **Build it**
 ```bash
