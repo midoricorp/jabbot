@@ -174,7 +174,7 @@ public class XmppBinding extends AbstractBinding<XMPPTCPConnection> implements P
 			}
 			try {
 				Message msg = MessageHelper.createXmppMessage(message);
-				msg.addExtension(new DeliveryReceipt(origin.getId()));
+				msg.setType(Message.Type.chat);
 				chat.sendMessage(msg);
 			} catch (SmackException.NotConnectedException e) {
 				logger.warn("Trying to send a message on XMPP binding while connection is closed",e);
