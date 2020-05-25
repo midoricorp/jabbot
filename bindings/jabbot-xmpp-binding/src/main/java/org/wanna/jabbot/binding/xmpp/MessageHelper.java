@@ -1,11 +1,21 @@
 package org.wanna.jabbot.binding.xmpp;
 
+import com.sipstacks.xhml.Emojiify;
+import com.sipstacks.xhml.XHTMLObject;
+import com.sipstacks.xhml.XHtmlConvertException;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.util.XmlStringBuilder;
 import org.jivesoftware.smackx.xhtmlim.packet.XHTMLExtension;
 import org.jxmpp.util.XmppStringUtils;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.wanna.jabbot.messaging.*;
 import org.wanna.jabbot.messaging.body.BodyPart;
+
+import javax.xml.transform.TransformerException;
 
 /**
  * MessageHelper is a class which provide some facilities with regards to Xmpp message.
@@ -19,12 +29,52 @@ public final class MessageHelper {
      * List of characters we don't want to see in an XMPP message body
      */
     private final static char[] escapeChars = new char[]{'\f','\b'};
+    static Logger logger = LoggerFactory.getLogger(MessageHelper.class);
 
     /**
      * Do not allow instance creation of MessageHelper
      */
     private MessageHelper(){
 
+    }
+    private static void updateTags(NodeList nodeList) {
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node item = nodeList.item(i);
+            if (item.getNodeType() != Node.TEXT_NODE) {
+                if (item.getNodeName().equalsIgnoreCase("font")) {
+                    /* xmpp doesn't understand font, so covert it to span + css */
+                    item.getOwnerDocument().renameNode(item,null,"span");
+                    StringBuffer styleString = new StringBuffer();
+
+                    Node colorNode = item.getAttributes().getNamedItem("color");
+                    if (colorNode != null) {
+                        String color = colorNode.getTextContent();
+
+                        if (color != null) {
+                            styleString.append("color: ").append(color).append(";");
+
+                        }
+                    }
+                    Node bgColorNode = item.getAttributes().getNamedItem("bgcolor");
+                    if (bgColorNode != null) {
+                        String bgcolor = bgColorNode.getTextContent();
+
+                        if (bgcolor != null) {
+                            styleString.append("background-color: ").append(bgcolor).append(";");
+
+                        }
+                    }
+
+                    String style = styleString.toString();
+                    if(style.length() > 0) {
+                        ((Element) item).setAttribute("style", style);
+                    }
+
+                }
+                NodeList childNodes = item.getChildNodes();
+                if(childNodes != null) updateTags(childNodes);
+            }
+        }
     }
 
     public static Message createXmppMessage(TxMessage txMessage){
@@ -39,9 +89,20 @@ public final class MessageHelper {
         //Check if there's any XHTML body part, if yes, set it
         BodyPart xhtmlPart = messageContent.getBody(BodyPart.Type.XHTML);
         if(xhtmlPart != null){
+            XHTMLObject obj = new XHTMLObject();
+            String xhtmlPartText = xhtmlPart.getText();
+            try {
+                obj.parse(xhtmlPartText);
+                updateTags(obj.objects);
+                Emojiify.convert(obj);
+                xhtmlPartText = obj.getString();
+                logger.info("After re-formatting html\n" + xhtmlPartText);
+            } catch (XHtmlConvertException | TransformerException e) {
+                logger.error("unable to parse xhtml\n" + xhtmlPartText, e);
+            }
             XmlStringBuilder sb = new XmlStringBuilder();
             sb.append("<body>");
-            sb.append(xhtmlPart.getText());
+            sb.append(xhtmlPartText);
             sb.append("</body>");
             XHTMLExtension xhtmlExtension = XHTMLExtension.from(xmpp);
             if (xhtmlExtension == null) {
