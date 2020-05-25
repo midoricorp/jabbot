@@ -10,6 +10,17 @@
     <artifactId>jabbot-xmpp-binding</artifactId>
     <version>0.6-SNAPSHOT</version>
 
+    <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-tsearle-maven</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/tsearle/maven</url>
+        </repository>
+    </repositories>
+    
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
