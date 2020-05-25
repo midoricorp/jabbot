@@ -165,7 +165,7 @@ public class SparkBinding extends AbstractBinding<Object> {
 						SparkRoom sr = new SparkRoom(SparkBinding.this, listeners);
 						if (sr.create(room)) {
 							roomMap.put(room.getId(), sr);
-							sr.sendMessage("^_^", null);
+							sr.sendMessage(null, "^_^", null);
 						}
 					}
 				}

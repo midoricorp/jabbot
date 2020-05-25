@@ -44,6 +44,37 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 
 	}
 
+	class SparkResource implements Resource {
+
+		String address;
+		String user;
+		String parentId;
+
+		public SparkResource(String address, String parentId, String user) {
+			this.address = address;
+			this.user = user;
+			this.parentId = parentId;
+		}
+
+		@Override
+		public String getAddress() {
+			return address;
+		}
+
+		@Override
+		public String getName() {
+			return user;
+		}
+
+		@Override
+		public Type getType() {
+			return Type.ROOM;
+		}
+
+		public String getParentId() { return parentId; }
+	}
+
+
 	@Override
 	public void run()
 	{
@@ -167,7 +198,7 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 			}
 			logger.info("Got a message of: " + text);
 			RxMessage request = new DefaultRxMessage(new DefaultMessageContent(text),
-					new DefaultResource(room.getId(),msg.getPersonEmail()));
+					new SparkResource(room.getId(),msg.getParentId(),msg.getPersonEmail()));
 		    listener.eventReceived(new MessageEvent(this.connection,request));
 		}
 	}
@@ -175,21 +206,26 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 	public boolean sendMessage(TxMessage response) {
 		String body = response.getMessageContent().getBody();
 		BodyPart html = response.getMessageContent().getBody(BodyPart.Type.XHTML);
+		SparkResource resource = (SparkResource)response.getDestination();
 		if (html == null) {
-			sendMessage(body, null);
+			sendMessage(resource.getParentId(), body, null);
 		} else {
 			String htmlTxt = html.getText();
 			HtmlReformat he = new HtmlReformat(connection.me, htmlTxt);
 			htmlTxt = he.emojiify();
-			sendMessage(body, htmlTxt);
+			sendMessage(resource.getParentId(), body, htmlTxt);
 		}
 		return true;
 	}
 
-	public void sendMessage(String body, String html) {
+	public void sendMessage(String parentID, String body, String html) {
 		com.ciscospark.Message msg = new com.ciscospark.Message();
 		msg.setRoomId(room.getId());
 		msg.setText(body);
+
+		if(parentID != null) {
+			msg.setParentId(parentID);
+		}
 
 		if (html != null) {
 			html = html.replace("\n","");

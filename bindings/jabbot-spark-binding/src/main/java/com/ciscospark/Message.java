@@ -9,6 +9,7 @@ public class Message {
     private String id;
     private String roomId;
     private String personId;
+    private String parentId;
     private String personEmail;
     private String text;
     private String markdown;
@@ -39,6 +40,10 @@ public class Message {
     public void setPersonId(String personId) {
         this.personId = personId;
     }
+
+    public String getParentId() { return parentId; }
+
+    public void setParentId(String parentId) { this.parentId = parentId; }
 
     public String getPersonEmail() {
         return personEmail;
