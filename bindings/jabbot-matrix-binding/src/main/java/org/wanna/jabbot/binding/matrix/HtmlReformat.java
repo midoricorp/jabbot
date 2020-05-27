@@ -1,5 +1,6 @@
 package org.wanna.jabbot.binding.matrix;
 
+import com.sipstacks.xhml.ColorMapper;
 import com.sipstacks.xhml.Emojiify;
 import com.sipstacks.xhml.XHTMLObject;
 import com.sipstacks.xhml.XHtmlConvertException;
@@ -56,17 +57,36 @@ class HtmlReformat {
                         String color = getStyleAttribute(style, "color");
                         String bgcolor = getStyleAttribute(style, "background-color");
                         if (color != null) {
+                            if (!color.startsWith("#")) {
+                                String newColor = ColorMapper.getHex(color);
+                                if (newColor != null) {
+                                    color = newColor;
+                                }
+                            }
                             ((Element) item).setAttribute("data-mx-color", color);
                         }
                         if (bgcolor != null) {
-                            ((Element) item).setAttribute("data-mx-bg-color", color);
+                            if (!bgcolor.startsWith("#")) {
+                                String newColor = ColorMapper.getHex(bgcolor);
+                                if (newColor != null) {
+                                    bgcolor = newColor;
+                                }
+                            }
+                            ((Element) item).setAttribute("data-mx-bg-color", bgcolor);
                         }
                     }
 
                 } else if (item.getNodeName().equalsIgnoreCase("font")) {
                     Node color = item.getAttributes().getNamedItem("color");
                     if(color != null) {
-                        ((Element) item).setAttribute("data-mx-color", color.getTextContent());
+                        String colorStr = color.getTextContent();
+                        if (!colorStr.startsWith("#")) {
+                            String newColor = ColorMapper.getHex(colorStr);
+                            if (newColor != null) {
+                                colorStr = newColor;
+                            }
+                        }
+                        ((Element) item).setAttribute("data-mx-color", colorStr);
                     }
 
                 }
