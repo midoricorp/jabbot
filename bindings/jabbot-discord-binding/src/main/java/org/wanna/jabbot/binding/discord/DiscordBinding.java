@@ -115,6 +115,7 @@ public class DiscordBinding extends AbstractBinding<Object> {
 
 		String message = messageContent.getBody(BodyPart.Type.TEXT).getText();
 		logger.info("Sending message: " + message);
+		message = message.replaceAll("([*_~])", "\\\\$1");
 		resource.channel.sendMessage(message);
 	}
 
