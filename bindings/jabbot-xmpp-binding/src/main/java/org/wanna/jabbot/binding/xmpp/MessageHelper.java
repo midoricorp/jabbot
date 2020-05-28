@@ -3,6 +3,7 @@ package org.wanna.jabbot.binding.xmpp;
 import com.sipstacks.xhml.Emojiify;
 import com.sipstacks.xhml.XHTMLObject;
 import com.sipstacks.xhml.XHtmlConvertException;
+import emoji4j.EmojiManager;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.util.XmlStringBuilder;
 import org.jivesoftware.smackx.xhtmlim.packet.XHTMLExtension;
@@ -25,6 +26,10 @@ import javax.xml.transform.TransformerException;
  */
 public final class MessageHelper {
 
+    static {
+        EmojiManager.addStopWords(":[0-9]+");
+    }
+    
     /**
      * List of characters we don't want to see in an XMPP message body
      */

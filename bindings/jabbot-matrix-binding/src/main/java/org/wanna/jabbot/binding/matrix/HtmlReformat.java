@@ -5,6 +5,7 @@ import com.sipstacks.xhml.Emojiify;
 import com.sipstacks.xhml.XHTMLObject;
 import com.sipstacks.xhml.XHtmlConvertException;
 import de.jojii.matrixclientserver.Bot.Client;
+import emoji4j.EmojiManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -25,6 +26,9 @@ class HtmlReformat {
     XHTMLObject obj = new XHTMLObject();
 
     private static final Logger logger = LoggerFactory.getLogger(HtmlReformat.class);
+    static {
+        EmojiManager.addStopWords(":[0-9]+");
+    }
 
     public HtmlReformat(Client client, String formattedMessage) {
         this.client = client;

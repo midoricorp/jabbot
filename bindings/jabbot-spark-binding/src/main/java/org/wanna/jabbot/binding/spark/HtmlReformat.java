@@ -5,6 +5,7 @@ import com.sipstacks.xhml.Emojiify;
 import com.sipstacks.xhml.XHTMLObject;
 import com.sipstacks.xhml.XHtmlConvertException;
 
+import emoji4j.EmojiManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
@@ -18,6 +19,10 @@ class HtmlReformat {
     private Person me;
 
     private static final Logger logger = LoggerFactory.getLogger(HtmlReformat.class);
+
+    static {
+        EmojiManager.addStopWords(":[0-9]+");
+    }
 
     public HtmlReformat(Person me, String formattedMessage) {
         this.me = me;
