@@ -14,6 +14,7 @@ import allbegray.slack.type.Attachment;
 import allbegray.slack.type.User;
 import allbegray.slack.webapi.SlackWebApiClient;
 import allbegray.slack.webapi.method.chats.ChatPostMessageMethod;
+import emoji4j.EmojiManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractBinding;
@@ -38,6 +39,9 @@ public class SlackBinding extends AbstractBinding<Object> {
 	private boolean connected;
 	private SlackRealTimeMessagingClient rtmClient;
 	private SlackWebApiClient webApiClient;
+	static {
+		EmojiManager.addStopWords(":[0-9]+");
+	}
 
 	public SlackBinding(BindingConfiguration configuration) {
 		super(configuration);
