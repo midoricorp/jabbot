@@ -172,6 +172,7 @@ public class SlackBinding extends AbstractBinding<Object> {
 		}
 
 		String slackMsgText = slackMsg.getText();
+		slackMsgText = slackMsgText.replaceAll("<(http[^\"|>]*)[|]([^|\">]*)>", "$2");
 		slackMsgText = slackMsgText.replaceAll("<(http[^\">]*)>", "$1");
 		slackMsgText = slackMsgText.replace("&gt;", ">");
 		slackMsgText = slackMsgText.replace("&lt;", "<");
