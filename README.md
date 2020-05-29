@@ -18,6 +18,8 @@ Jabbot consists of 3 projects:
 
 **Script Extensions** can also be written the in chat language. Declaring a sub will result in a new bot function being created. Any existing bot command (regardless of implementation) can be called as a function. See the project [Searle Script](https://github.com/midoricorp/script/) for information on the language syntax.
 
+There is also a collection of script commands you can install, check them out in the [Snippet Archive](https://github.com/midoricorp/snippets)
+
 ## Quickstart
 Assuming you have git, java 8, jsvc and maven2 installed
 
