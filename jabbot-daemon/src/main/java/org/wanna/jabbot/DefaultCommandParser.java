@@ -19,7 +19,7 @@ public class DefaultCommandParser implements CommandParser {
 
 	public CommandParsingResult parse(String message) {
 		String command;
-		if (message.contains(" ")) {
+		if (message.matches("(.*)\\s(.*)")) {
 			command = message.substring(commandPrefix.length(), message.indexOf(" "));
 		} else {
 			command = message.substring(commandPrefix.length());
