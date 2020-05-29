@@ -21,7 +21,6 @@ Jabbot consists of 3 projects:
 There is also a collection of script commands you can install, check them out in the [Snippet Archive](https://github.com/midoricorp/snippets)
 
 ## Quickstart
-Assuming you have git, java 8, jsvc and maven2 installed
 
 **Installing it via APT**
 ```bash
@@ -31,6 +30,8 @@ apt-get install jabbot-full
 ```
 
 **Build it**
+Assuming you have git, java 8, jsvc and maven2 installed
+
 ```bash
 host$ git clone https://github.com/midoricorp/jabbot.git
 host$ cd jabbot/
