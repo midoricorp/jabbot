@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.command.parser.CommandParser;
 import org.wanna.jabbot.command.parser.CommandParsingResult;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * @author vmorsiani <vmorsiani>
  * @since 2014-05-31
@@ -19,8 +22,10 @@ public class DefaultCommandParser implements CommandParser {
 
 	public CommandParsingResult parse(String message) {
 		String command;
-		if (message.matches("(.*)\\s(.*)")) {
-			command = message.substring(commandPrefix.length(), message.indexOf(" "));
+		Pattern wsPattern = Pattern.compile("\\s");
+		Matcher wsMatcher = wsPattern.matcher(message);
+		if (wsMatcher.find()) {
+			command = message.substring(commandPrefix.length(), wsMatcher.start());
 		} else {
 			command = message.substring(commandPrefix.length());
 		}
