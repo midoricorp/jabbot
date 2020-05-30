@@ -166,6 +166,7 @@ public class DiscordBinding extends AbstractBinding<Object> {
 						if(m.find(i)) {
 							if (m.start() == i) {
 								sb.append(origMessage.substring(m.start(),m.end()));
+								i+=(m.end()-m.start())-1;
 								break;
 							}
 						}
