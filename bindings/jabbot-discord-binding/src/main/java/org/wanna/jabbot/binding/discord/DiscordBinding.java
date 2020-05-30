@@ -157,6 +157,10 @@ public class DiscordBinding extends AbstractBinding<Object> {
 						sb.append("\\");
 						sb.append(c);
 						break;
+					case '"':
+						inQuote = true;
+						sb.append(c);
+						break;
 					case 'h':
 						Matcher m = url.matcher(origMessage);
 						if(m.find(i)) {
