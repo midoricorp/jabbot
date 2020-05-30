@@ -114,7 +114,7 @@ public class DiscordBinding extends AbstractBinding<Object> {
 		StringBuffer sb = new StringBuffer();
 		final String HTTP = "http://";
 		final String HTTPS = "https://";
-		final Pattern url = Pattern.compile("(https?:\\/\\/[-a-zA-Z0-9@:%._\\+~#=?;/]+)");
+		final Pattern url = Pattern.compile("(https?:\\/\\/[-a-zA-Z0-9@:%._\\+~#=?;/&]+)");
 		boolean inQuote = false;
 		for(int i = 0; i < origMessage.length();i++) {
 			// only escape urls if in quoted strings
