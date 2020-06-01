@@ -241,7 +241,6 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 	@Override
 	public String getHelpMessage() {
 		StringBuffer sb = new StringBuffer();
-		sb.append(this.getCommandName()).append("\n");
 		sb.append("Run statements or create a command\n");
 		sb.append("Declaring a subroutine creates a new bot command\n");
 		sb.append("Existing bot commands can be called as subroutines\n");
