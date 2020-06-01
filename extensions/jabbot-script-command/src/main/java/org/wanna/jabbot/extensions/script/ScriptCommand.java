@@ -239,7 +239,28 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 	}
 
 	@Override
-        public void setCommandFactory(CommandFactory commandFactory) {
+	public String getHelpMessage() {
+		StringBuffer sb = new StringBuffer();
+		sb.append(this.getCommandName()).append("\n");
+		sb.append("Run statements or create a command\n");
+		sb.append("Declaring a subroutine creates a new bot command\n");
+		sb.append("Existing bot commands can be called as subroutines\n");
+		sb.append("Code written outside of a subroutine is run immediately\n");
+		sb.append("Goto http://github.com/midoricorp/script for language reference\n");
+		sb.append("\n");
+		sb.append("Examples:\n");
+		sb.append("script print \"Hello World\";");
+		sb.append("Prints Hello World");
+		sb.append("\n");
+		sb.append("script sub test {\n");
+		sb.append("\tprint \"Got: \" . _;");
+		sb.append("}\n");
+		sb.append("Creates a new bot command \"test\" that prints the parameters passed into it\n");
+		return sb.toString();
+	}
+
+	@Override
+	public void setCommandFactory(CommandFactory commandFactory) {
                 this.commandFactory = commandFactory;
         }
 
