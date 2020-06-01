@@ -248,10 +248,10 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 		sb.append("Goto http://github.com/midoricorp/script for language reference\n");
 		sb.append("\n");
 		sb.append("Examples:\n");
-		sb.append("script print \"Hello World\";\n");
+		sb.append(this.getCommandName() + " print \"Hello World\";\n");
 		sb.append("Prints Hello World\n");
 		sb.append("\n");
-		sb.append("script sub test {\n");
+		sb.append(this.getCommandName() + " sub test {\n");
 		sb.append("\tprint \"Got: \" . _;\n");
 		sb.append("}\n");
 		sb.append("Creates a new bot command \"test\" that prints the parameters passed into it\n");
