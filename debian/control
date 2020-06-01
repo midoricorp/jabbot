@@ -12,6 +12,7 @@ Depends: ${misc:Depends},
          default-jre-headless,
 	 perl,
 	 libjson-perl,
+	 libjson-xs-perl,
 	 libconfig-simple-perl,
 	 libwww-perl,
 	 liburi-encode-perl

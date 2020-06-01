@@ -24,9 +24,10 @@ There is also a collection of script commands you can install, check them out in
 
 **Installing it via APT**
 ```bash
+sudo apt-get install apt-transport-https
 echo "deb [trusted=yes] https://dl.bintray.com/midoricorp/deb unstable main" | sudo tee -a /etc/apt/sources.list
-apt-get update
-apt-get install jabbot-full
+sudo apt-get update
+sudo apt-get install jabbot-full
 ```
 
 **Build it**
