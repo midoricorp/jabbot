@@ -105,6 +105,7 @@ public class SlackBinding extends AbstractBinding<Object> {
 			connected = rtmClient.ping();
 			if (!connected) {
 				rtmClient.close();
+				webApiClient.shutdown();
 				dispatchEvent(new DisconnectedEvent(this));
 			}
 		}
