@@ -29,6 +29,8 @@ echo "deb [trusted=yes] https://dl.bintray.com/midoricorp/deb unstable main" | s
 sudo apt-get update
 sudo apt-get install jabbot-full
 ```
+### Logs
+logs for jabbot can be found in /var/log/jabbog/
 
 **Build it**
 Assuming you have git, java 8, jsvc and maven2 installed
