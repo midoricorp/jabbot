@@ -1,15 +1,13 @@
 package org.wanna.jabbot.extensions.script;
 
 import com.sipstacks.script.*;
-import com.sipstacks.xhml.XHTMLObject;
-import com.sipstacks.xhml.XHtmlConvertException;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.command.parser.ArgsParser;
 import org.wanna.jabbot.command.parser.QuotedStringArgParser;
 import org.wanna.jabbot.messaging.DefaultMessageContent;
 import org.wanna.jabbot.messaging.MessageContent;
-import org.wanna.jabbot.messaging.body.XhtmlBodyPart;
+import org.wanna.jabbot.messaging.body.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,16 +86,30 @@ public class ScriptScript implements Command {
 
 		MessageContent messageContent = new DefaultMessageContent(response.getText());
 		if (response.getHtml().length() > 0) {
-			XHTMLObject xhtml = new XHTMLObject();
+			BodyPart xhtmlPart = new XhtmlBodyPart(response.getHtml());
 			try {
-				xhtml.parse(response.getHtml());
-			} catch (XHtmlConvertException e) {
-				String error = e.getMessage();
-				error += "\n\nHTML body was:\n" +response.getHtml();
-				return new DefaultMessageContent(error);
+				BodyPartValidator validator = BodyPartValidatorFactory.getInstance().create(BodyPart.Type.XHTML);
+				if(validator != null){
+					validator.validate(xhtmlPart);
+				}
+				messageContent.addBody(xhtmlPart);
+			} catch (InvalidBodyPartException e) {
+				StringBuilder errorMessage = new StringBuilder();
+				errorMessage.append(e.getMessage());
+				if(e.getInvalidBodyPart() != null){
+					errorMessage.append("\n");
+					errorMessage.append(e.getInvalidBodyPart().getText())
+							.append("\n")
+							.append(e.getCause().getMessage());
+
+				}
+
+				errorMessage.append("\n\nXHTML body was:\n");
+				errorMessage.append(xhtmlPart);
+				return new DefaultMessageContent(errorMessage.toString());
 			}
-			messageContent.addBody(new XhtmlBodyPart(response.getHtml()));
 		}
+
 		return messageContent;
 	}
 

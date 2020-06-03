@@ -167,13 +167,16 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
                     StringBuilder errorMessage = new StringBuilder();
                     errorMessage.append(e.getMessage());
                     if(e.getInvalidBodyPart() != null){
-                        errorMessage.append("<br/>");
-                        errorMessage.append(StringEscapeUtils.escapeXml11(e.getInvalidBodyPart().getText()))
-                                .append("<br/>")
-                                .append(StringEscapeUtils.escapeXml11(e.getCause().getMessage()));
+                        errorMessage.append("\n");
+                        errorMessage.append(e.getInvalidBodyPart().getText())
+                                .append("\n")
+                                .append(e.getCause().getMessage());
 
                     }
-                    result.addBody(new XhtmlBodyPart(errorMessage.toString()));
+
+					errorMessage.append("\n\nXHTML body was:\n");
+                    errorMessage.append(xhtmlPart);
+					result = new DefaultMessageContent(errorMessage.toString());
                 }
 			}
 
