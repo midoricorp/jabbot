@@ -1,6 +1,8 @@
 package org.wanna.jabbot.extensions.script;
 
 import com.sipstacks.script.*;
+import com.sipstacks.xhml.XHTMLObject;
+import com.sipstacks.xhml.XHtmlConvertException;
 import org.wanna.jabbot.command.Command;
 import org.wanna.jabbot.command.messaging.CommandMessage;
 import org.wanna.jabbot.command.parser.ArgsParser;
@@ -86,6 +88,14 @@ public class ScriptScript implements Command {
 
 		MessageContent messageContent = new DefaultMessageContent(response.getText());
 		if (response.getHtml().length() > 0) {
+			XHTMLObject xhtml = new XHTMLObject();
+			try {
+				xhtml.parse(response.getHtml());
+			} catch (XHtmlConvertException e) {
+				String error = e.getMessage();
+				error += "\n\nHTML body was:\n" +response.getHtml();
+				return new DefaultMessageContent(error);
+			}
 			messageContent.addBody(new XhtmlBodyPart(response.getHtml()));
 		}
 		return messageContent;
