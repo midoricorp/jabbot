@@ -175,7 +175,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
                     }
 
 					errorMessage.append("\n\nXHTML body was:\n");
-                    errorMessage.append(xhtmlPart);
+                    errorMessage.append(xhtmlPart.getText());
 					result = new DefaultMessageContent(errorMessage.toString());
                 }
 			}

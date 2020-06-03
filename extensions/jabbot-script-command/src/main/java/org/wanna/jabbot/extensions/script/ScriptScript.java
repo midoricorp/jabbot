@@ -105,7 +105,7 @@ public class ScriptScript implements Command {
 				}
 
 				errorMessage.append("\n\nXHTML body was:\n");
-				errorMessage.append(xhtmlPart);
+				errorMessage.append(xhtmlPart.getText());
 				return new DefaultMessageContent(errorMessage.toString());
 			}
 		}
