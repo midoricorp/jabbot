@@ -188,7 +188,7 @@ sub makeCommands {
 			next;
 		}
 		if(defined $extension->{'description'}) {
-		    print "$command_name: " . $extension->{'description'} ."\n";
+		    print "\n$command_name: " . $extension->{'description'};
 		}
 		my $use_command = ask({question=>"Add command '$command_name' to $type", values=>["Y", "N"], default=>"Y", save_key=>"binding.$type.command.$command_name.enable"});
 
