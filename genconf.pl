@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 #requres json
-#apt-get install libjson-perl libconfig-simple-perl
+#apt-get install libjson-perl libjson-xs-perl libconfig-simple-perl
 
 use strict;
 use JSON::XS;
@@ -186,6 +186,9 @@ sub makeCommands {
 		my $hidden = $extension->{'hidden'};
 		if ($hidden) {
 			next;
+		}
+		if(defined $extension->{'description'}) {
+		    print "$command_name: " . $extension->{'description'} ."\n";
 		}
 		my $use_command = ask({question=>"Add command '$command_name' to $type", values=>["Y", "N"], default=>"Y", save_key=>"binding.$type.command.$command_name.enable"});
 

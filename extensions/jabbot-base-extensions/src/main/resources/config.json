@@ -1,4 +1,10 @@
 [
- {"name":"help","className":"org.wanna.jabbot.command.HelpCommand"},
- {"name":"uptime","className":"org.wanna.jabbot.command.UptimeCommand"}
+ {"name":"help",
+  "className":"org.wanna.jabbot.command.HelpCommand",
+  "description":"Lists available commands"
+ },
+ {"name":"uptime",
+  "className":"org.wanna.jabbot.command.UptimeCommand",
+  "description": "Displays how long the bot has been up for"
+ }
 ]

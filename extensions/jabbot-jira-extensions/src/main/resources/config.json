@@ -1,10 +1,12 @@
 [
-  {"name":"jira","className":"org.wanna.jabbot.extensions.jira.IssueViewer",
+  {"name":"jira",
+    "className":"org.wanna.jabbot.extensions.jira.IssueViewer",
     "configuration":{
 	"url":"https://jira.hostname.com",
 	"username":"username",
 	"password":"password"
-    }
+    },
+    "description": "Command to display info about JIRA IDs"
   }
 ]
 

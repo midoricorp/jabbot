@@ -1,3 +1,7 @@
 [
-	{"name":"attack","className":"org.wanna.jabbot.extensions.foaas.AttackCommand"}
+	{
+		"name":"attack",
+		"className":"org.wanna.jabbot.extensions.foaas.AttackCommand",
+		"description": "Swears at a person using 'Fuck Off As A Service'"
+	}
 ]

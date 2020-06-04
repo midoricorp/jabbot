@@ -1,1 +1,2 @@
-[{"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"}]
+[{"name":"chuck","className":"org.wanna.jabbot.extensions.icndb.ChuckCommand"
+"description": "Generates a Chuck Norris Compliment"}]

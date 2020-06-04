@@ -13,13 +13,11 @@
         <module>jabbot-foaas-command</module>
         <module>jabbot-jira-extensions</module>
         <module>chuck-icndb-extension</module>
-        <module>jabbot-call-command</module>
-        <module>jabbot-quote-command</module>
         <module>jabbot-propaganda-command</module>
         <module>jabbot-cgi-command</module>
         <module>jabbot-script-command</module>
         <module>jabbot-translate-command</module>
-		<module>jabbot-say-extension</module>
+	<module>jabbot-say-extension</module>
     </modules>
 
     <parent>

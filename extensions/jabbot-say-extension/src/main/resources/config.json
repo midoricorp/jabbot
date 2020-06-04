@@ -1,1 +1,4 @@
-{"name":"say","className":"org.wanna.jabbot.extensions.say.SayCommand"}
+{"name":"say",
+  "className":"org.wanna.jabbot.extensions.say.SayCommand",
+  "description": "Allows a message to be sent to a different room/binding"
+}

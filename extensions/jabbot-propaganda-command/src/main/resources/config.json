@@ -14,5 +14,6 @@
 	":{philosophy}":"socialism",
 	":{job}":"Worker",
 	":{action}":"revolution"
-    }
+    },
+	"description": "Prints random North Korean Quote, can be customized to your environment thru substitutions"
 }]

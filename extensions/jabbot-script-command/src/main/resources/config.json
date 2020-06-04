@@ -4,12 +4,14 @@
 			"loop_limit":"100",
 			"buffer_limit":"1000",
 			"script_dir":"/var/lib/jabbot/script"
-		}
+		},
+		"description": "Command to execute script statements or create script commands"
 	},
 	{"name":"delete","className":"org.wanna.jabbot.extensions.script.DeleteCommand",
 		"configuration":{
 			"script_dir":"/var/lib/jabbot/script"
-		}
+		},
+		"description": "Allows commands written in script to be removed"
 	}
 ]
 

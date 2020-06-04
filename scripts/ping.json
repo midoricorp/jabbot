@@ -1,8 +1,11 @@
 [
-	{"name":"ping","className":"org.wanna.jabbot.extensions.cgi.ClassPathCGICommand",
-		"immutable":true,
-                    "configuration":{
-                        "script":"ping.sh"
-                    }
-        }
+  {
+    "name":"ping",
+    "className":"org.wanna.jabbot.extensions.cgi.ClassPathCGICommand",
+    "immutable":true,
+    "configuration":{
+      "script":"ping.sh"
+    },
+    "description": "Pings specified host"
+  }
 ]

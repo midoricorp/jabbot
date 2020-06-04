@@ -1,8 +1,11 @@
 [
-	{"name":"urban","className":"org.wanna.jabbot.extensions.cgi.ClassPathCGICommand",
-		"immutable":true,
-                    "configuration":{
-                        "script":"urbandict.pl"
-                    }
-        }
+  {
+    "name":"urban",
+    "className":"org.wanna.jabbot.extensions.cgi.ClassPathCGICommand",
+    "immutable":true,
+    "configuration":{
+      "script":"urbandict.pl"
+    },
+    "description":"Looks up term in the Urban Dictionary"
+  }
 ]

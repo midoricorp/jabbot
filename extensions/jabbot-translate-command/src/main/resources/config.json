@@ -1,1 +1,5 @@
-[{"name":"translate","className":"org.wanna.jabbot.extensions.translate.TranslateCommand"}]
+[{
+  "name":"translate",
+  "className":"org.wanna.jabbot.extensions.translate.TranslateCommand",
+  "description":"Translates a message from any language to any other language"
+}]
