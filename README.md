@@ -198,6 +198,44 @@ Defines a list of availble commands for the parent object
 * **className:** the canonical name of the Command class
 * **configuration:** a configuration Map passed to the Command at initialization phase
 
+#### Command list
+* **chuck** Generates a Chuck Norris Compliment
+* **help** Lists available commands
+* **uptime** Displays how long the bot has been up for
+* **dice** Dice Roll Simulator
+* **attack** Swears at a person using 'Fuck Off As A Service'
+* **jira** Command to display info about JIRA IDs
+  - password => password
+  - username => username
+  - url => https://jira.hostname.com
+* **propaganda** Prints random North Korean Quote, can be customized to your environment thru substitutions
+  - :{action} => revolution
+  - :{guy1} => Kim Il Sung
+  - :{guy2} => Kim Jong Il
+  - :{company_name} => Korea
+  - :{group} => People's Army
+  - :{philosophy} => socialism
+  - :{enemy} => Japan
+  - :{corporate} => national
+  - :{exec} => Party
+  - :{hq} => Paektu
+  - :{guy3} => Kim Jong Un
+  - :{company} => country
+  - :{job} => Worker
+  - :{capital} => Pyongyang
+* **say** Allows a message to be sent to a different room/binding
+* **script** Command to execute script statements or create script commands.
+Scripts are stored in script_dir.
+loop_limit and buffer_limit protect against abuse
+  - script_dir => /var/lib/jabbot/script
+  - loop_limit => 1000
+  - buffer_limit => 1000
+* **delete** Allows commands written in script to be removed
+  - script_dir => /var/lib/jabbot/script
+* **translate** Translates a message from any language to any other language
+* **ping** Pings specified host
+* **urban** Looks up term in the Urban Dictionary
+
 ## Testing
 If you want to quickly test your new extension, there's one special type of binding which allow you to start Jabbot without any configuration required.
 
