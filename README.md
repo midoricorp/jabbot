@@ -31,7 +31,7 @@ sudo apt-get install jabbot-full
 ```
 **Configuring**
 Installing via apt will trigger genconf.pl being run.  This will ask you which protocols and bindings you want to use.
-If you make a mistake during this phase, simply delete or fix /etc/jabbot/saved_values.ini and invoke ```dpkg-reconfigure jabbbot```.  See "Per-Protocol Configuration Details" for advice on how to configure each protocool.
+If you make a mistake during this phase, simply delete or fix /etc/jabbot/saved_values.ini and invoke ```dpkg-reconfigure jabbbot```.  See "[Per-Protocol Configuration Details][Per-Protocol Configuration Details]" for advice on how to configure each protocool.
 **Logs**
 logs for jabbot can be found in /var/log/jabbot/
 
