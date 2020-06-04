@@ -1,11 +1,11 @@
 [
 	{"name":"script","className":"org.wanna.jabbot.extensions.script.ScriptCommand",
 		"configuration":{
-			"loop_limit":"100",
+			"loop_limit":"1000",
 			"buffer_limit":"1000",
 			"script_dir":"/var/lib/jabbot/script"
 		},
-		"description": "Command to execute script statements or create script commands"
+		"description": "Command to execute script statements or create script commands.\nScripts are stored in script_dir.\nloop_limit and buffer_limit protect against abuse"
 	},
 	{"name":"delete","className":"org.wanna.jabbot.extensions.script.DeleteCommand",
 		"configuration":{
