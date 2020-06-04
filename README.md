@@ -22,7 +22,9 @@ There is also a collection of script commands you can install, check them out in
 
 ## Quickstart
 
-**Installing it via APT (tested on Ubuntu Bionic)**
+**Installing it via APT **
+
+Tested on Ubuntu Bionic
 ```bash
 sudo apt-get install apt-transport-https
 echo "deb [trusted=yes] https://dl.bintray.com/midoricorp/deb unstable main" | sudo tee -a /etc/apt/sources.list
@@ -36,7 +38,9 @@ If you make a mistake during this phase, simply delete or fix /etc/jabbot/saved_
 **Logs**
 logs for jabbot can be found in /var/log/jabbot/
 
-**Build debs from master (tested on Ubuntu Bionic)**
+**Build debs from master**
+
+Tested on Ubuntu Bionic
 ```bash
 sudo apt-get install git ca-certificates
 git clone https://github.com/midoricorp/jabbot.git
