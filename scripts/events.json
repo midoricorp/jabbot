@@ -1,8 +1,0 @@
-[
-	{"name":"events","className":"org.wanna.jabbot.extensions.cgi.ClassPathCGICommand",
-		"immutable":true,
-                    "configuration":{
-                        "script":"events.pl"
-                    }
-        }
-]
