@@ -26,8 +26,8 @@ There is also a collection of script commands you can install, check them out in
 
 Tested on Ubuntu Bionic
 ```bash
-sudo apt-get install apt-transport-https
-echo "deb [trusted=yes] https://dl.bintray.com/midoricorp/deb unstable main" | sudo tee -a /etc/apt/sources.list
+sudo apt-get install apt-transport-https ca-certificates
+echo "deb [trusted=yes] https://dl.bintray.com/midoricorp/deb unstable main" > /etc/apt/sources.list.d/midoricorp-jabbot.list
 sudo apt-get update
 sudo apt-get install jabbot-full
 ```
