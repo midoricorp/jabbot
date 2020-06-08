@@ -157,7 +157,7 @@ public class SparkBinding extends AbstractBinding<Object> {
 				} catch (InterruptedException e) {
 					running = false;
 				}
-				logger.info("Running room poll");
+				logger.debug("Running room poll");
 				try {
 					Iterator<com.ciscospark.Room> rooms = spark.rooms().iterate();
 
