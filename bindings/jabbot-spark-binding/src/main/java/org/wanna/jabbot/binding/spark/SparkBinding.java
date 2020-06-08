@@ -157,17 +157,22 @@ public class SparkBinding extends AbstractBinding<Object> {
 				} catch (InterruptedException e) {
 					running = false;
 				}
-				Iterator<com.ciscospark.Room> rooms = spark.rooms().iterate();
+				logger.info("Running room poll");
+				try {
+					Iterator<com.ciscospark.Room> rooms = spark.rooms().iterate();
 
-				while (rooms.hasNext()) {
-					com.ciscospark.Room room = rooms.next();
-					if (roomMap.get(room.getId()) == null) {
-						SparkRoom sr = new SparkRoom(SparkBinding.this, listeners);
-						if (sr.create(room)) {
-							roomMap.put(room.getId(), sr);
-							sr.sendMessage(null, "^_^", null);
+					while (rooms.hasNext()) {
+						com.ciscospark.Room room = rooms.next();
+						if (roomMap.get(room.getId()) == null) {
+							SparkRoom sr = new SparkRoom(SparkBinding.this, listeners);
+							if (sr.create(room)) {
+								roomMap.put(room.getId(), sr);
+								sr.sendMessage(null, "^_^", null);
+							}
 						}
 					}
+				} catch (Exception e) {
+					logger.error("Room Poller: got an exception", e);
 				}
 			}
 		}
