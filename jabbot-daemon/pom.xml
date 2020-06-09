@@ -111,11 +111,6 @@
                 </dependency>
                 <dependency>
                     <groupId>org.wanna.jabbot.extensions</groupId>
-                    <artifactId>jabbot-quote-command</artifactId>
-                    <version>0.6-SNAPSHOT</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.wanna.jabbot.extensions</groupId>
                     <artifactId>jabbot-foaas-command</artifactId>
                     <version>0.6-SNAPSHOT</version>
                 </dependency>
@@ -132,11 +127,6 @@
                 <dependency>
                     <groupId>org.wanna.jabbot.extensions</groupId>
                     <artifactId>jabbot-chuck-icndb-command</artifactId>
-                    <version>0.6-SNAPSHOT</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.wanna.jabbot.extensions</groupId>
-                    <artifactId>jabbot-call-command</artifactId>
                     <version>0.6-SNAPSHOT</version>
                 </dependency>
                 <dependency>
