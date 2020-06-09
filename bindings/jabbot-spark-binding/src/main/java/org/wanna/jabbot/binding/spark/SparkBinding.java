@@ -1,6 +1,7 @@
 package org.wanna.jabbot.binding.spark;
 
 import com.ciscospark.Person;
+import org.apache.commons.codec.net.QuotedPrintableCodec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wanna.jabbot.binding.AbstractBinding;
@@ -86,14 +87,42 @@ public class SparkBinding extends AbstractBinding<Object> {
 			}
 			me = spark.people().path("/me").get();
 			logger.info("I am " + me.getDisplayName() + " at " + me.getId());
+			com.ciscospark.Webhook hook = new com.ciscospark.Webhook();
+			hook.setName("midori hook");
+			hook.setTargetUrl(URI.create(webhookUrl));
+			hook.setResource("messages");
+			hook.setEvent("created");
+			hook = spark.webhooks().post(hook);
+			logger.info("created webhook " + hook.getName());
+			sparkServlet.addListener( new com.ciscospark.WebhookEventListener() {
+				public void onEvent(com.ciscospark.WebhookEvent event) {
+					com.ciscospark.Message msg = event.getData();
+					String roomId = event.getData().getRoomId();
+					SparkRoom sr = roomMap.get(roomId);
+					if(roomMap.get(roomId) == null) {
+						sr = new SparkRoom(SparkBinding.this, listeners);
+						sr.create(roomId);
+					}
+					if (msg.getText() == null) {
+						logger.info("Getting full message for " + event.getData().getId());
+						msg = spark.messages().path("/" + event.getData().getId()).get();
+					} else {
+						logger.info("MessageContent already in webhook, delivering");
+					}
+					sr.dispatchMessage(msg);
+
+				}
+			});
 
 			connected = true;
 		}else{
 			connected = true;
 		}
 
-		poller = new RoomPoller();
-		poller.start();
+		if(!useWebhook) {
+			poller = new RoomPoller();
+			poller.start();
+		}
 
 		if(connected == true){
 			super.dispatchEvent(new ConnectedEvent(this));

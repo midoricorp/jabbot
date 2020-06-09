@@ -150,35 +150,11 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 
 		if (!useWebhook) {
 			new Thread(this).start();
-		} else {
-			com.ciscospark.Webhook hook = new com.ciscospark.Webhook();
-			hook.setName("midori hook");
-			hook.setTargetUrl(URI.create(webhookUrl));
-			hook.setResource("messages");
-			hook.setEvent("created");
-			hook.setFilter("roomId=" + room.getId());
-			hook = spark.webhooks().post(hook);
-			logger.info("created webhook " + hook.getName() + " id: " + hook.getId() + " for room: " + room.getTitle());
-			final String roomId = room.getId();
-			servlet.addListener( new com.ciscospark.WebhookEventListener() {
-				public void onEvent(com.ciscospark.WebhookEvent event) {
-					com.ciscospark.Message msg = event.getData();
-					if(event.getData().getRoomId().equals(roomId)) {
-						if (msg.getText() == null) {
-							logger.info("Getting full message for " + event.getData().getId());
-							msg = spark.messages().path("/" + event.getData().getId()).get();
-						} else {
-							logger.info("MessageContent already in webhook, delivering");
-						}
-						dispatchMessage(msg);
-					}
-				}
-			});
 		}
 		return true;
 	}
 
-	private void dispatchMessage(com.ciscospark.Message msg) {
+	void dispatchMessage(com.ciscospark.Message msg) {
 		if (connection.me != null && msg.getId().equals(connection.me.getId())) {
 			logger.info("Ignoring message from myself!");
 			return;
