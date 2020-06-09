@@ -76,17 +76,6 @@ public class SparkBinding extends AbstractBinding<Object> {
 				spark.webhooks().path("/"+hk.getId()).delete();
 			}
 
-			Iterator<com.ciscospark.Room> rooms = spark.rooms().iterate();
-
-			while (rooms.hasNext()) {
-				com.ciscospark.Room room = rooms.next();
-				SparkRoom sr = new SparkRoom(this,listeners);
-				if(sr.create(room)) {
-					roomMap.put(room.getId(),sr);
-				}
-			}
-			me = spark.people().path("/me").get();
-			logger.info("I am " + me.getDisplayName() + " at " + me.getId());
 			com.ciscospark.Webhook hook = new com.ciscospark.Webhook();
 			hook.setName("midori hook");
 			hook.setTargetUrl(URI.create(webhookUrl));
@@ -118,6 +107,19 @@ public class SparkBinding extends AbstractBinding<Object> {
 			connected = true;
 		}else{
 			connected = true;
+		}
+
+		me = spark.people().path("/me").get();
+		logger.info("I am " + me.getDisplayName() + " at " + me.getId());
+
+		Iterator<com.ciscospark.Room> rooms = spark.rooms().iterate();
+
+		while (rooms.hasNext()) {
+			com.ciscospark.Room room = rooms.next();
+			SparkRoom sr = new SparkRoom(this,listeners);
+			if(sr.create(room)) {
+				roomMap.put(room.getId(),sr);
+			}
 		}
 
 		if(!useWebhook) {

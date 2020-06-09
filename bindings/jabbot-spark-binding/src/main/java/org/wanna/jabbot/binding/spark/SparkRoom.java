@@ -149,6 +149,7 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 		this.room = room;
 
 		if (!useWebhook) {
+			running=true;
 			new Thread(this).start();
 		}
 		return true;
