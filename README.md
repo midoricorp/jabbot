@@ -175,7 +175,7 @@ Defines a list of servers to which Jabbot will connect
 * **port:** leave as default 443
 * **username:** not used
 * **password:** The BOT Token you want to use
-* **rooms:** This protocol supports joining rooms, so you can specify the number of rooms it should try to join and then their names. Example room name "Jabbot Testing Room"
+* **rooms:** Joining rooms isn't used. Simply invite the bot to the desired room
 * **parameters.use_webook:** true/false allow use webhook to receive events or poll if false
 * **parameters.webhook_url:** if webhook is used, the the url the bot can be reached at (jabbot will listen on port 8080)
 
