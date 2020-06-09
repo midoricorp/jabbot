@@ -102,6 +102,7 @@ public class SparkBinding extends AbstractBinding<Object> {
 					if(roomMap.get(roomId) == null) {
 						sr = new SparkRoom(SparkBinding.this, listeners);
 						sr.create(roomId);
+						roomMap.put(roomId,sr);
 					}
 					if (msg.getText() == null) {
 						logger.info("Getting full message for " + event.getData().getId());
