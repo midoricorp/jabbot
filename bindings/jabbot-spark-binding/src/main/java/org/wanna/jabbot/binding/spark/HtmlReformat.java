@@ -53,58 +53,6 @@ class HtmlReformat {
             }
         }
     }
-
-    public String unescape() {
-        boolean inQuote = false;
-        boolean inCode = false;
-        StringBuffer sb = new StringBuffer();
-        for(int i = 0; i < formattedMessage.length();i++) {
-            char c = formattedMessage.charAt(i);
-
-            if (c =='"') {
-                inQuote = !inQuote;
-            }
-
-            if (c == '`') {
-                if (i+2 < formattedMessage.length()) {
-                    if (formattedMessage.charAt(i+1) == '`'
-                            && formattedMessage.charAt(i+2) == '`') {
-                        inCode = !inCode;
-                        i+=2;
-                        continue;
-                    }
-                }
-            }
-
-            if (inCode) {
-                inQuote = false;
-                sb.append(c);
-                continue;
-            }
-            
-            if (c == '\\')  {
-                if (inQuote) {
-                    if (i+1 < formattedMessage.length()) {
-                        char next = formattedMessage.charAt(i+1);
-                        switch (next) {
-                            case 'n':
-                                sb.append("\\");
-                                break;
-                            default:
-                                sb.append("\\\\");
-                        }
-                    } else {
-                        sb.append(c);
-                    }
-                } else {
-                    sb.append(c);
-                }
-            }
-        }
-        formattedMessage = sb.toString();
-        return formattedMessage;
-    }
-
     public String removeMentions() {
         XHTMLObject obj = new XHTMLObject();
         try {
