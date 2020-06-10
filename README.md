@@ -180,6 +180,16 @@ Defines a list of servers to which Jabbot will connect
 * **parameters.webhook_url:** if webhook is used, the the url the bot can be reached at (jabbot will listen on port 8080)
 > You can use [ngrok](https://ngrok.com/) that can generate public URLs for testing your chatbots. After downloading and installation type ```./ngrok http 8080``` then copy URL and paste it in variable ```parameters.webhook_url```
 
+> Markdown in the Web Client (and possibly other clients) can break in chat scrpting.  Be sure to either disable markdown in the client, or place the code you are scripting into a code block e.g.
+>
+>!script
+>
+>\`\`\`
+>
+>print "hello world!"
+>
+>\`\`\`
+
 ### commands
 ```json
     "commands":[
