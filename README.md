@@ -78,8 +78,6 @@ host$ cd jabbot-daemon/target/jabbot-daemon-<version>/
 host$ bin/jabbot.sh start
 ```
 
-> You can use [ngrok](https://ngrok.com/) that can generate public URLs for testing your chatbots. After downloading and installation type ```./ngrok http 8080``` then copy URL and paste it in variable ```parameters.webhook_url```
-
 ## Jabbot Configuration
 Jabbot can be configured by editing the main config file jabbot.json under the conf/ directory.
 The config file consists in the following main areas
@@ -180,6 +178,7 @@ Defines a list of servers to which Jabbot will connect
 * **rooms:** Joining rooms isn't used. Simply invite the bot to the desired room
 * **parameters.use_webook:** true/false allow use webhook to receive events or poll if false
 * **parameters.webhook_url:** if webhook is used, the the url the bot can be reached at (jabbot will listen on port 8080)
+> You can use [ngrok](https://ngrok.com/) that can generate public URLs for testing your chatbots. After downloading and installation type ```./ngrok http 8080``` then copy URL and paste it in variable ```parameters.webhook_url```
 
 ### commands
 ```json
