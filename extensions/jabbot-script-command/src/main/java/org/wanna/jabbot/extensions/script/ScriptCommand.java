@@ -21,6 +21,7 @@ import org.wanna.jabbot.messaging.Resource;
 import org.wanna.jabbot.messaging.body.*;
 
 import java.io.*;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,8 @@ import java.util.Map;
  * @since 2015-02-21
  */
 public class ScriptCommand extends AbstractCommandAdapter  implements CommandFactoryAware {
+	public static final DefaultResource DEFAULT_RESOURCE = new DefaultResource("Loaded From Disk", "Loaded From Disk");
+	final String AUTHOR_PREFIX = "#Author: ";
 	final Logger logger = LoggerFactory.getLogger(ScriptCommand.class);
 	private CommandFactory commandFactory;
 	private int loopLimit = -1;
@@ -76,6 +79,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 				try {
 					StringBuffer sb = new StringBuffer();
 					out = new PrintWriter(scriptDir + File.separator + name + ".ss");
+				out.write(AUTHOR_PREFIX + ss.author + "\n");
 					ScriptScript.getFunctions(cmd, sb);
 					sb.append("sub " + name + " \n" + cmd.dump());
 					out.write(sb.toString());
@@ -103,7 +107,7 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 	public void configure(Map<String, Object> configuration) {
 		if (configuration == null ) return;
 
-		currentUser.set(new DefaultResource("Loaded From Disk", "Loaded From Disk"));
+		currentUser.set(DEFAULT_RESOURCE);
 
 		if (configuration.containsKey("loop_limit")) {
 			loopLimit = Integer.parseInt(configuration.get("loop_limit").toString());
@@ -274,7 +278,20 @@ public class ScriptCommand extends AbstractCommandAdapter  implements CommandFac
 			File[] listOfFiles = files.listFiles();
 			for (File f : listOfFiles) {
 				try {
-					Script s = new Script(new FileReader(f));
+
+					FileReader file = new FileReader(f);
+					BufferedReader buffer = new BufferedReader(file);
+					buffer.mark(AUTHOR_PREFIX.length());
+					char [] beginning = new char[AUTHOR_PREFIX.length()];
+					buffer.read(beginning);
+					if (Arrays.equals(beginning,AUTHOR_PREFIX.toCharArray())) {
+						String user = buffer.readLine().trim();
+						currentUser.set(new DefaultResource(user,user));
+					} else {
+						currentUser.set(DEFAULT_RESOURCE);
+						buffer.reset();
+					}
+					Script s = new Script(buffer);
 					preloadFunctions(s, true);
 					s.run();
 				} catch (Exception e) {
