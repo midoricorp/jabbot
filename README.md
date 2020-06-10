@@ -22,7 +22,7 @@ There is also a collection of script commands you can install, check them out in
 
 ## Quickstart
 
-**Installing it via APT **
+**Installing it via APT**
 
 Tested on Ubuntu Bionic
 ```bash
@@ -255,3 +255,4 @@ In order to use it, simply follow the same steps show in the quickstart section 
 ```bash
 host$ bin/jabbotcli.sh
 ```
+[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/midoricorp/jabbot)
