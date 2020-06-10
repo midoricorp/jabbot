@@ -166,7 +166,8 @@ public class SparkRoom extends AbstractRoom<SparkBinding> implements Runnable {
 			if (html != null) {
 				logger.info("About reformat html: " + html);
 				HtmlReformat he = new HtmlReformat(connection.me, html);
-				text = he.removeMentions();
+				he.removeMentions();
+				text = he.unescape();
 			} else {
 				text = msg.getText();
 				if (connection.me != null) {
