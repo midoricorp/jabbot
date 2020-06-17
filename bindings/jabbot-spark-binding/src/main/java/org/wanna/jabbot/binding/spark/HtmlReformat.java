@@ -28,6 +28,7 @@ class HtmlReformat {
         this.me = me;
         this.formattedMessage = formattedMessage;
         this.formattedMessage = this.formattedMessage.replace("<br>","<br/>");
+        this.formattedMessage = this.formattedMessage.replace("&nbsp;","&#xA0;");
         this.formattedMessage = this.formattedMessage.replaceAll("<img([^>]*[^/])>","<img$1/>");
     }
 
