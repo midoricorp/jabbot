@@ -89,7 +89,7 @@
     </build>
 
     <properties>
-        <junit.version>4.11</junit.version>
+        <junit.version>4.13.1</junit.version>
         <slf.version>1.7.6</slf.version>
     </properties>
 </project>
