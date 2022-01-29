@@ -2,12 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<repositories>
 		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>bintray-tsearle-maven</id>
-			<name>bintray</name>
-			<url>http://dl.bintray.com/tsearle/maven</url>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
 		</repository>
 	</repositories>
     <parent>
@@ -46,11 +42,11 @@
 		<artifactId>jackson-databind</artifactId>
 		<version>2.9.10.4</version>
 	</dependency>
-		<dependency>
-			<groupId>com.sipstacks.xhtml-convert</groupId>
-			<artifactId>xhtml-convert</artifactId>
-			<version>0.6</version>
-		</dependency>
+        <dependency>
+            <groupId>com.github.midoricorp</groupId>
+            <artifactId>xhtml-convert</artifactId>
+            <version>xhtml-convert-0.7</version>
+        </dependency>
 	</dependencies>
 
 </project>

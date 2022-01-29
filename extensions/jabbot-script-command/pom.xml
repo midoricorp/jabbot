@@ -11,14 +11,10 @@
     <version>0.6-SNAPSHOT</version>
 
     <repositories>
-        <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-tsearle-maven</id>
-            <name>bintray</name>
-            <url>http://dl.bintray.com/tsearle/maven</url>
-        </repository>
+	    <repository>
+		 <id>jitpack.io</id>
+		 <url>https://jitpack.io</url>
+	    </repository>
     </repositories>
 
     <dependencies>
@@ -27,9 +23,9 @@
             <artifactId>junit</artifactId>
         </dependency>
         <dependency>
-	    <groupId>com.sipstacks.script</groupId>
+	    <groupId>com.github.midoricorp</groupId>
 	    <artifactId>script</artifactId>
-	    <version>0.7.9</version>
+	    <version>script-0.7.9</version>
         </dependency>
         <dependency>
             <groupId>org.wanna.jabbot.extensions</groupId>

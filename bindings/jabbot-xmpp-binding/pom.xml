@@ -12,12 +12,8 @@
 
     <repositories>
         <repository>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>bintray-tsearle-maven</id>
-            <name>bintray</name>
-            <url>http://dl.bintray.com/tsearle/maven</url>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
     
@@ -53,9 +49,9 @@
             <version>0.6-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.sipstacks.xhtml-convert</groupId>
+            <groupId>com.github.midoricorp</groupId>
             <artifactId>xhtml-convert</artifactId>
-            <version>0.7</version>
+            <version>xhtml-convert-0.7</version>
         </dependency>
     </dependencies>
 
