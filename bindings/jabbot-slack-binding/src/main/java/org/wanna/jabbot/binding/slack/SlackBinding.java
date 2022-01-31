@@ -1,19 +1,22 @@
 package org.wanna.jabbot.binding.slack;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sipstacks.xhml.Slack;
 import com.sipstacks.xhml.XHTMLObject;
 import com.sipstacks.xhml.XHtmlConvertException;
-import allbegray.slack.SlackClientFactory;
+/*import allbegray.slack.SlackClientFactory;
 import allbegray.slack.rtm.Event;
 import allbegray.slack.rtm.EventListener;
 import allbegray.slack.rtm.SlackRealTimeMessagingClient;
 import allbegray.slack.type.Attachment;
 import allbegray.slack.type.User;
 import allbegray.slack.webapi.SlackWebApiClient;
-import allbegray.slack.webapi.method.chats.ChatPostMessageMethod;
+import allbegray.slack.webapi.method.chats.ChatPostMessageMethod;*/
+import com.slack.api.methods.MethodsClient;
+import com.slack.api.methods.SlackApiException;
+import com.slack.api.methods.request.chat.ChatPostMessageRequest;
+import com.slack.api.methods.request.users.UsersInfoRequest;
+import com.slack.api.methods.response.users.UsersInfoResponse;
+import com.slack.api.rtm.*;
 import emoji4j.EmojiManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +26,11 @@ import org.wanna.jabbot.binding.Room;
 import org.wanna.jabbot.binding.config.BindingConfiguration;
 import org.wanna.jabbot.binding.config.RoomConfiguration;
 import org.wanna.jabbot.binding.event.ConnectedEvent;
-import org.wanna.jabbot.binding.event.DisconnectedEvent;
 import org.wanna.jabbot.binding.event.MessageEvent;
 import org.wanna.jabbot.messaging.*;
 import org.wanna.jabbot.messaging.body.BodyPart;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -37,8 +40,10 @@ import java.util.List;
 public class SlackBinding extends AbstractBinding<Object> {
 	private final Logger logger = LoggerFactory.getLogger(SlackBinding.class);
 	private boolean connected;
-	private SlackRealTimeMessagingClient rtmClient;
-	private SlackWebApiClient webApiClient;
+	private com.slack.api.Slack slack;
+	private RTMClient rtmClient;
+	RTMEventsDispatcher dispatcher;
+	private MethodsClient webApiClient;
 	static {
 		EmojiManager.addStopWords(":[0-9]+");
 	}
@@ -51,33 +56,25 @@ public class SlackBinding extends AbstractBinding<Object> {
 	public boolean connect() {
 		logger.info("Creating RTM Client");
 		try {
-			rtmClient = SlackClientFactory.createSlackRealTimeMessagingClient(getConfiguration().getPassword());
-			webApiClient = SlackClientFactory.createWebApiClient(getConfiguration().getPassword());
+			slack = com.slack.api.Slack.getInstance();
+			rtmClient = slack.rtm(getConfiguration().getPassword());
+			dispatcher = RTMEventsDispatcherFactory.getInstance();
+			webApiClient = slack.methods(getConfiguration().getPassword());
 		} catch (Throwable e) {
 			throw new ConnectionException(e);
 		}
 		logger.info("RTM Client created! connecting");
-		rtmClient.addListener(Event.MESSAGE, new EventListener() {
+		RTMEventHandler<com.slack.api.model.event.MessageEvent> messageHandler = new RTMEventHandler<com.slack.api.model.event.MessageEvent>() {
 			@Override
-			public void handleMessage(JsonNode jsonNode) {
-				ObjectMapper mapper = new ObjectMapper();
-
-				try {
-					String json = mapper.writeValueAsString(jsonNode);
-					logger.debug("json payload: "+json);
-					allbegray.slack.type.Message slackMsg = mapper.treeToValue(jsonNode,allbegray.slack.type.Message.class);
-
-					logger.info("Got a message: " + slackMsg.getText());
-					String channelId = jsonNode.get("channel").asText();
-					dispatchMessage(channelId,slackMsg);
-				} catch (JsonProcessingException e) {
-					logger.error("Failed to parse message",e);
-				}
-			}
-		});
+			public void handle(com.slack.api.model.event.MessageEvent messageEvent) {
+				logger.info("Got a message: " + messageEvent.getText());
+				dispatchMessage(messageEvent);			}
+		};
+		dispatcher.register(messageHandler);
 
 		try {
 			rtmClient.connect();
+			rtmClient.addMessageHandler(dispatcher.toMessageHandler());
 			logger.info("RTP Connected");
 			connected = true;
 			super.dispatchEvent(new ConnectedEvent(this));
@@ -89,8 +86,13 @@ public class SlackBinding extends AbstractBinding<Object> {
 
 	@Override
 	public boolean disconnect() {
-		rtmClient.close();
-		webApiClient.shutdown();
+		try {
+			rtmClient.close();
+		} catch (IOException e) {
+			throw new ConnectionException(e);
+		}
+		connected = false;
+		//webApiClient.shutdown();
 		return true;
 	}
 
@@ -101,13 +103,7 @@ public class SlackBinding extends AbstractBinding<Object> {
 
 	@Override
 	public boolean isConnected() {
-		if (connected) {
-			connected = rtmClient.ping();
-			if (!connected) {
-				rtmClient.close();
-				webApiClient.shutdown();
-			}
-		}
+
 		return connected;
 	}
 
@@ -119,57 +115,71 @@ public class SlackBinding extends AbstractBinding<Object> {
 	@Override
 	public void sendMessage(TxMessage response) {
 		MessageContent messageContent = response.getMessageContent();
-		ChatPostMessageMethod cpmm = new ChatPostMessageMethod(response.getDestination().getAddress(), "Formatted Response:");
-		if(messageContent.getBody(BodyPart.Type.XHTML) != null) {
-			XHTMLObject obj = new XHTMLObject();
+		try {
+			webApiClient.chatPostMessage(req -> { ChatPostMessageRequest.ChatPostMessageRequestBuilder newReq = req;
+				newReq.channel(response.getDestination().getAddress());
+				newReq.username(this.getConfiguration().getUsername());
 
-			try {
-				logger.info("About to convert:" + messageContent.getBody(BodyPart.Type.XHTML).getText());
-				obj.parse(messageContent.getBody(BodyPart.Type.XHTML).getText());
-				List<Attachment> attachments = Slack.convert(obj);
-				attachments.get(0).setFallback(messageContent.getBody());
-				cpmm.setAttachments(attachments);
-			} catch (XHtmlConvertException e) {
-				logger.error("Unable to parse xhtml!", e);
-			}
+				/*
+				if(messageContent.getBody(BodyPart.Type.XHTML) != null) {
+					XHTMLObject obj = new XHTMLObject();
 
-		} else {
-			if(messageContent.getBody().length() == 0) {
-				cpmm.setText("^_^");
-			} else {
-				String body = messageContent.getBody();
-				body = body.replaceAll("&", "&amp;");
-				body = body.replaceAll("<", "&lt;");
-				body = body.replaceAll(">", "&gt;");
+					try {
+						logger.info("About to convert:" + messageContent.getBody(BodyPart.Type.XHTML).getText());
+						obj.parse(messageContent.getBody(BodyPart.Type.XHTML).getText());
+						List<Attachment> attachments = Slack.convert(obj);
+						attachments.get(0).setFallback(messageContent.getBody());
+						cpmm.setAttachments(attachments);
+					} catch (XHtmlConvertException e) {
+						logger.error("Unable to parse xhtml!", e);
+					}
 
-				// repair special link types
-				body = body.replaceAll("&lt;@([|0-9A-Za-z]+)&gt;", "<@$1>");
-				body = body.replaceAll("&lt;#([|0-9A-Za-z]+)&gt;", "<#$1>");
+				} else {*/
+					if(messageContent.getBody().length() == 0) {
+						newReq.text("^_^");
+					} else {
+						String body = messageContent.getBody();
+						body = body.replaceAll("&", "&amp;");
+						body = body.replaceAll("<", "&lt;");
+						body = body.replaceAll(">", "&gt;");
 
-				logger.info("Sending messageContent: " + body);
+						// repair special link types
+						body = body.replaceAll("&lt;@([|0-9A-Za-z]+)&gt;", "<@$1>");
+						body = body.replaceAll("&lt;#([|0-9A-Za-z]+)&gt;", "<#$1>");
 
-				cpmm.setText(body);
-			}
+						logger.info("Sending messageContent: " + body);
+
+						newReq.text(body);
+					}
+				//}
+				return newReq;
+
+			});
+		} catch (IOException | SlackApiException e) {
+			logger.error("Unable to send message", e);
 		}
-		cpmm.setUsername(this.getConfiguration().getUsername());
-		cpmm.setAs_user(true);
 
-		logger.info("Sending messageContent:" + cpmm.toString());
-		webApiClient.postMessage(cpmm);
 	}
 
-	private void dispatchMessage(String channel, allbegray.slack.type.Message slackMsg) {
-		String username = slackMsg.getUsername();
+	private void dispatchMessage(com.slack.api.model.event.MessageEvent slackMsg) {
+		String username = slackMsg.getUser();
 
-		if(username == null && slackMsg.getUser() == null) {
+		if(username == null) {
 			logger.error("MessageContent missing user!" + slackMsg.toString());
 			return;
 		}
 
-		if(username == null) {
-			User user = webApiClient.getUserInfo(slackMsg.getUser());
-			username = user.getName();
+		/* TO FIX */
+		UsersInfoResponse usersInfoResponse = null;
+		try {
+			usersInfoResponse = webApiClient.usersInfo(req -> {
+				req.user(slackMsg.getUser());
+				return req;
+			});
+		} catch (IOException | SlackApiException e) {
+			logger.error("Error finding user " + username, e);
 		}
+		username = usersInfoResponse.getUser().getName();
 
 		String slackMsgText = slackMsg.getText();
 		slackMsgText = slackMsgText.replaceAll("<(http[^\"|>]*)[|]([^|\">]*)>", "$2");
@@ -178,7 +188,7 @@ public class SlackBinding extends AbstractBinding<Object> {
 		slackMsgText = slackMsgText.replace("&lt;", "<");
 		slackMsgText = slackMsgText.replace("&amp;", "&");
 
-		RxMessage request = new DefaultRxMessage(new DefaultMessageContent(slackMsgText), new DefaultResource(channel,username));
+		RxMessage request = new DefaultRxMessage(new DefaultMessageContent(slackMsgText), new DefaultResource(slackMsg.getChannel(),username));
 		MessageEvent messageEvent = new MessageEvent(this, request);
 		dispatchEvent(messageEvent);
 
