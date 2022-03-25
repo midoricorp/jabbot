@@ -30,6 +30,7 @@ import org.wanna.jabbot.binding.event.MessageEvent;
 import org.wanna.jabbot.messaging.*;
 import org.wanna.jabbot.messaging.body.BodyPart;
 
+import javax.websocket.CloseReason;
 import java.io.IOException;
 import java.util.List;
 
@@ -72,9 +73,18 @@ public class SlackBinding extends AbstractBinding<Object> {
 		};
 		dispatcher.register(messageHandler);
 
+		RTMCloseHandler closeHandler = new RTMCloseHandler() {
+			@Override
+			public void handle(CloseReason reason) {
+				logger.info("RTP Closed, reason: " + reason.getReasonPhrase());
+				connected = false;
+			}
+		};
+
 		try {
 			rtmClient.connect();
 			rtmClient.addMessageHandler(dispatcher.toMessageHandler());
+			rtmClient.addCloseHandler(closeHandler);
 			logger.info("RTP Connected");
 			connected = true;
 			super.dispatchEvent(new ConnectedEvent(this));
